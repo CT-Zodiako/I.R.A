@@ -1,0 +1,28 @@
+# Archivos y directorios generados por el sistema operativo o el IDE
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+
+# Entornos virtuales (se recomienda utilizar un entorno virtual)
+venv/
+env/
+*.pyc
+
+# Dependencias de Python (se recomienda utilizar un archivo requirements.txt)
+/libraries/
+
+# Configuraciones locales (por ejemplo, configuraciones con contraseñas)
+config.py
+
+# Registros y archivos de registro
+logs/
+*.log
+
+# Archivos y directorios generados por Flask
+instance/
+web/migrations/
+web/__pycache__
+
+# Archivos de registro específicos de Flask (opcional, depende de la configuración)
+logs/
