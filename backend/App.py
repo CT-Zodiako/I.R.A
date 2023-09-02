@@ -1,4 +1,4 @@
-from routes.evaluador import evaluador_blueprint
+from routes.evaluador.evaluador import evaluador_blueprint
 from flask import Flask
 from db import db
 
@@ -12,7 +12,7 @@ db.init_app(app)
 
 
 # Registrar las rutas en la aplicación
-app.register_blueprint(evaluador_blueprint)
+app.register_blueprint(evaluador_blueprint, url_prefix='/evaluador')
 
 
 if __name__ == '__main__':
