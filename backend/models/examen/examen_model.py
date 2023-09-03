@@ -1,6 +1,5 @@
 from db import db
 
-
 class Examen(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     programa = db.Column(db.String(255), nullable=False)

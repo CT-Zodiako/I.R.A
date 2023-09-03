@@ -1,10 +1,9 @@
 from db import db
 from flask import jsonify
 from models.examen.examen_model import Examen
-from models.evaluador.exceptions import  CampoRequeridoError, EvaluadorDuplicadoError, EvaluadorNoEncontradoError, ErrorGenerico
 
 
-def agregar_examen(programa, proyecto_integrador, evaluadores, actividades_formativas, estudiantes):
+def crear_examen(programa, proyecto_integrador, evaluadores, actividades_formativas, estudiantes):
     try:
         resultado = Examen(programa=programa, proyecto_integrador=proyecto_integrador, evaluadores=evaluadores, actividades_formativas=actividades_formativas, estudiantes=estudiantes)
         db.session.add(resultado)
