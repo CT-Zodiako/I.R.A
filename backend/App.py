@@ -1,6 +1,7 @@
 import os
 from routes.evaluador.evaluador import evaluador_blueprint
 from routes.examen.exament_route import examen_blueprint
+from routes.resultado_aprendizaje.resultado_aprendizaje_route import resultado_aprendizaje_blueprint
 from flask import Flask
 from flask_cors import CORS
 from db import db
@@ -26,6 +27,7 @@ db.init_app(app)
 # Registrar las rutas en la aplicación
 app.register_blueprint(evaluador_blueprint, url_prefix='/evaluador')
 app.register_blueprint(examen_blueprint, url_prefix='/examen')
+app.register_blueprint(resultado_aprendizaje_blueprint, url_prefix='/resultado_aprendizaje')
 
 
 if __name__ == '__main__':
