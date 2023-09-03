@@ -1,11 +1,10 @@
 from db import db
 
 
-class Evaluador(db.Model):
+class Examen(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nombre_evaluador = db.Column(db.String(255), nullable=False)
-    correo = db.Column(db.String(255), nullable=False)
-    numero_identificacion = db.Column(db.String(255), nullable=False)
-    rol = db.Column(db.String(255), nullable=False)
-    contrasenna = db.Column(db.String(255), nullable=False)
-    telefono = db.Column(db.String(255), nullable=False)
+    programa = db.Column(db.String(255), nullable=False)
+    proyecto_integrador = db.Column(db.String(255), nullable=False)
+    evaluadores = db.Column(db.JSON) 
+    actividades_formativas = db.Column(db.JSON)
+    estudiantes = db.Column(db.JSON)
