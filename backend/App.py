@@ -17,6 +17,7 @@ app.secret_key = os.environ.get('SECRET_KEY')
 
 # Configurar CORS
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+
 db.init_app(app)
 
 # Importar el objeto Blueprint y registrar la ruta en la aplicación
@@ -31,3 +32,7 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(port=3001, debug=True)
+
+
+
+
