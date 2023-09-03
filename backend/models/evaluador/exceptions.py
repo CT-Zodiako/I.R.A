@@ -19,3 +19,4 @@ class ErrorGenerico(Exception):
     def __init__(self, message="Error genérico en la aplicación"):
         self.message = message
         super().__init__(self.message)
+        
