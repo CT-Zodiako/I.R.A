@@ -7,11 +7,11 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:3001', // Cambia esto si el servidor Flask está en un puerto diferente
+        target: 'http://127.0.0.1:3001',
         changeOrigin: true,
+        secure:false,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
-  },
-  
+  }, 
 })

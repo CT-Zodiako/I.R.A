@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import evaluadorService from '../services/servicioEvaluador';
 
-function App() {
-  const [formData, setFormData] = useState({
+export const CrearEvaluador = () => {
+  const [formulario, setFormulario] = useState({
     nombre_evaluador: '',
     correo: '',
     numero_identificacion: '',
@@ -13,33 +13,32 @@ function App() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormulario({
+      ...formulario,
       [name]: value,
     });
   };
 
-  const handleSubmit = async (e) => {
+  const onEnviarEvaluador = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await axios.post('http://127.0.0.1:3001/evaluador/agregar_evaluador', formData);
-      console.log(response.data); // Maneja la respuesta del servidor aquí
+      const response = await evaluadorService.agregarEvaluador(formulario);
+      console.log(response);
     } catch (error) {
-      console.error(error); // Maneja errores aquí
+      console.error(error);
     }
   };
 
   return (
     <div>
       <h1>Crear Evaluador</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={onEnviarEvaluador}>
         <div>
           <label>Nombre:</label>
           <input
             type="text"
             name="nombre_evaluador"
-            value={formData.nombre_evaluador}
+            value={formulario.nombre_evaluador}
             onChange={handleChange}
             required
           />
@@ -49,17 +48,17 @@ function App() {
           <input
             type="text"
             name="correo"
-            value={formData.correo}
+            value={formulario.correo}
             onChange={handleChange}
             required
           />
         </div>
         <div>
-          <label># Numero identificacion:</label>
+          <label>Numero identificacion:</label>
           <input
             type="text"
             name="numero_identificacion"
-            value={formData.numero_identificacion}
+            value={formulario.numero_identificacion}
             onChange={handleChange}
             required
           />
@@ -69,7 +68,7 @@ function App() {
           <input
             type="text"
             name="rol"
-            value={formData.rol}
+            value={formulario.rol}
             onChange={handleChange}
             required
           />
@@ -79,7 +78,7 @@ function App() {
           <input
             type="text"
             name="contrasenna"
-            value={formData.contrasenna}
+            value={formulario.contrasenna}
             onChange={handleChange}
             required
           />
@@ -89,12 +88,11 @@ function App() {
           <input
             type="text"
             name="telefono"
-            value={formData.telefono}
+            value={formulario.telefono}
             onChange={handleChange}
             required
           />
         </div>
-        {/* Agrega más campos de formulario aquí */}
         <div>
           <button type="submit">Crear Evaluador</button>
         </div>
@@ -103,4 +101,3 @@ function App() {
   );
 }
 
-export default App;
