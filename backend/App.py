@@ -2,6 +2,7 @@ from routes.evaluador.evaluador import evaluador_blueprint
 from flask_cors import CORS
 
 from flask import Flask
+from flask_cors import CORS
 from db import db
 
 app = Flask(__name__)
