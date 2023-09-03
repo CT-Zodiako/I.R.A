@@ -1,13 +1,21 @@
+import os
 from routes.evaluador.evaluador import evaluador_blueprint
-from flask_cors import CORS
-
+from routes.examen.exament_route import examen_blueprint
 from flask import Flask
 from flask_cors import CORS
 from db import db
+from dotenv import load_dotenv
+
+# Cargar variables de entorno
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Leahtovar2017.@localhost/I.R.A'
-app.secret_key = 'mysecretkey'
+
+# Configurar la base de datos 
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.secret_key = os.environ.get('SECRET_KEY')
+
+# Configurar CORS
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
 db.init_app(app)
@@ -17,6 +25,7 @@ db.init_app(app)
 
 # Registrar las rutas en la aplicación
 app.register_blueprint(evaluador_blueprint, url_prefix='/evaluador')
+app.register_blueprint(examen_blueprint, url_prefix='/examen')
 
 
 if __name__ == '__main__':
