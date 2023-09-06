@@ -14,12 +14,15 @@ def crear_examen():
     evaluadores = data.get('evaluadores')
     actividades_formativas = data.get('actividades_formativas')
     estudiantes = data.get('estudiantes')
-
+    resultado_aprendizaje_id = data.get('resultado_aprendizaje_id')
+    
     resultado = agregar_examen(programa=programa,
             proyecto_integrador=proyecto_integrador,
             evaluadores=evaluadores,
             actividades_formativas=actividades_formativas,
-            estudiantes=estudiantes)
+            estudiantes=estudiantes,resultado_aprendizaje_id=resultado_aprendizaje_id)
+    
+    
     
 
 
