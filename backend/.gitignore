@@ -9,6 +9,7 @@ venv/
 env/
 *.pyc
 
+
 # Dependencias de Python (se recomienda utilizar un archivo requirements.txt)
 /libraries/
 
@@ -26,3 +27,4 @@ web/__pycache__
 
 # Archivos de registro específicos de Flask (opcional, depende de la configuración)
 logs/
+.env
