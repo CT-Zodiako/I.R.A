@@ -12,7 +12,7 @@ export const InputSeleccion = () => {
     const [resultadoAprendizaje, setresultadoAprendizaje] = useState([]);
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:3001/resultado_aprendizaje/traer_resultados')
+        axios.get('http://127.0.0.1:3001/api/resultado_aprendizaje/traer_resultados')
           .then((response) => {
             setresultadoAprendizaje(response.data);
             console.log(response.data)
