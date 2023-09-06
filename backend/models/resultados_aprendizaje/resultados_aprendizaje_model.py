@@ -11,3 +11,7 @@ class ResultadoAprendizaje(db.Model):
         self.titulo = titulo
         self.descripcion = descripcion
         self.estado = estado
+        
+    def cambiar_estado(self, nuevo_estado):
+        if nuevo_estado in [estado.value for estado in EstadoEnum]:
+            self.estado = nuevo_estado
