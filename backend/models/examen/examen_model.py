@@ -7,3 +7,12 @@ class Examen(db.Model):
     evaluadores = db.Column(db.JSON) 
     actividades_formativas = db.Column(db.JSON)
     estudiantes = db.Column(db.JSON)
+    resultado_aprendizaje_id = db.Column(db.Integer, db.ForeignKey('resultado_aprendizaje.id'))
+    
+    def __init__(self, programa, proyecto_integrador, evaluadores, actividades_formativas, estudiantes, resultado_aprendizaje_id):
+        self.programa = programa
+        self.proyecto_integrador = proyecto_integrador
+        self.evaluadores = evaluadores
+        self.actividades_formativas = actividades_formativas
+        self.estudiantes = estudiantes
+        self.resultado_aprendizaje_id = resultado_aprendizaje_id
