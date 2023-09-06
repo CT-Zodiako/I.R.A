@@ -5,12 +5,12 @@ const api = axios.create({
 });
 
 class evaluadorService{
-    async agregarEvaluador (formData) {
+    async agregarEvaluador (formulario) {
       try {
-        const response = await api.post('/evaluador/agregar_evaluador', formData);
+        const response = await api.post('/evaluador/agregar_evaluador', formulario);
         return response.data;
       } catch (error) {
-        throw error;
+        console.error('Error al enviar los datos:', error);
       }
     }
   };
