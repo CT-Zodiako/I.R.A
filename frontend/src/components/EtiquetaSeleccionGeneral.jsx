@@ -3,20 +3,13 @@ import axios from 'axios';
 
 export const InputSeleccion = () => {
 
-    // const evaluadores = [
-    //     {id:1, nombre: 'cristian'},
-    //     {id:2, nombre: 'nayeli'},
-    //     {id:3, nombre: 'daniela'}
-    // ]
-
-    const [resultadoAprendizaje, setresultadoAprendizaje] = useState([]);
+    const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:3001/api/resultado_aprendizaje/traer_resultados')
+        axios.get('http://127.0.0.1:3001/resultado_aprendizaje/traer_resultados')
           .then((response) => {
-            setresultadoAprendizaje(response.data);
+            setResultadoAprendizaje(response.data.data);
             console.log(response.data)
-            setLoading(false); 
           })
           .catch((error) => {
             console.error('Error al obtener evaluadores:', error);
@@ -26,10 +19,10 @@ export const InputSeleccion = () => {
     return(
         <>
             <form action="">
-                <select name="evaluadores">
+                <select name="resultadoAprendizaje">
                     {
                         resultadoAprendizaje.map(opcion => (
-                            <option key={opcion.id} value={opcion.id}>{opcion.nombre}</option>
+                            <option key={opcion.id} value={opcion.id}>{opcion.titulo}</option>
                         ))
                     }
                 </select>
