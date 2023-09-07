@@ -19,29 +19,8 @@ export const FormularioPorPasos = () => {
   }
 
   function Paso1({onNext}) {
-    // Aquí puedes definir los campos y lógica del primer paso
     return (
       <EvaluacionInformacion handleNext={onNext}/>
-      // <div>
-      //   <h2>Paso 1</h2>
-      //   <label>Nombre:</label>
-      //     <input
-      //       type="text"
-      //       name="nombre_evaluador"
-      //       // value={formulario.nombre_evaluador}
-      //       // onChange={handleChange}
-      //       required
-      //     />  
-      //     <label>Nombre:</label>
-      //     <input
-      //       type="text"
-      //       name="nombre_evaluador"
-      //       // value={formulario.nombre_evaluador}
-      //       // onChange={handleChange}
-      //       required
-      //     />      
-      //     <button onClick={onNext}>Siguiente</button>
-      // </div>
     );
   }
   

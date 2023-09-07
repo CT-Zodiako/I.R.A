@@ -1,27 +1,10 @@
-import { useEffect, useState } from "react";
-import axios from 'axios';
-
-export const InputSeleccion = () => {
-
-    const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
-
-    useEffect(() => {
-        axios.get('http://127.0.0.1:3001/resultado_aprendizaje/traer_resultados')
-          .then((response) => {
-            setResultadoAprendizaje(response.data.data);
-            console.log(response.data)
-          })
-          .catch((error) => {
-            console.error('Error al obtener evaluadores:', error);
-          });
-      }, []);
-
+export const InputSeleccion = ({seleccion}) => {
     return(
         <>
             <form action="">
                 <select name="resultadoAprendizaje">
                     {
-                        resultadoAprendizaje.map(opcion => (
+                        seleccion.map(opcion => (
                             <option key={opcion.id} value={opcion.id}>{opcion.titulo}</option>
                         ))
                     }
