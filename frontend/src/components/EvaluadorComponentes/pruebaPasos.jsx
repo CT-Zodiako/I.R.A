@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { EvaluacionInformacion } from './InformacionEvaluacion';
+import { PanelSeleccionarEvaluador } from './PanelEvaluador';
 
 export const FormularioPorPasos = () => {
   const [formularioExamen, setFormulario] = useState({
@@ -35,28 +36,28 @@ export const FormularioPorPasos = () => {
   }
   
   function Paso2({ onNext }) {
-    // Aquí puedes definir los campos y lógica del segundo paso
     return (
-      <div>
-        <h2>Paso 2</h2>
-        <label>Nombre:</label>
-          <input
-            type="text"
-            name="nombre_evaluador"
-            // value={formulario.nombre_evaluador}
-            // onChange={handleChange}
-            required
-          />  
-          <label>Nombre:</label>
-          <input
-            type="text"
-            name="nombre_evaluador"
-            // value={formulario.nombre_evaluador}
-            // onChange={handleChange}
-            required
-          />     
-        <button onClick={onNext}>Siguiente</button>
-      </div>
+      <PanelSeleccionarEvaluador/>
+      // <div>
+      //   <h2>Paso 2</h2>
+      //   <label>Nombre:</label>
+      //     <input
+      //       type="text"
+      //       name="nombre_evaluador"
+      //       // value={formulario.nombre_evaluador}
+      //       // onChange={handleChange}
+      //       required
+      //     />  
+      //     <label>Nombre:</label>
+      //     <input
+      //       type="text"
+      //       name="nombre_evaluador"
+      //       // value={formulario.nombre_evaluador}
+      //       // onChange={handleChange}
+      //       required
+      //     />     
+      //   <button onClick={onNext}>Siguiente</button>
+      // </div>
     );
   }
 }

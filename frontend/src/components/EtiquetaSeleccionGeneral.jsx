@@ -3,11 +3,11 @@ import { useState } from "react";
 
 export const InputSeleccion = ({seleccion}) => {
     
-    const [seleccionar, setSeleccion] = useState();
+    // const [seleccionar, setSeleccion] = useState();
 
-    const handleChange = (e) => {
-        setSeleccion(e.target.value);
-    }
+    // const handleChange = (e) => {
+    //     setSeleccion(e.target.value);
+    // }
     
     return(
         <>
@@ -16,7 +16,7 @@ export const InputSeleccion = ({seleccion}) => {
                 <Select
                     value={seleccion.id}
                     label="Seleccione evaluador"
-                    onChange={handleChange}
+                    // onChange={handleChange}
                 >
                 {
                     seleccion.map(opcion => (
