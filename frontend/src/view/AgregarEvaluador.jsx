@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import evaluadorService from '../services/servicioEvaluador';
-import { InputGeneral } from '../components/InputFormulario';
 
 export const CrearEvaluador = () => {
   const [formulario, setFormulario] = useState({
@@ -12,8 +11,8 @@ export const CrearEvaluador = () => {
     telefono: '',
   });
 
-  const handleChange = (name, value) => {
-    // const { name, value } = e.target;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormulario({
       ...formulario,
       [name]: value
@@ -36,21 +35,15 @@ export const CrearEvaluador = () => {
       <form onSubmit={onEnviarEvaluador}>
         <div>
           <label>Nombre:</label>
-          <InputGeneral 
-            key='nombre_evaluador' 
-            name='nombre_evaluador' 
-            value={formulario.nombre_evaluador}  
-            onChange={handleChange}
-          />
-          {/* <input
+          <input
             type="text"
             name="nombre_evaluador"
             value={formulario.nombre_evaluador}
             onChange={handleChange}
             required
-          /> */}
+          />
         </div>
-        {/* <div>
+        <div>
           <label>Correo:</label>
           <input
             type="text"
@@ -99,7 +92,7 @@ export const CrearEvaluador = () => {
             onChange={handleChange}
             required
           />
-        </div> */}
+        </div>
         <div>
           <button type="submit">Crear Evaluador</button>
         </div>

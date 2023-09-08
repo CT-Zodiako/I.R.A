@@ -1,22 +1,31 @@
-import { useEffect, useState } from 'react';
-import { InputGeneral } from '../InputFormulario'
+import { useState, useEffect } from 'react';
 import { InputSeleccion } from '../EtiquetaSeleccionGeneral'
 import resultadoAprendizajeServicio from '../../services/ServicioResultadoAprendizaje';
 
-export const EvaluacionInformacion = ({handleNext}) => {
+export const EvaluacionInformacion = ({handleNext, formularioExamen, setFormulario}) => {
     
-    const [proyectoIntegrador, setProyectoIntegrador] = useState([ ]);
+    const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
 
-    const onAddProyecto = (onInputGeneral) => {     
-        if(proyectoIntegrador.includes(onInputGeneral))return; 
-        setProyectoIntegrador([onInputGeneral, ...proyectoIntegrador]);   
-    }
+    const handleProgramaChange = (event) => {
+        const { name, value } = event.target;
+        setFormulario({
+          ...formularioExamen,
+          [name]: value
+        });
+    };
+
+    const handleIntegradorChange = (event) => {
+        const { name, value } = event.target;
+        setFormulario({
+          ...formularioExamen,
+          [name]: value
+        });
+    };
+
     const accionBoton = () =>{
         handleNext ();
         onAddProyecto();
     }
-
-    const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
 
     useEffect(() => {
         const fetchData = async() =>{
@@ -35,10 +44,28 @@ export const EvaluacionInformacion = ({handleNext}) => {
             <div>
                 <h1>Información de la evaluación</h1>
                 <div>
+                    <label>
+                        Programa:
+                        <input 
+                            type="text" 
+                            name="programa" 
+                            value={formularioExamen.programa} 
+                            onChange={handleProgramaChange}
+                        />
+                    </label>
+
                     <label>Resultado</label>
                     <InputSeleccion seleccion={resultadoAprendizaje}/>
-                    <label>Proyecto Integrador</label>
-                    <InputGeneral onInputGeneral= { value => onAddProyecto(value) }/>
+
+                    <label>
+                        Programa Integrador:
+                        <input 
+                            type="text" 
+                            name="proyecto_integrador" 
+                            value={formularioExamen.proyecto_integrador} 
+                            onChange={handleIntegradorChange}
+                        />
+                    </label>
                 </div>
                 <button onClick={ accionBoton }>Siguiente</button>
             </div>

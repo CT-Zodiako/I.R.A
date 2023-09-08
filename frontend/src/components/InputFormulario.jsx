@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export const InputGeneral = ({onInputGeneral}) =>{
+export const InputGeneral = ({}) =>{
     
     // const handleChange = (e) => {
     //     const { name, value } = e.target;
@@ -21,7 +21,7 @@ export const InputGeneral = ({onInputGeneral}) =>{
           <form onSubmit={enviarObjeto}>
             <input
               type="text"
-              name={name}
+              // name={name}
               // value={value}
               onChange={NewObjeto}
             />

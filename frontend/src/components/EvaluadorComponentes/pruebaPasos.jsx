@@ -1,8 +1,15 @@
 import { useState } from 'react';
 import { EvaluacionInformacion } from './InformacionEvaluacion';
-// Puedes seguir creando componentes para los otros pasos (Paso3, Paso4, Paso5) de manera similar.
 
 export const FormularioPorPasos = () => {
+  const [formularioExamen, setFormulario] = useState({
+    programa: '',
+    proyecto_integrador: '',
+    evaluadores: [],
+    actividades_formativas: [],
+    estudiantes: []
+  });
+  
   const [paso, setPaso] = useState(1);
 
   const handleNext = () => {
@@ -20,7 +27,10 @@ export const FormularioPorPasos = () => {
 
   function Paso1({onNext}) {
     return (
-      <EvaluacionInformacion handleNext={onNext}/>
+      <EvaluacionInformacion 
+        handleNext={onNext} 
+        formularioExamen={formularioExamen} 
+        setFormulario={setFormulario}/>
     );
   }
   

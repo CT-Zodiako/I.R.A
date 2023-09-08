@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import examenService from '../services/ServiciosExamen';
 
 export const CrearExamen = () => {
@@ -117,13 +117,21 @@ export const CrearExamen = () => {
       <form onSubmit={handleSubmit}>
         <label>
           Programa:
-          <input type="text" name="programa" value={formularioExamen.programa} onChange={handleProgramaChange}
+          <input 
+            type="text" 
+            name="programa" 
+            value={formularioExamen.programa} 
+            onChange={handleProgramaChange}
           />
         </label>
         <div>
         <label>
           Programa Integrador:
-          <input type="text" name="proyecto_integrador" value={formularioExamen.proyecto_integrador} onChange={handleIntegradorChange}
+          <input 
+            type="text" 
+            name="proyecto_integrador" 
+            value={formularioExamen.proyecto_integrador} 
+            onChange={handleIntegradorChange}
           />
         </label>
         </div>
