@@ -2,25 +2,25 @@ import { useState, useEffect } from 'react';
 import { InputSeleccion } from '../EtiquetaSeleccionGeneral'
 import resultadoAprendizajeServicio from '../../services/ServicioResultadoAprendizaje';
 
-export const EvaluacionInformacion = ({handleNext, formularioExamen, setFormulario}) => {
+export const EvaluacionInformacion = ({handleNext}) => {
     
     const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
 
-    const handleProgramaChange = (event) => {
-        const { name, value } = event.target;
-        setFormulario({
-          ...formularioExamen,
-          [name]: value
-        });
-    };
+    // const handleProgramaChange = (event) => {
+    //     const { name, value } = event.target;
+    //     setFormulario({
+    //       ...formularioExamen,
+    //       [name]: value
+    //     });
+    // };
 
-    const handleIntegradorChange = (event) => {
-        const { name, value } = event.target;
-        setFormulario({
-          ...formularioExamen,
-          [name]: value
-        });
-    };
+    // const handleIntegradorChange = (event) => {
+    //     const { name, value } = event.target;
+    //     setFormulario({
+    //       ...formularioExamen,
+    //       [name]: value
+    //     });
+    // };
 
     const accionBoton = () =>{
         handleNext ();
@@ -49,8 +49,8 @@ export const EvaluacionInformacion = ({handleNext, formularioExamen, setFormular
                         <input 
                             type="text" 
                             name="programa" 
-                            value={formularioExamen.programa} 
-                            onChange={handleProgramaChange}
+                            // value={formularioExamen.programa} 
+                            // onChange={handleProgramaChange}
                         />
                     </label>
 
@@ -62,8 +62,8 @@ export const EvaluacionInformacion = ({handleNext, formularioExamen, setFormular
                         <input 
                             type="text" 
                             name="proyecto_integrador" 
-                            value={formularioExamen.proyecto_integrador} 
-                            onChange={handleIntegradorChange}
+                            // value={formularioExamen.proyecto_integrador} 
+                            // onChange={handleIntegradorChange}
                         />
                     </label>
                 </div>

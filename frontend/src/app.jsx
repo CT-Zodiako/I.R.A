@@ -1,13 +1,16 @@
 import React from 'react';
-// import { BrowserRouter } from 'react-router-dom';
-// import MenuGeneral from './src/components/MenuGeneral';
+import './index.css';
 import Routers from './rutas';
+import Menu from '../src/components/MenuGeneral';
 
 const App = () => {
   return (
-
-      <Routers/>
-
+    <div>
+      <Menu/>
+      <div className="content">
+        <Routers/>
+      </div>
+    </div>
   );
 };
 
