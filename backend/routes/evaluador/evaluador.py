@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from controller.evaluador.evaluador_controller import agregar_evaluador
+from controller.evaluador.evaluador_controller import agregar_evaluador, traer_evaluadores_db
 from helpers.generar_respuesta_helper import generar_respuesta
 
 
@@ -19,4 +19,11 @@ def crear_evaluador():
     resultado = agregar_evaluador(nombre_evaluador=nombre_evaluador, correo=correo,
                                     numero_identificacion=numero_identificacion, rol=rol, contrasenna=contrasenna, telefono=telefono)
     return jsonify(generar_respuesta( resultado["status"], resultado["mensaje"],resultado["data"]))
+
+@evaluador_blueprint.route('/traer_evaluadores', methods=['GET'])
+def traer_evaluadores():
+    resultados = traer_evaluadores_db()
+    print(f"Resultados: {resultados}")
+    return  jsonify(resultados)
+    
 

@@ -1,7 +1,8 @@
 from db import db
 from flask import jsonify
 from models.evaluador.evaluador_model import Evaluador
-from models.evaluador.exceptions import  CampoRequeridoError, EvaluadorDuplicadoError, EvaluadorNoEncontradoError, ErrorGenerico
+from models.evaluador.schemas import EvaluadorSchema
+
 
 
 def agregar_evaluador(nombre_evaluador, correo, numero_identificacion, rol, contrasenna, telefono):
@@ -29,3 +30,24 @@ def agregar_evaluador(nombre_evaluador, correo, numero_identificacion, rol, cont
             'mensaje' : 'Fallo para agregar evalaudor',
             'data': f'Ocurrió un error interno en el servidor. {e}'
         }
+        
+def traer_evaluadores_db():
+    try:
+        sEvalaudor = EvaluadorSchema(many=True)
+        evaluadores = Evaluador.query.all()
+        print(f"Evaluadores: {evaluadores}")
+
+        data = sEvalaudor.dump(evaluadores)
+        return {
+            'status': 200,
+            'mensaje' : 'Lista evaluadores obtenidos exitosamente',
+            'data': data
+        }
+
+    except Exception as e:
+        return {
+            'status': 500,
+            'mensaje' : 'Fallo al obtener lista evaluadores',
+            'error': f'Ocurrió un error interno en el controllador'
+        }
+
