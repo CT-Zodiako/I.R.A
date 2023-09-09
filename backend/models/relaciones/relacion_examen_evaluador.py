@@ -1,4 +1,3 @@
-# models/relations.py
 from db import db
 
 examen_evaluador_association = db.Table(

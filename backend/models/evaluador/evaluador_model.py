@@ -10,6 +10,11 @@ class Evaluador(db.Model):
     rol = db.Column(db.String(255), nullable=False)
     contrasenna = db.Column(db.String(255), nullable=False)
     telefono = db.Column(db.String(255), nullable=False)
+    examenes_evaluador_relacion = db.relationship(
+    'Examen',
+    secondary=examen_evaluador_association,
+    back_populates='evaluadores_relacion'  # Usar el nombre correcto
+)
 
     
     def __init__(self, nombre_evaluador, correo, numero_identificacion, rol, contrasenna, telefono):
