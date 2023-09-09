@@ -1,5 +1,5 @@
 from db import db
-from models.relaciones.relacion_examen_evaluador import examen_evaluador_association
+from models.relaciones.relacion_examen_evaluador import examen_evaluador_tabla
 
 
 class Evaluador(db.Model):
@@ -11,12 +11,8 @@ class Evaluador(db.Model):
     contrasenna = db.Column(db.String(255), nullable=False)
     telefono = db.Column(db.String(255), nullable=False)
     examenes_evaluador_relacion = db.relationship(
-    'Examen',
-    secondary=examen_evaluador_association,
-    back_populates='evaluadores_relacion'  # Usar el nombre correcto
-)
+        'Examen', secondary=examen_evaluador_tabla, back_populates='evaluadores_relacion')
 
-    
     def __init__(self, nombre_evaluador, correo, numero_identificacion, rol, contrasenna, telefono):
         self.nombre_evaluador = nombre_evaluador
         self.correo = correo
@@ -24,4 +20,3 @@ class Evaluador(db.Model):
         self.rol = rol
         self.contrasenna = contrasenna
         self.telefono = telefono
-

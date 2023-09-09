@@ -31,7 +31,7 @@ def agregar_examen(data):
         db.session.add(examen)
         db.session.commit()
 
-        return jsonify({'mensaje': 'Examen creado con éxito'}), 201
+        return jsonify({'mensaje': 'Examen creado con exito'}), 201
 
     except Exception as e:
         return jsonify({'mensaje': 'Fallo para agregar examen', 'error': f'{e}'}), 500
