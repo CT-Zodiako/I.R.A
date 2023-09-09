@@ -50,15 +50,15 @@ export const EvaluacionInformacion = ({handleNext, formularioExamen, setFormular
                             <input 
                                 type="text" 
                                 name="programa" 
-                                // value={formularioExamen.programa} 
-                                // onChange={handleProgramaChange}
+                                value={formularioExamen.programa} 
+                                onChange={handleProgramaChange}
                             />
                         </label>
                     </div>
                     <div>
                         <label>
                             Resultado:
-                            <InputSeleccion seleccion={resultadoAprendizaje}/>  
+                            <InputSeleccion seleccion={resultadoAprendizaje} propiedad="titulo"/>  
                         </label>
                     </div>
                     <div>
@@ -67,8 +67,8 @@ export const EvaluacionInformacion = ({handleNext, formularioExamen, setFormular
                             <input 
                                 type="text" 
                                 name="proyecto_integrador" 
-                                // value={formularioExamen.proyecto_integrador} 
-                                // onChange={handleIntegradorChange}
+                                value={formularioExamen.proyecto_integrador} 
+                                onChange={handleIntegradorChange}
                             />
                         </label>
                     </div>
