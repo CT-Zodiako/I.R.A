@@ -1,9 +1,9 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
 
-export const InputSeleccion = ({seleccion}) => {
+export const InputSeleccionEvaluador = ({seleccionar}) => {
     
-    const [seleccionar, setSeleccion] = useState();
+    const [seleccion, setSeleccion] = useState();
 
     const handleChange = (e) => {
         setSeleccion(e.target.value);
@@ -19,12 +19,11 @@ export const InputSeleccion = ({seleccion}) => {
                     // onChange={handleChange}
                 >
                 {
-                    seleccion.map(opcion => (
+                    seleccionar.map(opcion => (
                         <MenuItem 
                             key={opcion.id} 
                             value={opcion.id}
-                            onChange={handleChange}
-                            >{opcion.titulo}
+                            >{opcion.nombre_evaluador}
                         </MenuItem>
                     ))
                 }

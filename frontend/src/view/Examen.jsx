@@ -1,5 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import examenService from '../services/ServiciosExamen';
+import resultadoAprendizajeServicio from '../services/ServicioResultadoAprendizaje';
+import evaluadorService from '../services/servicioEvaluador';
+import { InputSeleccion } from '../components/EtiquetaSeleccionGeneral';
+import { InputSeleccionEvaluador } from '../components/Seleccionevaluador';
 
 export const CrearExamen = () => {
   const [formularioExamen, setFormulario] = useState({
@@ -9,6 +13,9 @@ export const CrearExamen = () => {
     actividades_formativas: [],
     estudiantes: []
   });
+
+  const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
+  const [evaluadores, setEvaluadores] = useState([]);
 
   const [nuevoEvaluador, setNuevoEvaluador] = useState({
     nombre: '',
@@ -99,6 +106,31 @@ export const CrearExamen = () => {
       });
     }
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await resultadoAprendizajeServicio.traerResultado();
+        setResultadoAprendizaje(data);
+      } catch (error) {
+        console.error('Error al obtener el resultado:', error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await evaluadorService.traerEvaluador();
+        setEvaluadores(data);
+        console.log(data);
+      } catch (error) {
+        console.error('Error al obtener el resultado:', error);
+      }
+    }
+    fetchData();
+  }, []);
   
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -115,15 +147,23 @@ export const CrearExamen = () => {
     <div>
       <h1>Crear Examen</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          Programa:
-          <input 
-            type="text" 
-            name="programa" 
-            value={formularioExamen.programa} 
-            onChange={handleProgramaChange}
-          />
-        </label>
+        <div>
+          <label>
+            Programa:
+            <input 
+              type="text" 
+              name="programa" 
+              value={formularioExamen.programa} 
+              onChange={handleProgramaChange}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Resultado:
+            <InputSeleccion seleccion={resultadoAprendizaje}/>  
+          </label>
+        </div>
         <div>
         <label>
           Programa Integrador:
@@ -135,8 +175,6 @@ export const CrearExamen = () => {
           />
         </label>
         </div>
-
-
         {/* EVALUADORES */}
         <div>
           <h3>Evaluadores</h3>
@@ -162,20 +200,16 @@ export const CrearExamen = () => {
             </div>
           ))}
           <div>
-            <input
+            {/* <input
               type="text"
               name="nombre"
               value={nuevoEvaluador.nombre}
               onChange={handleNuevoEvaluadorChange}
               placeholder="Nombre del evaluador"
-            />
-            <input
-              type="text"
-              name="correo"
-              value={nuevoEvaluador.correo}
-              onChange={handleNuevoEvaluadorChange}
-              placeholder="Correo del evaluador"
-            />
+            /> */}
+            <div>
+                <InputSeleccionEvaluador seleccionar={evaluadores}/>  
+            </div>
             <button type="button" onClick={agregarEvaluador}>
               Agregar Evaluador
             </button>
