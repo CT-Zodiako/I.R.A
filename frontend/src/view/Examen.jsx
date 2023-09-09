@@ -8,6 +8,7 @@ import { InputSeleccionEvaluador } from '../components/Seleccionevaluador';
 export const CrearExamen = () => {
   const [formularioExamen, setFormulario] = useState({
     programa: '',
+    resultadoAprendizaje: '',
     proyecto_integrador: '',
     evaluadores: [],
     actividades_formativas: [],
@@ -18,8 +19,7 @@ export const CrearExamen = () => {
   const [evaluadores, setEvaluadores] = useState([]);
 
   const [nuevoEvaluador, setNuevoEvaluador] = useState({
-    nombre: '',
-    correo: ''
+    id:'',
   });
 
   const [nuevaActividad, setNuevaActividad] = useState({
@@ -38,6 +38,13 @@ export const CrearExamen = () => {
     });
   };
 
+  const handleResultadoAprendizajeChange = (selectedId) => {
+    setFormulario({
+      ...formularioExamen,
+      resultadoAprendizaje: selectedId, 
+    });
+  };
+
   const handleIntegradorChange = (event) => {
     const { name, value } = event.target;
     setFormulario({
@@ -46,13 +53,20 @@ export const CrearExamen = () => {
     });
   };
 
-  const handleNuevoEvaluadorChange = (event) => {
-    const { name, value } = event.target;
-    setNuevoEvaluador({
-      ...nuevoEvaluador,
-      [name]: value
+  const handleNuevoEvaluadorChange = (selectedId) => {
+    setFormulario({
+      ...formularioExamen,
+      evaluadores: selectedId, 
     });
   };
+
+  // const handleNuevoEvaluadorChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setNuevoEvaluador({
+  //     ...nuevoEvaluador,
+  //     [name]: value
+  //   });
+  // };
 
   const handleNuevaActividadChange = (event) => {
     const { name, value } = event.target;
@@ -161,7 +175,9 @@ export const CrearExamen = () => {
         <div>
           <label>
             Resultado:
-            <InputSeleccion seleccion={resultadoAprendizaje}/>  
+            <InputSeleccion 
+              seleccion={resultadoAprendizaje} 
+              seleccionIdRA={handleResultadoAprendizajeChange}/>  
           </label>
         </div>
         <div>
@@ -175,6 +191,7 @@ export const CrearExamen = () => {
           />
         </label>
         </div>
+
         {/* EVALUADORES */}
         <div>
           <h3>Evaluadores</h3>
@@ -208,13 +225,16 @@ export const CrearExamen = () => {
               placeholder="Nombre del evaluador"
             /> */}
             <div>
-                <InputSeleccionEvaluador seleccionar={evaluadores}/>  
+                <InputSeleccionEvaluador 
+                  seleccionar={evaluadores} 
+                  idSeleccion={handleNuevoEvaluadorChange}/>  
             </div>
             <button type="button" onClick={agregarEvaluador}>
               Agregar Evaluador
             </button>
           </div>
         </div>
+
 {/* ACTIVIDAD FORMATIVA */}
 <div>
   <h3>Actividad Formativa</h3>
