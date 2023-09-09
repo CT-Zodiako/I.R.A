@@ -3,6 +3,9 @@ from flask import jsonify
 from models.examen.examen_model import Examen
 from models.evaluador.evaluador_model import Evaluador
 
+import os
+import pandas as pd
+
 
 def agregar_examen(data):
     try:
@@ -35,3 +38,30 @@ def agregar_examen(data):
 
     except Exception as e:
         return jsonify({'mensaje': 'Fallo para agregar examen', 'error': f'{e}'}), 500
+
+
+def cargar_archivo(archivo):
+    try:
+        from App import app
+        if archivo:
+            # Guardar el archivo en la carpeta de carga de archivos temporales
+            archivo.save(os.path.join(app.config['UPLOAD_FOLDER'], archivo.filename))
+
+            # Leer el archivo XLSX en un DataFrame de pandas
+            ruta_archivo_xlsx = os.path.join(app.config['UPLOAD_FOLDER'], archivo.filename)
+            df = pd.read_excel(ruta_archivo_xlsx)
+
+            # Convertir el DataFrame en JSON
+            datos_json = df.to_json(orient='records')
+            
+            # Eliminar el archivo después de convertirlo
+            os.remove(ruta_archivo_xlsx)
+            
+            print( f"datos_json {datos_json}" )
+
+            return jsonify({'mensaje': 'Archivo cargado y convertido a JSON con éxito', 'datos': datos_json}), 200
+        else:
+            return jsonify({'mensaje': 'No se ha enviado un archivo'}), 400
+    except Exception as e:
+        print(f"Error al cargar el archivo: {str(e)}")
+        return jsonify({'mensaje': 'Error al cargar el archivo', 'error': str(e)}), 500
