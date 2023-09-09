@@ -17,7 +17,7 @@ class evaluadorService{
   async traerEvaluador() {
     try {
       const response = await axios.get('http://127.0.0.1:3001/evaluador/traer_evaluadores');
-      return response.data;
+      return response.data.data;
     } catch (err) {
       console.error(err);
     }
