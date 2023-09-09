@@ -15,7 +15,7 @@ export const CrearEvaluador = () => {
     const { name, value } = e.target;
     setFormulario({
       ...formulario,
-      [name]: value,
+      [name]: value
     });
   };
 

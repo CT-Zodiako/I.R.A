@@ -11,6 +11,7 @@ resultado_aprendizaje_blueprint = Blueprint('resultado_aprendizaje', __name__)
 def crear_resultado():
     data= request.get_json()
     resultado = crear_resultado_aprendizaje(data)
+    print(f'resultado{resultado}')
     return resultado
 
 @resultado_aprendizaje_blueprint.route('/traer_resultados', methods=['GET'])
@@ -30,4 +31,4 @@ def cambiar_estado_resultado(resultado_id, nuevo_estado):
 
 
     
-
+
