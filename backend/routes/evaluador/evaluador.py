@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify
-from controller.evaluador.evaluador_controller import agregar_evaluador
-from helpers.generar_respuesta_helper import generar_respuesta
+from controller.evaluador.evaluador_controller import agregar_evaluador, traer_evaluadores_db, traer_evaluadores_examen_db
 
 
 evaluador_blueprint = Blueprint('evaluador', __name__)
@@ -9,14 +8,16 @@ evaluador_blueprint = Blueprint('evaluador', __name__)
 @evaluador_blueprint.route('/agregar_evaluador', methods=['POST'])
 def crear_evaluador():
     data = request.json
-    nombre_evaluador = data.get('nombre_evaluador')
-    correo = data.get('correo')
-    numero_identificacion = data.get('numero_identificacion')
-    rol = data.get('rol')
-    contrasenna = data.get('contrasenna')
-    telefono = data.get('telefono')
+    return agregar_evaluador(data)
 
-    resultado = agregar_evaluador(nombre_evaluador=nombre_evaluador, correo=correo,
-                                    numero_identificacion=numero_identificacion, rol=rol, contrasenna=contrasenna, telefono=telefono)
-    return jsonify(generar_respuesta( resultado["status"], resultado["mensaje"],resultado["data"]))
 
+@evaluador_blueprint.route('/traer_evaluadores', methods=['GET'])
+def traer_evaluadores():
+    return traer_evaluadores_db()
+
+
+@evaluador_blueprint.route('/examenes_evaluador', methods=['GET'])
+def obtener_examenes_por_evaluador():
+    evaluador_id = request.args.get('evaluador_id')
+    return traer_evaluadores_examen_db(evaluador_id)
+    
