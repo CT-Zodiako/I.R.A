@@ -44,22 +44,19 @@ def cargar_archivo(archivo):
     try:
         from App import app
         if archivo:
-            # Guardar el archivo en la carpeta de carga de archivos temporales
+            
             archivo.save(os.path.join(app.config['UPLOAD_FOLDER'], archivo.filename))
-
-            # Leer el archivo XLSX en un DataFrame de pandas
+        
             ruta_archivo_xlsx = os.path.join(app.config['UPLOAD_FOLDER'], archivo.filename)
             df = pd.read_excel(ruta_archivo_xlsx)
 
-            # Convertir el DataFrame en JSON
             datos_json = df.to_json(orient='records')
             
-            # Eliminar el archivo después de convertirlo
             os.remove(ruta_archivo_xlsx)
 
             return datos_json
         else:
-            return jsonify({'mensaje': 'No se ha enviado un archivo'}), 400
+            return jsonify({'mensaje': 'No hay datos de estudiantes'}), 400
     except Exception as e:
         print(f"Error al cargar el archivo: {str(e)}")
         return jsonify({'mensaje': 'Error al cargar el archivo', 'error': str(e)}), 500
