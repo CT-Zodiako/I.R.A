@@ -7,8 +7,7 @@ const api = axios.create({
 class examenService{
     async agregarExamen (formularioExamen) {
       try {
-        const response = await api.post('/examen/crear_examen', formularioExamen);
-        console.log('Respuesta del servidor:', response.data);
+        return await api.post('/examen/crear_examen', formularioExamen);
       } catch (error) {
         console.error('Error al enviar los datos:', error);
       }

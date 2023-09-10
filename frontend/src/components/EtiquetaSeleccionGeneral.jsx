@@ -8,7 +8,8 @@ export const InputSeleccion = ({seleccion, seleccionIdRA}) => {
     const handleChange = (event) => {
         const selectedId = event.target.value;
         setResultadoAprendizaje(selectedId);
-        seleccionIdRA(selectedId); 
+        seleccionIdRA(selectedId);
+        console.log(selectedId) 
     }
 
     return(

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import examenService from '../services/ServiciosExamen';
 import resultadoAprendizajeServicio from '../services/ServicioResultadoAprendizaje';
 import evaluadorService from '../services/servicioEvaluador';
@@ -7,10 +8,16 @@ import { InputSeleccionEvaluador } from '../components/Seleccionevaluador';
 
 export const CrearExamen = () => {
   const [formularioExamen, setFormulario] = useState({
+  //   programa: "Nombre del programa",
+  //  proyecto_integrador: "Nombre del proyecto",
+  //  evaluadores_ids: [1],
+  //  actividades_formativas: ["Actividad 1", "Actividad 2"],
+  //  estudiantes: ["Estudiante 1", "Estudiante 2"],
+  //  resultado_aprendizaje_id: 1
     programa: '',
-    resultadoAprendizaje: '',
+    resultado_aprendizaje_id: '',
     proyecto_integrador: '',
-    evaluadores: [],
+    evaluadores_ids: [],
     actividades_formativas: [],
     estudiantes: []
   });
@@ -41,7 +48,7 @@ export const CrearExamen = () => {
   const handleResultadoAprendizajeChange = (selectedId) => {
     setFormulario({
       ...formularioExamen,
-      resultadoAprendizaje: selectedId, 
+      resultado_aprendizaje_id: selectedId, 
     });
   };
 
@@ -56,8 +63,9 @@ export const CrearExamen = () => {
   const handleNuevoEvaluadorChange = (selectedId) => {
     setFormulario({
       ...formularioExamen,
-      evaluadores: selectedId, 
+      evaluadores_ids:[...formularioExamen.evaluadores_ids, selectedId], 
     });
+    console.log(selectedId)
   };
 
   // const handleNuevoEvaluadorChange = (event) => {
@@ -88,7 +96,7 @@ export const CrearExamen = () => {
     if (nuevoEvaluador.nombre && nuevoEvaluador.correo) {
       setFormulario({
         ...formularioExamen,
-        evaluadores: [...formularioExamen.evaluadores, nuevoEvaluador]
+        evaluadores_ids: [...formularioExamen.evaluadores_ids, nuevoEvaluador]
       });
       setNuevoEvaluador({
         nombre: '',
@@ -138,7 +146,6 @@ export const CrearExamen = () => {
       try {
         const data = await evaluadorService.traerEvaluador();
         setEvaluadores(data);
-        console.log(data);
       } catch (error) {
         console.error('Error al obtener el resultado:', error);
       }
@@ -151,10 +158,33 @@ export const CrearExamen = () => {
     console.log(formularioExamen);
     try {
       const response = await  examenService.agregarExamen(formularioExamen);
-      console.log('Respuesta del servidor:', response.data);
+      console.log(`Respuesta del servidor: ${response.data.mensaje}`);
+      console.log(formularioExamen.event)
     } catch (error) {
       console.error('Error al enviar los datos:', error);
     }
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('archivo', file);
+  
+    axios.post('http://127.0.0.1:3001/examen/ruta_de_carga_de_archivos', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then((response) => {
+        setFormulario({
+          ...formularioExamen,
+          estudiantes: [ response.data.datos]
+        });      
+      })
+      .catch((error) => {
+        // Maneja cualquier error
+        console.error(error);
+      });
   };
 
   return (    
@@ -195,7 +225,7 @@ export const CrearExamen = () => {
         {/* EVALUADORES */}
         <div>
           <h3>Evaluadores</h3>
-          {formularioExamen.evaluadores.map((evaluador, index) => (
+          {formularioExamen.evaluadores_ids.map((evaluador, index) => (
             <div key={index}>
               <input
                 type="text"
@@ -284,16 +314,25 @@ export const CrearExamen = () => {
     </div>
   ))}
   <div>
-    <input
-      type="text"
-      name="nombreEstudiante"
-      value={nuevoEstudiante.nombreEstudiante}
-      onChange={handleNuevoEstudianteChange}
-      placeholder="Nombre del estudiante"
-    />
-    <button type="button" onClick={agregarEstudiante}>
-      Agregar Estudiante
-    </button>
+    <div>
+      <input
+        type="text"
+        name="nombreEstudiante"
+        value={nuevoEstudiante.nombreEstudiante}
+        onChange={handleNuevoEstudianteChange}
+        placeholder="Nombre del estudiante"
+      />
+      <button type="button" onClick={agregarEstudiante}>
+        Agregar Estudiante
+      </button>
+    </div>
+    <div>
+      <input
+        type="file"
+        accept="xlsx" 
+        onChange={handleFileUpload}
+      />
+    </div>
   </div>
 </div>
 
