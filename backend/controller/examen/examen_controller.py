@@ -56,10 +56,8 @@ def cargar_archivo(archivo):
             
             # Eliminar el archivo después de convertirlo
             os.remove(ruta_archivo_xlsx)
-            
-            print( f"datos_json {datos_json}" )
 
-            return jsonify({'mensaje': 'Archivo cargado y convertido a JSON con éxito', 'datos': datos_json}), 200
+            return datos_json
         else:
             return jsonify({'mensaje': 'No se ha enviado un archivo'}), 400
     except Exception as e:
