@@ -11,7 +11,6 @@ class Evaluador(db.Model):
     contrasenna = db.Column(db.String(255), nullable=False)
     telefono = db.Column(db.String(255), nullable=False)
     estado = db.Column(db.Boolean, default=True)
-
     examenes_evaluador_relacion = db.relationship(
         'Examen', secondary=examen_evaluador_tabla, back_populates='evaluadores_relacion')
 

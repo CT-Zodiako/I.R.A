@@ -86,4 +86,4 @@ def eliminar_evaluador_sf(evaluador_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'mensaje': 'Fallo al eliminar evaluador', 'error': str(e), 'status': 500}), 500
-    
+  
