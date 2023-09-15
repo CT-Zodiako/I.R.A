@@ -28,7 +28,7 @@ export const CrearExamen = () => {
   });
 
   const [nuevoEstudiante, setNuevoEstudiante] = useState({
-    nombreEstudiante: ''
+    NOMBRE: ''
   });
 
   const handleProgramaChange = (event) => {
@@ -104,13 +104,13 @@ export const CrearExamen = () => {
   };
 
   const agregarEstudiante = () => {
-    if (nuevoEstudiante.nombreEstudiante) {
+    if (nuevoEstudiante.NOMBRE) {
       setFormulario({
         ...formularioExamen,
         estudiantes: [...formularioExamen.estudiantes, nuevoEstudiante]
       });
       setNuevoEstudiante({
-        nombreEstudiante: ''
+        NOMBRE: ''
       });
     }
   };
@@ -144,8 +144,6 @@ export const CrearExamen = () => {
     console.log(formularioExamen);
     try {
       const response = await  examenService.agregarExamen(formularioExamen);
-      // console.log(`Respuesta del servidor: ${response.data.mensaje}`);
-      // console.log(formularioExamen.event)
     } catch (error) {
       console.error('Error al enviar los datos:', error);
     }
@@ -164,8 +162,9 @@ export const CrearExamen = () => {
       .then((response) => {
         setFormulario({
           ...formularioExamen,
-          estudiantes: [ response.data.datos]
-        });      
+          estudiantes: response.data
+        }); 
+        console.log(response.data)     
       })
       .catch((error) => {
         console.error(error);
@@ -249,20 +248,6 @@ export const CrearExamen = () => {
 {/* ACTIVIDAD FORMATIVA */}
 <div>
   <h3>Actividad Formativa</h3>
-  {formularioExamen.actividades_formativas.map((actividad, index) => (
-    <div key={index}>
-      <input
-        type="text"
-        name={`actividades_formativas[${index}].descripcion`}
-        value={actividad.descripcion}
-        onChange={(e) => handleNuevaActividadChange(e, index)}
-        placeholder="Descripción actividad"
-      />
-      <button type="button" onClick={() => eliminarActividad(index)}>
-        Eliminar
-      </button>
-    </div>
-  ))}
   <div>
     <input
       type="text"
@@ -296,26 +281,12 @@ export const CrearExamen = () => {
 {/* ESTUDIANTE */}
 <div>
   <h3>Estudiante</h3>
-  {formularioExamen.estudiantes.map((estudiante, index) => (
-    <div key={index}>
-      <input
-        type="text"
-        name={`estudiantes[${index}].nombreEstudiante`}
-        value={estudiante.nombreEstudiante}
-        onChange={(e) => handleNuevoEstudianteChange(e, index)}
-        placeholder="Nombre del estudiante"
-      />
-      <button type="button" onClick={() => eliminarEstudiante(index)}>
-        Eliminar
-      </button>
-    </div>
-  ))}
   <div>
     <div>
       <input
         type="text"
-        name="nombreEstudiante"
-        value={nuevoEstudiante.nombreEstudiante}
+        name="NOMBRE"
+        value={nuevoEstudiante.NOMBRE}
         onChange={handleNuevoEstudianteChange}
         placeholder="Nombre del estudiante"
       />
@@ -341,7 +312,8 @@ export const CrearExamen = () => {
         <tbody>
           {formularioExamen.estudiantes.map((estudiante, index) => (
             <tr key={index}>
-              <td>{estudiante.nombreEstudiante}</td>
+              <td>{estudiante.NOMBRE}</td>
+              <td>eliminar</td>
             </tr>
           ))}
         </tbody>
