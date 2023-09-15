@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
-import { InputSeleccion } from '../EtiquetaSeleccionGeneral';
-import resultadoAprendizajeServicio from '../../services/ServicioResultadoAprendizaje';
+import { useState } from 'react';
 import examenService from '../../services/ServiciosExamen';
+import { EvaluacionInformacion } from './InformacionEvaluacion';
+import { AgregarListaEstudiantes } from './EstudiantesEvaluacion';
+import { RegistrarActividadFormativa } from './ActividadFormativa';
 
 export const FormularioPorPasos = () => {
   const [formularioExamen, setFormulario] = useState({
@@ -12,13 +13,18 @@ export const FormularioPorPasos = () => {
     estudiantes: []
   });
 
-  const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
-
   const handleProgramaChange = (event) => {
     const { name, value } = event.target;
     setFormulario({
       ...formularioExamen,
       [name]: value
+    });
+  };
+
+  const handleResultadoAprendizajeChange = (selectedId) => {
+    setFormulario({
+      ...formularioExamen,
+      resultado_aprendizaje_id: selectedId, 
     });
   };
 
@@ -29,32 +35,55 @@ export const FormularioPorPasos = () => {
       [name]: value
     });
   };
-  
-  // const handleSubmit = async(e) => {
-  //   e.preventDefault();
-  //   console.log(formularioExamen);
-  //   try {
-  //     const response = await  examenService.agregarExamen(formularioExamen);
-  //     console.log('Respuesta del servidor:', response.data);
-  //   } catch (error) {
-  //     console.error('Error al enviar los datos:', error);
-  //   }
-  // };
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await resultadoAprendizajeServicio.traerResultado();
-        setResultadoAprendizaje(data);
-        console.log(data);
-      } catch (error) {
-        console.error('Error al obtener el resultado:', error);
-      }
+  const handleNuevoEvaluadorChange = (selectedId) => {
+    setFormulario({
+      ...formularioExamen,
+      evaluadores_ids:[...formularioExamen.evaluadores_ids, selectedId], 
+    });
+    console.log(selectedId)
+  };
+
+  const handleNuevaActividadChange = (event) => {
+    const { name, value } = event.target;
+    setNuevaActividad({
+      ...nuevaActividad,
+      [name]: value
+    });
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('archivo', file);
+  
+    axios.post('http://127.0.0.1:3001/examen/ruta_de_carga_de_archivos', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then((response) => {
+        setFormulario({
+          ...formularioExamen,
+          estudiantes: [ response.data.datos]
+        });      
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    console.log(formularioExamen);
+    try {
+      const response = await  examenService.agregarExamen(formularioExamen);
+      console.log('Respuesta del servidor:', response.data);
+    } catch (error) {
+      console.error('Error al enviar los datos:', error);
     }
-    fetchData();
-  }, []);
+  };
 
-  
   const [paso, setPaso] = useState(1);
 
   const handleNext = () => {
@@ -66,78 +95,45 @@ export const FormularioPorPasos = () => {
       return <Paso1 onNext={handleNext} />;
     case 2:
       return <Paso2 onNext={handleNext} />;
+    case 3:
+      return <Paso3 onNext={handleNext} />;
+    case 4:
+      return <Paso4 onNext={handleNext} />;
     default:
       return <div>Formulario completado</div>;
   }
 
   function Paso1({onNext}) {
     return (
-      // <EvaluacionInformacion 
-      //   handleNext={onNext} 
-      //   formularioExamen={formularioExamen} 
-      //   setFormulario={setFormulario}/>
-      <div>
-        <h1>Información de la evaluación</h1>
-        <form action="">
-          <div>
-            <div>
-              <label>
-                Programa:
-                <input 
-                  type="text" 
-                  name="programa" 
-                  value={formularioExamen.programa} 
-                  onChange={handleProgramaChange}
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Resultado:
-                <InputSeleccion seleccion={resultadoAprendizaje} propiedad="titulo"/>  
-              </label>
-            </div>
-            <div>
-            <label>
-              Programa Integrador:
-                <input 
-                  type="text" 
-                  name="proyecto_integrador" 
-                  value={formularioExamen.proyecto_integrador} 
-                  onChange={handleIntegradorChange}
-                />
-              </label>
-            </div>
-          </div>
-          <button onClick={ onNext }>Siguiente</button>
-        </form>
-      </div>
+      <EvaluacionInformacion 
+        handleNext={onNext} 
+        formularioExamen={formularioExamen} 
+        programaFuncion={handleProgramaChange}
+        aprendizajeResultado={handleResultadoAprendizajeChange}
+        programaIntegrador={handleIntegradorChange}/>
     );
   }
   
-  // function Paso2({ onNext }) {
-  //   return (
-  //     <PanelSeleccionarEvaluador/>
-  //     // <div>
-  //     //   <h2>Paso 2</h2>
-  //     //   <label>Nombre:</label>
-  //     //     <input
-  //     //       type="text"
-  //     //       name="nombre_evaluador"
-  //     //       // value={formulario.nombre_evaluador}
-  //     //       // onChange={handleChange}
-  //     //       required
-  //     //     />  
-  //     //     <label>Nombre:</label>
-  //     //     <input
-  //     //       type="text"
-  //     //       name="nombre_evaluador"
-  //     //       // value={formulario.nombre_evaluador}
-  //     //       // onChange={handleChange}
-  //     //       required
-  //     //     />     
-  //     //   <button onClick={onNext}>Siguiente</button>
-  //     // </div>
-  //   );
-  // }
+  function Paso2({ onNext }) {
+    return (
+      <PanelSeleccionarEvaluador
+        formularioExamen={formularioExamen} 
+        seleccionEvaluador={handleNuevoEvaluadorChange}/>
+    );
+  }
+
+  function Paso3({ onNext }) {
+    return (
+      <RegistrarActividadFormativa
+        formularioExamen={formularioExamen} 
+        actividadFormativa={handleNuevaActividadChange}/>
+    );
+  }
+
+  function Paso4({ onNext }) {
+    return (
+      <AgregarListaEstudiantes
+        listaEstudiantes={handleFileUpload}/>
+    );
+  }
 }

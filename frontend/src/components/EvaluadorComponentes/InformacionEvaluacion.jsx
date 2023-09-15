@@ -2,11 +2,11 @@ import { useState, useEffect} from 'react';
 import { InputSeleccion } from '../EtiquetaSeleccionGeneral'
 import resultadoAprendizajeServicio from '../../services/ServicioResultadoAprendizaje';
 
-export const EvaluacionInformacion = ({handleNext, formularioExamen, setFormulario}) => {
+export const EvaluacionInformacion = ({formularioExamen, programaFuncion, aprendizajeResultado, programaIntegrador}) => {
     
     const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
-    const [programa, setPrograma] = useState('');
-    const [proyectoIntegrador, setProyectoIntegrador] = useState('');
+    const [programa, setPrograma] = useState();
+    const [proyectoIntegrador, setProyectoIntegrador] = useState();
 
     const handleProgramaChange = (e) =>{
         setPrograma(e.target.value);
@@ -16,12 +16,17 @@ export const EvaluacionInformacion = ({handleNext, formularioExamen, setFormular
         setProyectoIntegrador(e.target.value);
     }
 
-
-
-    const accionBoton = () =>{
-        handleNext ();
-        onAddProyecto();
+    const envioInfoEvaluacion = (e) =>{
+        e.preventDefault();
+        programaFuncion(programa);
+        aprendizajeResultado(resultadoAprendizaje);
+        programaIntegrador(proyectoIntegrador);
     }
+
+    // const accionBoton = () =>{
+    //     handleNext ();
+    //     onAddProyecto();
+    // }
 
     useEffect(() => {
         async function fetchData() {
@@ -37,7 +42,7 @@ export const EvaluacionInformacion = ({handleNext, formularioExamen, setFormular
     
     return(
         <>
-            <form action="">
+            <form onSubmit={envioInfoEvaluacion}>
                 <div>
                     <h1>Información de la evaluación</h1>
                     <div>
@@ -47,7 +52,7 @@ export const EvaluacionInformacion = ({handleNext, formularioExamen, setFormular
                                 <input 
                                     type="text" 
                                     name="programa" 
-                                    value={programa} 
+                                    value={formularioExamen.programa} 
                                     onChange={handleProgramaChange}
                                 />
                             </label>
@@ -64,7 +69,7 @@ export const EvaluacionInformacion = ({handleNext, formularioExamen, setFormular
                                 <input 
                                     type="text" 
                                     name="proyecto_integrador" 
-                                    value={proyectoIntegrador} 
+                                    value={formularioExamen.proyectointegrador} 
                                     onChange={handleIntegradorChange}
                                 />
                             </label>

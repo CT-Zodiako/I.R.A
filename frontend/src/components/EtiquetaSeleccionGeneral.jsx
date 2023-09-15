@@ -1,22 +1,25 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
 
-export const InputSeleccion = ({seleccion}) => {
+export const InputSeleccion = ({seleccion, seleccionIdRA}) => {
     
-    const [seleccionar, setSeleccion] = useState();
+    const [resultadoAprendizaje, setResultadoAprendizaje] = useState('');
 
-    const handleChange = (e) => {
-        setSeleccion(e.target.value);
+    const handleChange = (event) => {
+        const selectedId = event.target.value;
+        setResultadoAprendizaje(selectedId);
+        seleccionIdRA(selectedId);
+        console.log(selectedId) 
     }
-    
+
     return(
         <>
             <FormControl sx={{ m: 1, minWidth: 320, height: 50 }}>
                 <InputLabel id="demo-simple-select-label">Seleccione evaluador</InputLabel>
                 <Select
-                    // value={seleccionar}
+                    value={resultadoAprendizaje}
                     label="Seleccione evaluador"
-                    // onChange={handleChange}
+                    onChange={handleChange}
                 >
                 {
                     seleccion.map(opcion => (
