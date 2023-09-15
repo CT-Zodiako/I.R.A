@@ -144,8 +144,8 @@ export const CrearExamen = () => {
     console.log(formularioExamen);
     try {
       const response = await  examenService.agregarExamen(formularioExamen);
-      console.log(`Respuesta del servidor: ${response.data.mensaje}`);
-      console.log(formularioExamen.event)
+      // console.log(`Respuesta del servidor: ${response.data.mensaje}`);
+      // console.log(formularioExamen.event)
     } catch (error) {
       console.error('Error al enviar los datos:', error);
     }
@@ -168,7 +168,6 @@ export const CrearExamen = () => {
         });      
       })
       .catch((error) => {
-        // Maneja cualquier error
         console.error(error);
       });
   };
@@ -211,27 +210,6 @@ export const CrearExamen = () => {
         {/* EVALUADORES */}
         <div>
           <h3>Evaluadores</h3>
-          {formularioExamen.evaluadores_ids.map((evaluador, index) => (
-            <div key={index}>
-              <input
-                type="text"
-                name={`evaluadores[${index}].nombre`}
-                value={evaluador.nombre}
-                onChange={(e) => handleNuevoEvaluadorChange(e, index)}
-                placeholder="Nombre del evaluador"
-              />
-              <input
-                type="text"
-                name={`evaluadores[${index}].correo`}
-                value={evaluador.correo}
-                onChange={(e) => handleNuevoEvaluadorChange(e, index)}
-                placeholder="Correo del evaluador"
-              />
-              <button type="button" onClick={() => eliminarEvaluador(index)}>
-                Eliminar
-              </button>
-            </div>
-          ))}
           <div>
             <div>
                 <InputSeleccionEvaluador 
@@ -242,22 +220,30 @@ export const CrearExamen = () => {
               Agregar Evaluador
             </button>
           </div>
-          <table>
-            <thead>
-            <tr>
-              <th>Nombre del Evaluador</th>
-              <th>Correo del Evaluador</th>
-            </tr>
-            </thead>
-            <tbody>
-            {formularioExamen.evaluadores_ids.map((evaluador, index) => (
-              <tr key={index}>
-                <td>{evaluador.nombre_evaluador}</td>
-                <td>{evaluador.correo}</td>
+          <div>
+            <table>
+              <thead>
+              <tr>
+                <th>Nombre del Evaluador</th>
+                <th>Correo del Evaluador</th>
               </tr>
-            ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {formularioExamen.evaluadores_ids.map((evaluadorId, index) => {
+                  const evaluador = evaluadores.find(e => e.id === evaluadorId);
+                  if (!evaluador) {
+                    return null; 
+                  }
+                  return (
+                    <tr key={index}>
+                      <td>{evaluador.nombre_evaluador}</td>
+                      <td>{evaluador.correo}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
 
 {/* ACTIVIDAD FORMATIVA */}
@@ -288,6 +274,22 @@ export const CrearExamen = () => {
     <button type="button" onClick={agregarActividad}>
       Agregar Actividad
     </button>
+  </div>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>descripcion</th>
+        </tr>
+      </thead>
+      <tbody>
+      {formularioExamen.actividades_formativas.map((actividad, index) => (
+          <tr key={index}>
+            <td>{actividad.descripcion}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   </div>
 </div>
 
@@ -329,6 +331,22 @@ export const CrearExamen = () => {
       />
     </div>
   </div>
+  <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre del Estudiante</th>
+          </tr>
+        </thead>
+        <tbody>
+          {formularioExamen.estudiantes.map((estudiante, index) => (
+            <tr key={index}>
+              <td>{estudiante.nombreEstudiante}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
 </div>
 
         {/* Resto del formulario */}
