@@ -8,12 +8,6 @@ import { InputSeleccionEvaluador } from '../components/Seleccionevaluador';
 
 export const CrearExamen = () => {
   const [formularioExamen, setFormulario] = useState({
-  //   programa: "Nombre del programa",
-  //  proyecto_integrador: "Nombre del proyecto",
-  //  evaluadores_ids: [1],
-  //  actividades_formativas: ["Actividad 1", "Actividad 2"],
-  //  estudiantes: ["Estudiante 1", "Estudiante 2"],
-  //  resultado_aprendizaje_id: 1
     programa: '',
     resultado_aprendizaje_id: '',
     proyecto_integrador: '',
@@ -67,14 +61,6 @@ export const CrearExamen = () => {
     });
     console.log(selectedId)
   };
-
-  // const handleNuevoEvaluadorChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setNuevoEvaluador({
-  //     ...nuevoEvaluador,
-  //     [name]: value
-  //   });
-  // };
 
   const handleNuevaActividadChange = (event) => {
     const { name, value } = event.target;
@@ -247,13 +233,6 @@ export const CrearExamen = () => {
             </div>
           ))}
           <div>
-            {/* <input
-              type="text"
-              name="nombre"
-              value={nuevoEvaluador.nombre}
-              onChange={handleNuevoEvaluadorChange}
-              placeholder="Nombre del evaluador"
-            /> */}
             <div>
                 <InputSeleccionEvaluador 
                   seleccionar={evaluadores} 
@@ -263,6 +242,22 @@ export const CrearExamen = () => {
               Agregar Evaluador
             </button>
           </div>
+          <table>
+            <thead>
+            <tr>
+              <th>Nombre del Evaluador</th>
+              <th>Correo del Evaluador</th>
+            </tr>
+            </thead>
+            <tbody>
+            {formularioExamen.evaluadores_ids.map((evaluador, index) => (
+              <tr key={index}>
+                <td>{evaluador.nombre_evaluador}</td>
+                <td>{evaluador.correo}</td>
+              </tr>
+            ))}
+            </tbody>
+          </table>
         </div>
 
 {/* ACTIVIDAD FORMATIVA */}
