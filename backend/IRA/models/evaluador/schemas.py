@@ -9,6 +9,11 @@ class EvaluadorSchema(ma.SQLAlchemySchema):
         fields = ("id", "nombre_evaluador", "correo")
         load_instance = True
 
+class EvaluadorConrasenaSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = Evaluador
+        fields = ("numero_identificacion","contrasenna","nombre_evaluador")
+        load_instance = True
 
 class ExamenEvaluadorSchema(ma.SQLAlchemySchema):
     class Meta:
