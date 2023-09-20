@@ -21,6 +21,10 @@ def agregar_evaluador(data):
         if Evaluador.query.filter_by(correo=correo).first():
             db.session.rollback()
             return jsonify({'mensaje': 'El correo ya está en uso.', 'status': 400}), 400
+        
+        if Evaluador.query.filter_by(numero_identificacion=numero_identificacion).first():
+            db.session.rollback()
+            return jsonify({'mensaje': 'El usuario ya está en uso.', 'status': 400}), 400
 
         nuevo_evaluador = Evaluador(nombre_evaluador=nombre_evaluador, correo=correo,
                                     numero_identificacion=numero_identificacion, rol=rol, contrasenna=contrasenna, telefono=telefono)

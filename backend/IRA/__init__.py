@@ -41,11 +41,12 @@ def create_app(test_config=None):
     from .routes.evaluador.evaluador import evaluador_blueprint
     from .routes.examen.exament_route import examen_blueprint
     from .routes.resultado_aprendizaje.resultado_aprendizaje_route import resultado_aprendizaje_blueprint
-
+    from .routes.login.login_route import login_blueprint
     app.register_blueprint(evaluador_blueprint, url_prefix='/evaluador')
     app.register_blueprint(examen_blueprint, url_prefix='/examen')
     app.register_blueprint(resultado_aprendizaje_blueprint,
                            url_prefix='/resultado_aprendizaje')
+    app.register_blueprint(login_blueprint, url_prefix='/login')
 
     with app.app_context():
         db.create_all()
