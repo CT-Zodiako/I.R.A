@@ -17,28 +17,36 @@ def agregar_evaluador(data):
         if not (nombre_evaluador and correo and numero_identificacion and contrasenna and telefono):
             return jsonify({'mensaje': 'Todos los campos son obligatorios.', 'status': 400}), 400
 
-        if Evaluador.query.filter_by(correo=correo).first():
-            db.session.rollback()
-            return jsonify({'mensaje': 'El correo ya está en uso.', 'status': 400}), 400
-        
-        if Evaluador.query.filter_by(numero_identificacion=numero_identificacion).first():
-            db.session.rollback()
-            return jsonify({'mensaje': 'El usuario ya está en uso.', 'status': 400}), 400
+        # Buscar si el evaluador ya existe por correo o número de identificación
+        evaluador_existente = Evaluador.query.filter(
+            (Evaluador.correo == correo) | (Evaluador.numero_identificacion == numero_identificacion)
+        ).first()
 
-        nuevo_evaluador = Evaluador(nombre_evaluador=nombre_evaluador, correo=correo,
-                                    numero_identificacion=numero_identificacion, contrasenna=contrasenna, telefono=telefono)
+        if evaluador_existente:
+            # Si el evaluador existe, actualizar sus datos
+            evaluador_existente.nombre_evaluador = nombre_evaluador
+            evaluador_existente.contrasenna = contrasenna
+            evaluador_existente.telefono = telefono
 
-        db.session.add(nuevo_evaluador)
-        db.session.commit()
+            db.session.commit()
+            return jsonify({'mensaje': 'Evaluador actualizado con éxito', 'status': 200}), 200
+        else:
+            # Si el evaluador no existe, crear uno nuevo
+            nuevo_evaluador = Evaluador(nombre_evaluador=nombre_evaluador, correo=correo,
+                                        numero_identificacion=numero_identificacion, contrasenna=contrasenna, telefono=telefono)
 
-        return jsonify({'mensaje': 'Evaluador creado con éxito', 'status': 201}), 201
+            db.session.add(nuevo_evaluador)
+            db.session.commit()
+
+            return jsonify({'mensaje': 'Evaluador creado con éxito', 'status': 201}), 201
 
     except IntegrityError as e:
         db.session.rollback()
         return jsonify({'mensaje': 'Error de integridad de la base de datos.', 'status': 500}), 500
 
     except Exception as e:
-        return jsonify({'mensaje': 'Fallo al crear el evaluador', 'status': 500}), 500
+        return jsonify({'mensaje': 'Fallo al crear o actualizar el evaluador', 'status': 500}), 500
+
 
 
 def traer_evaluadores_db():
