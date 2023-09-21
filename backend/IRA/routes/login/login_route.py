@@ -6,10 +6,7 @@ login_blueprint = Blueprint('login', __name__)
 
 @login_blueprint.route('/conectar', methods=['POST'])
 def verificar_login():
-    usuario = request.form['usuario']
-    contrasena = request.form['contrasena']
+    data = request.json
+    usuario = data.get('usuario')
+    contrasena = data.get('contrasena')
     return verificar_conectar(usuario, contrasena)
-    
-    
-        
-    

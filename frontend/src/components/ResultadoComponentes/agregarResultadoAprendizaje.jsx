@@ -4,8 +4,7 @@ import resultadoAprendizajeServicio from '../../services/ServicioResultadoAprend
 export const CrearResultado = () => {
   const [agregaResultado, setAgregaResultado] = useState({
     titulo: '',
-    descripcion: '',
-    estado: ''
+    descripcion: ''
   });
 
   const handleChange = (e) => {
@@ -46,16 +45,6 @@ export const CrearResultado = () => {
             type="text"
             name="descripcion"
             value={agregaResultado.descripcion}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Estado:</label>
-          <input
-            type="text"
-            name="estado"
-            value={agregaResultado.estado}
             onChange={handleChange}
             required
           />

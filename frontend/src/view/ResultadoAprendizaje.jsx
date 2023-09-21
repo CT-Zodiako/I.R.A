@@ -28,8 +28,9 @@ export const ResultadoAprendizaje = () =>{
                     <table>
                         <thead>
                         <tr>
-                            <th>titulo</th>
-                            <th>descripcion</th>
+                            <th>Titulo</th>
+                            <th>Descripcion</th>
+                            <th>Acciones</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -37,7 +38,7 @@ export const ResultadoAprendizaje = () =>{
                         <tr key={resultado.id}>
                             <td>{resultado.titulo}</td>
                             <td>{resultado.descripcion}</td>
-                            <td>{}</td>
+                            <td>boton</td>
                         </tr>
                         ))}
                         </tbody>

@@ -18,6 +18,17 @@ class resultadoAprendizajeServicio{
       console.error(err);
     }
   }
+  
+  async cambiarEstado() {
+    try {
+      const response = await axios.get(`http://127.0.0.1:3001/resultado_aprendizaje//cambiar_estado_resultado/${resultado_id}`);
+      return response.data.data;
+    } catch (err) {
+      console.error(err);
+    }
+  }
 }
+
+
 
 export default new resultadoAprendizajeServicio();

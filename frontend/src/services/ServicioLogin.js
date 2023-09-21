@@ -4,7 +4,7 @@ class loginService {
   async verificarLogin(autentificacion) {
     try {
       const response = await axios.post('http://127.0.0.1:3001/login/conectar', autentificacion);
-      return response.data.data;
+      return response;
     } catch (error) { 
       console.error('Error al enviar los datos:', error);
       throw error; 

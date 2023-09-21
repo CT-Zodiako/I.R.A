@@ -16,8 +16,8 @@ def create_app(test_config=None):
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
     app.secret_key = os.environ.get('SECRET_KEY')
 
-    CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
-
+    # CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+    CORS(app, resources={r"/*": {"origins": "*"}})
     app.config['UPLOAD_FOLDER'] = 'uploads'
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])

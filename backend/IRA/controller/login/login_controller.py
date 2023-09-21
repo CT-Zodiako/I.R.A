@@ -21,5 +21,5 @@ def verificar_conectar(usuario, contrasena):
     if comparar_contrasena is False:
         return jsonify({'mensaje': 'Contrseña o usuario incorrecto'})
     else:
-        return data
+        return jsonify({'mensaje': 'Conectado correcto usuario contraseña'})
     
