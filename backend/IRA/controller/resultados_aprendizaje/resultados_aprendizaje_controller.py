@@ -1,6 +1,6 @@
 from ...db import db
 from ...models.resultados_aprendizaje.resultados_aprendizaje_model import ResultadoAprendizaje
-from ...models.resultados_aprendizaje.schemas import ResultadoAprendizajeSchema
+from ...models.resultados_aprendizaje.schemas import ResultadoAprendizajeSchema,TraerResultadoSchema
 from flask import jsonify
 
 
@@ -28,7 +28,7 @@ def crear_resultado_aprendizaje(data):
 
 def traer_resultados_aprendizaje():
     try:
-        sResultado = ResultadoAprendizajeSchema(many=True)
+        sResultado = TraerResultadoSchema(many=True)
         resultados = ResultadoAprendizaje.query.all()
 
 
