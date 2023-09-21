@@ -11,11 +11,10 @@ def agregar_evaluador(data):
         nombre_evaluador = data.get('nombre_evaluador')
         correo = data.get('correo')
         numero_identificacion = data.get('numero_identificacion')
-        rol = data.get('rol')
         contrasenna = data.get('contrasenna')
         telefono = data.get('telefono')
 
-        if not (nombre_evaluador and correo and numero_identificacion and rol and contrasenna and telefono):
+        if not (nombre_evaluador and correo and numero_identificacion and contrasenna and telefono):
             return jsonify({'mensaje': 'Todos los campos son obligatorios.', 'status': 400}), 400
 
         if Evaluador.query.filter_by(correo=correo).first():
@@ -27,7 +26,7 @@ def agregar_evaluador(data):
             return jsonify({'mensaje': 'El usuario ya está en uso.', 'status': 400}), 400
 
         nuevo_evaluador = Evaluador(nombre_evaluador=nombre_evaluador, correo=correo,
-                                    numero_identificacion=numero_identificacion, rol=rol, contrasenna=contrasenna, telefono=telefono)
+                                    numero_identificacion=numero_identificacion, contrasenna=contrasenna, telefono=telefono)
 
         db.session.add(nuevo_evaluador)
         db.session.commit()
