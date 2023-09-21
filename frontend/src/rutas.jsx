@@ -1,14 +1,22 @@
 import { Route, Routes } from 'react-router-dom';
+import { InicioSesionUsuarios } from './view/InicioSesion'
 import { CrearExamen } from '../src/view/Examen'; 
-import { CrearEvaluador } from './view/AgregarEvaluador'; 
-import { FormularioPorPasos } from './components/EvaluadorComponentes/pruebaPasos'; 
+import { CrearEvaluador } from './view/AgregarEvaluador';
+import { Evaluador } from './components/Evaluadores/Evaluador'; 
+import { ResultadoAprendizaje } from './view/ResultadoAprendizaje';
+import { CrearResultado } from './components/ResultadoComponentes/agregarResultadoAprendizaje'; 
+// import { FormularioPorPasos } from './components/EvaluadorComponentes/pruebaPasos'; 
 
 function Routers() {
   return (
     <Routes>
-      <Route path="/" element={<CrearExamen/>} />
+      <Route path="/" element={<InicioSesionUsuarios/>} />
+      <Route path="/examen" element={<CrearExamen/>} />
       <Route path="/gestion-usuario" element={<CrearEvaluador/>} />
-      <Route path="/historial" element={<FormularioPorPasos/>} />
+      <Route path="/evaluadores" element={<Evaluador/>}/>
+      <Route path="/resultado-aprendizaje" element={<ResultadoAprendizaje/>}/>
+      <Route path="/agregar-resultado" element={<CrearResultado/>}/>
+      {/* <Route path="/historial" element={<FormularioPorPasos/>} /> */}
     </Routes>
   );
 }

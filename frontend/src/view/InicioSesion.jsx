@@ -1,19 +1,28 @@
 import { useState } from "react";
+import loginService from "../services/ServicioLogin";
 
 export const InicioSesionUsuarios = () =>{
     
     const [autentificacion, setAutentificacion] = useState({
         usuario: '',
-        contraseña: '',
+        contrasena: '',
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setAutentificacion({ ...autentificacion, [name]: value });
+        setAutentificacion(
+            { ...autentificacion, 
+                [name]: value 
+        });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        try{
+            const response = await loginService.verificarLogin(autentificacion); 
+            console.log(response.data);
+        }catch(error){
+            console.error('Error al enviar los datos:', error);        }
     }
 
     return(
@@ -22,7 +31,7 @@ export const InicioSesionUsuarios = () =>{
             <h2>Iniciar sesión</h2>
             <form onSubmit={handleSubmit}>
                 <div>
-                <label htmlFor="username">Usuario:</label>
+                <label>Usuario:</label>
                 <input
                     type="text"
                     id="usuario"
@@ -33,12 +42,12 @@ export const InicioSesionUsuarios = () =>{
                 />
                 </div>
                 <div>
-                <label htmlFor="password">Contraseña:</label>
+                <label>Contraseña:</label>
                 <input
                     type="password"
-                    id="contraseña"
-                    name="contraseña"
-                    value={autentificacion.contraseña}
+                    id="contrasena"
+                    name="contrasena"
+                    value={autentificacion.contrasena}
                     onChange={handleChange}
                     required
                 />
