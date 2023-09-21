@@ -91,11 +91,10 @@ def eliminar_evaluador_sf(evaluador_id):
         db.session.rollback()
         return jsonify({'mensaje': 'Fallo al eliminar evaluador', 'error': str(e), 'status': 500}), 500
   
-def traer_evaluador_por_identificacion(numero_identificacion):
+def traer_evaluador_por_id(evaluador_id):
     try:
-        print(numero_identificacion)
         sEvaluador = EvaluadorSchema()
-        evaluador = Evaluador.query.filter_by(numero_identificacion=numero_identificacion).first()
+        evaluador = Evaluador.query.filter_by(id=evaluador_id).first()
 
         if evaluador:
             data = sEvaluador.dump(evaluador)
@@ -107,7 +106,7 @@ def traer_evaluador_por_identificacion(numero_identificacion):
         return jsonify({'mensaje': 'Fallo al obtener el evaluador', 'error': str(e), 'status': 500}), 500
 
 
-def actualizar_evaluador_db(data,numero_identificacion):
+def actualizar_evaluador_db(data,evaluador_id):
     try:
         numero_identificacion_nuevo= data.get('nuevo_numero_identificacion')
         nuevo_nombre_evaluador = data.get('nuevo_nombre_evaluador')
@@ -116,7 +115,7 @@ def actualizar_evaluador_db(data,numero_identificacion):
         nuevo_telefono = data.get('nuevo_telefono')
 
         # Obtener el evaluador por su número de identificación
-        evaluador = Evaluador.query.filter_by(numero_identificacion=numero_identificacion).first()
+        evaluador = Evaluador.query.filter_by(id=evaluador_id).first()
 
         if evaluador:
             if numero_identificacion_nuevo:
@@ -128,8 +127,11 @@ def actualizar_evaluador_db(data,numero_identificacion):
                 evaluador.correo = nuevo_correo
 
             # Actualizar la contraseña solo si se proporciona una nueva contraseña
-            if nueva_contrasena:
+            if nueva_contrasena == '':
+                nueva_contrasena = evaluador.contrasenna
+            else:
                 evaluador.contrasenna = generate_password_hash(nueva_contrasena)
+            
 
             if nuevo_telefono:
                 evaluador.telefono = nuevo_telefono
