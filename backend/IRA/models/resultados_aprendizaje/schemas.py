@@ -10,5 +10,5 @@ class ResultadoAprendizajeSchema(ma.SQLAlchemySchema):
 class TraerResultadoSchema(ma.SQLAlchemySchema):
     class Meta:
         model = ResultadoAprendizaje
-        fields = ("titulo", "descripcion","estado")
+        fields = ("titulo", "descripcion","estado","id")
         load_instance = True
