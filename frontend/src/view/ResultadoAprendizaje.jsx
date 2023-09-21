@@ -17,6 +17,31 @@ export const ResultadoAprendizaje = () =>{
         }
         fetchData();
       }, []);
+
+      useEffect(() => {
+        async function fetchData() {
+          try {
+            const data = await resultadoAprendizajeServicio.traerResultado();
+            setResultadoAprendizaje(data);
+          } catch (error) {
+            console.error('Error al obtener el resultado:', error);
+          }
+        }
+        fetchData();
+      }, []);
+
+      const onCambiarEstado = async (e, resultado_Id) => {
+        e.preventDefault();
+        try {
+          await resultadoAprendizajeServicio.cambiarEstado(resultado_Id);
+          const nuevaListaResultados = await resultadoAprendizajeServicio.traerResultado();
+          setResultadoAprendizaje(nuevaListaResultados);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      
     
     return(
         <>
@@ -30,6 +55,8 @@ export const ResultadoAprendizaje = () =>{
                         <tr>
                             <th>Titulo</th>
                             <th>Descripcion</th>
+                            <th>Estado</th>
+                            <th>id</th>
                             <th>Acciones</th>
                         </tr>
                         </thead>
@@ -38,7 +65,9 @@ export const ResultadoAprendizaje = () =>{
                         <tr key={resultado.id}>
                             <td>{resultado.titulo}</td>
                             <td>{resultado.descripcion}</td>
-                            <td>boton</td>
+                            <td>{resultado.estado ? 'Activo' : 'Inactivo'}</td>
+                            <td>{resultado.id}</td>
+                            <td><button onClick={(e) => onCambiarEstado(e, resultado.id)}>{resultado.estado ? 'Desactivar' : 'Activar'}</button></td>
                         </tr>
                         ))}
                         </tbody>

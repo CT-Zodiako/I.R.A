@@ -17,6 +17,25 @@ export const Evaluador = () =>{
         }
         fetchData();
       }, []);
+      
+      const onEliminarEvaluador = async (e, evaluador_Id) => {
+        e.preventDefault();
+        try {
+          await evaluadorService.eliminarEvaluador(evaluador_Id);
+          const nuevaListaEvaluador = await evaluadorService.traerEvaluador();
+          setEvaluadores(nuevaListaEvaluador);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      const onEditarEvaluador = async (id) => {{/*editar el evaluador*/}
+        try {
+          await evaluadorService.buscarEvaluador(id);
+        } catch (error) {
+          console.error(error);
+        }
+      };
     
     return(
         <>
@@ -29,17 +48,26 @@ export const Evaluador = () =>{
                         <thead>
                         <tr>
                             <th>Nombre del Evaluador</th>
-                            <th>Correo del Evaluador</th>
+                            <th>Correo</th>
+                            <th>Telefono</th>
+                            <th>Numero de Identificacion</th>
+                            <th>Acciones</th>
                         </tr>
                         </thead>
                         <tbody>
                         {evaluadores.map((evaluador) => (
                         <tr key={evaluador.id}>
-                            <td>{evaluador.id}</td>
                             <td>{evaluador.nombre_evaluador}</td>
                             <td>{evaluador.correo}</td>
                             <td>{evaluador.telefono}</td>
-                            <td>{}</td>
+                            <td>{evaluador.numero_identificacion}</td>
+                            <td>
+                                <div>
+                                    {/* <button onClick={(e) => onCambiarEstadoEvaluador(e, evaluador.id)}>{evaluador.estado ? 'Desactivar' : 'Activar'}</button> */}
+                                    <button onClick={(e) => onEditarEvaluador(evaluador.id)}><Link to="/gestion-usuario">Editar</Link></button>
+                                    <button onClick={(e) => onEliminarEvaluador(e, evaluador.id)}>Eliminar</button>
+                                </div>  
+                            </td>
                         </tr>
                         ))}
                         </tbody>

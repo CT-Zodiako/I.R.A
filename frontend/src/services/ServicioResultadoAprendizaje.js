@@ -1,3 +1,4 @@
+import { convertLength } from '@mui/material/styles/cssUtils';
 import axios from 'axios';
 
 class resultadoAprendizajeServicio{
@@ -19,16 +20,15 @@ class resultadoAprendizajeServicio{
     }
   }
   
-  async cambiarEstado() {
+  async cambiarEstado(resultado_id) {
     try {
-      const response = await axios.get(`http://127.0.0.1:3001/resultado_aprendizaje//cambiar_estado_resultado/${resultado_id}`);
-      return response.data.data;
+      const response = await axios.put(`http://127.0.0.1:3001/resultado_aprendizaje/cambiar_estado_resultado/${resultado_id}`);
+      return response.data;
     } catch (err) {
       console.error(err);
     }
   }
 }
-
 
 
 export default new resultadoAprendizajeServicio();
