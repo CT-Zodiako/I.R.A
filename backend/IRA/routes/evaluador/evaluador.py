@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ...controller.evaluador.evaluador_controller import agregar_evaluador, traer_evaluadores_db, traer_evaluadores_examen_db, eliminar_evaluador_sf, traer_evaluador_por_identificacion
+from ...controller.evaluador.evaluador_controller import agregar_evaluador, traer_evaluadores_db, traer_evaluadores_examen_db, eliminar_evaluador_sf, traer_evaluador_por_identificacion,actualizar_evaluador_db
 from ...db import db
 from ...models.evaluador.evaluador_model import Evaluador
 
@@ -31,3 +31,10 @@ def eliminar_evaluador(evaluador_id):
 @evaluador_blueprint.route('/evaluador_numero_identifiacion/<string:numero_identificacion>', methods=['GET'])
 def evaluador_num_identificacion(numero_identificacion):
     return traer_evaluador_por_identificacion(numero_identificacion)
+
+
+
+@evaluador_blueprint.route('/actualizar/<string:numero_identificacion>', methods=['PUT'])
+def actualizar_evaluador(numero_identificacion):
+    data = request.json
+    return actualizar_evaluador_db(data,numero_identificacion)

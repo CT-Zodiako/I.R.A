@@ -4,6 +4,7 @@ from ...models.evaluador.evaluador_model import Evaluador
 from ...models.evaluador.schemas import EvaluadorSchema, ExamenEvaluadorSchema
 from sqlalchemy.exc import IntegrityError
 from ...models.relaciones.relacion_examen_evaluador import examen_evaluador_tabla
+from werkzeug.security import generate_password_hash
 
 
 def agregar_evaluador(data):
@@ -104,3 +105,45 @@ def traer_evaluador_por_identificacion(numero_identificacion):
 
     except Exception as e:
         return jsonify({'mensaje': 'Fallo al obtener el evaluador', 'error': str(e), 'status': 500}), 500
+
+
+def actualizar_evaluador_db(data,numero_identificacion):
+    try:
+        numero_identificacion_nuevo= data.get('nuevo_numero_identificacion')
+        nuevo_nombre_evaluador = data.get('nuevo_nombre_evaluador')
+        nuevo_correo = data.get('nuevo_correo')
+        nueva_contrasena = data.get('nueva_contrasena')
+        nuevo_telefono = data.get('nuevo_telefono')
+
+        # Obtener el evaluador por su número de identificación
+        evaluador = Evaluador.query.filter_by(numero_identificacion=numero_identificacion).first()
+
+        if evaluador:
+            if numero_identificacion_nuevo:
+                evaluador.numero_identificacion = numero_identificacion_nuevo
+            # Actualizar los campos proporcionados
+            if nuevo_nombre_evaluador:
+                evaluador.nombre_evaluador = nuevo_nombre_evaluador
+            if nuevo_correo:
+                evaluador.correo = nuevo_correo
+
+            # Actualizar la contraseña solo si se proporciona una nueva contraseña
+            if nueva_contrasena:
+                evaluador.contrasenna = generate_password_hash(nueva_contrasena)
+
+            if nuevo_telefono:
+                evaluador.telefono = nuevo_telefono
+
+            # Guardar los cambios en la base de datos
+            db.session.commit()
+
+            return jsonify({'mensaje': 'Evaluador actualizado con éxito', 'status': 200}), 200
+        else:
+            return jsonify({'mensaje': 'No se encontró un evaluador con esa identificación', 'status': 404}), 404
+
+    except IntegrityError as e:
+        db.session.rollback()
+        return jsonify({'mensaje': 'Error de integridad de la base de datos.', 'status': 500}), 500
+
+    except Exception as e:
+        return jsonify({'mensaje': 'Fallo al actualizar el evaluador', 'error': str(e), 'status': 500}), 500
