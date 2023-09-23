@@ -18,27 +18,27 @@ export const CrearEvaluador = () => {
     });
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await evaluadorService.buscarEvaluador();
-        setFormulario(data);
-      } catch (error) {
-        console.error('Error al obtener el resultado:', error);
-      }
-    }
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const data = await evaluadorService.buscarEvaluador();
+  //       setFormulario(data);
+  //     } catch (error) {
+  //       console.error('Error al obtener el resultado:', error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
 
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-    console.log(formularioExamen);
-    try {
-      await  evaluadorService.editarEvaluador(formularioExamen);
-    } catch (error) {
-      console.error('Error al enviar los datos:', error);
-    }
-  };
+  // const handleSubmit = async(e) => {
+  //   e.preventDefault();
+  //   console.log(formularioExamen);
+  //   try {
+  //     await  evaluadorService.editarEvaluador(formularioExamen);
+  //   } catch (error) {
+  //     console.error('Error al enviar los datos:', error);
+  //   }
+  // };
 
   const onEnviarEvaluador = async (e) => {
     e.preventDefault();
