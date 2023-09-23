@@ -18,9 +18,8 @@ def traer_evaluadores():
     return traer_evaluadores_db()
 
 
-@evaluador_blueprint.route('/examenes_evaluador', methods=['GET'])
-def obtener_examenes_por_evaluador():
-    evaluador_id = request.args.get('evaluador_id')
+@evaluador_blueprint.route('/examenes_evaluador/<int:evaluador_id>', methods=['GET'])
+def obtener_examenes_por_evaluador(evaluador_id):
     return traer_evaluadores_examen_db(evaluador_id)
 
 
