@@ -1,6 +1,7 @@
 from ...db import db
 from flask import jsonify
 from ...models.evaluador.evaluador_model import Evaluador
+from ...models.examen.examen_model import Examen
 from ...models.evaluador.schemas import EvaluadorSchema, ExamenEvaluadorSchema
 from sqlalchemy.exc import IntegrityError
 from ...models.relaciones.relacion_examen_evaluador import examen_evaluador_tabla
@@ -69,6 +70,21 @@ def traer_evaluadores_examen_db(evaluador_id):
 
     except Exception as e:
         return jsonify({'message': 'Error al obtener los examenes del evaluador', 'error': str(e)}), 500
+
+def traer_estudiantes_examen_db(examen_id):
+    try:
+        examen = Examen.query.get(examen_id)
+
+        if examen is None:
+            return jsonify({'message': 'Examen no encontrado'}), 404
+        estudiantes = examen.estudiantes
+        data = {'estudiantes': estudiantes}
+
+        return jsonify({'mensaje': 'Estudiantes del examen con éxito', 'data': data}), 200
+
+    except Exception as e:
+        return jsonify({'message': 'Error al obtener los estudiantes del examen', 'error': str(e)}), 500
+
 
 
 
