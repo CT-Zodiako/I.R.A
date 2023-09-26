@@ -50,6 +50,15 @@ class evaluadorService{
       console.error(err);
     }
   }
+
+  async examenesEvaluador() {
+    try{
+      const responce = await axios.get('http://127.0.0.1:3001/evaluador/examenes_evaluador/1');
+      return(responce.data.data)
+    }catch(err){
+      console.error(err)
+    }
+  }
   // async cambiarEstadoEvaluador(evaluador_id) {
   //   try {
   //     const response = await axios.put(`http://127.0.0.1:3001/resultado_aprendizaje/cambiar_estado_resultado/${evaluador_id}`);

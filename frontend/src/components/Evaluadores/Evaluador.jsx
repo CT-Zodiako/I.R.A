@@ -11,6 +11,7 @@ export const Evaluador = () =>{
           try {
             const data = await evaluadorService.traerEvaluador();
             setEvaluadores(data);
+            console.log(data)
           } catch (error) {
             console.error('Error al obtener el resultado:', error);
           }
@@ -29,7 +30,7 @@ export const Evaluador = () =>{
         }
       };
 
-      const onEditarEvaluador = async (id) => {{/*editar el evaluador*/}
+      const onEditarEvaluador = async (id) => {
         try {
           await evaluadorService.buscarEvaluador(id);
         } catch (error) {

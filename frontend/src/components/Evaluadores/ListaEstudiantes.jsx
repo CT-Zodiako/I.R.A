@@ -1,32 +1,8 @@
 import { useEffect, useState } from "react";
-import evaluadorService from '../../services/servicioEvaluador';
-import { Link } from 'react-router-dom';
 
-export const VistaExamenes = () =>{
+export const VistaEstudiantes = () => {
     
-    const[listaExamenes, setListaExamenes]= useState([]);
-
-    useEffect(() => {
-        async function fetchData() {
-          try {
-            const data = await evaluadorService.examenesEvaluador();
-            console.log(data)
-            setListaExamenes(data);
-          } catch (error) {
-            console.error('Error al obtener la lista de examenes:', error);
-          }
-        }
-        fetchData();
-      }, []);
-
-      const onListaEstudiantes = async (id) => {
-      try {
-        await evaluadorService.buscarEvaluador(id);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
+    
     return(
         <>
             <div>
@@ -48,7 +24,10 @@ export const VistaExamenes = () =>{
                             <td>Pendiente</td>
                             <td>
                                 <div>
-                                    <button onClick={onListaEstudiantes(examenes.id)}><Link to="/lista-estudiantes">Calificar</Link></button>
+                                    <button onClick={(e) => onEditarEvaluador(evaluador.id)}><Link to="/gestion-usuario">Editar</Link></button>
+                                    {/* <button onClick={(e) => onCambiarEstadoEvaluador(e, evaluador.id)}>{evaluador.estado ? 'Desactivar' : 'Activar'}</button> */}
+                                    {/* <button onClick={(e) => onEditarEvaluador(evaluador.id)}><Link to="/gestion-usuario">Editar</Link></button> */}
+                                    {/* <button onClick={(e) => onEliminarEvaluador(e, evaluador.id)}>Eliminar</button> */}
                                 </div>  
                             </td>
                         </tr>

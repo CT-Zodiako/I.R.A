@@ -5,6 +5,8 @@ import { CrearEvaluador } from './view/AgregarEvaluador';
 import { Evaluador } from './components/Evaluadores/Evaluador'; 
 import { ResultadoAprendizaje } from './view/ResultadoAprendizaje';
 import { CrearResultado } from './components/ResultadoComponentes/agregarResultadoAprendizaje'; 
+import { VistaExamenes } from './components/Evaluadores/ListaExamenes';
+import { VistaEstudiantes } from './components/Evaluadores/ListaEstudiantes';
 // import { FormularioPorPasos } from './components/EvaluadorComponentes/pruebaPasos'; 
 
 function Routers() {
@@ -16,6 +18,8 @@ function Routers() {
       <Route path="/evaluadores" element={<Evaluador/>}/>
       <Route path="/resultado-aprendizaje" element={<ResultadoAprendizaje/>}/>
       <Route path="/agregar-resultado" element={<CrearResultado/>}/>
+      <Route path="/lista_examenes" element={<VistaExamenes/>}></Route>
+      <Route path="/lista-estudiantes" element={<VistaEstudiantes/>}></Route>
       {/* <Route path="/historial" element={<FormularioPorPasos/>} /> */}
     </Routes>
   );
