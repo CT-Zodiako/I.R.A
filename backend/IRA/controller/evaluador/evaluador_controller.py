@@ -114,19 +114,16 @@ def actualizar_evaluador_db(data,evaluador_id):
         nueva_contrasena = data.get('nueva_contrasena')
         nuevo_telefono = data.get('nuevo_telefono')
 
-        # Obtener el evaluador por su número de identificación
         evaluador = Evaluador.query.filter_by(id=evaluador_id).first()
 
         if evaluador:
             if numero_identificacion_nuevo:
                 evaluador.numero_identificacion = numero_identificacion_nuevo
-            # Actualizar los campos proporcionados
             if nuevo_nombre_evaluador:
                 evaluador.nombre_evaluador = nuevo_nombre_evaluador
             if nuevo_correo:
                 evaluador.correo = nuevo_correo
 
-            # Actualizar la contraseña solo si se proporciona una nueva contraseña
             if nueva_contrasena == '':
                 nueva_contrasena = evaluador.contrasenna
             else:
@@ -136,7 +133,6 @@ def actualizar_evaluador_db(data,evaluador_id):
             if nuevo_telefono:
                 evaluador.telefono = nuevo_telefono
 
-            # Guardar los cambios en la base de datos
             db.session.commit()
 
             return jsonify({'mensaje': 'Evaluador actualizado con éxito', 'status': 200}), 200

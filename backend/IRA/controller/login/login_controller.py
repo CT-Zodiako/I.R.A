@@ -2,10 +2,7 @@ from flask import Blueprint, request, jsonify
 from ...models.evaluador.schemas import EvaluadorConrasenaSchema
 from ...models.evaluador.evaluador_model import Evaluador
 
-login_blueprint = Blueprint('login', __name__)
 
-
-@login_blueprint.route('/conectar', methods=['POST'])
 def verificar_conectar(usuario, contrasena):
     buscarEvaluador = Evaluador.query.filter_by(
         numero_identificacion=usuario).first()
