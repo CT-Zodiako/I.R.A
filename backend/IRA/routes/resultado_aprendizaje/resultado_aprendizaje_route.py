@@ -11,13 +11,11 @@ resultado_aprendizaje_blueprint = Blueprint('resultado_aprendizaje', __name__)
 def crear_resultado():
     data= request.get_json()
     resultado = crear_resultado_aprendizaje(data)
-    print(f'resultado{resultado}')
     return resultado
 
 @resultado_aprendizaje_blueprint.route('/traer_resultados', methods=['GET'])
 def traer_resultados():
     resultados = traer_resultados_aprendizaje()
-    print(f"Resultados: {resultados}")
     return  jsonify(resultados)
 
 @resultado_aprendizaje_blueprint.route('/cambiar_estado_resultado/<int:resultado_id>', methods=['PUT'])

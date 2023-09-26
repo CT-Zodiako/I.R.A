@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import evaluadorService from '../services/servicioEvaluador';
 
 export const CrearEvaluador = () => {
@@ -6,7 +6,6 @@ export const CrearEvaluador = () => {
     nombre_evaluador: '',
     correo: '',
     numero_identificacion: '',
-    rol: '',
     contrasenna: '',
     telefono: '',
   });
@@ -18,6 +17,28 @@ export const CrearEvaluador = () => {
       [name]: value
     });
   };
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const data = await evaluadorService.buscarEvaluador();
+  //       setFormulario(data);
+  //     } catch (error) {
+  //       console.error('Error al obtener el resultado:', error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
+
+  // const handleSubmit = async(e) => {
+  //   e.preventDefault();
+  //   console.log(formularioExamen);
+  //   try {
+  //     await  evaluadorService.editarEvaluador(formularioExamen);
+  //   } catch (error) {
+  //     console.error('Error al enviar los datos:', error);
+  //   }
+  // };
 
   const onEnviarEvaluador = async (e) => {
     e.preventDefault();
@@ -64,16 +85,6 @@ export const CrearEvaluador = () => {
           />
         </div>
         <div>
-          <label>Rol:</label>
-          <input
-            type="text"
-            name="rol"
-            value={formulario.rol}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
           <label>Contrseña:</label>
           <input
             type="text"
@@ -95,6 +106,7 @@ export const CrearEvaluador = () => {
         </div>
         <div>
           <button type="submit">Crear Evaluador</button>
+          <button></button>
         </div>
       </form>
     </div>

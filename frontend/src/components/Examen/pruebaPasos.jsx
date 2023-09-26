@@ -52,6 +52,18 @@ export const FormularioPorPasos = () => {
     });
   };
 
+  const agregarActividad = () => {
+    if (nuevaActividad.descripcion) {
+      setFormulario({
+        ...formularioExamen,
+        actividades_formativas: [...formularioExamen.actividades_formativas, nuevaActividad]
+      });
+      setNuevaActividad({
+        descripcion: ''
+      });
+    }
+  };
+
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     const formData = new FormData();
@@ -126,7 +138,8 @@ export const FormularioPorPasos = () => {
     return (
       <RegistrarActividadFormativa
         formularioExamen={formularioExamen} 
-        actividadFormativa={handleNuevaActividadChange}/>
+        actividadFormativa={handleNuevaActividadChange}
+        agregarActividad={agregarActividad}/>
     );
   }
 

@@ -60,7 +60,9 @@ export const EvaluacionInformacion = ({formularioExamen, programaFuncion, aprend
                         <div>
                             <label>
                                 Resultado:
-                                <InputSeleccion seleccion={resultadoAprendizaje} propiedad="titulo"/>  
+                                <InputSeleccion 
+                                    seleccion={resultadoAprendizaje} 
+                                    seleccionIdRA={aprendizajeResultado}/>  
                             </label>
                         </div>
                         <div>

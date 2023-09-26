@@ -8,9 +8,8 @@ class ResultadoAprendizaje(db.Model):
     examenes = db.relationship('Examen', backref='resultado_aprendizaje', lazy='dynamic')
 
 
-    def __init__(self, titulo, descripcion, estado):
+    def __init__(self, titulo, descripcion):
         self.titulo = titulo
         self.descripcion = descripcion
-        self.estado = estado
         
     
