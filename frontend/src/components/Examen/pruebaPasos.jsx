@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import examenService from '../../services/ServiciosExamen';
-import { EvaluacionInformacion } from './InformacionEvaluacion';
-import { AgregarListaEstudiantes } from './EstudiantesEvaluacion';
-import { RegistrarActividadFormativa } from './ActividadFormativa';
+// import { EvaluacionInformacion } from './InformacionEvaluacion';
+// import { AgregarListaEstudiantes } from './EstudiantesEvaluacion';
+// import { RegistrarActividadFormativa } from './ActividadFormativa';
+// import { PanelSeleccionarEvaluador } from './PanelEvaluador';
+import { EvaluacionInformacion, AgregarListaEstudiantes, RegistrarActividadFormativa, PanelSeleccionarEvaluador } from './indexExamen'
 
 export const FormularioPorPasos = () => {
   const [formularioExamen, setFormulario] = useState({

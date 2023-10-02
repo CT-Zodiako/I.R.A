@@ -1,0 +1,67 @@
+<section class="content">
+  <h1>Editar Notas</h1>
+  <div class="header_content">
+    <p> Crear, Actualizar o Eliminar Notas </p>
+    <button [replaceUrl]="true" [routerLink]="['/materias']"><b>Nueva Materia</b></button>
+    <button [routerLink]="['/notas']"><b>Regresar</b></button>
+  </div>
+  <div class="c_table">
+    <table>
+      <tr>
+        <th>Materia</th>
+        <th>Semestre</th>
+        <th>Parcial 1</th>
+        <th>Parcial 2</th>
+        <th>Final</th>
+        <th>Promedio</th>
+      </tr>
+      <tr *ngIf="selectedNota">
+        <td>{{selectedNota.materia}} </td>
+        <td *ngIf="selectedNota.semestre > -1; else nada ">{{selectedNota.semestre}} </td>
+        <td *ngIf="selectedNota.parcial_1 > -1; else nada ">{{selectedNota.parcial_1}} </td>
+        <td *ngIf="selectedNota.parcial_2 > -1; else nada ">{{selectedNota.parcial_2}} </td>
+        <td *ngIf="selectedNota.final > -1; else nada ">{{selectedNota.final}} </td>
+        <td *ngIf="selectedNota.promedio > -1; else nada ">{{selectedNota.promedio}} </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="crud_notas">
+    <div class="forms" *ngIf="selectedNota">
+      <label for="contactMethod"><b>Seleccionar Materia</b></label><br>
+
+      <select name="contactMethod" (change)="btnMateriaURL($event)" >
+        <option value="-1" disabled hidden>Mis Materias</option>
+        <option [value]="item.id" *ngFor="let item of materias" >{{item.nombre}}</option> 
+      </select>
+
+      <div class="input">
+        <label>Parcial 1</label>
+        <input type="number" [(ngModel)]="selectedNota.parcial_1" (change)="parcialUno($event)"  max="5" min="0"  
+        
+        [ngClass]="[arValidaInput[0] ? '' : 'err']"/>
+      </div>
+
+      <div class="input">
+        <label>Parcial 2</label>
+        <input type="number" [(ngModel)]="selectedNota.parcial_2" (change)="parcialDos($event)" max="5" min="0"            
+        [ngClass]="[arValidaInput[1] ? '' : 'err']" />
+      </div>
+
+      <div class="input">
+        <label>Final</label>
+        <input type="number" [(ngModel)]="selectedNota.final" (change)="parcialFinal($event)" max="5" min="0"           
+        [ngClass]="[arValidaInput[2] ? '' : 'err']" />
+      </div>
+
+      <button (click)="nuevo(selectedNota, optionCrud)" class="aceptar"><b>Aceptar</b></button>
+      <button (click)="borrar(selectedNota)" [hidden]="optionCrud == CREATE" class="eliminar"><b>Eliminar</b></button>
+    </div>
+    <div class="details"></div>
+  </div>
+</section>
+<ng-template #nada>
+  <td>
+    -
+  </td>
+</ng-template>

@@ -1,4 +1,23 @@
+import { useEffect, useState } from "react";
+import evaluadorService from '../../services/servicioEvaluador';
+import { Link } from 'react-router-dom';
+
 export const VistaExamenes = () =>{
+    
+    const[listaExamenes, setListaExamenes]= useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+          try {
+            const data = await evaluadorService.examenesEvaluador();
+            setListaExamenes(data);
+          } catch (error) {
+            console.error('Error al obtener la lista de examenes:', error);
+          }
+        }
+        fetchData();
+      }, []);
+
     return(
         <>
             <div>
@@ -6,26 +25,20 @@ export const VistaExamenes = () =>{
                     <table>
                         <thead>
                         <tr>
-                            <th>Nombre del Evaluador</th>
-                            <th>Correo</th>
-                            <th>Telefono</th>
-                            <th>Numero de Identificacion</th>
+                            <th>Programa</th>
+                            <th>Titulo</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {evaluadores.map((evaluador) => (
-                        <tr key={examen.id}>
-                            <td>{evaluador.nombre_evaluador}</td>
-                            <td>{evaluador.correo}</td>
-                            <td>{evaluador.telefono}</td>
-                            <td>{evaluador.numero_identificacion}</td>
+                        {listaExamenes.map((examenes) => (
+                        <tr key={examenes.id}>
+                            <td>{examenes.programa}</td>
+                            <td>{examenes.proyecto_integrador}</td>
+                            <td>Pendiente</td>
                             <td>
-                                <div>
-                                    {/* <button onClick={(e) => onCambiarEstadoEvaluador(e, evaluador.id)}>{evaluador.estado ? 'Desactivar' : 'Activar'}</button> */}
-                                    <button onClick={(e) => onEditarEvaluador(evaluador.id)}><Link to="/gestion-usuario">Editar</Link></button>
-                                    <button onClick={(e) => onEliminarEvaluador(e, evaluador.id)}>Eliminar</button>
-                                </div>  
+                                <button><Link to={`/lista-estudiantes/${examenes.id}`}>Calificar</Link></button>
                             </td>
                         </tr>
                         ))}

@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import evaluadorService from '../../services/servicioEvaluador';
 import { Link } from 'react-router-dom';
 
-export const Evaluador = () =>{
+export const EvaluadorLista = () =>{
     const[evaluadores, setEvaluadores] = useState([]);
-
 
     useEffect(() => {
         async function fetchData() {
           try {
             const data = await evaluadorService.traerEvaluador();
             setEvaluadores(data);
+            console.log(data)
           } catch (error) {
             console.error('Error al obtener el resultado:', error);
           }
@@ -24,14 +24,6 @@ export const Evaluador = () =>{
           await evaluadorService.eliminarEvaluador(evaluador_Id);
           const nuevaListaEvaluador = await evaluadorService.traerEvaluador();
           setEvaluadores(nuevaListaEvaluador);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
-      const onEditarEvaluador = async (id) => {{/*editar el evaluador*/}
-        try {
-          await evaluadorService.buscarEvaluador(id);
         } catch (error) {
           console.error(error);
         }
@@ -64,7 +56,7 @@ export const Evaluador = () =>{
                             <td>
                                 <div>
                                     {/* <button onClick={(e) => onCambiarEstadoEvaluador(e, evaluador.id)}>{evaluador.estado ? 'Desactivar' : 'Activar'}</button> */}
-                                    <button onClick={(e) => onEditarEvaluador(evaluador.id)}><Link to="/gestion-usuario">Editar</Link></button>
+                                    <button><Link to={`/gestion-usuario/${evaluador.id}`}>Editar</Link></button>
                                     <button onClick={(e) => onEliminarEvaluador(e, evaluador.id)}>Eliminar</button>
                                 </div>  
                             </td>

@@ -1,0 +1,18 @@
+div:first-child {
+    margin:2rem;
+    
+}
+div:first-child h2 {
+    margin-top: 15px;
+    font-size: 19px;
+}
+   
+div:first-child button {
+    display: none;
+    margin-bottom: 5px;
+    padding: 1rem;
+}
+
+div:first-child > div{
+    margin-top: 1.5rem;
+}
