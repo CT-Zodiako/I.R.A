@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import examenService from '../services/ServiciosExamen';
 import resultadoAprendizajeServicio from '../services/ServicioResultadoAprendizaje';
 import evaluadorService from '../services/servicioEvaluador';
 import { InputSeleccion } from '../components/EtiquetaSeleccionGeneral';
-import { InputSeleccionEvaluador } from '../components/Seleccionevaluador';
 
 export const CrearExamen = () => {
   const [formularioExamen, setFormulario] = useState({
     programa: '',
+    resultado_aprendizaje_id: '',
     proyecto_integrador: '',
-    evaluadores: [],
+    evaluadores_ids: [],
     actividades_formativas: [],
     estudiantes: []
   });
@@ -18,8 +19,7 @@ export const CrearExamen = () => {
   const [evaluadores, setEvaluadores] = useState([]);
 
   const [nuevoEvaluador, setNuevoEvaluador] = useState({
-    nombre: '',
-    correo: ''
+    id:'',
   });
 
   const [nuevaActividad, setNuevaActividad] = useState({
@@ -27,7 +27,7 @@ export const CrearExamen = () => {
   });
 
   const [nuevoEstudiante, setNuevoEstudiante] = useState({
-    nombreEstudiante: ''
+    NOMBRE: ''
   });
 
   const handleProgramaChange = (event) => {
@@ -35,6 +35,13 @@ export const CrearExamen = () => {
     setFormulario({
       ...formularioExamen,
       [name]: value
+    });
+  };
+
+  const handleResultadoAprendizajeChange = (selectedId) => {
+    setFormulario({
+      ...formularioExamen,
+      resultado_aprendizaje_id: selectedId, 
     });
   };
 
@@ -46,12 +53,12 @@ export const CrearExamen = () => {
     });
   };
 
-  const handleNuevoEvaluadorChange = (event) => {
-    const { name, value } = event.target;
-    setNuevoEvaluador({
-      ...nuevoEvaluador,
-      [name]: value
+  const handleNuevoEvaluadorChange = (selectedId) => {
+    setFormulario({
+      ...formularioExamen,
+      evaluadores_ids:[...formularioExamen.evaluadores_ids, selectedId], 
     });
+    console.log(selectedId)
   };
 
   const handleNuevaActividadChange = (event) => {
@@ -74,7 +81,7 @@ export const CrearExamen = () => {
     if (nuevoEvaluador.nombre && nuevoEvaluador.correo) {
       setFormulario({
         ...formularioExamen,
-        evaluadores: [...formularioExamen.evaluadores, nuevoEvaluador]
+        evaluadores_ids: [...formularioExamen.evaluadores_ids, nuevoEvaluador]
       });
       setNuevoEvaluador({
         nombre: '',
@@ -96,13 +103,13 @@ export const CrearExamen = () => {
   };
 
   const agregarEstudiante = () => {
-    if (nuevoEstudiante.nombreEstudiante) {
+    if (nuevoEstudiante.NOMBRE) {
       setFormulario({
         ...formularioExamen,
         estudiantes: [...formularioExamen.estudiantes, nuevoEstudiante]
       });
       setNuevoEstudiante({
-        nombreEstudiante: ''
+        NOMBRE: ''
       });
     }
   };
@@ -124,7 +131,6 @@ export const CrearExamen = () => {
       try {
         const data = await evaluadorService.traerEvaluador();
         setEvaluadores(data);
-        console.log(data);
       } catch (error) {
         console.error('Error al obtener el resultado:', error);
       }
@@ -137,17 +143,38 @@ export const CrearExamen = () => {
     console.log(formularioExamen);
     try {
       const response = await  examenService.agregarExamen(formularioExamen);
-      console.log('Respuesta del servidor:', response.data);
     } catch (error) {
       console.error('Error al enviar los datos:', error);
     }
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('archivo', file);
+  
+    axios.post('http://127.0.0.1:3001/examen/ruta_de_carga_de_archivos', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then((response) => {
+        setFormulario({
+          ...formularioExamen,
+          estudiantes: response.data
+        }); 
+        console.log(response.data)     
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (    
     <div>
       <h1>Crear Examen</h1>
       <form onSubmit={handleSubmit}>
-        <div>
+        {/* <div>
           <label>
             Programa:
             <input 
@@ -157,16 +184,30 @@ export const CrearExamen = () => {
               onChange={handleProgramaChange}
             />
           </label>
+        </div> */}
+        <div>
+          <label>
+            Resultado:
+            <InputSeleccion 
+              seleccionar={resultadoAprendizaje} 
+              idSeleccion={handleResultadoAprendizajeChange}
+              label='seleccione resultado'
+              variable='titulo'/>  
+          </label>
         </div>
         <div>
           <label>
             Resultado:
-            <InputSeleccion seleccion={resultadoAprendizaje}/>  
+            <InputSeleccion 
+              seleccionar={resultadoAprendizaje} 
+              idSeleccion={handleResultadoAprendizajeChange}
+              label='seleccione resultado'
+              variable='titulo'/>  
           </label>
         </div>
         <div>
         <label>
-          Programa Integrador:
+          Proyecto Integrador:
           <input 
             type="text" 
             name="proyecto_integrador" 
@@ -175,63 +216,51 @@ export const CrearExamen = () => {
           />
         </label>
         </div>
+
         {/* EVALUADORES */}
         <div>
           <h3>Evaluadores</h3>
-          {formularioExamen.evaluadores.map((evaluador, index) => (
-            <div key={index}>
-              <input
-                type="text"
-                name={`evaluadores[${index}].nombre`}
-                value={evaluador.nombre}
-                onChange={(e) => handleNuevoEvaluadorChange(e, index)}
-                placeholder="Nombre del evaluador"
-              />
-              <input
-                type="text"
-                name={`evaluadores[${index}].correo`}
-                value={evaluador.correo}
-                onChange={(e) => handleNuevoEvaluadorChange(e, index)}
-                placeholder="Correo del evaluador"
-              />
-              <button type="button" onClick={() => eliminarEvaluador(index)}>
-                Eliminar
-              </button>
-            </div>
-          ))}
           <div>
-            {/* <input
-              type="text"
-              name="nombre"
-              value={nuevoEvaluador.nombre}
-              onChange={handleNuevoEvaluadorChange}
-              placeholder="Nombre del evaluador"
-            /> */}
             <div>
-                <InputSeleccionEvaluador seleccionar={evaluadores}/>  
+                <InputSeleccion 
+                  seleccionar={evaluadores} 
+                  idSeleccion={handleNuevoEvaluadorChange}
+                  label='seleccione evaluador'
+                  variable='nombre_evaluador'/>  
             </div>
             <button type="button" onClick={agregarEvaluador}>
               Agregar Evaluador
             </button>
           </div>
+          <div>
+            <table>
+              <thead>
+              <tr>
+                <th>Nombre del Evaluador</th>
+                <th>Correo del Evaluador</th>
+              </tr>
+              </thead>
+              <tbody>
+                {formularioExamen.evaluadores_ids.map((evaluadorId, index) => {
+                  const evaluador = evaluadores.find(e => e.id === evaluadorId);
+                  if (!evaluador) {
+                    return null; 
+                  }
+                  return (
+                    <tr key={index}>
+                      <td>{evaluador.nombre_evaluador}</td>
+                      <td>{evaluador.correo}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
+
 {/* ACTIVIDAD FORMATIVA */}
 <div>
   <h3>Actividad Formativa</h3>
-  {formularioExamen.actividades_formativas.map((actividad, index) => (
-    <div key={index}>
-      <input
-        type="text"
-        name={`actividades_formativas[${index}].descripcion`}
-        value={actividad.descripcion}
-        onChange={(e) => handleNuevaActividadChange(e, index)}
-        placeholder="Descripción actividad"
-      />
-      <button type="button" onClick={() => eliminarActividad(index)}>
-        Eliminar
-      </button>
-    </div>
-  ))}
   <div>
     <input
       type="text"
@@ -244,37 +273,65 @@ export const CrearExamen = () => {
       Agregar Actividad
     </button>
   </div>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>descripcion</th>
+        </tr>
+      </thead>
+      <tbody>
+      {formularioExamen.actividades_formativas.map((actividad, index) => (
+          <tr key={index}>
+            <td>{actividad.descripcion}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 </div>
 
 {/* ESTUDIANTE */}
 <div>
   <h3>Estudiante</h3>
-  {formularioExamen.estudiantes.map((estudiante, index) => (
-    <div key={index}>
+  <div>
+    <div>
       <input
         type="text"
-        name={`estudiantes[${index}].nombreEstudiante`}
-        value={estudiante.nombreEstudiante}
-        onChange={(e) => handleNuevoEstudianteChange(e, index)}
+        name="NOMBRE"
+        value={nuevoEstudiante.NOMBRE}
+        onChange={handleNuevoEstudianteChange}
         placeholder="Nombre del estudiante"
       />
-      <button type="button" onClick={() => eliminarEstudiante(index)}>
-        Eliminar
+      <button type="button" onClick={agregarEstudiante}>
+        Agregar Estudiante
       </button>
     </div>
-  ))}
-  <div>
-    <input
-      type="text"
-      name="nombreEstudiante"
-      value={nuevoEstudiante.nombreEstudiante}
-      onChange={handleNuevoEstudianteChange}
-      placeholder="Nombre del estudiante"
-    />
-    <button type="button" onClick={agregarEstudiante}>
-      Agregar Estudiante
-    </button>
+    <div>
+      <input
+        type="file"
+        accept="xlsx" 
+        onChange={handleFileUpload}
+      />
+    </div>
   </div>
+  <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre del Estudiante</th>
+          </tr>
+        </thead>
+        <tbody>
+          {formularioExamen.estudiantes.map((estudiante, index) => (
+            <tr key={index}>
+              <td>{estudiante.NOMBRE}</td>
+              <td>eliminar</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
 </div>
 
         {/* Resto del formulario */}
