@@ -1,6 +1,7 @@
 from ...db import db
 from flask import jsonify
 from ...models.evaluador.evaluador_model import Evaluador
+from ...models.examen.examen_model import Examen
 from ...models.evaluador.schemas import EvaluadorSchema, ExamenEvaluadorSchema
 from sqlalchemy.exc import IntegrityError
 from ...models.relaciones.relacion_examen_evaluador import examen_evaluador_tabla
@@ -70,6 +71,21 @@ def traer_evaluadores_examen_db(evaluador_id):
     except Exception as e:
         return jsonify({'message': 'Error al obtener los examenes del evaluador', 'error': str(e)}), 500
 
+def traer_estudiantes_examen_db(examen_id):
+    try:
+        examen = Examen.query.get(examen_id)
+
+        if examen is None:
+            return jsonify({'message': 'Examen no encontrado'}), 404
+        estudiantes = examen.estudiantes
+        data = {'estudiantes': estudiantes}
+
+        return jsonify({'mensaje': 'Estudiantes del examen con éxito', 'data': data}), 200
+
+    except Exception as e:
+        return jsonify({'message': 'Error al obtener los estudiantes del examen', 'error': str(e)}), 500
+
+
 
 
 def eliminar_evaluador_sf(evaluador_id):
@@ -114,19 +130,16 @@ def actualizar_evaluador_db(data,evaluador_id):
         nueva_contrasena = data.get('nueva_contrasena')
         nuevo_telefono = data.get('nuevo_telefono')
 
-        # Obtener el evaluador por su número de identificación
         evaluador = Evaluador.query.filter_by(id=evaluador_id).first()
 
         if evaluador:
             if numero_identificacion_nuevo:
                 evaluador.numero_identificacion = numero_identificacion_nuevo
-            # Actualizar los campos proporcionados
             if nuevo_nombre_evaluador:
                 evaluador.nombre_evaluador = nuevo_nombre_evaluador
             if nuevo_correo:
                 evaluador.correo = nuevo_correo
 
-            # Actualizar la contraseña solo si se proporciona una nueva contraseña
             if nueva_contrasena == '':
                 nueva_contrasena = evaluador.contrasenna
             else:
@@ -136,7 +149,6 @@ def actualizar_evaluador_db(data,evaluador_id):
             if nuevo_telefono:
                 evaluador.telefono = nuevo_telefono
 
-            # Guardar los cambios en la base de datos
             db.session.commit()
 
             return jsonify({'mensaje': 'Evaluador actualizado con éxito', 'status': 200}), 200

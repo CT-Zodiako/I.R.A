@@ -18,5 +18,5 @@ class EvaluadorConrasenaSchema(ma.SQLAlchemySchema):
 class ExamenEvaluadorSchema(ma.SQLAlchemySchema):
     class Meta:
         model = Examen
-        fields = ("id", "programa", "proyecto_integrador")
+        fields = ("id", "programa", "proyecto_integrador", "actividades_formativas", "estudiantes")
         load_instance = True
