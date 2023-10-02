@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import evaluadorService from '../../services/servicioEvaluador';
+import { Link, useParams } from "react-router-dom";
 
 export const VistaEstudiantes = () => {
     
     const[listaEstudiantes, setListaEstudiantes] = useState([]);
+    const { examenId } = useParams();
 
     useEffect(() => {
         async function fetchData() {
           try {
-            const data = await evaluadorService.estudiantesEvaluador();
-            console.log(data)
+            const data = await evaluadorService.estudiantesExamen(examenId);
             setListaEstudiantes(data);
           } catch (error) {
             console.error('Error al obtener la lista de examenes:', error);
           }
         }
         fetchData();
-      }, []);
+      }, [examenId]);
 
     return(
         <>
@@ -32,16 +33,18 @@ export const VistaEstudiantes = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {listaEstudiantes.map((data) => (
-                        <tr key={data.id}>
-                            <td>{data.estudiantes}</td>
-                            <td></td>
-                            <td>Pendiente</td>
+                        {listaEstudiantes.map((estudiante, Index) => (
+                        <tr key={Index}>
+                            <td>{estudiante.NOMBRE}</td>
+                            <td>{estudiante.CORREO}</td>
+                            <td>{estudiante.CODIGO}</td>
                             <td>
                                 <div>
-                                    {/* <button onClick={(e) => onCambiarEstadoEvaluador(e, evaluador.id)}>{evaluador.estado ? 'Desactivar' : 'Activar'}</button> */}
-                                    {/* <button onClick={(e) => onEditarEvaluador(evaluador.id)}><Link to="/gestion-usuario">Editar</Link></button> */}
-                                    {/* <button onClick={(e) => onEliminarEvaluador(e, evaluador.id)}>Eliminar</button> */}
+                                    <button type='submit'>
+                                        <Link to={`/calificacion-examen/${estudiante.NOMBRE}`}>
+                                            Calificar
+                                        </Link>
+                                    </button>
                                 </div>  
                             </td>
                         </tr>

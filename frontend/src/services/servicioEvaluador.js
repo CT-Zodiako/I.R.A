@@ -51,28 +51,19 @@ class evaluadorService{
     }
   }
 
-  async examenesEvaluador() {
+  async examenesEvaluador(id) {
     try{
-      const responce = await axios.get('http://127.0.0.1:3001/evaluador/examenes_evaluador/1');
+      const responce = await axios.get('http://127.0.0.1:3001/evaluador/examenes_evaluador/7');
       return(responce.data.data)
     }catch(err){
       console.error(err)
     }
   }
 
-  async estudiantesExamen() {
+  async estudiantesExamen(id) {
     try{
-      const responce = await axios.get('http://127.0.0.1:3001/evaluador/examenes_evaluador/1');
-      return(responce.data.data)
-    }catch(err){
-      console.error(err)
-    }
-  }
-  
-  async estudiantesEvaluador() {
-    try{
-      const responce = await axios.get('http://127.0.0.1:3001/evaluador/examenes_evaluador/1');
-      return(responce.data[0][estudiantes])
+      const responce = await axios.get(`http://127.0.0.1:3001/evaluador/estudiantes_examen/${id}`);
+      return(responce.data.data.estudiantes)
     }catch(err){
       console.error(err)
     }
@@ -86,6 +77,15 @@ class evaluadorService{
   //     console.error(err);
   //   }
   // }
+
+  async calificacionEvaluador(id) {
+    try{
+      const responce = await axios.get('http://127.0.0.1:3001/evaluador/examenes_evaluador/7');
+      return(responce.data.data[7]?.actividades_formativas || [])
+    }catch(err){
+      console.error(err)
+    }
+  }
 };
 
 export default new evaluadorService();

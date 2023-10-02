@@ -10,7 +10,6 @@ export const VistaExamenes = () =>{
         async function fetchData() {
           try {
             const data = await evaluadorService.examenesEvaluador();
-            console.log(data)
             setListaExamenes(data);
           } catch (error) {
             console.error('Error al obtener la lista de examenes:', error);
@@ -18,14 +17,6 @@ export const VistaExamenes = () =>{
         }
         fetchData();
       }, []);
-
-      const onListaEstudiantes = async (id) => {
-      try {
-        await evaluadorService.buscarEvaluador(id);
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
     return(
         <>
@@ -47,9 +38,7 @@ export const VistaExamenes = () =>{
                             <td>{examenes.proyecto_integrador}</td>
                             <td>Pendiente</td>
                             <td>
-                                <div>
-                                    <button onClick={onListaEstudiantes(examenes.id)}><Link to="/lista-estudiantes">Calificar</Link></button>
-                                </div>  
+                                <button><Link to={`/lista-estudiantes/${examenes.id}`}>Calificar</Link></button>
                             </td>
                         </tr>
                         ))}

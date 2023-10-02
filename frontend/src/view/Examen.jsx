@@ -4,7 +4,6 @@ import examenService from '../services/ServiciosExamen';
 import resultadoAprendizajeServicio from '../services/ServicioResultadoAprendizaje';
 import evaluadorService from '../services/servicioEvaluador';
 import { InputSeleccion } from '../components/EtiquetaSeleccionGeneral';
-import { InputSeleccionEvaluador } from '../components/Seleccionevaluador';
 
 export const CrearExamen = () => {
   const [formularioExamen, setFormulario] = useState({
@@ -175,7 +174,7 @@ export const CrearExamen = () => {
     <div>
       <h1>Crear Examen</h1>
       <form onSubmit={handleSubmit}>
-        <div>
+        {/* <div>
           <label>
             Programa:
             <input 
@@ -185,18 +184,30 @@ export const CrearExamen = () => {
               onChange={handleProgramaChange}
             />
           </label>
+        </div> */}
+        <div>
+          <label>
+            Resultado:
+            <InputSeleccion 
+              seleccionar={resultadoAprendizaje} 
+              idSeleccion={handleResultadoAprendizajeChange}
+              label='seleccione resultado'
+              variable='titulo'/>  
+          </label>
         </div>
         <div>
           <label>
             Resultado:
             <InputSeleccion 
-              seleccion={resultadoAprendizaje} 
-              seleccionIdRA={handleResultadoAprendizajeChange}/>  
+              seleccionar={resultadoAprendizaje} 
+              idSeleccion={handleResultadoAprendizajeChange}
+              label='seleccione resultado'
+              variable='titulo'/>  
           </label>
         </div>
         <div>
         <label>
-          Programa Integrador:
+          Proyecto Integrador:
           <input 
             type="text" 
             name="proyecto_integrador" 
@@ -211,9 +222,11 @@ export const CrearExamen = () => {
           <h3>Evaluadores</h3>
           <div>
             <div>
-                <InputSeleccionEvaluador 
+                <InputSeleccion 
                   seleccionar={evaluadores} 
-                  idSeleccion={handleNuevoEvaluadorChange}/>  
+                  idSeleccion={handleNuevoEvaluadorChange}
+                  label='seleccione evaluador'
+                  variable='nombre_evaluador'/>  
             </div>
             <button type="button" onClick={agregarEvaluador}>
               Agregar Evaluador
