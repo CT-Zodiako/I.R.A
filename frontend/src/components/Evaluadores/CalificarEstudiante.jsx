@@ -26,7 +26,7 @@ export const CalificacionExamen = () =>{
         <form action="">
             <div>
                 <div>
-                    <h1>Calificacion Evaluacionn</h1>
+                    <h1>Calificacion Evaluacion</h1>
                     <h2>Proyecto Integrador</h2>
                     <label htmlFor="">IoT</label>
                 </div>
