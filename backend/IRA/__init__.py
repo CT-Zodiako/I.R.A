@@ -43,6 +43,7 @@ def create_app(test_config=None):
     from .routes.resultado_aprendizaje.resultado_aprendizaje_route import resultado_aprendizaje_blueprint
     from .routes.login.login_route import login_blueprint
     from .routes.programas.programa_route import programa_blueprint
+    from .routes.calificaciones.calificaciones_route import calificaciones_blueprint
     
     app.register_blueprint(evaluador_blueprint, url_prefix='/evaluador')
     app.register_blueprint(examen_blueprint, url_prefix='/examen')
@@ -50,7 +51,7 @@ def create_app(test_config=None):
                            url_prefix='/resultado_aprendizaje')
     app.register_blueprint(login_blueprint, url_prefix='/login')
     app.register_blueprint(programa_blueprint, url_prefix='/programa')
-    
+    app.register_blueprint(calificaciones_blueprint, url_prefix='/calificacion')
 
     with app.app_context():
         db.create_all()

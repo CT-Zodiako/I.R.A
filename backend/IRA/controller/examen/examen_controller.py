@@ -8,7 +8,7 @@ import pandas as pd
 
 def agregar_examen(data):
     try:
-        programa_id = data.get('programa')
+        programa_id = data.get('programa_id')
         proyecto_integrador = data.get('proyecto_integrador')
         actividades_formativas = data.get('actividades_formativas')
         estudiantes = data.get('estudiantes')
