@@ -71,9 +71,7 @@ class evaluadorService{
 
   async calificacionEvaluador(id_examen) {
     try{
-      
-      const responce = await axios.get(`http://127.0.0.1:3001/calificacion/actividades_examen`, id_examen);
-      console.log(responce.data)
+      const responce = await axios.get('http://127.0.0.1:3001/calificacion/actividades_examen', id_examen);
       return(responce.data)
     }catch(err){
       console.error(err)
