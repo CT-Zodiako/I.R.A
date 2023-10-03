@@ -3,11 +3,12 @@ import axios from 'axios';
 import examenService from '../services/ServiciosExamen';
 import resultadoAprendizajeServicio from '../services/ServicioResultadoAprendizaje';
 import evaluadorService from '../services/servicioEvaluador';
+import programaServicio from '../services/ServicioPrograma'; 
 import { InputSeleccion } from '../components/EtiquetaSeleccionGeneral';
 
 export const CrearExamen = () => {
   const [formularioExamen, setFormulario] = useState({
-    programa: '',
+    programa_id: '',
     resultado_aprendizaje_id: '',
     proyecto_integrador: '',
     evaluadores_ids: [],
@@ -15,6 +16,7 @@ export const CrearExamen = () => {
     estudiantes: []
   });
 
+  const [programa, setPrograma] = useState([]);
   const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
   const [evaluadores, setEvaluadores] = useState([]);
 
@@ -30,11 +32,18 @@ export const CrearExamen = () => {
     NOMBRE: ''
   });
 
-  const handleProgramaChange = (event) => {
-    const { name, value } = event.target;
+  // const handleProgramaChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setFormulario({
+  //     ...formularioExamen,
+  //     [name]: value
+  //   });
+  // };
+
+  const handleProgramaChange = (selectedId) => {
     setFormulario({
       ...formularioExamen,
-      [name]: value
+      programa_id: selectedId, 
     });
   };
 
@@ -114,10 +123,49 @@ export const CrearExamen = () => {
     }
   };
 
+  const eliminarEvaluador = (index) =>{
+    const nuevoFormulario = { ...formularioExamen };
+    const nuevasActividades = [...nuevoFormulario.evaluadores_ids]
+    nuevasActividades.splice(index, 1);
+    nuevoFormulario.evaluadores_ids = nuevasActividades;
+    setFormulario(nuevoFormulario);
+  }
+
+  const eliminarActividad = (index) =>{
+    const nuevoFormulario = { ...formularioExamen };
+    const nuevasActividades = [...nuevoFormulario.actividades_formativas]
+    nuevasActividades.splice(index, 1);
+    nuevoFormulario.actividades_formativas = nuevasActividades;
+    setFormulario(nuevoFormulario);
+  }
+
+  const eliminarEstudiante = (index) =>{
+    const nuevoFormulario = { ...formularioExamen };
+    const nuevasActividades = [...nuevoFormulario.estudiantes]
+    nuevasActividades.splice(index, 1);
+    nuevoFormulario.estudiantes = nuevasActividades;
+    setFormulario(nuevoFormulario);
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await programaServicio.traerPrograma();
+        console.log("programa: ", data)
+        setPrograma(data);
+      } catch (error) {
+        console.error('Error al obtener el programa:', error);
+      }
+    }
+    fetchData();
+  }, []);
+
+
   useEffect(() => {
     async function fetchData() {
       try {
         const data = await resultadoAprendizajeServicio.traerResultado();
+        console.log("resultados: ", data)
         setResultadoAprendizaje(data);
       } catch (error) {
         console.error('Error al obtener el resultado:', error);
@@ -187,12 +235,12 @@ export const CrearExamen = () => {
         </div> */}
         <div>
           <label>
-            Resultado:
+            Programa:
             <InputSeleccion 
-              seleccionar={resultadoAprendizaje} 
-              idSeleccion={handleResultadoAprendizajeChange}
-              label='seleccione resultado'
-              variable='titulo'/>  
+              seleccionar={programa} 
+              idSeleccion={handleProgramaChange}
+              label='seleccione programa'
+              variable='nombre'/>  
           </label>
         </div>
         <div>
@@ -250,6 +298,9 @@ export const CrearExamen = () => {
                     <tr key={index}>
                       <td>{evaluador.nombre_evaluador}</td>
                       <td>{evaluador.correo}</td>
+                      <td>
+                        <button onClick={() => eliminarEvaluador(index)}>Eliminar</button>
+                      </td>
                     </tr>
                   );
                 })}
@@ -284,6 +335,9 @@ export const CrearExamen = () => {
       {formularioExamen.actividades_formativas.map((actividad, index) => (
           <tr key={index}>
             <td>{actividad.descripcion}</td>
+            <td>
+              <button onClick={() => eliminarActividad(index)}>Eliminar</button>
+            </td>
           </tr>
         ))}
       </tbody>
@@ -326,7 +380,9 @@ export const CrearExamen = () => {
           {formularioExamen.estudiantes.map((estudiante, index) => (
             <tr key={index}>
               <td>{estudiante.NOMBRE}</td>
-              <td>eliminar</td>
+              <td>
+                <button onClick={() => eliminarEstudiante(index)}>Eliminar</button>
+              </td>
             </tr>
           ))}
         </tbody>

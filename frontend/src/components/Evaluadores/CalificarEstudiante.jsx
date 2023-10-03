@@ -7,11 +7,13 @@ export const CalificacionExamen = () =>{
     
     const[estudianteCalificacion, setEstudianteExamen] = useState([]);
     const { nombreEstudiante } = useParams();
+    const { examenId } = useParams();
+    console.log("soy ", nombreEstudiante, "este es el examen ", examenId );
 
     useEffect(() => {
         async function fetchData() {
             try{
-                const data = await evaluadorService.calificacionEvaluador()
+                const data = await evaluadorService.calificacionEvaluador(examenId)
                 console.log('esta debe ser al actividad: ', data);
                 setEstudianteExamen(data);
             }catch(error) {
@@ -19,7 +21,7 @@ export const CalificacionExamen = () =>{
             }
         }
         fetchData();
-    }, []);
+    }, [examenId]);
     
     return(
         <>
@@ -31,7 +33,7 @@ export const CalificacionExamen = () =>{
                     <label htmlFor="">IoT</label>
                 </div>
                 <div>
-                    <h2>Estudiante: { nombreEstudiante } </h2>
+                    <h2>Estudiante: {nombreEstudiante} </h2>
                     <div>
                         <table>
                             <thead>
