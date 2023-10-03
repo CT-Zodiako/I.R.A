@@ -9,15 +9,15 @@ calificaciones_blueprint = Blueprint('calificaciones', __name__)
 def guardar_calificacion():
     return guardar_calificacion_db(data=request.json)
 
-@calificaciones_blueprint.route('/actividades_examen', methods=['GET'])
-def obtener_actividades_formativas_por_id_examen():
+@calificaciones_blueprint.route('/actividades_examen/<int:id_examen>', methods=['GET'])
+def obtener_actividades_formativas_por_id_examen(id_examen):
     try:
-        id_examen = request.json['id_examen']
         examen = Examen.query.filter_by(id=id_examen).first()
         
         if examen:
             return jsonify(examen.actividades_formativas)
         else:
-            return None  # Si el examen no existe, retorna None o un mensaje de error
+            return jsonify({"error": "Examen no encontrado"}), 404
     except Exception as e:
-        return str(e)
+        return jsonify({"error": str(e)}), 500
+
