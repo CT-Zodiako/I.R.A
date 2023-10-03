@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import evaluadorService from '../../services/servicioEvaluador';
-import {InputSeleccion} from '../EtiquetaSeleccionGeneral';
+// import {InputSeleccion} from '../EtiquetaSeleccionGeneral';
 import { useParams } from "react-router-dom";
 
 export const CalificacionExamen = () =>{
     
-    const[estudianteCalificacion, setEstudianteExamen] = useState([]);
+    const[estudianteCalificacion, setEstudianteExamen] = useState(['']);
     const { nombreEstudiante } = useParams();
     const { examenId } = useParams();
-    console.log("soy ", nombreEstudiante, "este es el examen ", examenId );
 
     useEffect(() => {
         async function fetchData() {
@@ -44,10 +43,10 @@ export const CalificacionExamen = () =>{
                                 </tr>
                             </thead>
                             <tbody>
-                            {estudianteCalificacion.map((calificar, Index) =>(
-                                <tr key={Index}>
+                            {estudianteCalificacion.map((calificar, index) =>(
+                                <tr key={index}>
                                     <td>{calificar.descripcion}</td>
-                                    <td><InputSeleccion/></td>
+                                    {/* <td><InputSeleccion/></td> */}
                                     <td><textarea name="" id="" cols="30" rows="10"></textarea></td>
                                 </tr>
                             ))}
