@@ -6,7 +6,7 @@ export const InputSeleccionCalificacion = ({seleccionar, idSeleccion}) => {
     const [calificacion, setCalificacion] = useState('');
 
     const handleChange = (event) => {
-        const selectedId = event.target.value;
+        const selectedId = event.target.label;
         setCalificacion(selectedId);
         idSeleccion(selectedId); 
     }
@@ -24,8 +24,9 @@ export const InputSeleccionCalificacion = ({seleccionar, idSeleccion}) => {
                     seleccionar.map((opcion, index) => (
                         <MenuItem 
                             key={index} 
-                            value={opcion.id}
-                            >{opcion.label}
+                            value={opcion.label}
+                            style={{ color: opcion.color }}
+                            >{opcion.value}
                         </MenuItem>
                     ))
                 }
