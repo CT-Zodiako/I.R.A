@@ -28,8 +28,7 @@ export const InputSeleccion = ({seleccionar, idSeleccion, label, variable}) => {
                             onChange={handleChange}
                             >{opcion[variable]}
                         </MenuItem>
-                    ))
-                }
+                ))}
                 </Select>
             </FormControl>
         </>

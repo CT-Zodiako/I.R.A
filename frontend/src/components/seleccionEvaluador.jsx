@@ -1,31 +1,31 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
 
-export const InputSeleccionEvaluador = ({seleccionar, idSeleccion}) => {
+export const InputSeleccionCalificacion = ({seleccionar, idSeleccion}) => {
 
-    const [evaluadorId, setEvaluadorId] = useState('');
+    const [calificacion, setCalificacion] = useState('');
 
     const handleChange = (event) => {
         const selectedId = event.target.value;
-        setEvaluadorId(selectedId);
+        setCalificacion(selectedId);
         idSeleccion(selectedId); 
     }
     
     return(
         <>
             <FormControl sx={{ m: 1, minWidth: 320, height: 50 }}>
-                <InputLabel id="demo-simple-select-label">Seleccione evaluador</InputLabel>
+                <InputLabel id="demo-simple-select-label">Seleccione calificacion</InputLabel>
                 <Select
-                    value={evaluadorId}
-                    label="Seleccione evaluador"
+                    value={calificacion}
+                    label="Seleccione calificacion"
                     onChange={handleChange}
                 >
                 {
-                    seleccionar.map(opcion => (
+                    seleccionar.map((opcion, index) => (
                         <MenuItem 
-                            key={opcion.id} 
+                            key={index} 
                             value={opcion.id}
-                            >{opcion.nombre_evaluador}
+                            >{opcion.label}
                         </MenuItem>
                     ))
                 }

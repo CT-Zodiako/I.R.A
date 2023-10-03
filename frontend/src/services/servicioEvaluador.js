@@ -77,6 +77,16 @@ class evaluadorService{
       console.error(err)
     }
   }
+
+  async calificacionEstudiante() {
+    try{
+      const responce = await axios.get(`http://127.0.0.1:3001/calificacion/enum_calificacion`);
+      return(responce.data)
+    }catch(err){
+      console.error(err)
+    }
+  }
+
 };
 
 export default new evaluadorService();
