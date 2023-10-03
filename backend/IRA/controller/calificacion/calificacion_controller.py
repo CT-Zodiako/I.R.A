@@ -39,7 +39,7 @@ def actividades_examen(id_examen):
 
 def enum_calificacion():
     try:
-        enum_options = [{'value': calificacion.value, 'label': calificacion.name} for calificacion in CalificacionEnum]
+        enum_options = [{'label': calificacion.value, 'value': calificacion.name} for calificacion in CalificacionEnum]
         return enum_options
     except Exception as e:
         return jsonify({"error en enum calificaiones": str(e)}), 500
