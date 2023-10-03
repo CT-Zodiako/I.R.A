@@ -14,8 +14,9 @@ def obtener_actividades_formativas_por_id_examen():
     try:
         id_examen = request.json['id_examen']
         examen = Examen.query.filter_by(id=id_examen).first()
+        
         if examen:
-            return examen.actividades_formativas
+            return jsonify(examen.actividades_formativas)
         else:
             return None  # Si el examen no existe, retorna None o un mensaje de error
     except Exception as e:

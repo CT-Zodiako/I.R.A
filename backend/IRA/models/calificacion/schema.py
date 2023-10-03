@@ -6,3 +6,4 @@ class CalificacionExamenSchema(ma.SQLAlchemySchema):
         model = CalificacionExamen
         fields = ("id", "calificacion", "examen_id")
         load_instance = True
+
