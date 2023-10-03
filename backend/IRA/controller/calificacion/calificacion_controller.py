@@ -39,7 +39,7 @@ def actividades_examen(id_examen):
 
 def enum_calificacion():
     try:
-        enum_options = [{'label': calificacion.value, 'value': calificacion.name} for calificacion in CalificacionEnum]
+        enum_options = [{'label': calificacion.value['label'], 'value': calificacion.name, 'color': calificacion.value['color']} for calificacion in CalificacionEnum]
         return enum_options
     except Exception as e:
         return jsonify({"error en enum calificaiones": str(e)}), 500
@@ -47,9 +47,10 @@ def enum_calificacion():
 
 
 class CalificacionEnum(Enum):
-    EXCELENTE = 'EXCELENTE'
-    SOBRESALIENTE = 'SOBRESALIENTE'
-    SUFICIENTE = 'SUFICIENTE'
-    INSUFICIENTE = 'INSUFICIENTE'
-    NO_CUMPLE = 'NO CUMPLE'
-    NINGUNA_CALIFICACION = 'NINGUNA CALIFICACION'   
+    EXCELENTE = {'label': 'EXCELENTE', 'color': 'green'}
+    SOBRESALIENTE = {'label': 'SOBRESALIENTE', 'color': 'blue'}
+    SUFICIENTE = {'label': 'SUFICIENTE', 'color': 'orange'}
+    INSUFICIENTE = {'label': 'INSUFICIENTE', 'color': 'red'}
+    NO_CUMPLE = {'label': 'NO CUMPLE', 'color': 'gray'}
+    NINGUNA_CALIFICACION = {'label': 'NINGUNA CALIFICACION', 'color': 'yellow'}
+   
