@@ -1,7 +1,7 @@
 from ...db import db
 from flask import Blueprint, request, jsonify
-from ...controller.calificacion.calificacion_controller import guardar_calificacion_db
-from ...models.examen.examen_model import Examen
+from ...controller.calificacion.calificacion_controller import guardar_calificacion_db,actividades_examen,enum_calificacion
+
 calificaciones_blueprint = Blueprint('calificaciones', __name__)
 
 
@@ -11,13 +11,11 @@ def guardar_calificacion():
 
 @calificaciones_blueprint.route('/actividades_examen/<int:id_examen>', methods=['GET'])
 def obtener_actividades_formativas_por_id_examen(id_examen):
-    try:
-        examen = Examen.query.filter_by(id=id_examen).first()
-        
-        if examen:
-            return jsonify(examen.actividades_formativas)
-        else:
-            return jsonify({"error": "Examen no encontrado"}), 404
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    return actividades_examen(id_examen)
+    
+@calificaciones_blueprint.route('/enum_calificacion', methods=['GET'])
+def obtener_enum_calificacion():
+    
+    return jsonify(enum_calificacion())
+
 
