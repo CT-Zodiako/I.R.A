@@ -17,7 +17,6 @@ def guardar_calificacion_db(data):
             'mensaje': 'Calificacion creada exitosamente',
         }
 
-    
     except Exception as e:
         return {
             'status': 500,
