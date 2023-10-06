@@ -8,16 +8,16 @@ export const EvaluacionInformacion = ({formularioExamen, programaFuncion, aprend
     const [programa, setPrograma] = useState();
     const [proyectoIntegrador, setProyectoIntegrador] = useState();
 
-    const handleProgramaChange = (e) =>{
-        setPrograma(e.target.value);
+    const onPrograma = (event) =>{
+        setPrograma(event.target.value);
     }
 
-    const handleIntegradorChange = (e) =>{
-        setProyectoIntegrador(e.target.value);
+    const onProyectoIntegrador = (event) =>{
+        setProyectoIntegrador(event.target.value);
     }
 
-    const envioInfoEvaluacion = (e) =>{
-        e.preventDefault();
+    const envioInfoEvaluacion = (event) =>{
+        event.preventDefault();
         programaFuncion(programa);
         aprendizajeResultado(resultadoAprendizaje);
         programaIntegrador(proyectoIntegrador);
@@ -53,7 +53,7 @@ export const EvaluacionInformacion = ({formularioExamen, programaFuncion, aprend
                                     type="text" 
                                     name="programa" 
                                     value={formularioExamen.programa} 
-                                    onChange={handleProgramaChange}
+                                    onChange={onPrograma}
                                 />
                             </label>
                         </div>
@@ -72,7 +72,7 @@ export const EvaluacionInformacion = ({formularioExamen, programaFuncion, aprend
                                     type="text" 
                                     name="proyecto_integrador" 
                                     value={formularioExamen.proyectointegrador} 
-                                    onChange={handleIntegradorChange}
+                                    onChange={onProyectoIntegrador}
                                 />
                             </label>
                         </div>

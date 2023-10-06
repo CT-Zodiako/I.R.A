@@ -21,7 +21,7 @@ function Routers() {
       <Route path="/agregar-resultado" element={<CrearResultado/>}/>
       <Route path="/lista_examenes" element={<VistaExamenes/>}></Route>
       <Route path="/lista-estudiantes/:examenId" element={<VistaEstudiantes/>}></Route>
-      <Route path="/calificacion-examen/:nombreEstudiante" element={<CalificacionExamen/>}></Route>
+      <Route path="/calificacion-examen/:examenId/:nombreEstudiante" element={<CalificacionExamen/>}></Route>
       {/* <Route path="/historial" element={<FormularioPorPasos/>} /> */}
     </Routes>
   );

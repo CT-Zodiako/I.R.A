@@ -1,21 +1,47 @@
 import { useEffect, useState } from 'react';
 import evaluadorService from '../../services/servicioEvaluador';
-import {InputSeleccion} from '../EtiquetaSeleccionGeneral';
 import { useParams } from "react-router-dom";
+import { InputSeleccionCalificacion } from '../seleccionCalificacion';
 
 export const CalificacionExamen = () =>{
     
+    const[calificacion, setCalificacion] = useState({
+        value:[],
+        observaciones:[]
+    });
+
     const[estudianteCalificacion, setEstudianteExamen] = useState([]);
+    const[notasCalificacion, setNotasCalificacion] = useState([]);
+    
     const { nombreEstudiante } = useParams();
+    const { examenId } = useParams();
+
+    const onNotaCalificacion = (selectedId) => {
+        setCalificacion({
+          ...calificacion,
+          value:[...calificacion.value, selectedId], 
+        });
+      };
 
     useEffect(() => {
         async function fetchData() {
             try{
-                const data = await evaluadorService.calificacionEvaluador()
-                console.log('esta debe ser al actividad: ', data);
+                const data = await evaluadorService.calificacionEvaluador(examenId)
                 setEstudianteExamen(data);
             }catch(error) {
                 console.error('Error al obtener los datos del estudiante', error)
+            }
+        }
+        fetchData();
+    }, [examenId]);
+
+    useEffect(() => {
+        async function fetchData() {
+            try{
+                const data = await evaluadorService.calificacionEstudiante()
+                setNotasCalificacion(data);
+            }catch(error) {
+                console.error('Error al obtener los datos de calificaciones', error)
             }
         }
         fetchData();
@@ -31,7 +57,7 @@ export const CalificacionExamen = () =>{
                     <label htmlFor="">IoT</label>
                 </div>
                 <div>
-                    <h2>Estudiante: { nombreEstudiante } </h2>
+                    <h2>Estudiante: {nombreEstudiante} </h2>
                     <div>
                         <table>
                             <thead>
@@ -42,11 +68,22 @@ export const CalificacionExamen = () =>{
                                 </tr>
                             </thead>
                             <tbody>
-                            {estudianteCalificacion.map((calificar, Index) =>(
-                                <tr key={Index}>
+                            {estudianteCalificacion.map((calificar, index) =>(
+                                <tr key={index}>
                                     <td>{calificar.descripcion}</td>
-                                    <td><InputSeleccion/></td>
-                                    <td><textarea name="" id="" cols="30" rows="10"></textarea></td>
+                                    <td><InputSeleccionCalificacion
+                                            seleccionar={notasCalificacion}
+                                            idSeleccion={onNotaCalificacion}/>
+                                        </td>
+                                    <td>
+                                        <textarea 
+                                            name="" 
+                                            id="" 
+                                            cols="30" 
+                                            rows="10"
+                                        >
+                                        </textarea>
+                                    </td>
                                 </tr>
                             ))}
                             </tbody>

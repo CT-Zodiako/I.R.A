@@ -10,7 +10,6 @@ export const VistaExamenes = () =>{
         async function fetchData() {
           try {
             const data = await evaluadorService.examenesEvaluador();
-            setListaExamenes(data);
           } catch (error) {
             console.error('Error al obtener la lista de examenes:', error);
           }
@@ -34,11 +33,15 @@ export const VistaExamenes = () =>{
                         <tbody>
                         {listaExamenes.map((examenes) => (
                         <tr key={examenes.id}>
-                            <td>{examenes.programa}</td>
+                            <td>{examenes.programa_id}</td>
                             <td>{examenes.proyecto_integrador}</td>
                             <td>Pendiente</td>
                             <td>
-                                <button><Link to={`/lista-estudiantes/${examenes.id}`}>Calificar</Link></button>
+                                <button>
+                                    <Link to={`/lista-estudiantes/${examenes.id}`}>
+                                        Calificar
+                                    </Link>
+                                </button>
                             </td>
                         </tr>
                         ))}

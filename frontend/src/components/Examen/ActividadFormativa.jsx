@@ -4,24 +4,24 @@ export const RegistrarActividadFormativa = (actividadFormativa, agregarActividad
     
     const[nuevaActividad, setNuevaActividad] = useState({descripcion:''});
     
-    const handleNuevaActividadChange = (e) =>{
-        setNuevaActividad(e.target.value);
+    const onActividadFormativa = (event) =>{
+        setNuevaActividad(event.target.value);
     }
 
-    const enviarActividad = (e) =>{
-        e.preventDefault();
+    const onEnviarActividad = (event) =>{
+        event.preventDefault();
         actividadFormativa(nuevaActividad);
     }
 
     return(
         <>
-            <form onSubmit={enviarActividad}>
+            <form onSubmit={onEnviarActividad}>
                 <div>
                     <input
                         type="text"
                         name="descripcion"
                         value={nuevaActividad.descripcion}
-                        onChange={handleNuevaActividadChange}
+                        onChange={onActividadFormativa}
                     />
                     <button type="button" onClick={agregarActividad}>
                         Agregar Actividad
