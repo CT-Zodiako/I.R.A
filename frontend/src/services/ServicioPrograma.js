@@ -9,7 +9,6 @@ class programaServicio{
         } catch (err) {
           console.error(err);
         }
-        console.log(response);
       }
 }
 

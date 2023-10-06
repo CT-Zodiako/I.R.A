@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import evaluadorService from '../../services/servicioEvaluador';
 import { useParams } from "react-router-dom";
-import { InputSeleccionCalificacion } from '../seleccionEvaluador';
+import { InputSeleccionCalificacion } from '../seleccionCalificacion';
 
 export const CalificacionExamen = () =>{
     
     const[calificacion, setCalificacion] = useState({
-        value:[]
+        value:[],
+        observaciones:[]
     });
 
     const[estudianteCalificacion, setEstudianteExamen] = useState([]);
@@ -15,10 +16,10 @@ export const CalificacionExamen = () =>{
     const { nombreEstudiante } = useParams();
     const { examenId } = useParams();
 
-    const notaCalificacion = (selectedId) => {
-        setFormulario({
-          ...formularioExamen,
-          resultado_aprendizaje_id: selectedId, 
+    const onNotaCalificacion = (selectedId) => {
+        setCalificacion({
+          ...calificacion,
+          value:[...calificacion.value, selectedId], 
         });
       };
 
@@ -72,9 +73,17 @@ export const CalificacionExamen = () =>{
                                     <td>{calificar.descripcion}</td>
                                     <td><InputSeleccionCalificacion
                                             seleccionar={notasCalificacion}
-                                            idSeleccion={notaCalificacion}/>
+                                            idSeleccion={onNotaCalificacion}/>
                                         </td>
-                                    <td><textarea name="" id="" cols="30" rows="10"></textarea></td>
+                                    <td>
+                                        <textarea 
+                                            name="" 
+                                            id="" 
+                                            cols="30" 
+                                            rows="10"
+                                        >
+                                        </textarea>
+                                    </td>
                                 </tr>
                             ))}
                             </tbody>

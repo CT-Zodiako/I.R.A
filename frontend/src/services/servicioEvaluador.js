@@ -10,7 +10,7 @@ class evaluadorService{
       const response = await api.post('/evaluador/agregar_evaluador', formulario);
       return response.data;
     } catch (error) {
-      console.error('Error al enviar los datos:', error);
+      console.error(error);
     }
   }
 

@@ -12,7 +12,7 @@ export const PanelSeleccionarEvaluador = (formularioExamen, seleccionEvaluador) 
             const data = await evaluadorService.traerEvaluador();
             setEvaluadores(data);
           } catch (error) {
-            console.error('Error al obtener el resultado:', error);
+            console.error('Error al obtener el evaluador:', error);
           }
         }
         fetchData();

@@ -10,7 +10,6 @@ export const EvaluadorLista = () =>{
           try {
             const data = await evaluadorService.traerEvaluador();
             setEvaluadores(data);
-            console.log(data)
           } catch (error) {
             console.error('Error al obtener el resultado:', error);
           }

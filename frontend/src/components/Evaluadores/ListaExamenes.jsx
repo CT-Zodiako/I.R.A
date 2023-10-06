@@ -10,7 +10,6 @@ export const VistaExamenes = () =>{
         async function fetchData() {
           try {
             const data = await evaluadorService.examenesEvaluador();
-            setListaExamenes(data);
           } catch (error) {
             console.error('Error al obtener la lista de examenes:', error);
           }

@@ -8,28 +8,27 @@ export const InicioSesionUsuarios = () =>{
         contrasena: '',
     });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const onAutentificacion = (event) => {
+        const { name, value } = event.target;
         setAutentificacion(
             { ...autentificacion, 
                 [name]: value 
         });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const onInicioSesion = async (event) => {
+        event.preventDefault();
         try{
             const response = await loginService.verificarLogin(autentificacion); 
-            console.log(response.data);
         }catch(error){
-            console.error('Error al enviar los datos:', error);        }
+            console.error('Error al enviar los datos del Usuario:', error);        }
     }
 
     return(
         <>
          <div>
             <h2>Iniciar sesión</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={onInicioSesion}>
                 <div>
                 <label>Usuario:</label>
                 <input
@@ -37,7 +36,7 @@ export const InicioSesionUsuarios = () =>{
                     id="usuario"
                     name="usuario"
                     value={autentificacion.usuario}
-                    onChange={handleChange}
+                    onChange={onAutentificacion}
                     required
                 />
                 </div>
@@ -48,7 +47,7 @@ export const InicioSesionUsuarios = () =>{
                     id="contrasena"
                     name="contrasena"
                     value={autentificacion.contrasena}
-                    onChange={handleChange}
+                    onChange={onAutentificacion}
                     required
                 />
                 </div>
