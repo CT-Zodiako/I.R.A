@@ -7,19 +7,18 @@ export const CrearResultado = () => {
     descripcion: ''
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const onAgregarResultado = (event) => {
+    const { name, value } = event.target;
     setAgregaResultado({
       ...agregaResultado,
       [name]: value
     });
   };
 
-  const onEnviarResultado = async (e) => {
-    e.preventDefault();
+  const onEnviarResultado = async (event) => {
+    event.preventDefault();
     try {
       const response = await resultadoAprendizajeServicio.agregarResultado(agregaResultado);
-      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -35,7 +34,7 @@ export const CrearResultado = () => {
             type="text"
             name="titulo"
             value={agregaResultado.titulo}
-            onChange={handleChange}
+            onChange={onAgregarResultado}
             required
           />
         </div>
@@ -45,7 +44,7 @@ export const CrearResultado = () => {
             type="text"
             name="descripcion"
             value={agregaResultado.descripcion}
-            onChange={handleChange}
+            onChange={onAgregarResultado}
             required
           />
         </div>

@@ -8,8 +8,8 @@ export const InputGeneral = ({}) =>{
     // };
   const [inputObjeto, setInputObjeto] = useState();
 
-    const NewObjeto = (e) =>{
-      setInputObjeto(e.target.value)
+    const onRegistroDato = (event) =>{
+      setInputObjeto(event.target.value)
     }
 
     const enviarObjeto = () =>{
@@ -23,7 +23,7 @@ export const InputGeneral = ({}) =>{
               type="text"
               // name={name}
               // value={value}
-              onChange={NewObjeto}
+              onChange={onRegistroDato}
             />
           </form>
         </>

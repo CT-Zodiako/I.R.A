@@ -41,7 +41,7 @@ export const VistaEstudiantes = () => {
                             <td>
                                 <div>
                                     <button type='submit'>
-                                        <Link to={`/calificacion-examen/${estudiante.NOMBRE}`}>
+                                        <Link to={`/calificacion-examen/${examenId}/${estudiante.NOMBRE}`}>
                                             Calificar
                                         </Link>
                                     </button>

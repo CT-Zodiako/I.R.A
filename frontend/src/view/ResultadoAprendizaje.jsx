@@ -10,7 +10,6 @@ export const ResultadoAprendizaje = () =>{
           try {
             const data = await resultadoAprendizajeServicio.traerResultado();
             setResultadoAprendizaje(data);
-            
           } catch (error) {
             console.error('Error al obtener el resultado:', error);
           }
@@ -18,20 +17,8 @@ export const ResultadoAprendizaje = () =>{
         fetchData();
       }, []);
 
-      useEffect(() => {
-        async function fetchData() {
-          try {
-            const data = await resultadoAprendizajeServicio.traerResultado();
-            setResultadoAprendizaje(data);
-          } catch (error) {
-            console.error('Error al obtener el resultado:', error);
-          }
-        }
-        fetchData();
-      }, []);
-
-      const onCambiarEstado = async (e, resultado_Id) => {
-        e.preventDefault();
+      const onCambiarEstado = async (event, resultado_Id) => {
+        event.preventDefault();
         try {
           await resultadoAprendizajeServicio.cambiarEstado(resultado_Id);
           const nuevaListaResultados = await resultadoAprendizajeServicio.traerResultado();
@@ -39,9 +26,7 @@ export const ResultadoAprendizaje = () =>{
         } catch (error) {
           console.error(error);
         }
-      };
-
-      
+      };   
     
     return(
         <>

@@ -5,7 +5,7 @@ export const InputSeleccion = ({seleccionar, idSeleccion, label, variable}) => {
     
     const [resultadoAprendizaje, setResultadoAprendizaje] = useState('');
 
-    const handleChange = (event) => {
+    const onOpcionSeleccion = (event) => {
         const selectedId = event.target.value;
         setResultadoAprendizaje(selectedId);
         idSeleccion(selectedId);
@@ -19,17 +19,16 @@ export const InputSeleccion = ({seleccionar, idSeleccion, label, variable}) => {
                 <Select
                     value={resultadoAprendizaje}
                     label={ label }
-                    onChange={handleChange}
+                    onChange={onOpcionSeleccion}
                 >
                 {seleccionar.map(opcion => (
                         <MenuItem 
                             key={opcion.id} 
                             value={opcion.id}
-                            onChange={handleChange}
+                            onChange={onOpcionSeleccion}
                             >{opcion[variable]}
                         </MenuItem>
-                    ))
-                }
+                ))}
                 </Select>
             </FormControl>
         </>
