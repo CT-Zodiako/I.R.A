@@ -24,7 +24,7 @@ export const InputSeleccionCalificacion = ({seleccionar, idSeleccion}) => {
                     seleccionar.map((opcion, index) => (
                         <MenuItem 
                             key={index} 
-                            value={opcion.label}
+                            value={opcion.value}
                             style={{ background: opcion.color }}
                             >{opcion.value}
                         </MenuItem>

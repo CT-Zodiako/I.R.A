@@ -1,3 +1,4 @@
+// yy
 import { useEffect, useState } from "react";
 import evaluadorService from '../../services/servicioEvaluador';
 import { Link, useParams } from "react-router-dom";
@@ -5,6 +6,12 @@ import { Link, useParams } from "react-router-dom";
 export const VistaEstudiantes = () => {
     
     const[listaEstudiantes, setListaEstudiantes] = useState([]);
+    const[calificacionesEstudiantes, setCalificacionesEstudiantes] = useState({
+        calificaciones:[]
+    });
+
+    console.log(calificacionesEstudiantes);
+
     const { examenId } = useParams();
 
     useEffect(() => {
@@ -18,6 +25,14 @@ export const VistaEstudiantes = () => {
         }
         fetchData();
       }, [examenId]);
+
+      const guardarCalificacionEstudiante = (evaluado) => {
+        setCalificacionesEstudiantes((prevCalificaciones) => {
+          return {
+            calificaciones: [...prevCalificaciones.calificaciones, evaluado]
+          };
+        });
+      };
 
     return(
         <>
@@ -40,7 +55,7 @@ export const VistaEstudiantes = () => {
                             <td>{estudiante.CODIGO}</td>
                             <td>
                                 <div>
-                                    <button type='submit'>
+                                <button type='submit' onClick={() => guardarCalificacionEstudiante(location.state.evaluado)}>
                                         <Link to={`/calificacion-examen/${examenId}/${estudiante.NOMBRE}`}>
                                             Calificar
                                         </Link>

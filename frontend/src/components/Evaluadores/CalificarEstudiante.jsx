@@ -4,37 +4,56 @@ import { useParams } from 'react-router-dom';
 import { InputSeleccionCalificacion } from '../seleccionCalificacion';
 
 export const CalificacionExamen = () => {
-  const [calificaciones, setCalificaciones] = useState([]);
+  const[evaluado, setEvaluado] = useState({
+      nombre: '',
+      calificacion:{
+        notas:[],
+        observaciones:[]
+      }
+  });
 
-  const [estudianteCalificacion, setEstudianteExamen] = useState([]);
-  
-  const [notasCalificacion, setNotasCalificacion] = useState([]);
-  const [observaciones, setObservaciones] = useState([]);
+  const[estudianteCalificacion, setEstudianteExamen] = useState([]);
+  const[notasCalificacion, setNotasCalificacion] = useState([]);
 
   const { nombreEstudiante, examenId } = useParams();
 
-  const onNotaCalificacion = (index, value) => {
-    const guardarCalificacion = [...calificaciones];
-    guardarCalificacion[index] = { ...guardarCalificacion[index], calificacion: value };
-    setCalificaciones(guardarCalificacion);
+  const onNotaCalificacion = (idSeleccion) => {
+    setEvaluado({
+      ...evaluado,
+      calificacion: {
+          ...evaluado.calificacion,
+          notas: [...evaluado.calificacion.notas, idSeleccion],
+      },
+    });
   };
 
-  const onObservacion = (index, event) => {
-    const guardarObservacion = [...observaciones];
-    guardarObservacion[index] = event.target.value;
-    setObservaciones(guardarObservacion);
+  const onObservacion = (event) => {
+    const guardarObservacion = event.target.value;
+    const index = Number(event.target.dataset.index);
+    setEvaluado((prevEvaluado) => {
+      const newObservaciones = [...prevEvaluado.calificacion.observaciones];
+      newObservaciones[index] = guardarObservacion;
+      return {
+        ...prevEvaluado,
+        calificacion: {
+          ...prevEvaluado.calificacion,
+          observaciones: newObservaciones,
+        },
+      };
+    });
   };
 
   const onEnviarCalificacion = (event) => {
     event.preventDefault();
-    const data = estudianteCalificacion.map((calificar, index) => {
-      return {
-        calificacion: calificaciones[index].calificacion,
-        observacion: observaciones[index],
-      };
-    });
-    console.log(data);
+    console.log(evaluado);
   };
+
+  useEffect(() => {
+    setEvaluado({
+      ...evaluado,
+      nombre: nombreEstudiante,
+    });
+  }, [nombreEstudiante]);
 
   useEffect(() => {
     async function fetchData() {
@@ -85,10 +104,10 @@ export const CalificacionExamen = () => {
                     <tr key={index}>
                       <td>{calificar.descripcion}</td>
                       <td>
-                        <InputSeleccionCalificacion seleccionar={notasCalificacion} idSeleccion={(value) => onNotaCalificacion(index, value)} />
+                        <InputSeleccionCalificacion seleccionar={notasCalificacion} idSeleccion={onNotaCalificacion} />
                       </td>
                       <td>
-                        <textarea name="" id="" cols="30" rows="10" onChange={(event) => onObservacion(index, event)}></textarea>
+                        <textarea name="" id="" cols="30" rows="10" onChange={onObservacion} data-index={index}></textarea>
                       </td>
                     </tr>
                   ))}
@@ -97,7 +116,7 @@ export const CalificacionExamen = () => {
             </div>
           </div>
         </div>
-        <button type="submit">Calificar</button>
+        <button type="submit">Calificar Estudiante</button>
       </form>
     </>
   );
