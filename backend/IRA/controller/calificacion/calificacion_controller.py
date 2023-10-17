@@ -3,6 +3,7 @@ from ...models.calificacion.schema import CalificacionExamenSchema
 from flask import jsonify
 from ...models.examen.examen_model import Examen
 from enum import Enum
+from ...models.calificacion.calificacion_model import CalificacionExamen
 
 
 
@@ -32,6 +33,17 @@ def actividades_examen(id_examen):
         
         if examen:
             return jsonify(examen.actividades_formativas)
+        else:
+            return jsonify({"error": "Examen no encontrado"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+def calificaciones_by_id_db(id_examen):
+    try:
+        examen = CalificacionExamen.query.filter_by(examen_id=id_examen).first()
+        
+        if examen:
+            return jsonify(examen.calificacion)
         else:
             return jsonify({"error": "Examen no encontrado"}), 404
     except Exception as e:
