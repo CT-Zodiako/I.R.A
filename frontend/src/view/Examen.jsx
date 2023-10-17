@@ -20,10 +20,6 @@ export const CrearExamen = () => {
   const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
   const [evaluadores, setEvaluadores] = useState([]);
 
-  const [nuevoEvaluador, setNuevoEvaluador] = useState({
-    id:'',
-  });
-
   const [nuevaActividad, setNuevaActividad] = useState({
     descripcion: ''
   });
@@ -77,28 +73,15 @@ export const CrearExamen = () => {
     });
   };
 
-  const agregarEvaluador = () => {
-    if (nuevoEvaluador.nombre && nuevoEvaluador.correo) {
-      setFormulario({
-        ...formularioExamen,
-        evaluadores_ids: [...formularioExamen.evaluadores_ids, nuevoEvaluador]
-      });
-      setNuevoEvaluador({
-        nombre: '',
-        correo: ''
-      });
-    }
-  };
-
   const agregarActividad = () => {
     if (nuevaActividad.descripcion) {
       setFormulario({
         ...formularioExamen,
         actividades_formativas: [...formularioExamen.actividades_formativas, nuevaActividad]
       });
-      setNuevaActividad({
-        descripcion: ''
-      });
+      // setNuevaActividad({
+      //   descripcion: ''
+      // });
     }
   };
 
@@ -108,9 +91,9 @@ export const CrearExamen = () => {
         ...formularioExamen,
         estudiantes: [...formularioExamen.estudiantes, nuevoEstudiante]
       });
-      setNuevoEstudiante({
-        NOMBRE: ''
-      });
+      // setNuevoEstudiante({
+      //   NOMBRE: ''
+      // });
     }
   };
 
@@ -253,9 +236,6 @@ export const CrearExamen = () => {
                   label='seleccione evaluador'
                   variable='nombre_evaluador'/>  
             </div>
-            <button type="button" onClick={agregarEvaluador}>
-              Agregar Evaluador
-            </button>
           </div>
           <div>
             <table>
