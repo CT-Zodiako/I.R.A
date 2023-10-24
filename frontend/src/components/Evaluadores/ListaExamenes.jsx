@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 
 export const VistaExamenes = () =>{
     
-    const[listaExamenes, setListaExamenes]= useState([]);
+    const[listaExamenesEvaluador, setListaExamenesEvaluador]= useState([]);
 
     useEffect(() => {
         async function fetchData() {
           try {
             const data = await evaluadorService.examenesEvaluador();
-            setListaExamenes(data);
+            setListaExamenesEvaluador(data);
           } catch (error) {
             console.error('Error al obtener la lista de examenes:', error);
           }
@@ -32,7 +32,7 @@ export const VistaExamenes = () =>{
                         </tr>
                         </thead>
                         <tbody>
-                        {listaExamenes.map((examenes) => (
+                        {listaExamenesEvaluador.map((examenes) => (
                         <tr key={examenes.id}>
                             <td>{examenes.programa_id}</td>
                             <td>{examenes.proyecto_integrador}</td>

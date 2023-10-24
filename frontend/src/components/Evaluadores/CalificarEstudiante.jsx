@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import evaluadorService from '../../services/servicioEvaluador';
 import { useParams } from 'react-router-dom';
 import { InputSeleccionCalificacion } from '../seleccionCalificacion';
+import { addCalificacion } from '../../redux/calificacionSlice';
+import { useDispatch } from 'react-redux';
 
 export const CalificacionExamen = () => {
+  const dispatch = useDispatch();
   const[evaluado, setEvaluado] = useState({
-      nombre: '',
-      calificacion:{
-        notas:[],
-        observaciones:[]
-      }
+        nombre: '',
+        calificacion:{
+          notas:[],
+          observaciones:[]
+        }
   });
 
   const[estudianteCalificacion, setEstudianteExamen] = useState([]);
@@ -20,7 +23,7 @@ export const CalificacionExamen = () => {
   const onNotaCalificacion = (idSeleccion) => {
     setEvaluado({
       ...evaluado,
-      calificacion: {
+        calificacion: {
           ...evaluado.calificacion,
           notas: [...evaluado.calificacion.notas, idSeleccion],
       },
@@ -45,6 +48,13 @@ export const CalificacionExamen = () => {
 
   const onEnviarCalificacion = (event) => {
     event.preventDefault();
+    dispatch(
+      addCalificacion({
+        nombre: evaluado.nombre,
+        notas: evaluado.calificacion.notas,
+        observacion: evaluado.calificacion.observaciones,
+      })
+    );
     console.log(evaluado);
   };
 
@@ -116,7 +126,7 @@ export const CalificacionExamen = () => {
             </div>
           </div>
         </div>
-        <button type="submit">Calificar Estudiante</button>
+        <button type="submit" onClick={onEnviarCalificacion}>Calificar Estudiante</button>
       </form>
     </>
   );

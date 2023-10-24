@@ -1,16 +1,21 @@
-// yy
 import { useEffect, useState } from "react";
 import evaluadorService from '../../services/servicioEvaluador';
 import { Link, useParams } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
-export const VistaEstudiantes = () => {
-    
+export const VistaEstudiantes = () => {    
+
     const[listaEstudiantes, setListaEstudiantes] = useState([]);
-    const[calificacionesEstudiantes, setCalificacionesEstudiantes] = useState({
-        calificaciones:[]
-    });
+    // const[estudiantesCalificaciones, setEstudiantesCalificaciones] = useState();
 
-    console.log(calificacionesEstudiantes);
+    const calificacionesEstudiantes = useSelector(state => state.calificacion.calificaciones);
+
+    // const guardarCalificaciones = (evaluado) => {
+    //     const nuevasCalificaciones = {
+    //         ...calificacionesEstudiantes,
+    //         calificaciones: [...calificacionesEstudiantes.calificaciones, evaluado]
+    //     };
+    // };
 
     const { examenId } = useParams();
 
@@ -26,13 +31,9 @@ export const VistaEstudiantes = () => {
         fetchData();
       }, [examenId]);
 
-      const guardarCalificacionEstudiante = (evaluado) => {
-        setCalificacionesEstudiantes((prevCalificaciones) => {
-          return {
-            calificaciones: [...prevCalificaciones.calificaciones, evaluado]
-          };
-        });
-      };
+      useEffect(() => {
+        console.log('Lista de calificaciones actualizada:', calificacionesEstudiantes);
+    }, [calificacionesEstudiantes]);
 
     return(
         <>
@@ -55,7 +56,7 @@ export const VistaEstudiantes = () => {
                             <td>{estudiante.CODIGO}</td>
                             <td>
                                 <div>
-                                <button type='submit' onClick={() => guardarCalificacionEstudiante(location.state.evaluado)}>
+                                <button type='submit'>
                                         <Link to={`/calificacion-examen/${examenId}/${estudiante.NOMBRE}`}>
                                             Calificar
                                         </Link>
