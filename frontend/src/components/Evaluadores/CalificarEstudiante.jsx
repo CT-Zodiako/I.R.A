@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import evaluadorService from '../../services/servicioEvaluador';
 import { useParams } from 'react-router-dom';
 import { InputSeleccionCalificacion } from '../seleccionCalificacion';
-import { addCalificacion } from '../../redux/calificacionSlice';
+import { agregarCalificacion } from '../../redux/calificacionSlice';
 import { useDispatch } from 'react-redux';
 
 export const CalificacionExamen = () => {
@@ -49,10 +49,11 @@ export const CalificacionExamen = () => {
   const onEnviarCalificacion = (event) => {
     event.preventDefault();
     dispatch(
-      addCalificacion({
-        nombre: evaluado.nombre,
-        notas: evaluado.calificacion.notas,
-        observacion: evaluado.calificacion.observaciones,
+      agregarCalificacion({
+          examenId: examenId,
+          nombre: evaluado.nombre,
+          notas: evaluado.calificacion.notas,
+          observacion: evaluado.calificacion.observaciones,
       })
     );
     console.log(evaluado);

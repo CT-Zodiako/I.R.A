@@ -1,25 +1,37 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const calificacion = {
-    calificaciones:[
+    calificacion:[
         {
             nombre: "",
             calificacion:{
                 notas:[],
-                observacion:[]
+                observaciones:[]
             }
         }
-    ]
-};
+    ],
+    examen_id: ""
+}
 
 export const calificacionSlice = createSlice({
     name: "calificacion",
     initialState: calificacion,
     reducers:{
-        addCalificacion:(state, action)=>{
+        idExamenCalificacion: (state, action) => {
+            const { examenId } = action.payload;
+            if (state.examen_id === examenId) {
+              console.log("El ID del examen ya existe en el estado.");
+              return state;
+            }
+            return {
+                ...state,
+                examen_id: examenId
+            };
+        },
+        agregarCalificacion:(state, action)=>{
             const {nombre, notas, observacion} = action.payload;
-            if (state.calificaciones.length === 1 && state.calificaciones[0].nombre === "" && state.calificaciones[0].calificacion.notas.length === 0 && state.calificaciones[0].calificacion.observacion.length === 0) {
-                state.calificaciones = [];
+            if (state.calificacion.length === 1 && state.calificacion[0].nombre === "") {
+                state.calificacion = [];
             }
             const nuevaCalificacion = {
                 nombre: nombre,
@@ -28,10 +40,22 @@ export const calificacionSlice = createSlice({
                     observacion: observacion
                 }
             };
-            state.calificaciones.push(nuevaCalificacion);
+            state.calificacion.push(nuevaCalificacion);
+        },
+        LimpiarCalificacion:(state)=>{ 
+            state.calificacion = [
+                {
+                    nombre: "",
+                    calificacion:{
+                        notas:[],
+                        observaciones:[]
+                    }
+                }
+            ],
+            state.examen_id = "";
         }
     }
 });
 
-export const { addCalificacion } = calificacionSlice.actions;
+export const { agregarCalificacion, LimpiarCalificacion, idExamenCalificacion } = calificacionSlice.actions;
 export default calificacionSlice.reducer;

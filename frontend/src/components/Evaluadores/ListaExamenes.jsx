@@ -1,10 +1,22 @@
 import { useEffect, useState } from "react";
 import evaluadorService from '../../services/servicioEvaluador';
 import { Link } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { idExamenCalificacion } from '../../redux/calificacionSlice';
 
 export const VistaExamenes = () =>{
-    
+    const dispatch = useDispatch();
     const[listaExamenesEvaluador, setListaExamenesEvaluador]= useState([]);
+
+    const onIdExamen = ({ examen }) => {
+        const examenId = examen;
+        dispatch(
+            idExamenCalificacion({ 
+                examenId: examenId, 
+            })
+        );
+        console.log(examenId);
+    }
 
     useEffect(() => {
         async function fetchData() {
@@ -38,7 +50,7 @@ export const VistaExamenes = () =>{
                             <td>{examenes.proyecto_integrador}</td>
                             <td>Pendiente</td>
                             <td>
-                                <button>
+                                <button onClick={() => onIdExamen({ examen: examenes.id })}>
                                     <Link to={`/lista-estudiantes/${examenes.id}`}>
                                         Calificar
                                     </Link>
