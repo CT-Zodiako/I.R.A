@@ -1,16 +1,28 @@
 import { useEffect, useState } from "react";
 import evaluadorService from '../../services/servicioEvaluador';
 import { Link } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { idExamenCalificacion } from '../../redux/calificacionSlice';
 
 export const VistaExamenes = () =>{
-    
-    const[listaExamenes, setListaExamenes]= useState([]);
+    const dispatch = useDispatch();
+    const[listaExamenesEvaluador, setListaExamenesEvaluador]= useState([]);
+
+    const onIdExamen = ({ examen }) => {
+        const examenId = examen;
+        dispatch(
+            idExamenCalificacion({ 
+                examenId: examenId, 
+            })
+        );
+        console.log(examenId);
+    }
 
     useEffect(() => {
         async function fetchData() {
           try {
             const data = await evaluadorService.examenesEvaluador();
-            setListaExamenes(data);
+            setListaExamenesEvaluador(data);
           } catch (error) {
             console.error('Error al obtener la lista de examenes:', error);
           }
@@ -32,13 +44,13 @@ export const VistaExamenes = () =>{
                         </tr>
                         </thead>
                         <tbody>
-                        {listaExamenes.map((examenes) => (
+                        {listaExamenesEvaluador.map((examenes) => (
                         <tr key={examenes.id}>
                             <td>{examenes.programa_id}</td>
                             <td>{examenes.proyecto_integrador}</td>
                             <td>Pendiente</td>
                             <td>
-                                <button>
+                                <button onClick={() => onIdExamen({ examen: examenes.id })}>
                                     <Link to={`/lista-estudiantes/${examenes.id}`}>
                                         Calificar
                                     </Link>

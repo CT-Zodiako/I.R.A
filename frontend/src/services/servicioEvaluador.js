@@ -87,6 +87,15 @@ class evaluadorService{
     }
   }
 
+  async calificacionActividadEstudiante(calificacionesEstudiantes) {
+    try{
+      const responce = await axios.post(`http://127.0.0.1:3001/calificacion/guardar_calificacion`, calificacionesEstudiantes);
+      return(responce.data)
+    }catch(err){
+      console.error(err)
+    }
+  }
+
 };
 
 export default new evaluadorService();

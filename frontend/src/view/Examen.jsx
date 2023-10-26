@@ -158,9 +158,8 @@ export const CrearExamen = () => {
     fetchData();
   }, []);
   
-  const onCargarExamen = async(e) => {
-    e.preventDefault();
-    console.log(formularioExamen);
+  const onCargarExamen = async(event) => {
+    event.preventDefault();
     try {
       const response = await  examenService.agregarExamen(formularioExamen);
     } catch (error) {
