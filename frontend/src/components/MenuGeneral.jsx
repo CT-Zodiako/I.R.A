@@ -10,6 +10,7 @@ const Menu = () => {
         <li><Link to="/resultado-aprendizaje">Historial</Link></li>
         <li><Link to="/lista_examenes">Bandeja de examenes</Link> </li>
         <li><Link to="/informe_examen">Informes</Link></li>
+        <li><Link to="/grafica-informe">Grafico</Link></li>
       </ul>
     </div>
   );

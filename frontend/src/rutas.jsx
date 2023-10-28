@@ -9,6 +9,8 @@ import { VistaExamenes } from './components/Evaluadores/ListaExamenes';
 import { VistaEstudiantes } from './components/Evaluadores/ListaEstudiantes';
 import { CalificacionExamen } from './components/Evaluadores/CalificarEstudiante';
 import { Informes } from './components/InformesExamenes/informes'
+import { GraficoInforme } from './components/InformesExamenes/grafico'
+import { PromedioEstudiante } from './components/InformesExamenes/informeEstudinates'
 // import { FormularioPorPasos } from './components/EvaluadorComponentes/pruebaPasos'; 
 
 function Routers() {
@@ -24,6 +26,8 @@ function Routers() {
       <Route path="/lista-estudiantes/:examenId" element={<VistaEstudiantes/>}></Route>
       <Route path="/calificacion-examen/:examenId/:nombreEstudiante" element={<CalificacionExamen/>}></Route>
       <Route path="/informe_examen" element={<Informes/>}></Route>
+      <Route path="/grafica-informe" element={<GraficoInforme/>}></Route>
+      <Route path="/informe-estudiante/:evaluadorId" element={<PromedioEstudiante/>}></Route>
       {/* <Route path="/historial" element={<FormularioPorPasos/>} /> */}
     </Routes>
   );

@@ -34,7 +34,7 @@ export const Informes = () => {
                         <td>{informes.id}</td>
                         <td>
                             <button>
-                                <Link to={``}>Ver Informe</Link>
+                                <Link to={`/informe-estudiante/${informes.examen_id}`}>Ver Informe</Link>
                             </button>
                         </td>
                     </tr>
