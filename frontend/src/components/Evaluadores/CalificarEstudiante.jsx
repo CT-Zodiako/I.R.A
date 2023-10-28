@@ -83,6 +83,7 @@ export const CalificacionExamen = () => {
       try {
         const data = await evaluadorService.calificacionEstudiante();
         setNotasCalificacion(data);
+        console.log(data);
       } catch (error) {
         console.error('Error al obtener los datos de calificaciones', error);
       }

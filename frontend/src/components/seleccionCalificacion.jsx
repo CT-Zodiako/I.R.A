@@ -9,6 +9,7 @@ export const InputSeleccionCalificacion = ({seleccionar, idSeleccion}) => {
         const selectedId = event.target.value;
         setCalificacion(selectedId);
         idSeleccion(selectedId); 
+        console.log(selectedId);
     }
     
     return(
@@ -24,9 +25,9 @@ export const InputSeleccionCalificacion = ({seleccionar, idSeleccion}) => {
                     seleccionar.map((opcion, index) => (
                         <MenuItem 
                             key={index} 
-                            value={opcion.value}
+                            value={opcion.nota}
                             style={{ background: opcion.color }}
-                            >{opcion.value}
+                            >{opcion.label}
                         </MenuItem>
                     ))
                 }

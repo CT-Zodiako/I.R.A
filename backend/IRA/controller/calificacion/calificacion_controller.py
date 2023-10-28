@@ -51,7 +51,7 @@ def calificaciones_by_id_db(id_examen):
 
 def enum_calificacion():
     try:
-        enum_options = [{'label': calificacion.value['label'], 'value': calificacion.name, 'color': calificacion.value['color']} for calificacion in CalificacionEnum]
+        enum_options = [{'label': calificacion.value['label'], 'value': calificacion.name, 'color': calificacion.value['color'], 'nota': calificacion.value['nota']} for calificacion in CalificacionEnum]
         return enum_options
     except Exception as e:
         return jsonify({"error en enum calificaiones": str(e)}), 500
