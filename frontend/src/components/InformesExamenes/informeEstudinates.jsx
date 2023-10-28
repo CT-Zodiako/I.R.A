@@ -6,7 +6,16 @@ import evaluadorService from '../../services/servicioEvaluador'
 export const PromedioEstudiante =  () => {
     const { evaluadorId } = useParams();
     const [calificaciones, setCalificaciones] = useState([]);
-    const[notasCalificacion, setNotasCalificacion] = useState([]);
+    const [notasCalificacion, setNotasCalificacion] = useState([]);
+
+    const onColorPromedio = (promedio) => {
+        for (let nota of notasCalificacion) {
+            if (promedio >= nota.nota) {
+                return nota.color;
+            }
+        }
+        return 'black'; // Color predeterminado si no se encuentra ninguna coincidencia
+    };
 
     useEffect(() => {
         async function fetchData() {
@@ -46,8 +55,12 @@ export const PromedioEstudiante =  () => {
                 <tbody>
                     {calificaciones.map((promedio, Index) => (
                         <tr key={Index}>
-                            <td>{promedio.nombre}</td>
-                            <td>{promedio.promedio}</td>
+                            <td style={{ backgroundColor: onColorPromedio(promedio.calificacion.promedio) }}>
+                                {promedio.nombre}
+                            </td>
+                            <td style={{ backgroundColor: onColorPromedio(promedio.calificacion.promedio) }}>
+                                {promedio.calificacion.promedio}
+                            </td>
                         </tr>
                     ))}
                 </tbody>
