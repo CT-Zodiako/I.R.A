@@ -1,9 +1,21 @@
 import { useEffect, useState } from "react";
 import evaluadorService from '../../services/servicioEvaluador';
 import { Link } from 'react-router-dom';
+// import {ModalIRA} from '../Examen/Modal'
 
 export const EvaluadorLista = () =>{
     const[evaluadores, setEvaluadores] = useState([]);
+    // const [modalAbierto, setModalAbierto] = useState(false);
+
+    // const abrirModal = (evaluadorId) => {
+    //   setModalAbierto(true);
+    //   setEvaluadorIdSeleccionado(evaluadorId);
+    // };
+  
+    // const cerrarModal = () => {
+    //   setModalAbierto(false);
+    //   setEvaluadorIdSeleccionado(null);
+    // };  
 
     useEffect(() => {
         async function fetchData() {
@@ -55,7 +67,13 @@ export const EvaluadorLista = () =>{
                             <td>
                                 <div>
                                     {/* <button onClick={(e) => onCambiarEstadoEvaluador(e, evaluador.id)}>{evaluador.estado ? 'Desactivar' : 'Activar'}</button> */}
-                                    <button><Link to={`/gestion-usuario/${evaluador.id}`}>Editar</Link></button>
+                                    {/* <button><Link to={`/gestion-usuario/${evaluador.id}`}>Editar</Link></button> */}
+                                    
+                                    {/* <ModalIRA
+                                      isOpen={abrirModal}
+                                      onClose={cerrarModal}
+                                      evaluadorId={evaluador.id}
+                                    /> */}
                                     <button onClick={(e) => onEliminarEvaluador(e, evaluador.id)}>Eliminar</button>
                                 </div>  
                             </td>

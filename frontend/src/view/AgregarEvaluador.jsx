@@ -84,7 +84,6 @@ export const CrearEvaluador = () => {
         </div>
         <div>
           <button type="submit">Crear Evaluador</button>
-          <button></button>
         </div>
       </form>
     </div>
