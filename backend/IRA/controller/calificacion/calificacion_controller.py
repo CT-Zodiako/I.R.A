@@ -59,10 +59,10 @@ def enum_calificacion():
 
 
 class CalificacionEnum(Enum):
-    EXCELENTE = {'label': 'EXCELENTE', 'color': 'green', 'nota': 5}
-    SOBRESALIENTE = {'label': 'SOBRESALIENTE', 'color': 'blue', 'nota': 4}
-    SUFICIENTE = {'label': 'SUFICIENTE', 'color': 'orange', 'nota': 3}
-    INSUFICIENTE = {'label': 'INSUFICIENTE', 'color': 'red' , 'nota': 2}
-    NO_CUMPLE = {'label': 'NO CUMPLE', 'color': 'gray', 'nota': 1}
-    NINGUNA_CALIFICACION = {'label': 'NINGUNA CALIFICACION', 'color': 'yellow', 'nota': 0}
+    EXCELENTE = {'label': 'EXCELENTE', 'color': '#9AFE2E', 'nota': 5}
+    SOBRESALIENTE = {'label': 'SOBRESALIENTE', 'color': '#2E64FE', 'nota': 4}
+    SUFICIENTE = {'label': 'SUFICIENTE', 'color': '#FACC2E', 'nota': 3}
+    INSUFICIENTE = {'label': 'INSUFICIENTE', 'color': '#FE2E2E' , 'nota': 2}
+    NO_CUMPLE = {'label': 'NO CUMPLE', 'color': '#A4A4A4', 'nota': 1}
+    NINGUNA_CALIFICACION = {'label': 'NINGUNA CALIFICACION', 'color': '#F7FE2E', 'nota': 0}
    

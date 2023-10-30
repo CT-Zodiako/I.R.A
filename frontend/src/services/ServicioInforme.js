@@ -18,6 +18,15 @@ class informeServicio{
         console.error(err);
       }
    }
+
+   async conteoEstudiante(evaluadorId) {
+    try {
+      const response = await axios.get(`http://127.0.0.1:3001/informes/calificacion_by_id_examen/${evaluadorId}`);
+        return response.data.conteo;
+    } catch (err) {
+      console.error(err);
+    }
+ }
 }
 
 export default new informeServicio();

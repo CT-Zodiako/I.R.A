@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Chart from "react-google-charts";
 import informeServicio from '../../services/ServicioInforme'
 import evaluadorService from '../../services/servicioEvaluador'
 
 export const PromedioEstudiante =  () => {
     const { evaluadorId } = useParams();
     const [calificaciones, setCalificaciones] = useState([]);
+    const [conteo, setConteo] = useState({});
     const [notasCalificacion, setNotasCalificacion] = useState([]);
+
+    const coloresHexadecimales = notasCalificacion.map(item => item.color);
 
     const onColorPromedio = (promedio) => {
         for (let nota of notasCalificacion) {
@@ -14,8 +18,12 @@ export const PromedioEstudiante =  () => {
                 return nota.color;
             }
         }
-        return 'black'; // Color predeterminado si no se encuentra ninguna coincidencia
+        return 'black';
     };
+
+    const datosGrafico = [['Task', 'Hours per Day']].concat(
+        Object.entries(conteo).map(([key, value]) => [key, value])
+    );
 
     useEffect(() => {
         async function fetchData() {
@@ -24,7 +32,20 @@ export const PromedioEstudiante =  () => {
             setCalificaciones(data);
             console.log(data);
           } catch (error) {
-            console.error('Error al obtener la lista de examenes:', error);
+            console.error('Error al obtener el promedio de los estudiantes:', error);
+          }
+        }
+        fetchData();
+      }, [evaluadorId]);
+
+      useEffect(() => {
+        async function fetchData() {
+          try {
+            const data = await informeServicio.conteoEstudiante(evaluadorId);
+            setConteo(data);
+            console.log(data);
+          } catch (error) {
+            console.error('Error al obtener el conteo:', error);
           }
         }
         fetchData();
@@ -65,6 +86,20 @@ export const PromedioEstudiante =  () => {
                     ))}
                 </tbody>
             </table>
+            <div>
+                <Chart
+                    width={'600px'}
+                    height={'300px'}
+                    chartType="PieChart"
+                    loader={<div>Cargando gráfico</div>}
+                    data={datosGrafico}
+                    options={{
+                        title: 'Conteo Por Calificacion',
+                        colors: coloresHexadecimales,                     
+                    }}
+                    rootProps={{ 'data-testid': '1' }}
+                />
+            </div>
         </>
     );
 }
