@@ -1,12 +1,28 @@
 from flask import Blueprint, request, jsonify
 from ...controller.login.login_controller import verificar_conectar
-
+from ...models.evaluador.evaluador_model import Evaluador
+from ...auth import bcrypt, jwt
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 login_blueprint = Blueprint('login', __name__)
 
 
 @login_blueprint.route('/conectar', methods=['POST'])
-def verificar_login():
-    data = request.json
-    usuario = data.get('usuario')
-    contrasena = data.get('contrasena')
-    return verificar_conectar(usuario, contrasena)
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    # Busca el usuario en la base de datos
+    evaluador = Evaluador.query.filter_by(numero_identificacion=username).first()
+    print(evaluador)
+
+    if evaluador is None:
+        return jsonify({"message": "Usuario no encontrado"}), 404
+
+    # Verifica la contraseña utilizando bcrypt
+    if bcrypt.check_password_hash(evaluador.contrasenna, password):
+        # Contraseña válida, emite un token JWT u otra lógica de inicio de sesión
+        access_token = create_access_token(identity=username)
+        return jsonify(access_token=access_token), 200
+    else:
+        return jsonify({"message": "Credenciales incorrectas"}), 401

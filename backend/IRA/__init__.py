@@ -3,7 +3,9 @@ from flask import Flask
 from flask_cors import CORS
 from .db import db
 from .configuracion_marshmallow import ma
+from .auth import bcrypt, jwt
 from dotenv import load_dotenv
+from flask_jwt_extended import JWTManager
 
 
 def create_app(test_config=None):
@@ -24,6 +26,8 @@ def create_app(test_config=None):
 
     db.init_app(app)
     ma.init_app(app)
+    jwt = JWTManager(app)
+    bcrypt.init_app(app)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
