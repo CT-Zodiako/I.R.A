@@ -26,6 +26,7 @@ def login():
             "nombre": evaluador.nombre_evaluador,
             "rol": evaluador.rol
         }
+        print(usuario_data)
         access_token = create_access_token(identity=usuario_data)
 
         return jsonify(access_token=access_token), 200

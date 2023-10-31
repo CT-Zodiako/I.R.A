@@ -8,7 +8,7 @@ evaluador_blueprint = Blueprint('evaluador', __name__)
 
 
 @evaluador_blueprint.route('/agregar_evaluador', methods=['POST'])
-@jwt_required
+@jwt_required()
 def crear_evaluador():
     data = request.json
     return agregar_evaluador(data)
