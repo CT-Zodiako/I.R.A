@@ -6,6 +6,7 @@ from ...models.evaluador.schemas import EvaluadorSchema, ExamenEvaluadorSchema
 from sqlalchemy.exc import IntegrityError
 from ...models.relaciones.relacion_examen_evaluador import examen_evaluador_tabla
 from werkzeug.security import generate_password_hash
+from flask_jwt_extended import jwt_required
 
 
 def agregar_evaluador(data):
