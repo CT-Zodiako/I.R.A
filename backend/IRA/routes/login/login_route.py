@@ -24,7 +24,7 @@ def login():
         usuario_data = {
             "id": evaluador.id,
             "nombre": evaluador.nombre_evaluador,
-            "telefono": evaluador.telefono
+            "rol": evaluador.rol
         }
         access_token = create_access_token(identity=usuario_data)
 
