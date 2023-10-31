@@ -10,13 +10,14 @@ export const PromedioEstudiante =  () => {
     const { evaluadorId } = useParams();
     const [calificaciones, setCalificaciones] = useState([]);
     const [conteo, setConteo] = useState({});
-    const [notasCalificacion, setNotasCalificacion] = useState([]);
+    const [colorInforme, setColorInforme] = useState([]);
     const tableRef = useRef(null);
 
-    const coloresHexadecimales = notasCalificacion.map(item => item.color);
+    const coloresHexadecimales = colorInforme.map(item => item.color);
+    console.log(coloresHexadecimales);
 
     const onColorPromedio = (promedio) => {
-        for (let nota of notasCalificacion) {
+        for (let nota of colorInforme) {
             if (promedio >= nota.nota) {
                 return nota.color;
             }
@@ -27,6 +28,18 @@ export const PromedioEstudiante =  () => {
     const datosGrafico = [['Task', 'Hours per Day']].concat(
         Object.entries(conteo).map(([key, value]) => [key, value])
     );
+
+    const asignarColoresFondoPastel = () => {
+        const coloresFondo = Object.keys(conteo).map(key => {
+            const color = colorInforme.find(item => item.value === key);
+            if (color) {
+                return { color: color.color };
+            } else {
+                return { color: '#A4A4A4' }; // Co si no se encuentra ningún color correspondiente
+            }
+        });
+        return coloresFondo;
+    };
 
     const downloadPDF = () => {
         const input = document.getElementById("pdf-content");
@@ -69,7 +82,7 @@ export const PromedioEstudiante =  () => {
         async function fetchData() {
           try {
             const data = await evaluadorService.calificacionEstudiante();
-            setNotasCalificacion(data);
+            setColorInforme(data);
           } catch (error) {
             console.error('Error al obtener los datos de calificaciones', error);
           }
@@ -109,7 +122,7 @@ export const PromedioEstudiante =  () => {
                         data={datosGrafico}
                         options={{
                             title: 'Conteo Por Calificacion',
-                            colors: coloresHexadecimales,                     
+                            slices: asignarColoresFondoPastel(),                     
                         }}
                         rootProps={{ 'data-testid': '1' }}
                     />
