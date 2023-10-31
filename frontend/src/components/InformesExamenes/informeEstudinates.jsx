@@ -35,7 +35,7 @@ export const PromedioEstudiante =  () => {
             if (color) {
                 return { color: color.color };
             } else {
-                return { color: '#A4A4A4' }; // Co si no se encuentra ningún color correspondiente
+                return { color: '#A4A4A4' };
             }
         });
         return coloresFondo;

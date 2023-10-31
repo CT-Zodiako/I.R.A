@@ -1,3 +1,4 @@
+//este es el codigo original del momento
 import { useState } from "react";
 import loginService from "../services/ServicioLogin";
 
@@ -18,11 +19,26 @@ export const InicioSesionUsuarios = () =>{
 
     const onInicioSesion = async (event) => {
         event.preventDefault();
-        try{
-            const response = await loginService.verificarLogin(autentificacion); 
-        }catch(error){
-            console.error('Error al enviar los datos del Usuario:', error);        }
-    }
+        try {
+            const response = await loginService.verificarLogin(autentificacion);
+            const token = response.data.token;
+
+            localStorage.setItem('token', token);
+            
+            try {
+                const response = await axios.get('http://ejemplo.com/api/data', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setData(response.data);
+            } catch (error) {
+                console.error('Error al obtener datos del backend', error);
+            }
+        } catch (error) {
+            console.error('Error al enviar los datos del Usuario:', error);
+        }
+    };
 
     return(
         <>

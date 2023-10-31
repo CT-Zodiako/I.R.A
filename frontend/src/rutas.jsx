@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { InicioSesionUsuarios } from './view/InicioSesion'
 import { CrearExamen } from '../src/view/Examen'; 
 import { CrearEvaluador } from './view/AgregarEvaluador';
-import { EvaluadorLista } from './components/Evaluadores/Evaluador'; 
+import { EvaluadorLista } from './components/Evaluadores/EvaluadorLista'; 
 import { ResultadoAprendizaje } from './view/ResultadoAprendizaje';
 import { CrearResultado } from './components/ResultadoComponentes/agregarResultadoAprendizaje'; 
 import { VistaExamenes } from './components/Evaluadores/ListaExamenes';
