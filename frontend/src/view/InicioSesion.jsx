@@ -1,9 +1,7 @@
-//este es el codigo original del momento
 import { useState } from "react";
 import loginService from "../services/ServicioLogin";
 
-export const InicioSesionUsuarios = () =>{
-    
+export const InicioSesionUsuarios = () => {
     const [autentificacion, setAutentificacion] = useState({
         username: '',
         password: '',
@@ -11,10 +9,7 @@ export const InicioSesionUsuarios = () =>{
 
     const onAutentificacion = (event) => {
         const { name, value } = event.target;
-        setAutentificacion(
-            { ...autentificacion, 
-                [name]: value 
-        });
+        setAutentificacion({ ...autentificacion, [name]: value });
     };
 
     const onInicioSesion = async (event) => {
@@ -24,52 +19,60 @@ export const InicioSesionUsuarios = () =>{
             const token = response.data.access_token;
 
             localStorage.setItem('token', token);
-            
-            // try {
-            //     const response = await axios.get('http://ejemplo.com/api/data', {
-            //         headers: {
-            //             Authorization: `Bearer ${token}`,
-            //         },
-            //     });
-            //     setData(response.data);
-            // } catch (error) {
-            //     console.error('Error al obtener datos del backend', error);
-            // }
+            console.log("token: "+token);
+
+            const tokenData = token.split('.')[1];
+            console.log(tokenData);
+            const decodedToken = JSON.parse(atob(tokenData));
+            console.log(decodedToken.sub);
+
+            if (decodedToken) {
+                const userId = decodedToken.sub.id;
+                const username = decodedToken.sub.nombre;
+                const rol = decodedToken.sub.rol;
+
+                console.log('ID del usuario:', userId);
+                console.log('Nombre de usuario:', username);
+                console.log('Rol del usuario: ', rol)
+            } else {
+                console.error('Error al decodificar el token');
+            }
+
         } catch (error) {
             console.error('Error al enviar los datos del Usuario:', error);
         }
     };
 
-    return(
+    return (
         <>
-         <div>
-            <h2>Iniciar sesión</h2>
-            <form onSubmit={onInicioSesion}>
-                <div>
-                <label>Usuario:</label>
-                <input
-                    type="text"
-                    id="usuario"
-                    name="username"
-                    value={autentificacion.username}
-                    onChange={onAutentificacion}
-                    required
-                />
-                </div>
-                <div>
-                <label>Contraseña:</label>
-                <input
-                    type="password"
-                    id="contrasena"
-                    name="password"
-                    value={autentificacion.password}
-                    onChange={onAutentificacion}
-                    required
-                />
-                </div>
-                <button type="submit">Iniciar sesión</button>
-            </form>
+            <div>
+                <h2>Iniciar sesión</h2>
+                <form onSubmit={onInicioSesion}>
+                    <div>
+                        <label>Usuario:</label>
+                        <input
+                            type="text"
+                            id="usuario"
+                            name="username"
+                            value={autentificacion.username}
+                            onChange={onAutentificacion}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label>Contraseña:</label>
+                        <input
+                            type="password"
+                            id="contrasena"
+                            name="password"
+                            value={autentificacion.password}
+                            onChange={onAutentificacion}
+                            required
+                        />
+                    </div>
+                    <button type="submit">Iniciar sesión</button>
+                </form>
             </div>
         </>
     );
-}
+};
