@@ -5,8 +5,8 @@ import loginService from "../services/ServicioLogin";
 export const InicioSesionUsuarios = () =>{
     
     const [autentificacion, setAutentificacion] = useState({
-        usuario: '',
-        contrasena: '',
+        username: '',
+        password: '',
     });
 
     const onAutentificacion = (event) => {
@@ -21,20 +21,20 @@ export const InicioSesionUsuarios = () =>{
         event.preventDefault();
         try {
             const response = await loginService.verificarLogin(autentificacion);
-            const token = response.data.token;
+            const token = response.data.access_token;
 
             localStorage.setItem('token', token);
             
-            try {
-                const response = await axios.get('http://ejemplo.com/api/data', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setData(response.data);
-            } catch (error) {
-                console.error('Error al obtener datos del backend', error);
-            }
+            // try {
+            //     const response = await axios.get('http://ejemplo.com/api/data', {
+            //         headers: {
+            //             Authorization: `Bearer ${token}`,
+            //         },
+            //     });
+            //     setData(response.data);
+            // } catch (error) {
+            //     console.error('Error al obtener datos del backend', error);
+            // }
         } catch (error) {
             console.error('Error al enviar los datos del Usuario:', error);
         }
@@ -50,8 +50,8 @@ export const InicioSesionUsuarios = () =>{
                 <input
                     type="text"
                     id="usuario"
-                    name="usuario"
-                    value={autentificacion.usuario}
+                    name="username"
+                    value={autentificacion.username}
                     onChange={onAutentificacion}
                     required
                 />
@@ -61,8 +61,8 @@ export const InicioSesionUsuarios = () =>{
                 <input
                     type="password"
                     id="contrasena"
-                    name="contrasena"
-                    value={autentificacion.contrasena}
+                    name="password"
+                    value={autentificacion.password}
                     onChange={onAutentificacion}
                     required
                 />

@@ -7,7 +7,7 @@ const api = axios.create({
 class evaluadorService{
   async agregarEvaluador (formulario) {
     try {
-      const response = await api.post('/evaluador/agregar_evaluador', formulario);
+      const response = await axios.post('http://127.0.0.1:3001/evaluador/agregar_evaluador', formulario);
       return response.data;
     } catch (error) {
       console.error(error);

@@ -7,7 +7,7 @@ export const CrearEvaluador = () => {
     correo: '',
     numero_identificacion: '',
     contrasenna: '',
-    telefono: '',
+    telefono: ''
   });
 
   const onAgregarEvaluador = (event) => {
