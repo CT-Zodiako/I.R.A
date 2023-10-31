@@ -2,12 +2,13 @@ from flask import Blueprint, request, jsonify
 from ...controller.evaluador.evaluador_controller import agregar_evaluador, traer_evaluadores_db, traer_evaluadores_examen_db, eliminar_evaluador_sf, traer_evaluador_por_id,actualizar_evaluador_db,traer_estudiantes_examen_db
 from ...db import db
 from ...models.evaluador.evaluador_model import Evaluador
-
+from flask_jwt_extended import jwt_required
 
 evaluador_blueprint = Blueprint('evaluador', __name__)
 
 
 @evaluador_blueprint.route('/agregar_evaluador', methods=['POST'])
+@jwt_required()
 def crear_evaluador():
     data = request.json
     return agregar_evaluador(data)
