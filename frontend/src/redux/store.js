@@ -10,7 +10,7 @@ export const store = configureStore({
     calificacion: calificacionReducer,
     idExamen: idExamenCalificacion,
     limpiar: LimpiarCalificacion,
-    iniciarSesion: iniciarSesion,
+    sesion: iniciarSesion,
     cerrarSesion: cerrarSesion
    },
 });

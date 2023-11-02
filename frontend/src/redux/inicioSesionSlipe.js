@@ -1,24 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const sesion = {
+const Inisesion = {
+    id: '',
     username: '',
-    password: '',
     rol: ''
 }
 
 export const inicioSesionSlice = createSlice({
     name: "sesion",
-    initialState: sesion,
+    initialState: Inisesion,
     reducers:{
         iniciarSesion: (state, action) => {
-            const {username, password, rol} = action.payload;
+            const {id, username, rol} = action.payload;
+            state.id = id;
             state.username = username;
-            state.password = password;
             state.rol = rol;
         },
-        cerrarSesion: () => {
+        cerrarSesion: (state) => {
+            state.id = '',
             state.username = '';
-            state.password = '';
             state.rol = '';
         }
     }

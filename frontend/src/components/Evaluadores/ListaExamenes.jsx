@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import evaluadorService from '../../services/servicioEvaluador';
 import { Link } from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { idExamenCalificacion } from '../../redux/calificacionSlice';
 
 export const VistaExamenes = () =>{
+
     const dispatch = useDispatch();
+    const evaluadorId = useSelector((state) => state.sesion.id);
+
     const[listaExamenesEvaluador, setListaExamenesEvaluador]= useState([]);
 
     const onIdExamen = ({ examen }) => {
@@ -21,7 +24,7 @@ export const VistaExamenes = () =>{
     useEffect(() => {
         async function fetchData() {
           try {
-            const data = await evaluadorService.examenesEvaluador();
+            const data = await evaluadorService.examenesEvaluador(evaluadorId);
             setListaExamenesEvaluador(data);
           } catch (error) {
             console.error('Error al obtener la lista de examenes:', error);

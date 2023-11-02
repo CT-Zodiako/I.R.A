@@ -79,9 +79,6 @@ export const CrearExamen = () => {
         ...formularioExamen,
         actividades_formativas: [...formularioExamen.actividades_formativas, nuevaActividad]
       });
-      // setNuevaActividad({
-      //   descripcion: ''
-      // });
     }
   };
 
@@ -91,9 +88,6 @@ export const CrearExamen = () => {
         ...formularioExamen,
         estudiantes: [...formularioExamen.estudiantes, nuevoEstudiante]
       });
-      // setNuevoEstudiante({
-      //   NOMBRE: ''
-      // });
     }
   };
 

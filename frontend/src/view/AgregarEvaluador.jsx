@@ -22,7 +22,6 @@ export const CrearEvaluador = () => {
     event.preventDefault();
     try {
       const response = await evaluadorService.agregarEvaluador(formulario);
-      console.log(response);
     } catch (error) {
       console.error(error);
     }

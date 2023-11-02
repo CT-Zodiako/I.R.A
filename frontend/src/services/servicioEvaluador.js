@@ -5,12 +5,18 @@ const api = axios.create({
 });
 
 class evaluadorService{
-  async agregarEvaluador (formulario) {
+  async agregarEvaluador(formulario) {
     try {
-      const response = await axios.post('http://127.0.0.1:3001/evaluador/agregar_evaluador', formulario);
+      const token = localStorage.getItem('token');
+      const response = await axios.post('http://127.0.0.1:3001/evaluador/agregar_evaluador', formulario, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error) {
       console.error(error);
+      throw error;
     }
   }
 
@@ -53,7 +59,7 @@ class evaluadorService{
 
   async examenesEvaluador(id) {
     try{
-      const responce = await axios.get('http://127.0.0.1:3001/evaluador/examenes_evaluador/2');
+      const responce = await axios.get(`http://127.0.0.1:3001/evaluador/examenes_evaluador/${id}`);
       return(responce.data.data)
     }catch(err){
       console.error(err)

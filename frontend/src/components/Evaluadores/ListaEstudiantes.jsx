@@ -30,10 +30,6 @@ export const VistaEstudiantes = () => {
         fetchData();
       }, [examenId]);
 
-      useEffect(() => {
-        console.log('Lista de calificaciones actualizada:', calificacionesEstudiantes);
-    }, [calificacionesEstudiantes]);
-
     const onEnviarCalificaciones = async(event) => {
         event.preventDefault();
         try {

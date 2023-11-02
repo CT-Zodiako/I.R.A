@@ -1,15 +1,22 @@
 import { useState } from "react";
 import loginService from "../services/ServicioLogin";
+import { useDispatch} from "react-redux";
+import { iniciarSesion } from "../redux/inicioSesionSlipe";
 
 export const InicioSesionUsuarios = () => {
+
+    const dispatch = useDispatch();
     const [autentificacion, setAutentificacion] = useState({
         username: '',
-        password: '',
+        password: ''
     });
 
     const onAutentificacion = (event) => {
         const { name, value } = event.target;
-        setAutentificacion({ ...autentificacion, [name]: value });
+        setAutentificacion(
+            { ...autentificacion, 
+                [name]: value 
+        });
     };
 
     const onInicioSesion = async (event) => {
@@ -18,22 +25,25 @@ export const InicioSesionUsuarios = () => {
             const response = await loginService.verificarLogin(autentificacion);
             const token = response.data.access_token;
 
+            console.log(token);
+
             localStorage.setItem('token', token);
-            console.log("token: "+token);
 
             const tokenData = token.split('.')[1];
-            console.log(tokenData);
             const decodedToken = JSON.parse(atob(tokenData));
-            console.log(decodedToken.sub);
 
             if (decodedToken) {
                 const userId = decodedToken.sub.id;
                 const username = decodedToken.sub.nombre;
                 const rol = decodedToken.sub.rol;
 
-                console.log('ID del usuario:', userId);
-                console.log('Nombre de usuario:', username);
-                console.log('Rol del usuario: ', rol)
+                dispatch(
+                    iniciarSesion({ 
+                        id: 4,
+                        username: 'cristian pancho', 
+                        rol: 'Evaluador'
+                    })
+                );
             } else {
                 console.error('Error al decodificar el token');
             }

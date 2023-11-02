@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 export const EvaluadorLista = () =>{
     const[evaluadores, setEvaluadores] = useState([]);
+    
     // const [modalAbierto, setModalAbierto] = useState(false);
 
     // const abrirModal = (evaluadorId) => {
