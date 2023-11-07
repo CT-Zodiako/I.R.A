@@ -11,7 +11,7 @@ import { CalificacionExamen } from './components/Evaluadores/CalificarEstudiante
 import { Informes } from './components/InformesExamenes/informes'
 import { GraficoInforme } from './components/InformesExamenes/grafico'
 import { PromedioEstudiante } from './components/InformesExamenes/informeEstudinates'
-// import { FormularioPorPasos } from './components/EvaluadorComponentes/pruebaPasos'; 
+// import { FormularioPorPasos } from './components/EvaluadorComponentes/pruebaPasos'
 
 function Routers() {
   return (
