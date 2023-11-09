@@ -7,12 +7,7 @@ const api = axios.create({
 class evaluadorService{
   async agregarEvaluador(formulario) {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post('http://127.0.0.1:3001/evaluador/agregar_evaluador', formulario, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post('http://127.0.0.1:3001/evaluador/agregar_evaluador', formulario);
       return response.data;
     } catch (error) {
       console.error(error);

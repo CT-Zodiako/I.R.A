@@ -11,17 +11,22 @@ import { CalificacionExamen } from './components/Evaluadores/CalificarEstudiante
 import { Informes } from './components/InformesExamenes/informes'
 import { GraficoInforme } from './components/InformesExamenes/grafico'
 import { PromedioEstudiante } from './components/InformesExamenes/informeEstudinates'
-// import { FormularioPorPasos } from './components/EvaluadorComponentes/pruebaPasos'
+// import { FormularioPorPasos } from './components/EvaluadorComponentes/pruebaPasos' {<CrearExamen/>}
+import ProteccionRuta from './rutasProtegidas';
 
 function Routers() {
   return (
     <Routes>
       <Route path="/" element={<InicioSesionUsuarios/>} />
-      <Route path="/examen" element={<CrearExamen/>} />
-      <Route path="/gestion-usuario" element={<CrearEvaluador/>} />
-      <Route path="/evaluadores" element={<EvaluadorLista/>}/>
-      <Route path="/resultado-aprendizaje" element={<ResultadoAprendizaje/>}/>
-      <Route path="/agregar-resultado" element={<CrearResultado/>}/>
+      {/* <Route path="/examen" element={<ProteccionRuta component={CrearExamen} rolesPermitidos={'Admin'}/>} /> */}
+      {/* <ProteccionRuta path="/examen" rolesPermitidos={['Admin']} element={<CrearExamen />} /> */}
+      <Route element={<ProteccionRuta rolesPermitidos={'Admin'} element={<CrearExamen/>}/>}>
+          <Route path='/examen' element={<CrearExamen/>}/>
+          <Route path="/gestion-usuario" element={<CrearEvaluador/>} />
+          <Route path="/evaluadores" element={<EvaluadorLista/>}/>
+          <Route path="/resultado-aprendizaje" element={<ResultadoAprendizaje/>}/>
+          <Route path="/agregar-resultado" element={<CrearResultado/>}/>
+      </Route>
       <Route path="/lista_examenes" element={<VistaExamenes/>}></Route>
       <Route path="/lista-estudiantes/:examenId" element={<VistaEstudiantes/>}></Route>
       <Route path="/calificacion-examen/:examenId/:nombreEstudiante" element={<CalificacionExamen/>}></Route>

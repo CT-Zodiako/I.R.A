@@ -2,6 +2,7 @@ import { useState } from "react";
 import loginService from "../services/ServicioLogin";
 import { useDispatch} from "react-redux";
 import { iniciarSesion } from "../redux/inicioSesionSlipe";
+import axios from "axios";
 
 export const InicioSesionUsuarios = () => {
 
@@ -37,11 +38,17 @@ export const InicioSesionUsuarios = () => {
                 const username = decodedToken.sub.nombre;
                 const rol = decodedToken.sub.rol;
 
+                console.log(userId);
+                console.log(username);
+                console.log(rol);
+
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
                 dispatch(
                     iniciarSesion({ 
-                        id: 4,
-                        username: 'cristian pancho', 
-                        rol: 'Evaluador'
+                        id: userId,
+                        username: username, 
+                        rol: rol
                     })
                 );
             } else {

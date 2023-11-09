@@ -3,6 +3,7 @@ import axios from 'axios';
 class loginService {
   async verificarLogin(autentificacion) {
     try {
+      const token = localStorage.getItem('token')
       const response = await axios.post('http://127.0.0.1:3001/login/conectar', autentificacion);
       return response;
     } catch (error) { 
