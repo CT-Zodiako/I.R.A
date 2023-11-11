@@ -11,21 +11,21 @@ bcrypt = Bcrypt()
 def admin_required(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        verify_jwt_in_request()  # Verificar que el token JWT esté presente
-        current_user = get_jwt_identity()  # Obtener los datos del usuario del token
+        verify_jwt_in_request()  
+        current_user = get_jwt_identity()  
         if current_user['rol'] == 'Admin':
             return fn(*args, **kwargs)
         else:
-            return jsonify({"message": "Acceso no autorizado"}), 403  # 403 significa acceso prohibido
+            return jsonify({"message": "Acceso no autorizado"}), 403  
     return wrapper
 
 def evaluador_required(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        verify_jwt_in_request()  # Verificar que el token JWT esté presente
-        current_user = get_jwt_identity()  # Obtener los datos del usuario del token
+        verify_jwt_in_request() 
+        current_user = get_jwt_identity()
         if current_user['rol'] == 'Evaluador':
             return fn(*args, **kwargs)
         else:
-            return jsonify({"message": "Acceso no autorizado"}), 403  # 403 significa acceso prohibido
+            return jsonify({"message": "Acceso no autorizado"}), 403  
     return wrapper  
