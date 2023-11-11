@@ -22,17 +22,11 @@ export const InicioSesionUsuarios = () => {
         });
     };
 
-    console.log(ingresar);
-
     const onInicioSesion = async (event) => {
         event.preventDefault();
         try {
             const response = await loginService.verificarLogin(autentificacion);
             const token = response.data.access_token;
-
-            token ? setIngresar(true) : null ;
-
-            console.log("entrar: ",ingresar);
 
             localStorage.setItem('token', token);
 
