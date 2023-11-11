@@ -20,8 +20,8 @@ function Routers() {
       <Route path="/" element={<InicioSesionUsuarios/>} />
       {/* <Route path="/examen" element={<ProteccionRuta component={CrearExamen} rolesPermitidos={'Admin'}/>} /> */}
       {/* <ProteccionRuta path="/examen" rolesPermitidos={['Admin']} element={<CrearExamen />} /> */}
-      <Route element={<ProteccionRuta rolesPermitidos={'Admin'} element={<CrearExamen/>}/>}>
-          <Route path='/examen' element={<CrearExamen/>}/>
+      <Route element={<ProteccionRuta rolesPermitidos={'Admin'}/>}>
+          <Route path="/examen" element={<CrearExamen/>}/>
           <Route path="/gestion-usuario" element={<CrearEvaluador/>} />
           <Route path="/evaluadores" element={<EvaluadorLista/>}/>
           <Route path="/resultado-aprendizaje" element={<ResultadoAprendizaje/>}/>

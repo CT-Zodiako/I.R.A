@@ -4,7 +4,7 @@ import examenService from '../services/ServiciosExamen';
 import resultadoAprendizajeServicio from '../services/ServicioResultadoAprendizaje';
 import evaluadorService from '../services/servicioEvaluador';
 import programaServicio from '../services/ServicioPrograma'; 
-import { InputSeleccion } from '../components/EtiquetaSeleccionGeneral';
+import {InputSeleccion}  from '../components/EtiquetaSeleccionGeneral';
 
 export const CrearExamen = () => {
   const [formularioExamen, setFormulario] = useState({

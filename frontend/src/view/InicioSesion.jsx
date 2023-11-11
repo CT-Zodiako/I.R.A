@@ -11,6 +11,8 @@ export const InicioSesionUsuarios = () => {
         username: '',
         password: ''
     });
+    
+    const [ingresar, setIngresar] = useState(false);
 
     const onAutentificacion = (event) => {
         const { name, value } = event.target;
@@ -20,13 +22,17 @@ export const InicioSesionUsuarios = () => {
         });
     };
 
+    console.log(ingresar);
+
     const onInicioSesion = async (event) => {
         event.preventDefault();
         try {
             const response = await loginService.verificarLogin(autentificacion);
             const token = response.data.access_token;
 
-            console.log(token);
+            token ? setIngresar(true) : null ;
+
+            console.log("entrar: ",ingresar);
 
             localStorage.setItem('token', token);
 
