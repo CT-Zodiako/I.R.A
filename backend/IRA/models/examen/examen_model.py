@@ -1,4 +1,3 @@
-# models/examen/examen_model.py
 
 from ...db import db
 from ...models.relaciones.relacion_examen_evaluador import examen_evaluador_tabla
@@ -29,4 +28,8 @@ class Examen(db.Model):
             'estudiantes': self.estudiantes,
             'resultado_aprendizaje_id': self.resultado_aprendizaje_id,
             'evaluadores_relacion': [evaluador.id for evaluador in self.evaluadores_relacion],
+            'nombres_evaluadores': self.get_nombres_evaluadores(),  # Agrega esta línea para obtener los nombres de los evaluadores
         }
+
+    def get_nombres_evaluadores(self):
+        return [evaluador.nombre_evaluador for evaluador in self.evaluadores_relacion]
