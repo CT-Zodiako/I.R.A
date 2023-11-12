@@ -93,7 +93,6 @@ export const PromedioEstudiante =  () => {
         <>
             <div id="pdf-content">
                 <h2>{proyectoIntegrador}</h2>
-                <h2></h2>
                 <div>
                     <Chart
                         width={'600px'}
