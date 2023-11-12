@@ -13,13 +13,12 @@ const Menu = () => {
             <li><Link to="/examen">Examen</Link></li>
             <li><Link to="/evaluadores">Gestión de Usuario</Link></li>
             <li><Link to="/resultado-aprendizaje">Historial</Link></li>
+            <li><Link to="/informe_examen">Informes</Link></li>
           </>
         )}
         {rol === 'Evaluador' &&(
           <>
             <li><Link to="/lista_examenes">Bandeja de examenes</Link> </li>
-            <li><Link to="/informe_examen">Informes</Link></li>
-            <li><Link to="/grafica-informe">Grafico</Link></li>
           </>
         )}
       </ul>

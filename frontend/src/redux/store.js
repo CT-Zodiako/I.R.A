@@ -2,8 +2,9 @@ import { configureStore } from '@reduxjs/toolkit';
 import calificacionReducer from './calificacionSlice'
 import LimpiarCalificacion from './calificacionSlice'
 import idExamenCalificacion from './calificacionSlice'
-import  iniciarSesion from './inicioSesionSlipe';
-import  cerrarSesion from './inicioSesionSlipe';
+import iniciarSesion from './inicioSesionSlipe';
+import cerrarSesion from './inicioSesionSlipe';
+import examenFormularioReducer from './examenSlice';
 
 export const store = configureStore({
    reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     idExamen: idExamenCalificacion,
     limpiar: LimpiarCalificacion,
     sesion: iniciarSesion,
-    cerrarSesion: cerrarSesion
+    cerrarSesion: cerrarSesion,
+    examenFormulario: examenFormularioReducer
    },
 });
 

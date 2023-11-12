@@ -7,6 +7,7 @@ import programaServicio from '../services/ServicioPrograma';
 import {InputSeleccion}  from '../components/EtiquetaSeleccionGeneral';
 
 export const CrearExamen = () => {
+
   const [formularioExamen, setFormulario] = useState({
     programa_id: '',
     resultado_aprendizaje_id: '',
@@ -108,6 +109,7 @@ export const CrearExamen = () => {
   }
 
   const eliminarEstudiante = (index) =>{
+    console.log("Eliminar estudiante llamado");
     const nuevoFormulario = { ...formularioExamen };
     const nuevasActividades = [...nuevoFormulario.estudiantes]
     nuevasActividades.splice(index, 1);
@@ -155,7 +157,7 @@ export const CrearExamen = () => {
   const onCargarExamen = async(event) => {
     event.preventDefault();
     try {
-      const response = await  examenService.agregarExamen(formularioExamen);
+      const responce = await examenService.agregarExamen(formularioExamen);
     } catch (error) {
       console.error('Error al enviar los datos del examen:', error);
     }
@@ -249,7 +251,7 @@ export const CrearExamen = () => {
                       <td>{evaluador.nombre_evaluador}</td>
                       <td>{evaluador.correo}</td>
                       <td>
-                        <button onClick={() => eliminarEvaluador(index)}>Eliminar</button>
+                        <button  type='button' onClick={() => eliminarEvaluador(index)}>Eliminar</button>
                       </td>
                     </tr>
                   );
@@ -285,7 +287,7 @@ export const CrearExamen = () => {
                   <tr key={index}>
                     <td>{actividad.descripcion}</td>
                     <td>
-                      <button onClick={() => eliminarActividad(index)}>Eliminar</button>
+                      <button type='button' onClick={() => eliminarActividad(index)}>Eliminar</button>
                     </td>
                   </tr>
                 ))}
@@ -329,7 +331,7 @@ export const CrearExamen = () => {
                     <tr key={index}>
                       <td>{estudiante.NOMBRE}</td>
                       <td>
-                        <button onClick={() => eliminarEstudiante(index)}>Eliminar</button>
+                        <button type='button' onClick={() => eliminarEstudiante(index)}>Eliminar</button>
                       </td>
                     </tr>
                   ))}
@@ -337,7 +339,9 @@ export const CrearExamen = () => {
               </table>
             </div>
         </div>
-        <button type="submit">Crear Examen</button>
+        <div>
+          <button type="submit">Crear Examen</button>
+        </div>
       </form>
     </div>
   );

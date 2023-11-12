@@ -18,19 +18,17 @@ function Routers() {
   return (
     <Routes>
       <Route path="/" element={<InicioSesionUsuarios/>} />
-      {/* <Route path="/examen" element={<ProteccionRuta component={CrearExamen} rolesPermitidos={'Admin'}/>} /> */}
-      {/* <ProteccionRuta path="/examen" rolesPermitidos={['Admin']} element={<CrearExamen />} /> */}
       <Route element={<ProteccionRuta rolesPermitidos={'Admin'}/>}>
           <Route path="/examen" element={<CrearExamen/>}/>
           <Route path="/gestion-usuario" element={<CrearEvaluador/>} />
           <Route path="/evaluadores" element={<EvaluadorLista/>}/>
           <Route path="/resultado-aprendizaje" element={<ResultadoAprendizaje/>}/>
           <Route path="/agregar-resultado" element={<CrearResultado/>}/>
+          <Route path="/informe_examen" element={<Informes/>}></Route>
       </Route>
       <Route path="/lista_examenes" element={<VistaExamenes/>}></Route>
       <Route path="/lista-estudiantes/:examenId" element={<VistaEstudiantes/>}></Route>
       <Route path="/calificacion-examen/:examenId/:nombreEstudiante" element={<CalificacionExamen/>}></Route>
-      <Route path="/informe_examen" element={<Informes/>}></Route>
       <Route path="/grafica-informe" element={<GraficoInforme/>}></Route>
       <Route path="/informe-estudiante/:evaluadorId" element={<PromedioEstudiante/>}></Route>
       {/* <Route path="/historial" element={<FormularioPorPasos/>} /> */}

@@ -18,7 +18,6 @@ export const VistaExamenes = () =>{
                 examenId: examenId, 
             })
         );
-        console.log(examenId);
     }
 
     useEffect(() => {

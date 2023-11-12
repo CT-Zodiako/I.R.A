@@ -6,7 +6,7 @@ examen_blueprint = Blueprint('examen', __name__)
 
 
 @examen_blueprint.route('/crear_examen', methods=['POST'])
-@admin_required
+# @admin_required
 def crear_examen():
     data = request.json
     return agregar_examen(data)

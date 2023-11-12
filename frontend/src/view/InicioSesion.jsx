@@ -11,8 +11,6 @@ export const InicioSesionUsuarios = () => {
         username: '',
         password: ''
     });
-    
-    const [ingresar, setIngresar] = useState(false);
 
     const onAutentificacion = (event) => {
         const { name, value } = event.target;
