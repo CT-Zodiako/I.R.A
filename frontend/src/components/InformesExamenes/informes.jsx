@@ -9,7 +9,7 @@ export const Informes = () => {
         async function fetchData() {
           try {
             const data = await informeServicio.informeExamen();
-            setCalificacionesExamen(data.calificaciones);
+            setCalificacionesExamen(data);
             console.log(data);
           } catch (error) {
             console.error('Error al obtener la lista de examenes:', error);
@@ -29,12 +29,12 @@ export const Informes = () => {
                 </thead>
                 <tbody>
                 {calificacionesExamen.map((informes) => (
-                    <tr key={informes.examen_id}>
-                        <td>{informes.examen_id}</td>
+                    <tr key={informes.id}>
                         <td>{informes.id}</td>
+                        <td>{informes.proyecto_integrador}</td>
                         <td>
                             <button>
-                                <Link to={`/informe-estudiante/${informes.examen_id}`}>Ver Informe</Link>
+                                <Link to={`/informe-estudiante/${informes.id}/${informes.proyecto_integrador}`}>Ver Informe</Link>
                             </button>
                         </td>
                     </tr>

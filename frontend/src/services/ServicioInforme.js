@@ -3,7 +3,7 @@ import axios from 'axios';
 class informeServicio{
     async informeExamen() {
         try {
-          const response = await axios.get('http://127.0.0.1:3001/informes/traer_calificaciones');
+          const response = await axios.get('http://127.0.0.1:3001/examen/examenes');
           return response.data;
         } catch (err) {
           console.error(err);
@@ -12,16 +12,16 @@ class informeServicio{
       
     async promedioEstudiante(evaluadorId) {
       try {
-        const response = await axios.get(`http://127.0.0.1:3001/informes/calificacion_by_id_examen/${evaluadorId}`);
-          return response.data.calificaciones;
+        const response = await axios.get(`http://127.0.0.1:3001/informes/traer_calificaciones/${evaluadorId}`);
+          return response.data;
       } catch (err) {
         console.error(err);
       }
    }
 
-   async conteoEstudiante(evaluadorId) {
+   async promedioGrafica(evaluadorId) {
     try {
-      const response = await axios.get(`http://127.0.0.1:3001/informes/calificacion_by_id_examen/${evaluadorId}`);
+      const response = await axios.get(`http://127.0.0.1:3001/informes/traer_calificaciones/${evaluadorId}`);
         return response.data.conteo;
     } catch (err) {
       console.error(err);

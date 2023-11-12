@@ -31,7 +31,7 @@ export const calificacionSlice = createSlice({
             };
         },
         agregarCalificacion:(state, action)=>{
-            const {nombre, notas, observacion} = action.payload;
+            const {nombre, notas, observaciones} = action.payload;
             if (state.calificacion.length === 1 && state.calificacion[0].nombre === "") {
                 state.calificacion = [];
             }
@@ -39,7 +39,7 @@ export const calificacionSlice = createSlice({
                 nombre: nombre,
                 calificacion: {
                     notas: notas,
-                    observacion: observacion
+                    observaciones: observaciones
                 }
             };
             state.calificacion.push(nuevaCalificacion);

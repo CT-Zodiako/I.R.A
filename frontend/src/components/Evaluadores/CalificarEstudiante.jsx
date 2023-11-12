@@ -53,7 +53,7 @@ export const CalificacionExamen = () => {
           examenId: examenId,
           nombre: evaluado.nombre,
           notas: evaluado.calificacion.notas,
-          observacion: evaluado.calificacion.observaciones,
+          observaciones: evaluado.calificacion.observaciones,
       })
     );
     console.log(evaluado);

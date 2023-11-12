@@ -7,14 +7,13 @@ import informeServicio from '../../services/ServicioInforme'
 import evaluadorService from '../../services/servicioEvaluador'
 
 export const PromedioEstudiante =  () => {
-    const { evaluadorId } = useParams();
+    const { evaluadorId, proyectoIntegrador } = useParams();
     const [calificaciones, setCalificaciones] = useState([]);
-    const [conteo, setConteo] = useState({});
+    const [promedioGrafica, setPromedioGrafica] = useState([]);
     const [colorInforme, setColorInforme] = useState([]);
     const tableRef = useRef(null);
 
     const coloresHexadecimales = colorInforme.map(item => item.color);
-    console.log(coloresHexadecimales);
 
     const onColorPromedio = (promedio) => {
         for (let nota of colorInforme) {
@@ -26,11 +25,11 @@ export const PromedioEstudiante =  () => {
     };
 
     const datosGrafico = [['Task', 'Hours per Day']].concat(
-        Object.entries(conteo).map(([key, value]) => [key, value])
+        Object.entries(promedioGrafica).map(([key, value]) => [key, value])
     );
 
     const asignarColoresFondoPastel = () => {
-        const coloresFondo = Object.keys(conteo).map(key => {
+        const coloresFondo = Object.keys(promedioGrafica).map(key => {
             const color = colorInforme.find(item => item.value === key);
             if (color) {
                 return { color: color.color };
@@ -69,8 +68,8 @@ export const PromedioEstudiante =  () => {
       useEffect(() => {
         async function fetchData() {
           try {
-            const data = await informeServicio.conteoEstudiante(evaluadorId);
-            setConteo(data);
+            const data = await informeServicio.promedioGrafica(evaluadorId);
+            setPromedioGrafica(data);
           } catch (error) {
             console.error('Error al obtener el conteo:', error);
           }
@@ -93,26 +92,8 @@ export const PromedioEstudiante =  () => {
     return(
         <>
             <div id="pdf-content">
-                <table ref={tableRef}>
-                    <thead>
-                        <tr>
-                            <th>Estudiante</th>
-                            <th>Promedio</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {calificaciones.map((promedio, Index) => (
-                            <tr key={Index}>
-                                <td style={{ backgroundColor: onColorPromedio(promedio.calificacion.promedio) }}>
-                                    {promedio.nombre}
-                                </td>
-                                <td style={{ backgroundColor: onColorPromedio(promedio.calificacion.promedio) }}>
-                                    {promedio.calificacion.promedio}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <h2>{proyectoIntegrador}</h2>
+                <h2></h2>
                 <div>
                     <Chart
                         width={'600px'}
