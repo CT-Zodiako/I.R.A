@@ -7,6 +7,7 @@ from enum import Enum
 from flask import jsonify
 from collections import defaultdict
 from collections import Counter
+from ...models.evaluador.evaluador_model import Evaluador
 
 
 class CalificacionEnum(Enum):
@@ -31,14 +32,18 @@ def traer_calificaciones_por_examen(examen_id):
     calificaciones_serializables = []
     promedios_estudiantes = defaultdict(list)
     conteo_calificaciones = defaultdict(int)
-    conteo_actividades_estudiantes = defaultdict(lambda: defaultdict(int))  # Nuevo diccionario para el conteo por actividad y estudiante
-    observaciones_totales = []  # Lista para almacenar todas las observaciones
+    conteo_actividades_estudiantes = defaultdict(lambda: defaultdict(int))
+    observaciones_totales = []
+    evaluadores_totales = []  # Lista para almacenar los evaluadores
 
     for calificacion_examen in calificaciones_examenes:
+        evaluador = Evaluador.query.get(calificacion_examen.evaluador_id)  # Obtener el objeto Evaluador
+
         calificacion_serializable = {
             "id": calificacion_examen.id,
             "examen_id": calificacion_examen.examen_id,
             "evaluador_id": calificacion_examen.evaluador_id,
+            "evaluador_nombre": evaluador.nombre_evaluador if evaluador else None,  # Añadir el nombre del evaluador
             "calificacion": []
         }
 
@@ -58,28 +63,23 @@ def traer_calificaciones_por_examen(examen_id):
             }
 
             calificacion_serializable["calificacion"].append(calificacion_estudiante)
-
-            # Almacenar los promedios por estudiante
             promedios_estudiantes[nombre_estudiante].append(promedio_notas)
 
-            # Almacenar el promedio por actividad y estudiante
             for i, nota in enumerate(notas_estudiante):
                 actividad = f"Actividad{i + 1}"
-                conteo_actividades_estudiantes[actividad][nombre_estudiante] = clasificar_calificacion(nota)  # Almacenar la clasificación en lugar del conteo
+                conteo_actividades_estudiantes[actividad][nombre_estudiante] = clasificar_calificacion(nota)
 
-            # Agregar observaciones a la lista
             observaciones_totales.extend(observaciones_estudiante)
+
+        evaluadores_totales.append(evaluador.nombre_evaluador if evaluador else None)  # Añadir el nombre del evaluador a la lista
 
         calificaciones_serializables.append(calificacion_serializable)
 
     for estudiante, promedios in promedios_estudiantes.items():
         promedio_final = round(sum(promedios) / len(promedios)) if len(promedios) > 0 else None
         calificacion_final = clasificar_calificacion(promedio_final)
-
-        # Agregar al conteo
         conteo_calificaciones[calificacion_final] += 1
 
-    # Realizar el conteo por actividad y clasificar en el enum
     conteo_actividades = defaultdict(int)
 
     for actividad, estudiantes in conteo_actividades_estudiantes.items():
@@ -90,6 +90,6 @@ def traer_calificaciones_por_examen(examen_id):
         calificaciones=calificaciones_serializables,
         conteo=conteo_calificaciones,
         conteo_actividades=conteo_actividades,
-        observaciones_totales=observaciones_totales
+        observaciones_totales=observaciones_totales,
+        evaluadores_totales=evaluadores_totales
     )
-
