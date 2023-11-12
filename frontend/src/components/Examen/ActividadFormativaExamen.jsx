@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { agregarActividad } from "../../redux/examenSlice";
 
 export const RegistrarActividadFormativa = ({handleNext}) => {
@@ -14,7 +14,10 @@ export const RegistrarActividadFormativa = ({handleNext}) => {
     });
     
     const onActividadFormativa = (event) => {
-        setActividaEstado(event.target.value)
+        const actividadDes = event.target.value;
+        setActividaEstado({
+            descripcion: actividadDes
+        })
     };
 
     const onAgregarActividad = () => {
