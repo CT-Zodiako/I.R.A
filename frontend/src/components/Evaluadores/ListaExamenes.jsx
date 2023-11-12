@@ -16,6 +16,7 @@ export const VistaExamenes = () =>{
         dispatch(
             idExamenCalificacion({ 
                 examenId: examenId, 
+                evaluadorId: evaluadorId
             })
         );
     }

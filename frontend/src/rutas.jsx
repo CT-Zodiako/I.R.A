@@ -26,6 +26,7 @@ function Routers() {
           <Route path="/agregar-resultado" element={<CrearResultado/>}/>
           <Route path="/informe_examen" element={<Informes/>}></Route>
       </Route>
+      <Route path="/examen-pasos" element=""/>
       <Route path="/lista_examenes" element={<VistaExamenes/>}></Route>
       <Route path="/lista-estudiantes/:examenId" element={<VistaEstudiantes/>}></Route>
       <Route path="/calificacion-examen/:examenId/:nombreEstudiante" element={<CalificacionExamen/>}></Route>

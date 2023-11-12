@@ -10,7 +10,8 @@ const calificacion = {
             }
         }
     ],
-    examen_id: ""
+    examen_id: "",
+    evaluador_id: ""
 }
 
 export const calificacionSlice = createSlice({
@@ -18,14 +19,15 @@ export const calificacionSlice = createSlice({
     initialState: calificacion,
     reducers:{
         idExamenCalificacion: (state, action) => {
-            const { examenId } = action.payload;
+            const { examenId, evaluadorId } = action.payload;
             if (state.examen_id === examenId) {
               console.log("El ID del examen ya existe en el estado.");
               return state;
             }
             return {
                 ...state,
-                examen_id: examenId
+                examen_id: examenId,
+                evaluador_id: evaluadorId
             };
         },
         agregarCalificacion:(state, action)=>{
