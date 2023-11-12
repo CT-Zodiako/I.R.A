@@ -60,3 +60,17 @@ def cargar_archivo(archivo):
     except Exception as e:
         print(f"Error al cargar el archivo: {str(e)}")
         return jsonify({'mensaje': 'Error al cargar el archivo', 'error': str(e)}), 500
+
+    
+def obtener_examenes():
+    try:
+        # Query all exams from the Examen table
+        examenes = Examen.query.all()
+
+        # Convert the list of exams to a JSON response
+        examenes_json = jsonify(examenes)
+
+        return examenes_json, 200
+
+    except Exception as e:
+        return jsonify({'mensaje': 'Error al obtener los exámenes', 'error': str(e)}), 500
