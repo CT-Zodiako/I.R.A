@@ -1,15 +1,15 @@
 from flask import Blueprint, jsonify
-from ...controller.informes.informes_controller import traer_calificaciones_db
+from ...controller.informes.informes_controller import traer_calificaciones_por_examen
 from ...models.calificacion.calificacion_model import CalificacionExamen
 from ...auth import admin_required
 from enum import Enum
 
 informes_blueprint = Blueprint('informes', __name__)
 
-@informes_blueprint.route('/traer_calificaciones', methods=['GET'])
+@informes_blueprint.route('/traer_calificaciones/<int:examen_id>', methods=['GET'])
 # @admin_required
-def traer_calificaciones():
-    return traer_calificaciones_db()
+def traer_calificaciones(examen_id):
+    return traer_calificaciones_por_examen(examen_id)
 
 
 class CalificacionEnum(Enum):
