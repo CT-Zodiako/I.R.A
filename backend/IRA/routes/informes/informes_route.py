@@ -1,17 +1,16 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify
 from ...controller.informes.informes_controller import traer_calificaciones_db
 from ...models.calificacion.calificacion_model import CalificacionExamen
 from ...auth import admin_required
-
+from enum import Enum
 
 informes_blueprint = Blueprint('informes', __name__)
 
 @informes_blueprint.route('/traer_calificaciones', methods=['GET'])
-@admin_required
+# @admin_required
 def traer_calificaciones():
     return traer_calificaciones_db()
 
-from enum import Enum
 
 class CalificacionEnum(Enum):
     EXCELENTE = {'label': 'EXCELENTE', 'color': 'green', 'nota': 5}
@@ -21,16 +20,7 @@ class CalificacionEnum(Enum):
     NO_CUMPLE = {'label': 'NO CUMPLE', 'color': 'gray', 'nota': 1}
     NINGUNA_CALIFICACION = {'label': 'NINGUNA CALIFICACION', 'color': 'yellow', 'nota': 0}
 
-@informes_blueprint.route('/calificacion_by_id_examen/<int:examen_id>', methods=['GET'])
-@admin_required
-def obtener_calificaciones_por_examen(examen_id):
-    calificacion_examen = CalificacionExamen.query.filter_by(examen_id=examen_id).first()
-
-    if not calificacion_examen:
-        return jsonify(message="No se encontró calificación para el examen especificado"), 404
-    
-    calificacion_lista = calificacion_examen.calificacion
-
+def procesar_calificaciones(calificacion_lista):
     conteo_calificaciones = {nota.value['label']: 0 for nota in CalificacionEnum}
 
     for elemento in calificacion_lista:
@@ -42,19 +32,22 @@ def obtener_calificaciones_por_examen(examen_id):
                 if nota.value['nota'] == int(promedio):
                     conteo_calificaciones[nota.value['label']] += 1
 
-    response_data = {"calificaciones": calificacion_lista, "conteo": conteo_calificaciones}
+    return {"calificaciones": calificacion_lista, "conteo": conteo_calificaciones}
+
+@informes_blueprint.route('/calificacion_by_id_examen/<int:examen_id>', methods=['GET'])
+# @admin_required
+def obtener_calificaciones_por_examen(examen_id):
+    calificaciones_examenes = CalificacionExamen.query.filter_by(examen_id=examen_id).all()
+
+    if not calificaciones_examenes:
+        return jsonify(message="No se encontraron calificaciones para el examen especificado"), 404
+    
+    # Procesar calificaciones de todos los exámenes relacionados
+    calificacion_lista = []
+    for calificacion_examen in calificaciones_examenes:
+        calificacion_lista.extend(calificacion_examen.calificacion)
+
+    response_data = procesar_calificaciones(calificacion_lista)
+
     return jsonify(response_data)
-
-
-
-
-
-
-
-
-
-
-    
-    
-
 
