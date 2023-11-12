@@ -22,8 +22,6 @@ def clasificar_calificacion(promedio):
         if nota.value['nota'] == int(promedio):
             return nota.value['label']
 
-# ... (Importaciones y definiciones de Enum)
-
 def traer_calificaciones_por_examen(examen_id):
     calificaciones_examenes = CalificacionExamen.query.filter_by(examen_id=examen_id).all()
 
@@ -34,6 +32,7 @@ def traer_calificaciones_por_examen(examen_id):
     promedios_estudiantes = defaultdict(list)
     conteo_calificaciones = defaultdict(int)
     conteo_actividades_estudiantes = defaultdict(lambda: defaultdict(int))  # Nuevo diccionario para el conteo por actividad y estudiante
+    observaciones_totales = []  # Lista para almacenar todas las observaciones
 
     for calificacion_examen in calificaciones_examenes:
         calificacion_serializable = {
@@ -46,13 +45,14 @@ def traer_calificaciones_por_examen(examen_id):
         for estudiante in calificacion_examen.calificacion:
             nombre_estudiante = estudiante["nombre"]
             notas_estudiante = estudiante["calificacion"]["notas"]
+            observaciones_estudiante = estudiante["calificacion"]["observaciones"]
             promedio_notas = round(sum(notas_estudiante) / len(notas_estudiante)) if len(notas_estudiante) > 0 else None
 
             calificacion_estudiante = {
                 "nombre": nombre_estudiante,
                 "calificacion": {
                     "notas": notas_estudiante,
-                    "observaciones": estudiante["calificacion"]["observaciones"],
+                    "observaciones": observaciones_estudiante,
                     "promedio": promedio_notas
                 }
             }
@@ -66,6 +66,9 @@ def traer_calificaciones_por_examen(examen_id):
             for i, nota in enumerate(notas_estudiante):
                 actividad = f"Actividad{i + 1}"
                 conteo_actividades_estudiantes[actividad][nombre_estudiante] = clasificar_calificacion(nota)  # Almacenar la clasificación en lugar del conteo
+
+            # Agregar observaciones a la lista
+            observaciones_totales.extend(observaciones_estudiante)
 
         calificaciones_serializables.append(calificacion_serializable)
 
@@ -86,6 +89,7 @@ def traer_calificaciones_por_examen(examen_id):
     return jsonify(
         calificaciones=calificaciones_serializables,
         conteo=conteo_calificaciones,
-        conteo_actividades=conteo_actividades
+        conteo_actividades=conteo_actividades,
+        observaciones_totales=observaciones_totales
     )
 
