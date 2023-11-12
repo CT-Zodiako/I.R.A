@@ -11,8 +11,8 @@ import { CalificacionExamen } from './components/Evaluadores/CalificarEstudiante
 import { Informes } from './components/InformesExamenes/informes'
 import { GraficoInforme } from './components/InformesExamenes/grafico'
 import { PromedioEstudiante } from './components/InformesExamenes/informeEstudinates'
-// import { FormularioPorPasos } from './components/EvaluadorComponentes/pruebaPasos' {<CrearExamen/>}
 import ProteccionRuta from './rutasProtegidas';
+import { FormularioPorPasos } from './components/Examen/pruebaPasos';
 
 function Routers() {
   return (
@@ -26,13 +26,12 @@ function Routers() {
           <Route path="/agregar-resultado" element={<CrearResultado/>}/>
           <Route path="/informe_examen" element={<Informes/>}></Route>
       </Route>
-      <Route path="/examen-pasos" element=""/>
       <Route path="/lista_examenes" element={<VistaExamenes/>}></Route>
       <Route path="/lista-estudiantes/:examenId" element={<VistaEstudiantes/>}></Route>
       <Route path="/calificacion-examen/:examenId/:nombreEstudiante" element={<CalificacionExamen/>}></Route>
       <Route path="/grafica-informe" element={<GraficoInforme/>}></Route>
       <Route path="/informe-estudiante/:evaluadorId" element={<PromedioEstudiante/>}></Route>
-      {/* <Route path="/historial" element={<FormularioPorPasos/>} /> */}
+      <Route path="/pasos" element={<FormularioPorPasos/>} />
     </Routes>
   );
 }

@@ -1,7 +1,9 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect} from 'react'
 import { InputSeleccion } from '../EtiquetaSeleccionGeneral'
-import resultadoAprendizajeServicio from '../../services/ServicioResultadoAprendizaje';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux'
+import { agregaInformacion } from '../../redux/examenSlice'
+import programaServicio from '../../services/ServicioPrograma'
+import resultadoAprendizajeServicio from '../../services/ServicioResultadoAprendizaje'
 
 export const EvaluacionInformacion = ({handleNext}) => {
 
@@ -31,20 +33,45 @@ export const EvaluacionInformacion = ({handleNext}) => {
 
     const onProyectoIntegrador = (event) => {
         const { name, value } = event.target;
-        setFormulario({
+        setInformacionExamen({
           ...informacionExamen,
           [name]: value
         });
     };
 
-    const onEnviarInformacion = () => {
+    useEffect(() => {
+        async function fetchData() {
+          try {
+            const data = await programaServicio.traerPrograma();
+            setPrograma(data);
+          } catch (error) {
+            console.error('Error al obtener el programa:', error);
+          }
+        }
+        fetchData();
+      }, []);
+
+    useEffect(() => {
+        async function fetchData() {
+          try {
+            const data = await resultadoAprendizajeServicio.traerResultado();
+            setResultadoAprendizaje(data);
+          } catch (error) {
+            console.error('Error al obtener el resultado:', error);
+          }
+        }
+        fetchData();
+      }, []);
+
+    const onEnviarInformacion = (event) => {
+        event.preventDefault();
         dispatch(
             agregaInformacion({
                 programa_id: informacionExamen.programa_id,
                 resultado_aprendizaje_id: informacionExamen.resultado_aprendizaje_id,
                 proyecto_integrador: informacionExamen.proyecto_integrador
             })
-        )
+        );
         handleNext();
     }
 
@@ -85,6 +112,9 @@ export const EvaluacionInformacion = ({handleNext}) => {
                         />
                         </label>
                     </div>
+                </div>
+                <div>
+                    <button type='submit'>Cargar</button>
                 </div>
             </form>
         </>

@@ -14,6 +14,7 @@ const Menu = () => {
             <li><Link to="/evaluadores">Gestión de Usuario</Link></li>
             <li><Link to="/resultado-aprendizaje">Historial</Link></li>
             <li><Link to="/informe_examen">Informes</Link></li>
+            <li><Link to="/pasos">Examen por pasos</Link></li>
           </>
         )}
         {rol === 'Evaluador' &&(

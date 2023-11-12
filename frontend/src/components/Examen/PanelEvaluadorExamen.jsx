@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { InputSeleccion } from "../EtiquetaSeleccionGeneral";
 import evaluadorService from '../../services/servicioEvaluador';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { agregarEvaluador, eliminarEvaluador } from '../../redux/examenSlice'
 
 export const PanelSeleccionarEvaluador = ({handleNext}) => {
@@ -22,14 +22,11 @@ export const PanelSeleccionarEvaluador = ({handleNext}) => {
   };
 
   const eliminarEvaluadorLista = (index) =>{
-    const nuevoFormulario = { ...examen };
+    const nuevoFormulario = { ...evaluadores };
     const nuevasActividades = [...nuevoFormulario.evaluadores_ids]
     nuevasActividades.splice(index, 1);
     nuevoFormulario.evaluadores_ids = nuevasActividades;
-    const nuevoFormularioExamen = nuevoFormulario;
-    dispatch(
-      eliminarEvaluador(nuevoFormularioExamen)
-    )
+    setEvaluadores(nuevoFormulario);
   }
 
   useEffect(() => {
@@ -44,7 +41,8 @@ export const PanelSeleccionarEvaluador = ({handleNext}) => {
     fetchData();
   }, []);
 
-  const onEnviarEvaluadores = () => {
+  const onEnviarEvaluadores = (event) => {
+    event.preventDefault();
     dispatch(
       agregarEvaluador({
         evaluadores_ids: evaluadores.evaluadores_ids
@@ -74,7 +72,7 @@ export const PanelSeleccionarEvaluador = ({handleNext}) => {
                   </tr>
                   </thead>
                   <tbody>
-                    {formularioExamen.evaluadores_ids.map((evaluadorId, index) => {
+                    {evaluadores.evaluadores_ids.map((evaluadorId, index) => {
                       const evaluador = listaEvaluadores.find(e => e.id === evaluadorId);
                       if (!evaluador) {
                         return null; 
@@ -84,7 +82,7 @@ export const PanelSeleccionarEvaluador = ({handleNext}) => {
                           <td>{evaluador.nombre_evaluador}</td>
                           <td>{evaluador.correo}</td>
                           <td>
-                            <button  type='button' onClick={() => eliminarEvaluadorLista(index)}>Eliminar</button>
+                            <button type='button' onClick={() => eliminarEvaluadorLista(index)}>Eliminar</button>
                           </td>
                         </tr>
                       );

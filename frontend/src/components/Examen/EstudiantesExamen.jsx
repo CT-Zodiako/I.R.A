@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {eliminarEstudiante} from '../../redux/examenSlice'
+import {eliminarEstudiantes} from '../../redux/examenSlice'
 import { useDispatch, useSelector } from "react-redux";
 
 export const AgregarListaEstudiantes = ({handleNext}) => {
@@ -7,13 +7,19 @@ export const AgregarListaEstudiantes = ({handleNext}) => {
     const dispatch = useDispatch();
     const examen = useSelector((state) => state.examenFormulario);
     
-    const [estudianteEstado, setEstudianteEstado] = useState();
+    const [estudianteEstado, setEstudianteEstado] = useState({
+        NOMBRE: ''
+    });
     const [estudiantesExamen, setEstudiantes] = useState({
         estudiantes: []
     }); 
 
     const onEstudiante = (event) => {
-        setEstudianteEstado(event.target.value)
+        const estu = event.target.value
+        setEstudianteEstado({
+            ...estudianteEstado,
+            NOMBRE: estu
+        })
     }
 
     const agregarEstudiante = () => {
@@ -30,7 +36,7 @@ export const AgregarListaEstudiantes = ({handleNext}) => {
         nuevoFormulario.estudiantes = nuevoEstudiante;
         const nuevoFormularioExamen = nuevoFormulario;
         dispatch(
-            eliminarEstudiante(nuevoFormularioExamen)
+            eliminarEstudiantes(nuevoFormularioExamen)
         )
     }
     
@@ -55,7 +61,8 @@ export const AgregarListaEstudiantes = ({handleNext}) => {
           });
     };
 
-    const onEnviarEstudiantes = async() => {
+    const onEnviarEstudiantes = async(event) => {
+        event.preventDefault();
         dispatch(
             agregarEstudiante({
                 estudiantes: estudiantesExamen.estudiantes
@@ -97,7 +104,7 @@ export const AgregarListaEstudiantes = ({handleNext}) => {
                             </tr>
                             </thead>
                             <tbody>
-                            {formularioExamen.estudiantes.map((estudiante, index) => (
+                            {estudiantesExamen.estudiantes.map((estudiante, index) => (
                                 <tr key={index}>
                                 <td>{estudiante.NOMBRE}</td>
                                 <td>

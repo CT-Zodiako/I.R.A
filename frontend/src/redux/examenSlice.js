@@ -13,7 +13,7 @@ export const examenFormularioSlice = createSlice({
     name: "examenForm",
     initialState: examenFormulario,
     reducers:{
-        agregaInformacion:() => {
+        agregaInformacion:(state, action) => {
             const { programa_id, resultado_aprendizaje_id, proyecto_integrador } = action.payload;
             state.programa_id = programa_id;
             state.resultado_aprendizaje_id = resultado_aprendizaje_id;
@@ -27,9 +27,9 @@ export const examenFormularioSlice = createSlice({
             const { nuevoFormularioExamen } = action.payload;
             state.examenFormulario = nuevoFormularioExamen;
         },
-        agregarActividad:(state) => {
-            const { descripcion } = action.payload;
-            state.descripcion = descripcion;
+        agregarActividad:(state, action) => {
+            const { actividades_formativas } = action.payload;
+            state.actividades_formativas = actividades_formativas;
         },
         eliminarActividad:(state, action) =>{
             const { nuevoFormularioExamen } = action.payload;
@@ -46,5 +46,5 @@ export const examenFormularioSlice = createSlice({
     }
 });
 
-export const { agregarEvaluador, eliminarEvaluador, agregarActividad, eliminarActividad } = examenFormularioSlice.actions;
+export const { agregaInformacion, agregarEvaluador, eliminarEvaluador, agregarActividad, eliminarActividad, agregarEstudiantes, eliminarEstudiantes } = examenFormularioSlice.actions;
 export default examenFormularioSlice.reducer;

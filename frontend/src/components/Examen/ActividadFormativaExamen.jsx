@@ -1,43 +1,42 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {eliminarActividad} from '../../redux/examenSlice'
+import { agregarActividad } from "../../redux/examenSlice";
 
 export const RegistrarActividadFormativa = ({handleNext}) => {
 
-    const examen = useSelector((state) => state.examenFormulario);
     const dispatch = useDispatch();
     
-    const [actividaEstado, setActividaEstado] = useState();
+    const [actividaEstado, setActividaEstado] = useState({
+        descripcion: ''
+    });
     const [actividadFormativa, setActividadFormativa] = useState({
-        descripcion:''
+        actividades_formativas: [],
     });
     
     const onActividadFormativa = (event) => {
         setActividaEstado(event.target.value)
     };
 
-    const agregarActividad = () => {
+    const onAgregarActividad = () => {
         setActividadFormativa({
           ...actividadFormativa,
-          descripcion: [actividadFormativa.descripcion, actividaEstado]
+          actividades_formativas: [actividadFormativa.actividades_formativas, actividaEstado]
         });
       };
 
     const eliminarActividadLista = (index) => {
-        const nuevoFormulario = { ...examen };
+        const nuevoFormulario = { ...actividadFormativa };
         const nuevasActividades = [...nuevoFormulario.actividades_formativas]
         nuevasActividades.splice(index, 1);
         nuevoFormulario.actividades_formativas = nuevasActividades;
-        const nuevoFormularioExamen = nuevoFormulario;
-        dispatch(
-            eliminarActividad(nuevoFormularioExamen)
-        )
+        setActividadFormativa(nuevoFormulario)
     };
 
-    const onEnviarActividad = () => {
+    const onEnviarActividad = (event) => {
+        event.preventDefault();
         dispatch(
             agregarActividad({
-                descripcion: actividadFormativa.descripcion
+                actividades_formativas: actividadFormativa.actividades_formativas
             })
         )
         handleNext();
@@ -52,11 +51,11 @@ export const RegistrarActividadFormativa = ({handleNext}) => {
                         <input
                             type="text"
                             name="descripcion"
-                            value={actividadFormativa.descripcion}
+                            value={actividaEstado.descripcion}
                             onChange={onActividadFormativa}
                             placeholder="Descripción actividad"
                         />
-                        <button type="button" onClick={agregarActividad}>
+                        <button type="button" onClick={ onAgregarActividad }>
                         Agregar Actividad
                         </button>
                     </div>
@@ -68,7 +67,7 @@ export const RegistrarActividadFormativa = ({handleNext}) => {
                                 </tr>
                             </thead>
                             <tbody>
-                            {formularioExamen.actividades_formativas.map((actividad, index) => (
+                            {actividadFormativa.actividades_formativas.map((actividad, index) => (
                                 <tr key={index}>
                                     <td>{actividad.descripcion}</td>
                                     <td>
