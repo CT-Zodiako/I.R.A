@@ -6,6 +6,8 @@ from enum import Enum
 
 from flask import jsonify
 from collections import defaultdict
+from collections import Counter
+
 
 class CalificacionEnum(Enum):
     EXCELENTE = {'label': 'EXCELENTE', 'color': 'green', 'nota': 5}
@@ -20,6 +22,8 @@ def clasificar_calificacion(promedio):
         if nota.value['nota'] == int(promedio):
             return nota.value['label']
 
+# ... (Importaciones y definiciones de Enum)
+
 def traer_calificaciones_por_examen(examen_id):
     calificaciones_examenes = CalificacionExamen.query.filter_by(examen_id=examen_id).all()
 
@@ -28,8 +32,8 @@ def traer_calificaciones_por_examen(examen_id):
 
     calificaciones_serializables = []
     promedios_estudiantes = defaultdict(list)
-    promedios_actividades = defaultdict(lambda: defaultdict(list))
     conteo_calificaciones = defaultdict(int)
+    conteo_actividades_estudiantes = defaultdict(lambda: defaultdict(int))  # Nuevo diccionario para el conteo por actividad y estudiante
 
     for calificacion_examen in calificaciones_examenes:
         calificacion_serializable = {
@@ -42,35 +46,28 @@ def traer_calificaciones_por_examen(examen_id):
         for estudiante in calificacion_examen.calificacion:
             nombre_estudiante = estudiante["nombre"]
             notas_estudiante = estudiante["calificacion"]["notas"]
-            promedio_estudiante = round(sum(notas_estudiante) / len(notas_estudiante)) if len(notas_estudiante) > 0 else None
+            promedio_notas = round(sum(notas_estudiante) / len(notas_estudiante)) if len(notas_estudiante) > 0 else None
 
             calificacion_estudiante = {
                 "nombre": nombre_estudiante,
                 "calificacion": {
                     "notas": notas_estudiante,
                     "observaciones": estudiante["calificacion"]["observaciones"],
-                    "promedio": promedio_estudiante
+                    "promedio": promedio_notas
                 }
             }
 
             calificacion_serializable["calificacion"].append(calificacion_estudiante)
 
             # Almacenar los promedios por estudiante
-            promedios_estudiantes[nombre_estudiante].append(promedio_estudiante)
+            promedios_estudiantes[nombre_estudiante].append(promedio_notas)
 
-            # Almacenar las notas por actividad para el promedio por actividad
+            # Almacenar el promedio por actividad y estudiante
             for i, nota in enumerate(notas_estudiante):
                 actividad = f"Actividad{i + 1}"
-                promedios_actividades[actividad][nombre_estudiante].append(nota)
+                conteo_actividades_estudiantes[actividad][nombre_estudiante] = clasificar_calificacion(nota)  # Almacenar la clasificación en lugar del conteo
 
         calificaciones_serializables.append(calificacion_serializable)
-
-    # Calcular el promedio de cada actividad por estudiante
-    promedio_actividades_estudiantes = defaultdict(lambda: defaultdict(float))
-
-    for actividad, promedios_por_estudiante in promedios_actividades.items():
-        for estudiante, notas_actividad in promedios_por_estudiante.items():
-            promedio_actividades_estudiantes[actividad][estudiante] = round(sum(notas_actividad) / len(notas_actividad)) if len(notas_actividad) > 0 else None
 
     for estudiante, promedios in promedios_estudiantes.items():
         promedio_final = round(sum(promedios) / len(promedios)) if len(promedios) > 0 else None
@@ -79,8 +76,16 @@ def traer_calificaciones_por_examen(examen_id):
         # Agregar al conteo
         conteo_calificaciones[calificacion_final] += 1
 
+    # Realizar el conteo por actividad y clasificar en el enum
+    conteo_actividades = defaultdict(int)
+
+    for actividad, estudiantes in conteo_actividades_estudiantes.items():
+        conteo_por_actividad = Counter(estudiantes.values())
+        conteo_actividades[actividad] = dict(conteo_por_actividad)
+
     return jsonify(
         calificaciones=calificaciones_serializables,
-        promedio_actividades_estudiantes=promedio_actividades_estudiantes,
-        conteo=conteo_calificaciones
+        conteo=conteo_calificaciones,
+        conteo_actividades=conteo_actividades
     )
+
