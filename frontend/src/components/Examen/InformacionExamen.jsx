@@ -15,8 +15,8 @@ export const EvaluacionInformacion = ({handleNext}) => {
     });
     const [programa, setPrograma] = useState([]);
     const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
+    const [camposCargados, setCamposCargados] = useState(false);
 
-    
     const onPrograma = (seleccionId) => {
         setInformacionExamen({
             ...informacionExamen,
@@ -62,6 +62,15 @@ export const EvaluacionInformacion = ({handleNext}) => {
         }
         fetchData();
       }, []);
+    
+      useEffect(() => {
+        const camposCargados =
+          informacionExamen.programa_id &&
+          informacionExamen.resultado_aprendizaje_id &&
+          informacionExamen.proyecto_integrador;
+    
+          setCamposCargados(camposCargados);
+      }, [informacionExamen]);
 
     const onEnviarInformacion = (event) => {
         event.preventDefault();
@@ -114,7 +123,7 @@ export const EvaluacionInformacion = ({handleNext}) => {
                     </div>
                 </div>
                 <div>
-                    <button type='submit'>Cargar</button>
+                    <button type='submit' disabled={!camposCargados}>Cargar</button>
                 </div>
             </form>
         </>

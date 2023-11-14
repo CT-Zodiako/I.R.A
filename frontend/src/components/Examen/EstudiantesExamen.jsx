@@ -1,8 +1,8 @@
 import { useState } from "react";
-import {eliminarEstudiantes} from '../../redux/examenSlice'
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
-export const AgregarListaEstudiantes = ({handleNext}) => {
+export const AgregarListaEstudiantes = ({setCamposCargados}) => {
     
     const dispatch = useDispatch();
     const examen = useSelector((state) => state.examenFormulario);
@@ -30,14 +30,11 @@ export const AgregarListaEstudiantes = ({handleNext}) => {
     };
 
     const eliminarEstudianteLista = (index) =>{
-        const nuevoFormulario = { ...examen };
+        const nuevoFormulario = { ...estudiantesExamen };
         const nuevoEstudiante = [...nuevoFormulario.estudiantes]
         nuevoEstudiante.splice(index, 1);
         nuevoFormulario.estudiantes = nuevoEstudiante;
-        const nuevoFormularioExamen = nuevoFormulario;
-        dispatch(
-            eliminarEstudiantes(nuevoFormularioExamen)
-        )
+        setEstudiantes(nuevoFormulario)
     }
     
     const handleFileUpload = (event) => {
@@ -55,6 +52,7 @@ export const AgregarListaEstudiantes = ({handleNext}) => {
               ...estudiantesExamen,
               estudiantes: response.data
             }); 
+            setCamposCargados(true);
           })
           .catch((error) => {
             console.error(error);
@@ -68,7 +66,6 @@ export const AgregarListaEstudiantes = ({handleNext}) => {
                 estudiantes: estudiantesExamen.estudiantes
             })
         )
-        handleNext();
     }
     
     return(

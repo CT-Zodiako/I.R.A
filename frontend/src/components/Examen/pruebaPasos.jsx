@@ -7,11 +7,9 @@ export const FormularioPorPasos = () => {
 
   const enviarExamen = useSelector((state) => state.examenFormulario)
   const [componenteExamen, setComponenteExamen] = useState(1);
-
-  console.log('Renderizando FormularioPorPasos con componenteExamen:', componenteExamen);
+  const [camposCargados, setCamposCargados] = useState(false);
 
   const onNext = () => {
-    console.log('Next button clicked');
     setComponenteExamen(componenteExamen => componenteExamen + 1);
   };
 
@@ -38,9 +36,9 @@ export const FormularioPorPasos = () => {
         handleNext={onNext}
         />;
     case 4:
-      return <AgregarListaEstudiantes
-        handleNext={onNext}
-        />;
+      return <div><AgregarListaEstudiantes setCamposCargados={setCamposCargados} />
+        <button disabled={!camposCargados}>Cargar examen</button>
+      </div>
     default:
       return <div>Formulario completado</div>;
   }

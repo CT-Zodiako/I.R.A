@@ -13,6 +13,9 @@ export const PromedioEstudiante =  () => {
     const [colorInforme, setColorInforme] = useState([]);
     const tableRef = useRef(null);
 
+    console.log("graficas actividades: ",calificaciones.conteo_actividades);
+    console.log("promedio de conteo: ", promedioGrafica);
+
     const coloresHexadecimales = colorInforme.map(item => item.color);
 
     const onColorPromedio = (promedio) => {
@@ -93,6 +96,24 @@ export const PromedioEstudiante =  () => {
         <>
             <div id="pdf-content">
                 <h2>{proyectoIntegrador}</h2>
+                {Array.isArray(calificaciones.evaluadores_totales) ? (
+                    calificaciones.evaluadores_totales.map((nombre, index) => (
+                        <h2 key={index}>{nombre}</h2>
+                    ))
+                    ) : (
+                    <p>No hay evaluadores disponibles.</p>
+                    )}
+
+                <div>
+                {Array.isArray(calificaciones.observaciones_totales) ? (
+                    calificaciones.observaciones_totales.map((nombre, index) => (
+                        <h6 key={index}>{nombre}</h6>
+                    ))
+                    ) : (
+                    <p>No hay evaluadores disponibles.</p>
+                    )}
+                </div>
+
                 <div>
                     <Chart
                         width={'600px'}
@@ -106,6 +127,28 @@ export const PromedioEstudiante =  () => {
                         }}
                         rootProps={{ 'data-testid': '1' }}
                     />
+                </div>
+                <h1>Promedio Por Actividades</h1>
+                <div>
+                  {calificaciones.conteo_actividades &&
+                    Object.entries(calificaciones.conteo_actividades).map(([actividad, categorias]) => (
+                      <Chart
+                      key={actividad}
+                        width={'600px'}
+                        height={'300px'}
+                        chartType="PieChart"
+                        loader={<div>Cargando gráfico</div>}
+                        data={[
+                          ['Categoría', 'Cantidad'],
+                          ...Object.entries(categorias).map(([categoria, cantidad]) => [categoria, cantidad])
+                        ]}
+                        options={{
+                            title: 'Conteo Por Calificacion',
+                            slices: asignarColoresFondoPastel(),                     
+                        }}
+                        rootProps={{ 'data-testid': '1' }}
+                      />
+                  ))}
                 </div>
             </div>
             <button onClick={downloadPDF}>Descargar PDF</button>

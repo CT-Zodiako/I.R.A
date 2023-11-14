@@ -12,19 +12,25 @@ export const RegistrarActividadFormativa = ({handleNext}) => {
     const [actividadFormativa, setActividadFormativa] = useState({
         actividades_formativas: [],
     });
+
+    const [camposCargados, setCamposCargados] = useState(false);
     
     const onActividadFormativa = (event) => {
         const actividadDes = event.target.value;
         setActividaEstado({
+            ...actividaEstado,
             descripcion: actividadDes
         })
     };
 
     const onAgregarActividad = () => {
-        setActividadFormativa({
-          ...actividadFormativa,
-          actividades_formativas: [actividadFormativa.actividades_formativas, actividaEstado]
-        });
+        if (actividaEstado.descripcion) {
+            setActividadFormativa({
+                ...actividadFormativa,
+                actividades_formativas: [...actividadFormativa.actividades_formativas, actividaEstado]
+            });
+            setCamposCargados(true);
+        }
       };
 
     const eliminarActividadLista = (index) => {
@@ -53,8 +59,6 @@ export const RegistrarActividadFormativa = ({handleNext}) => {
                     <div>
                         <input
                             type="text"
-                            name="descripcion"
-                            value={actividaEstado.descripcion}
                             onChange={onActividadFormativa}
                             placeholder="Descripción actividad"
                         />
@@ -83,7 +87,7 @@ export const RegistrarActividadFormativa = ({handleNext}) => {
                     </div>
                 </div>
                 <div>
-                    <button type="submit">Cargar</button>
+                    <button type="submit" disabled={!camposCargados}>Cargar</button>
                 </div>
             </form>
         </>
