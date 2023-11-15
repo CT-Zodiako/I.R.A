@@ -1,4 +1,6 @@
 from ...db import db
+import smtplib
+from email.mime.text import MIMEText
 from flask import Blueprint, request, jsonify
 from ...controller.calificacion.calificacion_controller import guardar_calificacion_db,actividades_examen,enum_calificacion,calificaciones_by_id_db
 from ...auth import admin_required, evaluador_required

@@ -1,14 +1,12 @@
-from ...models.calificacion.schema import CalificacionExamenSchema
 from ...db import db
 from flask import jsonify
 from ...models.calificacion.calificacion_model import CalificacionExamen
 from enum import Enum
-
 from flask import jsonify
 from collections import defaultdict
 from collections import Counter
 from ...models.evaluador.evaluador_model import Evaluador
-
+from ...models.examen.examen_model import Examen  # Añadir la importación del modelo Examen
 
 class CalificacionEnum(Enum):
     EXCELENTE = {'label': 'EXCELENTE', 'color': 'green', 'nota': 5}
@@ -23,6 +21,22 @@ def clasificar_calificacion(promedio):
         if nota.value['nota'] == int(promedio):
             return nota.value['label']
 
+def traer_actividades(examen_id):
+    examen = Examen.query.get(examen_id)
+
+    if not examen:
+        return jsonify(message="Examen no encontrado"), 404
+
+    # Obtén la lista de actividades del examen
+    actividades = examen.actividades_formativas or []
+
+    # Modificamos el formato para incluir la descripción por defecto
+    actividades_info = [{"descripcion": actividad} for actividad in actividades]
+
+    return jsonify({"actividades": actividades_info})
+
+# ... (código anterior)
+
 def traer_calificaciones_por_examen(examen_id):
     calificaciones_examenes = CalificacionExamen.query.filter_by(examen_id=examen_id).all()
 
@@ -36,6 +50,9 @@ def traer_calificaciones_por_examen(examen_id):
     observaciones_totales = []
     evaluadores_totales = []  # Lista para almacenar los evaluadores
 
+    # Obtener información de las actividades una vez
+    actividades_info = traer_actividades(examen_id).json['actividades']
+
     for calificacion_examen in calificaciones_examenes:
         evaluador = Evaluador.query.get(calificacion_examen.evaluador_id)  # Obtener el objeto Evaluador
 
@@ -44,8 +61,14 @@ def traer_calificaciones_por_examen(examen_id):
             "examen_id": calificacion_examen.examen_id,
             "evaluador_id": calificacion_examen.evaluador_id,
             "evaluador_nombre": evaluador.nombre_evaluador if evaluador else None,  # Añadir el nombre del evaluador
-            "calificacion": []
+            "calificacion": [],
+            "actividades": actividades_info  # Pasar la información de las actividades
         }
+
+        for i, actividad_info in enumerate(calificacion_serializable["actividades"]):
+            actividad = f"Actividad{i + 1}"
+            actividad_info["calificacion"] = {}  # Agregar esta línea para inicializar la clave "calificacion"
+            actividad_info["descripcion_actividad"] = actividad  # Agregar la descripción de la actividad
 
         for estudiante in calificacion_examen.calificacion:
             nombre_estudiante = estudiante["nombre"]
@@ -67,7 +90,13 @@ def traer_calificaciones_por_examen(examen_id):
 
             for i, nota in enumerate(notas_estudiante):
                 actividad = f"Actividad{i + 1}"
-                conteo_actividades_estudiantes[actividad][nombre_estudiante] = clasificar_calificacion(nota)
+                calificacion_actividad = clasificar_calificacion(nota)
+                conteo_actividades_estudiantes[actividad][nombre_estudiante] = calificacion_actividad
+
+                # Actualizar la descripción de la actividad en conteo_actividades
+                for actividad_info in calificacion_serializable["actividades"]:
+                    if actividad_info["descripcion_actividad"] == actividad:
+                        actividad_info["calificacion"][calificacion_actividad] = actividad_info["calificacion"].get(calificacion_actividad, 0) + 1
 
             observaciones_totales.extend(observaciones_estudiante)
 
@@ -80,11 +109,14 @@ def traer_calificaciones_por_examen(examen_id):
         calificacion_final = clasificar_calificacion(promedio_final)
         conteo_calificaciones[calificacion_final] += 1
 
-    conteo_actividades = defaultdict(int)
+    conteo_actividades = defaultdict(dict)
 
     for actividad, estudiantes in conteo_actividades_estudiantes.items():
         conteo_por_actividad = Counter(estudiantes.values())
-        conteo_actividades[actividad] = dict(conteo_por_actividad)
+        for actividad_info in actividades_info:
+            if actividad_info["descripcion_actividad"] == actividad:
+                conteo_actividades[actividad]["descripcion_actividad"] = actividad_info["descripcion"]
+                conteo_actividades[actividad].update(dict(conteo_por_actividad))
 
     return jsonify(
         calificaciones=calificaciones_serializables,
@@ -93,3 +125,4 @@ def traer_calificaciones_por_examen(examen_id):
         observaciones_totales=observaciones_totales,
         evaluadores_totales=evaluadores_totales
     )
+
