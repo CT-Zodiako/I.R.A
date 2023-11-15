@@ -10,11 +10,11 @@ export const PromedioEstudiante =  () => {
     const { evaluadorId, proyectoIntegrador } = useParams();
     const [calificaciones, setCalificaciones] = useState([]);
     const [promedioGrafica, setPromedioGrafica] = useState([]);
+    const [actividades, setActividades] = useState([]);
     const [colorInforme, setColorInforme] = useState([]);
     const tableRef = useRef(null);
 
-    console.log("graficas actividades: ",calificaciones.conteo_actividades);
-    console.log("promedio de conteo: ", promedioGrafica);
+    console.log("actividades examen: ", actividades);
 
     const coloresHexadecimales = colorInforme.map(item => item.color);
 
@@ -83,6 +83,18 @@ export const PromedioEstudiante =  () => {
       useEffect(() => {
         async function fetchData() {
           try {
+            const data = await informeServicio.actividadesExamen(evaluadorId);
+            setActividades(data.actividades);
+          } catch (error) {
+            console.error('Error al obtener el conteo:', error);
+          }
+        }
+        fetchData();
+      }, [evaluadorId]);
+
+      useEffect(() => {
+        async function fetchData() {
+          try {
             const data = await evaluadorService.calificacionEstudiante();
             setColorInforme(data);
           } catch (error) {
@@ -102,7 +114,7 @@ export const PromedioEstudiante =  () => {
                     ))
                     ) : (
                     <p>No hay evaluadores disponibles.</p>
-                    )}
+                )}
 
                 <div>
                 {Array.isArray(calificaciones.observaciones_totales) ? (
@@ -111,7 +123,7 @@ export const PromedioEstudiante =  () => {
                     ))
                     ) : (
                     <p>No hay evaluadores disponibles.</p>
-                    )}
+                )}
                 </div>
 
                 <div>
@@ -130,25 +142,26 @@ export const PromedioEstudiante =  () => {
                 </div>
                 <h1>Promedio Por Actividades</h1>
                 <div>
-                  {calificaciones.conteo_actividades &&
-                    Object.entries(calificaciones.conteo_actividades).map(([actividad, categorias]) => (
-                      <Chart
-                        key={actividad}
-                        width={'600px'}
-                        height={'300px'}
-                        chartType="PieChart"
-                        loader={<div>Cargando gráfico</div>}
-                        data={[
-                          ['Categoría', 'Cantidad'],
-                          ...Object.entries(categorias).map(([categoria, cantidad]) => [categoria, cantidad])
-                        ]}
-                        options={{
-                            title: 'Conteo Por Calificacion',
-                            slices: asignarColoresFondoPastel(),                     
-                        }}
-                        rootProps={{ 'data-testid': '1' }}
-                      />
-                  ))}
+                  {calificaciones.conteo_actividades && actividades && calificaciones.conteo_actividades &&
+                    Object.entries(calificaciones.conteo_actividades).map(([actividad, categorias], item) => (
+                      <div key={actividad}>
+                        <Chart
+                          width={'600px'}
+                          height={'300px'}
+                          chartType="PieChart"
+                          loader={<div>Cargando gráfico</div>}
+                          data={[
+                            ['Categoría', 'Cantidad'],
+                            ...Object.entries(categorias).map(([categoria, cantidad]) => [categoria, cantidad])
+                          ]}
+                          options={{
+                            title: `Conteo Por Calificacion - ${actividad}`,
+                            slices: asignarColoresFondoPastel(),
+                          }}
+                          rootProps={{ 'data-testid': '1' }}
+                        />
+                      </div>
+                    ))}
                 </div>
             </div>
             <button onClick={downloadPDF}>Descargar PDF</button>
