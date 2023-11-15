@@ -6,8 +6,7 @@ export const Informes = () => {
     const [calificacionesExamen, setCalificacionesExamen] = useState([]);
 
     console.log("calificaciones examenes: ",calificacionesExamen);
-    const evaluadoresExamen = calificacionesExamen.nombres_evaluadores;
-    console.log(evaluadoresExamen);
+
 
     useEffect(() => {
         async function fetchData() {

@@ -133,7 +133,7 @@ export const PromedioEstudiante =  () => {
                   {calificaciones.conteo_actividades &&
                     Object.entries(calificaciones.conteo_actividades).map(([actividad, categorias]) => (
                       <Chart
-                      key={actividad}
+                        key={actividad}
                         width={'600px'}
                         height={'300px'}
                         chartType="PieChart"
