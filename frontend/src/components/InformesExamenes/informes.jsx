@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import informeServicio from "../../services/ServicioInforme";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+// import { TablaGeneral } from "../tablaGeneral";
 import {
   Table,
   TableBody,
@@ -11,9 +12,8 @@ import {
 } from "@mui/material";
 
 export const Informes = () => {
+  const navigate = useNavigate();
   const [calificacionesExamen, setCalificacionesExamen] = useState([]);
-
-  console.log("calificaciones examenes: ", calificacionesExamen);
 
   useEffect(() => {
     async function fetchData() {
@@ -28,11 +28,20 @@ export const Informes = () => {
     fetchData();
   }, []);
 
+  const verInforme = (id, proyectoIntegrador) => {
+    navigate(`/informe-estudiante`, {
+      state: {
+        evaluadorId: id,
+        proyectoIntegrador: proyectoIntegrador,
+      },
+    });
+  };
+
   return (
     <div>
       <TableContainer>
         <Table sx={{ minWidth: 650 }} aria-label="caption table">
-          <TableHead sx={{background: 'blue'}}>
+          <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
             <TableRow>
               <TableCell>Examen Id</TableCell>
               <TableCell align="left">ID</TableCell>
@@ -49,12 +58,8 @@ export const Informes = () => {
                   {informes.proyecto_integrador}
                 </TableCell>
                 <TableCell align="left">
-                  <button>
-                    <Link
-                      to={`/informe-estudiante/${informes.id}/${informes.proyecto_integrador}`}
-                    >
-                      Ver Informe
-                    </Link>
+                  <button onClick={() => verInforme(informes.id, informes.proyecto_integrador)}>
+                    Ver Informe
                   </button>
                 </TableCell>
               </TableRow>

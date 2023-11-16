@@ -1,23 +1,26 @@
 import { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Chart from "react-google-charts";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import informeServicio from "../../services/ServicioInforme";
 import evaluadorService from "../../services/servicioEvaluador";
+import { 
+  Table, TableBody, 
+  TableCell, TableContainer, 
+  TableHead, TableRow 
+} from "@mui/material";
 
 export const PromedioEstudiante = () => {
-  const { evaluadorId, proyectoIntegrador } = useParams();
+  const location = useLocation();
+  const evaluadorId = location.state.evaluadorId;
+  const proyectoIntegrador = location.state.proyectoIntegrador;
+
   const [calificaciones, setCalificaciones] = useState([]);
   const [promedioGrafica, setPromedioGrafica] = useState([]);
   const [actividades, setActividades] = useState([]);
   const [colorInforme, setColorInforme] = useState([]);
   const tableRef = useRef(null);
-
-  console.log("actividades examen: ", actividades);
-  console.log("datos grafica: ", calificaciones.conteo_actividades);
-
-  const coloresHexadecimales = colorInforme.map((item) => item.color);
 
   const onColorPromedio = (promedio) => {
     for (let nota of colorInforme) {
@@ -46,16 +49,27 @@ export const PromedioEstudiante = () => {
 
   const downloadPDF = () => {
     const input = document.getElementById("pdf-content");
+    const pdf = new jsPDF();
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    
     html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF();
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      const totalHeight = canvas.height;
+      let currentPosition = 0;
+  
+      while (currentPosition < totalHeight) {
+        const imgData = canvas.toDataURL("image/png");
+        pdf.addImage(imgData, "PNG", 0, currentPosition, pdfWidth, pdfHeight);
+        currentPosition += pdfHeight;
+  
+        if (currentPosition < totalHeight) {
+          pdf.addPage();
+        }
+      }
+  
       pdf.save("download.pdf");
     });
-  };
+  };  
 
   useEffect(() => {
     async function fetchData() {
@@ -110,43 +124,38 @@ export const PromedioEstudiante = () => {
 
   return (
     <>
-      <div id="pdf-content">
-        <h2>{proyectoIntegrador}</h2>
+      <div id="pdf-content">        
+        <h2>Proyecto Integrador</h2>
+        <h3>{proyectoIntegrador}</h3>
+        <hr/>
+        <h2>Evaluadores</h2>
         {Array.isArray(calificaciones.evaluadores_totales) ? (
           calificaciones.evaluadores_totales.map((nombre, index) => (
-            <h2 key={index}>{nombre}</h2>
+            <h3 key={index}>{nombre}</h3>
           ))
         ) : (
           <p>No hay evaluadores disponibles.</p>
         )}
 
         <div>
-          {Array.isArray(calificaciones.observaciones_totales) ? (
-            calificaciones.observaciones_totales.map((nombre, index) => (
-              <h6 key={index}>{nombre}</h6>
-            ))
-          ) : (
-            <p>No hay evaluadores disponibles.</p>
-          )}
-        </div>
-
-        <div>
+          <hr/>
+          <h2>Descripcion Actividades</h2>
           <TableContainer>
             <Table sx={{ minWidth: 650 }} aria-label="caption table">
               <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
-                  <TableRow key={index}>
-                    <TableCell>Descripcion</TableCell>
+                  <TableRow>
                     <TableCell>Actividad</TableCell>
+                    <TableCell>N° Grafica</TableCell>
                   </TableRow>
               </TableHead>
               <TableBody>
-                {datos.map((informes) => (
-                  <TableRow key={informes.id}>
+                {actividades.map((actividad, index) => (
+                  <TableRow key={index}>
                     <TableCell scope="row" align="left">
-                      {informes.id}
+                      {actividad.descripcion.descripcion}
                     </TableCell>
                     <TableCell align="left">
-                      {informes.proyecto_integrador}
+                       Grafica {index+1}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -156,6 +165,8 @@ export const PromedioEstudiante = () => {
         </div>
 
         <div>
+          <hr/>
+          <h2>Conteo General</h2>
           <Chart
             width={"600px"}
             height={"300px"}
@@ -163,17 +174,17 @@ export const PromedioEstudiante = () => {
             loader={<div>Cargando gráfico</div>}
             data={datosGrafico}
             options={{
-              title: "Conteo Por Calificacion",
               slices: asignarColoresFondoPastel(),
             }}
             rootProps={{ "data-testid": "1" }}
           />
         </div>
-        <h1>Promedio Por Actividades</h1>
         <div>
+          <hr/>
+          <h2>Conteo Por Actividades</h2>
           {calificaciones.conteo_actividades &&
             Object.entries(calificaciones.conteo_actividades).map(
-              ([actividad, categorias]) => (
+              ([actividad, categorias], index) => (
                 <div key={actividad}>
                   <Chart
                     width={"600px"}
@@ -187,7 +198,9 @@ export const PromedioEstudiante = () => {
                       ),
                     ]}
                     options={{
-                      title: `Conteo Por Calificacion - ${actividad}`,
+                      title: `Grafica ${index+1}`,titleTextStyle: {
+                      fontSize: 24,
+                      },
                       slices: asignarColoresFondoPastel(),
                     }}
                     rootProps={{ "data-testid": "1" }}
@@ -195,6 +208,17 @@ export const PromedioEstudiante = () => {
                 </div>
               )
             )}
+        </div>
+        <div>
+          <hr/>
+          <h2>Observaciones</h2>
+          {Array.isArray(calificaciones.observaciones_totales) ? (
+            calificaciones.observaciones_totales.map((nombre, index) => (
+              <h3 key={index}>{nombre}</h3>
+            ))
+          ) : (
+            <p>No hay evaluadores disponibles.</p>
+          )}
         </div>
       </div>
       <button onClick={downloadPDF}>Descargar PDF</button>

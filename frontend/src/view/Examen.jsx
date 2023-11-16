@@ -5,6 +5,7 @@ import resultadoAprendizajeServicio from '../services/ServicioResultadoAprendiza
 import evaluadorService from '../services/servicioEvaluador';
 import programaServicio from '../services/ServicioPrograma'; 
 import {InputSeleccion}  from '../components/EtiquetaSeleccionGeneral';
+import { TextField } from '@mui/material';
 
 export const CrearExamen = () => {
 
@@ -264,13 +265,22 @@ export const CrearExamen = () => {
         <div>
           <h3>Actividad Formativa</h3>
           <div>
-            <input
+            <TextField
+              type="text"
+              name="descripcion"
+              value={nuevaActividad.descripcion}
+              onChange={onActividadFormativa}
+              id="outlined-basic"
+              label="Descripción actividad"
+              required
+            />
+            {/* <input
               type="text"
               name="descripcion"
               value={nuevaActividad.descripcion}
               onChange={onActividadFormativa}
               placeholder="Descripción actividad"
-            />
+            /> */}
             <button type="button" onClick={agregarActividad}>
               Agregar Actividad
             </button>
@@ -300,13 +310,22 @@ export const CrearExamen = () => {
           <h3>Estudiante</h3>
           <div>
             <div>
-              <input
+              <TextField
+                type="text"
+                name="NOMBRE"
+                value={nuevoEstudiante.NOMBRE}
+                onChange={onEstudiante}
+                id="outlined-basic"
+                label="Nombre del estudiante"
+                required
+              />
+              {/* <input
                 type="text"
                 name="NOMBRE"
                 value={nuevoEstudiante.NOMBRE}
                 onChange={onEstudiante}
                 placeholder="Nombre del estudiante"
-              />
+              /> */}
               <button type="button" onClick={agregarEstudiante}>
                 Agregar Estudiante
               </button>

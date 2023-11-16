@@ -1,15 +1,25 @@
-export const TablaGeneral = ({columnas, datos}) => {
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import { Link } from "react-router-dom";
+
+export const TablaGeneral = ({ columnas, datos, ruta }) => {
   return (
     <>
       <div>
         <TableContainer>
           <Table sx={{ minWidth: 650 }} aria-label="caption table">
             <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
-            {columnas.map((columna, index) => (
+              {columnas.map((columna, index) => (
                 <TableRow key={index}>
-                    <TableCell>{columna.nombre}</TableCell>
-              </TableRow>
-            ))}
+                  <TableCell>{columna}</TableCell>
+                </TableRow>
+              ))}
             </TableHead>
             <TableBody>
               {datos.map((informes) => (
@@ -22,11 +32,7 @@ export const TablaGeneral = ({columnas, datos}) => {
                   </TableCell>
                   <TableCell align="left">
                     <button>
-                      <Link
-                        to={`/informe-estudiante/${informes.id}/${informes.proyecto_integrador}`}
-                      >
-                        Ver Informe
-                      </Link>
+                      <Link to={ruta}>Ver Informe</Link>
                     </button>
                   </TableCell>
                 </TableRow>
