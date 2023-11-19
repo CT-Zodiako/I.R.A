@@ -18,17 +18,14 @@ export const CrearExamen = () => {
     estudiantes: []
   });
 
+  console.log(formularioExamen);
+
   const [programa, setPrograma] = useState([]);
   const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
   const [evaluadores, setEvaluadores] = useState([]);
 
-  const [nuevaActividad, setNuevaActividad] = useState({
-    descripcion: ''
-  });
-
-  const [nuevoEstudiante, setNuevoEstudiante] = useState({
-    NOMBRE: ''
-  });
+  const [nuevaActividad, setNuevaActividad] = useState();
+  const [nuevoEstudiante, setNuevoEstudiante] = useState();
 
   const onPrograma = (selectedId) => {
     setFormulario({
@@ -60,23 +57,29 @@ export const CrearExamen = () => {
   };
 
   const onActividadFormativa = (event) => {
-    const { name, value } = event.target;
-    setNuevaActividad({
-      ...nuevaActividad,
-      [name]: value
-    });
+    setNuevaActividad(event.target.value);
   };
+  // const onActividadFormativa = (event) => {
+  //   const { name, value } = event.target;
+  //   setNuevaActividad({
+  //     ...nuevaActividad,
+  //     [name]: value
+  //   });
+  // };
 
   const onEstudiante = (event) => {
-    const { name, value } = event.target;
-    setNuevoEstudiante({
-      ...nuevoEstudiante,
-      [name]: value
-    });
-  };
+    setNuevoEstudiante(event.target.value)
+  }
+  // const onEstudiante = (event) => {
+  //   const { name, value } = event.target;
+  //   setNuevoEstudiante({
+  //     ...nuevoEstudiante,
+  //     [name]: value
+  //   });
+  // };
 
   const agregarActividad = () => {
-    if (nuevaActividad.descripcion) {
+    if (nuevaActividad) {
       setFormulario({
         ...formularioExamen,
         actividades_formativas: [...formularioExamen.actividades_formativas, nuevaActividad]
@@ -85,7 +88,7 @@ export const CrearExamen = () => {
   };
 
   const agregarEstudiante = () => {
-    if (nuevoEstudiante.NOMBRE) {
+    if (nuevoEstudiante) {
       setFormulario({
         ...formularioExamen,
         estudiantes: [...formularioExamen.estudiantes, nuevoEstudiante]
@@ -268,7 +271,7 @@ export const CrearExamen = () => {
             <TextField
               type="text"
               name="descripcion"
-              value={nuevaActividad.descripcion}
+              // value={nuevaActividad.descripcion}
               onChange={onActividadFormativa}
               id="outlined-basic"
               label="Descripción actividad"
@@ -295,7 +298,7 @@ export const CrearExamen = () => {
               <tbody>
               {formularioExamen.actividades_formativas.map((actividad, index) => (
                   <tr key={index}>
-                    <td>{actividad.descripcion}</td>
+                    <td>{actividad}</td>
                     <td>
                       <button type='button' onClick={() => eliminarActividad(index)}>Eliminar</button>
                     </td>
@@ -313,7 +316,7 @@ export const CrearExamen = () => {
               <TextField
                 type="text"
                 name="NOMBRE"
-                value={nuevoEstudiante.NOMBRE}
+                // value={nuevoEstudiante.NOMBRE}
                 onChange={onEstudiante}
                 id="outlined-basic"
                 label="Nombre del estudiante"
@@ -348,7 +351,7 @@ export const CrearExamen = () => {
                 <tbody>
                   {formularioExamen.estudiantes.map((estudiante, index) => (
                     <tr key={index}>
-                      <td>{estudiante.NOMBRE}</td>
+                      <td>{estudiante}</td>
                       <td>
                         <button type='button' onClick={() => eliminarEstudiante(index)}>Eliminar</button>
                       </td>

@@ -1,0 +1,34 @@
+.informacion{
+    width: fit-content;
+    max-width: 85%;
+    height: fit-content;
+    max-height: 50rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    padding: 4rem;
+    margin: 1rem;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.labelExamen{
+    width: 100px;
+    height: 50px;
+}
+
+.inputExamen{
+    background: green;
+    width: 50px;
+    height: 30px;
+}
+
+.tablaExamen{
+    width: 200px;
+    height: 300px;
+}
+
+.componentes > div {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}

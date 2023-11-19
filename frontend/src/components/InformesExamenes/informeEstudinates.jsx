@@ -198,7 +198,7 @@ export const PromedioEstudiante = () => {
                       ),
                     ]}
                     options={{
-                      title: `Grafica ${index+1}`,titleTextStyle: {
+                      title: `Grafica ${actividad}`,titleTextStyle: {
                       fontSize: 24,
                       },
                       slices: asignarColoresFondoPastel(),

@@ -23,28 +23,16 @@ export const examenFormularioSlice = createSlice({
             const { evaluadores_ids } = action.payload;
             state.evaluadores_ids = evaluadores_ids;
         },
-        eliminarEvaluador:(state, action) =>{
-            const { nuevoFormularioExamen } = action.payload;
-            state.examenFormulario = nuevoFormularioExamen;
-        },
         agregarActividad:(state, action) => {
             const { actividades_formativas } = action.payload;
             state.actividades_formativas = actividades_formativas;
-        },
-        eliminarActividad:(state, action) =>{
-            const { nuevoFormularioExamen } = action.payload;
-            state.examenFormulario = nuevoFormularioExamen;
         },
         agregarEstudiantes:(state, action) => {
             const { estudiantes } = action.payload;
             state.estudiantes = estudiantes;
         },
-        eliminarEstudiantes:(state, action) => {
-            const { nuevoFormularioExamen } = action.payload;
-            state.examenFormulario = nuevoFormularioExamen; 
-        }
     }
 });
 
-export const { agregaInformacion, agregarEvaluador, eliminarEvaluador, agregarActividad, eliminarActividad, agregarEstudiantes, eliminarEstudiantes } = examenFormularioSlice.actions;
+export const { agregaInformacion, agregarEvaluador, agregarActividad, agregarEstudiantes } = examenFormularioSlice.actions;
 export default examenFormularioSlice.reducer;

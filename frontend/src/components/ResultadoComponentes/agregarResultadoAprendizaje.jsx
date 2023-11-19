@@ -19,9 +19,7 @@ export const CrearResultado = () => {
   const onEnviarResultado = async (event) => {
     event.preventDefault();
     try {
-      const response = await resultadoAprendizajeServicio.agregarResultado(
-        agregaResultado
-      );
+      await resultadoAprendizajeServicio.agregarResultado(agregaResultado);
     } catch (error) {
       console.error(error);
     }
