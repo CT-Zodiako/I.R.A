@@ -48,28 +48,27 @@ def traer_calificaciones_por_examen(examen_id):
     conteo_calificaciones = defaultdict(int)
     conteo_actividades_estudiantes = defaultdict(lambda: defaultdict(int))
     observaciones_totales = []
-    evaluadores_totales = []  # Lista para almacenar los evaluadores
+    evaluadores_totales = []  
 
-    # Obtener información de las actividades una vez
+  
     actividades_info = traer_actividades(examen_id).json['actividades']
 
     for calificacion_examen in calificaciones_examenes:
-        evaluador = Evaluador.query.get(calificacion_examen.evaluador_id)  # Obtener el objeto Evaluador
+        evaluador = Evaluador.query.get(calificacion_examen.evaluador_id) 
 
         calificacion_serializable = {
             "id": calificacion_examen.id,
             "examen_id": calificacion_examen.examen_id,
             "evaluador_id": calificacion_examen.evaluador_id,
-            "evaluador_nombre": evaluador.nombre_evaluador if evaluador else None,  # Añadir el nombre del evaluador
+            "evaluador_nombre": evaluador.nombre_evaluador if evaluador else None,  
             "calificacion": [],
-            "actividades": actividades_info  # Pasar la información de las actividades
+            "actividades": actividades_info  
         }
 
         for i, actividad_info in enumerate(calificacion_serializable["actividades"]):
             actividad = f"Actividad{i + 1}"
-            actividad_info["calificacion"] = {}  # Agregar esta línea para inicializar la clave "calificacion"
-            actividad_info["descripcion_actividad"] = actividad  # Agregar la descripción de la actividad
-
+            actividad_info["calificacion"] = {}  
+            actividad_info["descripcion_actividad"] = actividad  
         for estudiante in calificacion_examen.calificacion:
             nombre_estudiante = estudiante["nombre"]
             notas_estudiante = estudiante["calificacion"]["notas"]
@@ -93,14 +92,14 @@ def traer_calificaciones_por_examen(examen_id):
                 calificacion_actividad = clasificar_calificacion(nota)
                 conteo_actividades_estudiantes[actividad][nombre_estudiante] = calificacion_actividad
 
-                # Actualizar la descripción de la actividad en conteo_actividades
+                
                 for actividad_info in calificacion_serializable["actividades"]:
                     if actividad_info["descripcion_actividad"] == actividad:
                         actividad_info["calificacion"][calificacion_actividad] = actividad_info["calificacion"].get(calificacion_actividad, 0) + 1
 
             observaciones_totales.extend(observaciones_estudiante)
 
-        evaluadores_totales.append(evaluador.nombre_evaluador if evaluador else None)  # Añadir el nombre del evaluador a la lista
+        evaluadores_totales.append(evaluador.nombre_evaluador if evaluador else None)  
 
         calificaciones_serializables.append(calificacion_serializable)
 
