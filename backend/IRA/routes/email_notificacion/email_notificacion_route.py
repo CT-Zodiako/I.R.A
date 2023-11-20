@@ -50,7 +50,17 @@ def enviar_correo_route():
             'mensaje': 'Correos enviados correctamente'
         }
 
-    return 'No se realizó ninguna acción'
+    return{
+            'status': 400,
+            'mensaje': 'No se realizó ninguna acción'
+        }
+
+def obtener_destinatarios_por_examen(examen_id):
+    examen = Examen.query.get(examen_id)
+    if not examen:
+        return []
+    print([evaluador.correo for evaluador in examen.evaluadores_relacion])
+    return [evaluador.correo for evaluador in examen.evaluadores_relacion]
 
 
 
