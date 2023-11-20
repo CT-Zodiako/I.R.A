@@ -1,5 +1,6 @@
 from ...db import db
 from flask import Blueprint, request, jsonify
+from ...models.examen.examen_model import Examen
 import smtplib
 from ...models.examen.examen_model import Examen
 from email.mime.text import MIMEText
@@ -60,3 +61,31 @@ def obtener_destinatarios_por_examen(examen_id):
         return []
     print([evaluador.correo for evaluador in examen.evaluadores_relacion])
     return [evaluador.correo for evaluador in examen.evaluadores_relacion]
+
+
+
+@email_blueprint.route('/cambiar_estado_resultado/<int:resultado_id>', methods=['PUT'])
+
+def cambiar_estado_resultado(resultado_id):
+    return cambiar_estado_resultado_db(resultado_id)
+
+
+
+
+def cambiar_estado_resultado_db(resultado_id):
+    try:
+        resultado = Examen.query.get(resultado_id)
+
+        if resultado is None:
+            return jsonify({'mensaje': 'Resultado de aprendizaje no encontrado', 'status': 404}), 404
+
+        resultado.estado = not resultado.estado
+
+        db.session.commit()
+
+        mensaje_estado = 'desactivado' if not resultado.estado else 'activado'
+        return jsonify({'mensaje': f'Estado del resultado de aprendizaje {mensaje_estado} exitosamente', 'status': 200}), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'mensaje': 'Fallo al cambiar el estado del resultado de aprendizaje', 'error': str(e), 'status': 500}), 500
