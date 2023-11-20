@@ -33,3 +33,15 @@ class Examen(db.Model):
 
     def get_nombres_evaluadores(self):
         return [evaluador.nombre_evaluador for evaluador in self.evaluadores_relacion]
+    
+    def obtener_correos_evaluadores_por_id(self, examen_id):
+        # Buscar el examen por su ID
+        examen = Examen.query.get(examen_id)
+
+        if not examen:
+            return 'Examen no encontrado'
+
+        # Obtener los correos de los evaluadores asociados al examen
+        correos_evaluadores = [evaluador.correo_evaluador for evaluador in examen.evaluadores_relacion]
+
+        return correos_evaluadores

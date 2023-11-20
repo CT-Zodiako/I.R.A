@@ -1,36 +1,40 @@
 from ...db import db
 from flask import Blueprint, request, jsonify
 import smtplib
+from ...models.examen.examen_model import Examen
 from email.mime.text import MIMEText
 
 email_blueprint = Blueprint('email', __name__)
 
-def enviar_correo(destinatario, asunto, cuerpo):
-    # Configurar el servidor SMTP
+def configure_smtp_server():
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
-
-    # Iniciar sesión
     server.login("tryhardskill98@gmail.com", "ybpy hspa fzje jdzh")
+    return server
 
-    # Crear el mensaje
+def close_smtp_connection(server):
+    server.quit()
+
+def create_email_message(destinatario, asunto, cuerpo):
     msg = MIMEText(cuerpo)
     msg['Subject'] = asunto
     msg['From'] = "tryhardskill98@gmail.com"
     msg['To'] = destinatario
+    return msg
 
-    # Enviar el correo
+def enviar_correo(destinatario, asunto, cuerpo):
+    server = configure_smtp_server()
+    msg = create_email_message(destinatario, asunto, cuerpo)
     server.sendmail("tryhardskill98@gmail.com", destinatario, msg.as_string())
-
-    # Cerrar la conexión
-    server.quit()
+    close_smtp_connection(server)
 
 # Cambié el nombre de la función para evitar conflictos
 @email_blueprint.route('/enviar_correo', methods=['POST'])
 def enviar_correo_route():
     if request.method == 'POST':
-        # Lista de destinatarios (puedes obtener esto de tu base de datos u otra fuente)
-        destinatarios = ["zodiakoop@gmail.com"]
+        # Obtener la lista de destinatarios desde la base de datos o alguna fuente
+        examen_id = request.json.get('examen_id')  # Asume que el ID del examen está en el cuerpo de la solicitud
+        destinatarios = obtener_destinatarios_por_examen(examen_id)
 
         # Detalles del mensaje
         asunto = "Tienes exámenes por calificar"
@@ -43,3 +47,10 @@ def enviar_correo_route():
         return 'Correos enviados correctamente'
 
     return 'No se realizó ninguna acción'
+
+def obtener_destinatarios_por_examen(examen_id):
+    examen = Examen.query.get(examen_id)
+    if not examen:
+        return []
+    print([evaluador.correo for evaluador in examen.evaluadores_relacion])
+    return [evaluador.correo for evaluador in examen.evaluadores_relacion]
