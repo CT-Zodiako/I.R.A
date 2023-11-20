@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-// import evaluadorService from '../services/servicioEvaluador';
+import evaluadorService from '../../services/servicioEvaluador';
 
 export const ModalIRA = ({ isOpen, onClose, evaluadorId }) => {
   const [formulario, setFormulario] = useState({
     nombre_evaluador: '',
     correo: '',
     numero_identificacion: '',
-    contrasenna: '',
     telefono: '',
   });
 
@@ -15,7 +14,8 @@ export const ModalIRA = ({ isOpen, onClose, evaluadorId }) => {
     const obtenerEvaluador = async () => {
       try {
         const response = await evaluadorService.obtenerEvaluador(evaluadorId);
-        setFormulario(response.data);
+        setFormulario(response);
+        console.log("evaluador: ", response);
       } catch (error) {
         console.error(error);
       }
@@ -72,16 +72,6 @@ export const ModalIRA = ({ isOpen, onClose, evaluadorId }) => {
             type="text"
             name="numero_identificacion"
             value={formulario.numero_identificacion}
-            onChange={onEditarEvaluador}
-            required
-          />
-        </div>
-        <div>
-          <label>Contrseña:</label>
-          <input
-            type="text"
-            name="contrasenna"
-            value={formulario.contrasenna}
             onChange={onEditarEvaluador}
             required
           />

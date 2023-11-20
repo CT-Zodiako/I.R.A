@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
-import { InputSeleccion } from "../EtiquetaSeleccionGeneral";
-import { useDispatch } from "react-redux";
-import { agregaInformacion } from "../../redux/examenSlice";
-import programaServicio from "../../services/ServicioPrograma";
-import resultadoAprendizajeServicio from "../../services/ServicioResultadoAprendizaje";
-import "./examen.css";
-import { InputLabel, TextField } from "@mui/material";
+import { useState, useEffect } from "react"
+import { InputSeleccion } from "../EtiquetaSeleccionGeneral"
+import { useDispatch } from "react-redux"
+import { agregaInformacion } from "../../redux/examenSlice"
+import programaServicio from "../../services/ServicioPrograma"
+import resultadoAprendizajeServicio from "../../services/ServicioResultadoAprendizaje"
+import "./examen.css"
+import { InputLabel, TextField } from "@mui/material"
+import { BotonGeneral } from "../botonGeneral"
 
 export const EvaluacionInformacion = ({ handleNext }) => {
   const dispatch = useDispatch();
@@ -114,29 +115,24 @@ export const EvaluacionInformacion = ({ handleNext }) => {
                 Proyecto Integrador:{" "}
               </InputLabel>
               <TextField
-                sx={{width: '21rem'}}
+                sx={{width: '20rem', margin: '10px'}}
                 id="outlined-multiline-static"
                 type="text"
-                label="Descripción actividad"
+                label="Descripción"
                 name="proyecto_integrador"
                 value={informacionExamen.proyecto_integrador}
                 onChange={onProyectoIntegrador}
                 multiline
-                rows={8}
-                defaultValue="Default Value"
+                rows={4}
               />
-              {/* <input
-                type="text"
-                name="proyecto_integrador"
-                value={informacionExamen.proyecto_integrador}
-                onChange={onProyectoIntegrador}
-              /> */}
             </div>
           </div>
           <div>
-            <button type="submit" disabled={!camposCargados}>
-              Cargar
-            </button>
+            <BotonGeneral
+                camposCargados={camposCargados}
+                tipo='submit'
+                accion='Cargar'
+            />
           </div>
         </form>
       </div>

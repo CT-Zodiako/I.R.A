@@ -17,6 +17,7 @@ export const PromedioEstudiante = () => {
   const proyectoIntegrador = location.state.proyectoIntegrador;
 
   const [calificaciones, setCalificaciones] = useState([]);
+  console.log("actividades Graf: ", calificaciones);
   const [promedioGrafica, setPromedioGrafica] = useState([]);
   const [actividades, setActividades] = useState([]);
   const [colorInforme, setColorInforme] = useState([]);
@@ -91,6 +92,7 @@ export const PromedioEstudiante = () => {
       try {
         const data = await informeServicio.promedioGrafica(evaluadorId);
         setPromedioGrafica(data);
+        console.log("graficas actividad: ", data);
       } catch (error) {
         console.error("Error al obtener el conteo:", error);
       }
@@ -193,12 +195,13 @@ export const PromedioEstudiante = () => {
                     loader={<div>Cargando gráfico</div>}
                     data={[
                       ["Categoría", "Cantidad"],
-                      ...Object.entries(categorias).map(
+                      ...Object.entries(categorias).slice(0, -1).map(
                         ([categoria, cantidad]) => [categoria, cantidad]
                       ),
                     ]}
                     options={{
-                      title: `Grafica ${actividad}`,titleTextStyle: {
+                      title: `Grafica ${categorias.descripcion_actividad}`,
+                      titleTextStyle: {
                       fontSize: 24,
                       },
                       slices: asignarColoresFondoPastel(),

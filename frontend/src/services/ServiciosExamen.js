@@ -7,10 +7,18 @@ const api = axios.create({
 class examenService{
     async agregarExamen (formularioExamen) {
       try {
-        // const token = localStorage.getItem('token')
         return await api.post('/examen/crear_examen', formularioExamen);
       } catch (error) {
         console.error('Error al enviar los datos:', error);
+      }
+    }
+
+    async ExamenesCreados () {
+      try{
+          const responce = await axios.get('http://127.0.0.1:3001/examen/examenes');
+          return responce;
+      } catch (error) {
+        console.error("Error al traer la lista de examenes: ", error)
       }
     }
   };

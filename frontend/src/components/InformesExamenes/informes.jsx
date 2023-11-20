@@ -15,6 +15,8 @@ export const Informes = () => {
   const navigate = useNavigate();
   const [calificacionesExamen, setCalificacionesExamen] = useState([]);
 
+    console.log("mis calificaciones este: ",calificacionesExamen);
+
   useEffect(() => {
     async function fetchData() {
       try {

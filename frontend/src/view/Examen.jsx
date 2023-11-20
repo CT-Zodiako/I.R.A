@@ -68,15 +68,12 @@ export const CrearExamen = () => {
   // };
 
   const onEstudiante = (event) => {
-    setNuevoEstudiante(event.target.value)
-  }
-  // const onEstudiante = (event) => {
-  //   const { name, value } = event.target;
-  //   setNuevoEstudiante({
-  //     ...nuevoEstudiante,
-  //     [name]: value
-  //   });
-  // };
+    const { name, value } = event.target;
+    setNuevoEstudiante({
+      ...nuevoEstudiante,
+      [name]: value
+    });
+  };
 
   const agregarActividad = () => {
     if (nuevaActividad) {

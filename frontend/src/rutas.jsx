@@ -13,12 +13,14 @@ import { GraficoInforme } from './components/InformesExamenes/grafico'
 import { PromedioEstudiante } from './components/InformesExamenes/informeEstudinates'
 import ProteccionRuta from './rutasProtegidas';
 import { FormularioPorPasos } from './components/Examen/pruebaPasos';
+import { ExamenesLista } from './components/Examen/ListaExamenes';
 
 function Routers() {
   return (
     <Routes>
       <Route path="/" element={<InicioSesionUsuarios/>} />
       <Route element={<ProteccionRuta rolesPermitidos={'Admin'}/>}>
+          <Route path="examen-lista" element={<ExamenesLista/>}/>
           <Route path="/examen" element={<CrearExamen/>}/>
           <Route path="/gestion-usuario" element={<CrearEvaluador/>} />
           <Route path="/evaluadores" element={<EvaluadorLista/>}/>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { agregarActividad } from "../../redux/examenSlice";
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -10,6 +11,7 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
+import { BotonGeneral } from "../botonGeneral";
 
 export const RegistrarActividadFormativa = ({ handleNext }) => {
   const examenForm = useSelector((state) => state.examenFormulario);
@@ -63,31 +65,41 @@ export const RegistrarActividadFormativa = ({ handleNext }) => {
 
   return (
     <>
-      <div className="informacion" >
+      <div className="informacion">
         <form onSubmit={onEnviarActividad}>
-          <div>
+          <div className="componentes">
             <h3>Actividad Formativa</h3>
-            <div>
-              <TextField
-                type="text"
-                name="descripcion"
-                onChange={onActividadFormativa}
-                id="outlined-basic"
-                label="Descripción actividad"
-                required
-              />
-              {/* <input
-                    type="text"
-                    onChange={onActividadFormativa}
-                    placeholder="Descripción actividad"
-                /> */}
-              <button type="button" onClick={onAgregarActividad}>
-                Agregar Actividad
-              </button>
+            <div className="centrar">
+              <div className="centrar">
+                <TextField
+                  sx={{ width: "21rem", margin: "10px" }}
+                  id="outlined-multiline-static"
+                  type="text"
+                  label="Descripción actividad"
+                  name="descripcion"
+                  onChange={onActividadFormativa}
+                  multiline
+                  rows={2}
+                />
+              </div>
+              <div className="centrar">
+                <Button
+                  type="button"
+                  onClick={onAgregarActividad}
+                  className="textButton"
+                  variant="outlined"
+                  size="small"
+                >
+                  Agregar Actividad
+                </Button>
+              </div>
             </div>
             <div>
               <TableContainer>
-                <Table sx={{ minWidth: 650 }} aria-label="caption table">
+                <Table
+                  sx={{ minWidth: 350, width: 550 }}
+                  aria-label="caption table"
+                >
                   <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
                     <TableRow>
                       <TableCell>Decripcion</TableCell>
@@ -102,12 +114,14 @@ export const RegistrarActividadFormativa = ({ handleNext }) => {
                             {actividad}
                           </TableCell>
                           <TableCell align="left">
-                            <button
+                            <Button 
+                              variant="outlined" 
                               type="button"
+                              size="small"
                               onClick={() => eliminarActividadLista(index)}
                             >
                               Eliminar
-                            </button>
+                            </Button>
                           </TableCell>
                         </TableRow>
                       )
@@ -118,9 +132,11 @@ export const RegistrarActividadFormativa = ({ handleNext }) => {
             </div>
           </div>
           <div>
-            <button type="submit" disabled={!camposCargados}>
-              Cargar
-            </button>
+            <BotonGeneral
+              tipo="submit"
+              camposCargados={camposCargados}
+              accion="Cargar"
+            />
           </div>
         </form>
       </div>

@@ -4,7 +4,9 @@ import evaluadorService from "../../services/servicioEvaluador"
 import { useDispatch, useSelector } from "react-redux"
 import { agregarEvaluador } from "../../redux/examenSlice"
 import { BotonGeneral } from "../botonGeneral"
+import './examen.css'
 import { 
+  Button,
   Table, TableBody, TableCell, 
   TableContainer, TableHead, TableRow 
 } from "@mui/material"
@@ -59,9 +61,9 @@ export const PanelSeleccionarEvaluador = ({ handleNext }) => {
     <>
       <div className="informacion">
         <form onSubmit={onEnviarEvaluadores}>
-          <div>
+          <div className="componentes">
             <h2>Evaluadores</h2>
-            <div>
+            <div className="centrar">
               <InputSeleccion
                 seleccionar={listaEvaluadores}
                 idSeleccion={onEvaluadores}
@@ -70,8 +72,8 @@ export const PanelSeleccionarEvaluador = ({ handleNext }) => {
               />
             </div>
             <div>
-              <TableContainer>
-                <Table sx={{ minWidth: 650, width: '700px'}} aria-label="caption table">
+              <TableContainer  sx={{ overflowX: 'auto' }}>
+                <Table sx={{ minWidth: 350, maxWidth: 700}} aria-label="caption table">
                   <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
                     <TableRow>
                       <TableCell>Nombre del Evaluador</TableCell>
@@ -94,12 +96,14 @@ export const PanelSeleccionarEvaluador = ({ handleNext }) => {
                           </TableCell>
                           <TableCell align="left">{evaluador.correo}</TableCell>
                           <TableCell align="left">
-                            <button
+                            <Button 
+                              variant="outlined" 
+                              size="small"
                               type="button"
                               onClick={() => eliminarEvaluadorLista(index)}
                             >
                               Eliminar
-                            </button>
+                            </Button>
                           </TableCell>
                         </TableRow>
                       );
@@ -110,7 +114,11 @@ export const PanelSeleccionarEvaluador = ({ handleNext }) => {
             </div>
           </div>
           <div>
-            <button type="submit">Cargar</button>
+            <BotonGeneral
+              tipo='submit'
+              camposCargados={evaluadores.evaluadores_ids.length}
+              accion='Cargar'
+            />
           </div>
         </form>
       </div>

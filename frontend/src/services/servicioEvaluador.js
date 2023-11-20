@@ -34,9 +34,9 @@ class evaluadorService{
     }
   }
 
-  async buscarEvaluador(id) {
+  async obtenerEvaluador(evaluadorId) {
     try {
-      const response = await axios.get(`http://127.0.0.1:3001/evaluador/evaluador_id/1`);
+      const response = await axios.get(`http://127.0.0.1:3001/evaluador/evaluador_id/${evaluadorId}`);
       return response.data.data;
     } catch (err) {
       console.error(err);

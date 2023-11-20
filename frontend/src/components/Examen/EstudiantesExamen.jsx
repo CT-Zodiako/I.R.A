@@ -2,7 +2,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { agregarEstudiantes } from "../../redux/examenSlice";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+} from "@mui/material";
 
 export const AgregarListaEstudiantes = ({ setCamposCargados }) => {
   const dispatch = useDispatch();
@@ -82,37 +91,41 @@ export const AgregarListaEstudiantes = ({ setCamposCargados }) => {
 
   return (
     <>
-      <form onSubmit={onEnviarEstudiantes}>
-        <div>
-          <h3>Estudiante</h3>
-          <div>
+      <div className="informacion">
+        <form onSubmit={onEnviarEstudiantes}>
+          <div className="componentes">
+            <h3>Estudiante</h3>
             <div>
-              <TextField
-                type="text"
-                name="NOMBRE"
-                value={estudianteEstado.NOMBRE}
-                onChange={onEstudiante}
-                id="outlined-basic"
-                label="Nombre del estudiante"
-                required
-              />
-              {/* <input
+              <div className="centrar">
+                <input type="file" accept="xlsx" onChange={handleFileUpload} />
+              </div>
+              <div className="centrar">
+                <div className="centrar">
+                  <TextField
+                    sx={{ width: "21rem", margin: "10px" }}
+                    id="outlined-basic"
                     type="text"
+                    label="Nombre del estudiante"
                     name="NOMBRE"
                     value={estudianteEstado.NOMBRE}
                     onChange={onEstudiante}
-                    placeholder="Nombre del estudiante"
-                /> */}
-              <button type="button" onClick={agregarEstudiante}>
-                Agregar Estudiante
-              </button>
+                  />
+                </div>
+                <div className="centrar">
+                  <Button
+                    type="button"
+                    onClick={agregarEstudiante}
+                    className="textButton"
+                    variant="outlined"
+                    size="small"
+                  >
+                    Agregar Estudiante
+                  </Button>
+                </div>
+              </div>
             </div>
             <div>
-              <input type="file" accept="xlsx" onChange={handleFileUpload} />
-            </div>
-          </div>
-          <div>
-          <TableContainer>
+              <TableContainer>
                 <Table sx={{ minWidth: 650 }} aria-label="caption table">
                   <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
                     <TableRow>
@@ -121,55 +134,33 @@ export const AgregarListaEstudiantes = ({ setCamposCargados }) => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {estudiantesExamen.estudiantes.map(
-                      (estudiante, index) => (
-                        <TableRow key={index}>
-                          <TableCell scope="row" align="left">
-                            {estudiante.NOMBRE}
-                          </TableCell>
-                          <TableCell align="left">
-                            <button
-                              type="button"
-                              onClick={() => eliminarEstudianteLista(index)}
-                            >
-                              Eliminar
-                            </button>
-                          </TableCell>
-                        </TableRow>
-                      )
-                    )}
+                    {estudiantesExamen.estudiantes.map((estudiante, index) => (
+                      <TableRow key={index}>
+                        <TableCell scope="row" align="left">
+                          {estudiante.NOMBRE}
+                        </TableCell>
+                        <TableCell align="left">
+                          <Button
+                            variant="outlined"
+                            type="button"
+                            size="small"
+                            onClick={() => eliminarEstudianteLista(index)}
+                          >
+                            Eliminar
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </TableContainer>
-
-            {/* <table>
-              <thead>
-                <tr>
-                  <th>Nombre del Estudiante</th>
-                </tr>
-              </thead>
-              <tbody>
-                {estudiantesExamen.estudiantes.map((estudiante, index) => (
-                  <tr key={index}>
-                    <td>{estudiante.NOMBRE}</td>
-                    <td>
-                      <button
-                        type="button"
-                        onClick={() => eliminarEstudianteLista(index)}
-                      >
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table> */}
+            </div>
           </div>
-        </div>
-        <div>
-          <button type="submit">Cargar</button>
-        </div>
-      </form>
+          <div>
+            <button type="submit">Cargar</button>
+          </div>
+        </form>
+      </div>
     </>
   );
 };

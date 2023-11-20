@@ -9,12 +9,12 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-// import {ModalIRA} from '../Examen/Modal'
+// import { ModalIRA } from "../Examen/Modal";
 
 export const EvaluadorLista = () => {
   const [evaluadores, setEvaluadores] = useState([]);
-
   // const [modalAbierto, setModalAbierto] = useState(false);
+  // const [evaluadorIdSeleccionado, setEvaluadorIdSeleccionado] = useState(null);
 
   // const abrirModal = (evaluadorId) => {
   //   setModalAbierto(true);
@@ -88,6 +88,16 @@ export const EvaluadorLista = () => {
                       >
                         Eliminar
                       </button>
+                      <button onClick={() => 
+                        abrirModal(evaluador.id)}
+                      >
+                        Actualizar
+                      </button>
+                      {/* <ModalIRA 
+                        isOpen={modalAbierto}
+                        onClose={cerrarModal}
+                        evaluadorId={evaluadorIdSeleccionado}
+                      /> */}
                     </TableCell>
                   </TableRow>
                 ))}

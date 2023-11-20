@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import evaluadorService from '../services/servicioEvaluador';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react'
+import evaluadorService from '../services/servicioEvaluador'
+import { useSelector } from 'react-redux'
 
 export const CrearEvaluador = () => {
 

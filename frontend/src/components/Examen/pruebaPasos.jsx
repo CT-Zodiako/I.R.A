@@ -1,45 +1,127 @@
-import { useState } from 'react';
-import examenService from '../../services/ServiciosExamen';
-import { EvaluacionInformacion, AgregarListaEstudiantes, RegistrarActividadFormativa, PanelSeleccionarEvaluador } from './indexExamen'
-import { useSelector } from 'react-redux';
+import { useState } from "react";
+import examenService from "../../services/ServiciosExamen";
+import {
+  EvaluacionInformacion,
+  AgregarListaEstudiantes,
+  RegistrarActividadFormativa,
+  PanelSeleccionarEvaluador,
+} from "./indexExamen";
+import { useSelector } from "react-redux";
+import { Box, Step, StepLabel, Stepper } from "@mui/material";
 
 export const FormularioPorPasos = () => {
-
-  const enviarExamen = useSelector((state) => state.examenFormulario)
+  const enviarExamen = useSelector((state) => state.examenFormulario);
   const [componenteExamen, setComponenteExamen] = useState(1);
   const [camposCargados, setCamposCargados] = useState(false);
 
+  const pasos = [
+    "Informacion Examen",
+    "Panel Evaluador",
+    "Actividades Formativas",
+    "Estudiantes Examen",
+  ];
+
   const onNext = () => {
-    setComponenteExamen(componenteExamen => componenteExamen + 1);
+    setComponenteExamen((componenteExamen) => componenteExamen + 1);
   };
 
-  const onEnviarFormularioExamen = async(event) => {
+  const onEnviarFormularioExamen = async (event) => {
     event.preventDefault();
     try {
       const responce = await examenService.agregarExamen(enviarExamen);
     } catch (error) {
-      console.error('Error al enviar los datos del examen:', error);
+      console.error("Error al enviar los datos del examen:", error);
     }
-  } 
-  
+  };
+
   switch (componenteExamen) {
     case 1:
-      return <EvaluacionInformacion 
-        handleNext={onNext} 
-        />;
+      return (
+        <div>
+          <div>
+            <Box sx={{ width: "100%" }}>
+              <Stepper activeStep={componenteExamen - 1} alternativeLabel>
+                {pasos.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </Box>
+          </div>
+          <div className="centrar">
+            <EvaluacionInformacion handleNext={onNext} />
+          </div>
+        </div>
+      );
     case 2:
-      return <PanelSeleccionarEvaluador
-        handleNext={onNext}
-        />;
+      return (
+        <div>
+          <div>
+            <Box sx={{ width: "100%" }}>
+              <Stepper activeStep={componenteExamen - 1} alternativeLabel>
+                {pasos.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </Box>
+          </div>
+          <div className="centrar">
+            <PanelSeleccionarEvaluador handleNext={onNext} />
+          </div>
+        </div>
+      );
     case 3:
-      return <RegistrarActividadFormativa
-        handleNext={onNext}
-        />;
+      return (
+        <div>
+          <div>
+            <Box sx={{ width: "100%" }}>
+              <Stepper activeStep={componenteExamen - 1} alternativeLabel>
+                {pasos.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </Box>
+          </div>
+          <div className="centrar">
+            <RegistrarActividadFormativa handleNext={onNext} />
+          </div>
+        </div>
+      );
     case 4:
-      return <div><AgregarListaEstudiantes setCamposCargados={setCamposCargados} />
-        <button disabled={!camposCargados}>Cargar examen</button>
-      </div>
+      return (
+        <div>
+          <div>
+            <Box sx={{ width: "100%" }}>
+              <Stepper activeStep={componenteExamen - 1} alternativeLabel>
+                {pasos.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </Box>
+          </div>
+          <div>
+            <div className="centrar">
+              <AgregarListaEstudiantes setCamposCargados={setCamposCargados} />
+            </div>
+            <div className="centrar">
+              <button
+                disabled={!camposCargados}
+                onClick={onEnviarFormularioExamen}
+              >
+                Cargar examen
+              </button>
+            </div>
+          </div>
+        </div>
+      );
     default:
       return <div>Formulario completado</div>;
   }
-}
+};

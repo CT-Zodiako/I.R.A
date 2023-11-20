@@ -12,7 +12,7 @@ class informeServicio{
       
     async promedioEstudiante(evaluadorId) {
       try {
-        const response = await axios.get(`http://127.0.0.1:3001/informes/traer_calificaciones/${evaluadorId}`);
+          const response = await axios.get(`http://127.0.0.1:3001/informes/traer_calificaciones/${evaluadorId}`);
           return response.data;
       } catch (err) {
         console.error(err);
