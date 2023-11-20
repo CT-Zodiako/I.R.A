@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import evaluadorService from '../../services/servicioEvaluador';
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import {LimpiarCalificacion} from '../../redux/calificacionSlice'
+import { LimpiarCalificacion } from '../../redux/calificacionSlice'
 
 export const VistaEstudiantes = () => {  
       
@@ -65,7 +65,7 @@ export const VistaEstudiantes = () => {
                         <td>{estudiante.CODIGO}</td>
                         <td>
                             <div>
-                            <button type='submit'>
+                            <button type='button'>
                                     <Link to={`/calificacion-examen/${examenId}/${estudiante.NOMBRE}`}>
                                         Calificar
                                     </Link>

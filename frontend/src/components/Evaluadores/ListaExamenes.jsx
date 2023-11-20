@@ -16,9 +16,9 @@ export const VistaExamenes = () =>{
         dispatch(
             idExamenCalificacion({ 
                 examenId: examenId, 
+                evaluadorId: evaluadorId
             })
         );
-        console.log(examenId);
     }
 
     useEffect(() => {

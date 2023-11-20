@@ -17,6 +17,7 @@ export const CalificacionExamen = () => {
 
   const[estudianteCalificacion, setEstudianteExamen] = useState([]);
   const[notasCalificacion, setNotasCalificacion] = useState([]);
+  console.log("descripcion: ", estudianteCalificacion);
 
   const { nombreEstudiante, examenId } = useParams();
 
@@ -53,7 +54,7 @@ export const CalificacionExamen = () => {
           examenId: examenId,
           nombre: evaluado.nombre,
           notas: evaluado.calificacion.notas,
-          observacion: evaluado.calificacion.observaciones,
+          observaciones: evaluado.calificacion.observaciones,
       })
     );
     console.log(evaluado);
@@ -114,7 +115,7 @@ export const CalificacionExamen = () => {
                 <tbody>
                   {estudianteCalificacion.map((calificar, index) => (
                     <tr key={index}>
-                      <td>{calificar.descripcion}</td>
+                      <td>{calificar}</td>
                       <td>
                         <InputSeleccionCalificacion seleccionar={notasCalificacion} idSeleccion={onNotaCalificacion} />
                       </td>

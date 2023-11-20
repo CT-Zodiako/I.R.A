@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-import evaluadorService from '../services/servicioEvaluador';
+import React, { useEffect, useState } from 'react'
+import evaluadorService from '../services/servicioEvaluador'
+import { useSelector } from 'react-redux'
 
 export const CrearEvaluador = () => {
+
+  const inicioSesion = useSelector(state => state.sesion);
+
   const [formulario, setFormulario] = useState({
     nombre_evaluador: '',
     correo: '',
@@ -26,6 +30,10 @@ export const CrearEvaluador = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    console.log(inicioSesion);
+  }, [inicioSesion]);
 
   return (
     <div>

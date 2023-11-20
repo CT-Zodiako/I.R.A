@@ -19,7 +19,7 @@ def obtener_actividades_formativas_por_id_examen(id_examen):
     
 @calificaciones_blueprint.route('/enum_calificacion', methods=['GET'])
 # @evaluador_required
-@admin_required
+# @admin_required
 def obtener_enum_calificacion():
     return jsonify(enum_calificacion())
 

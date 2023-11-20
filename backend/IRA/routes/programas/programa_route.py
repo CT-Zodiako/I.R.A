@@ -7,7 +7,6 @@ programa_blueprint = Blueprint('programa', __name__)
 
 @programa_blueprint.route('/', methods=['GET'])
 @admin_required
-@evaluador_required
 def traer_programas():
     resultados = traer_programas_db()
     return jsonify(resultados)
