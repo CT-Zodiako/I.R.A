@@ -73,7 +73,12 @@ export const ExamenesLista = () => {
                         {examen.proyecto_integrador}
                       </TableCell>
                       <TableCell align="left">
-                        <Button onClick={() => enviarCorre(examen.id)}>
+                        <Button 
+                            variant="outlined" 
+                            type="button"
+                            size="small"
+                            onClick={() => enviarCorre(examen.id)}
+                        >
                           Notificar
                         </Button>
                       </TableCell>

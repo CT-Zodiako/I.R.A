@@ -9,22 +9,22 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-// import { ModalIRA } from "../Examen/Modal";
+import { ModalIRA } from "../Examen/Modal";
 
 export const EvaluadorLista = () => {
   const [evaluadores, setEvaluadores] = useState([]);
-  // const [modalAbierto, setModalAbierto] = useState(false);
-  // const [evaluadorIdSeleccionado, setEvaluadorIdSeleccionado] = useState(null);
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const [evaluadorIdSeleccionado, setEvaluadorIdSeleccionado] = useState(null);
 
-  // const abrirModal = (evaluadorId) => {
-  //   setModalAbierto(true);
-  //   setEvaluadorIdSeleccionado(evaluadorId);
-  // };
+  const abrirModal = (evaluadorId) => {
+    setModalAbierto(true);
+    setEvaluadorIdSeleccionado(evaluadorId);
+  };
 
-  // const cerrarModal = () => {
-  //   setModalAbierto(false);
-  //   setEvaluadorIdSeleccionado(null);
-  // };
+  const cerrarModal = () => {
+    setModalAbierto(false);
+    setEvaluadorIdSeleccionado(null);
+  };
 
   useEffect(() => {
     async function fetchData() {
