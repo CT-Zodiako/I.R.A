@@ -10,6 +10,7 @@ class Examen(db.Model):
     actividades_formativas = db.Column(db.JSON)
     estudiantes = db.Column(db.JSON)
     resultado_aprendizaje_id = db.Column(db.Integer, db.ForeignKey('resultado_aprendizaje.id'))
+    estado = db.Column(db.Boolean, default=True)
     evaluadores_relacion = db.relationship('Evaluador', secondary=examen_evaluador_tabla, back_populates='examenes_evaluador_relacion')
 
     def __init__(self, programa_id, proyecto_integrador, actividades_formativas, estudiantes, resultado_aprendizaje_id):
@@ -27,6 +28,7 @@ class Examen(db.Model):
             'actividades_formativas': self.actividades_formativas,
             'estudiantes': self.estudiantes,
             'resultado_aprendizaje_id': self.resultado_aprendizaje_id,
+            'estado': self.estado,
             'evaluadores_relacion': [evaluador.id for evaluador in self.evaluadores_relacion],
             'nombres_evaluadores': self.get_nombres_evaluadores(),  # Agrega esta línea para obtener los nombres de los evaluadores
         }
