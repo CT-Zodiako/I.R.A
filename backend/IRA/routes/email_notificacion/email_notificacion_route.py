@@ -44,9 +44,15 @@ def enviar_correo_route():
         for destinatario in destinatarios:
             enviar_correo(destinatario, asunto, cuerpo)
 
-        return 'Correos enviados correctamente'
+        return {
+            'status': 200,
+            'mensaje': 'Correos enviados correctamente'
+        }
 
-    return 'No se realizó ninguna acción'
+    return{
+            'status': 400,
+            'mensaje': 'No se realizó ninguna acción'
+        }
 
 def obtener_destinatarios_por_examen(examen_id):
     examen = Examen.query.get(examen_id)

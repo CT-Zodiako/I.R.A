@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import examenService from "../../services/ServiciosExamen";
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 export const ExamenesLista = () => {
   const [listaExamenes, setListaExamenes] = useState([]);
@@ -18,6 +26,19 @@ export const ExamenesLista = () => {
     }
     fetchData();
   }, []);
+
+  const enviarCorre = (examenId) => {
+    const fetchData = async () => {
+      try {
+        const data = await examenService.correoEvaluadores(examenId);
+        console.log("Correo enviado correctamente");
+      } catch (error) {
+        console.error("Error al enviar los correos: ", error);
+      }
+    };
+
+    fetchData();
+  };
 
   return (
     <>
@@ -51,9 +72,9 @@ export const ExamenesLista = () => {
                       <TableCell align="left">
                         {examen.proyecto_integrador}
                       </TableCell>
-                      <TableCell align="´left">
-                        <Button>
-                            Notificar
+                      <TableCell align="left">
+                        <Button onClick={() => enviarCorre(examen.id)}>
+                          Notificar
                         </Button>
                       </TableCell>
                     </TableRow>
