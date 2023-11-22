@@ -12,6 +12,25 @@
     align-items: center;
 }
 
+.modales{
+    width: fit-content;
+    max-width: 95%;
+    height: fit-content;
+    max-height: 30rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    padding: 0.5rem 3rem;
+    margin: 1rem 0rem;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.botonesMargen{
+    display: flex;
+    justify-content: space-around;
+}
+
 .labelExamen{
     width: 100px;
     height: 50px;
@@ -40,10 +59,52 @@
     align-items: center;
 }
 
+.editar{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 26rem;
+    height: 4rem;
+    margin-top: 0.4rem;
+    padding: 0;
+}
+
+.editarLabel{
+    width: 10rem
+}
+
+.botonEditar{
+    background: green;
+    height: 3rem;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
 .textButton{
     text-align: center;
     width: fit-content;
     max-width: 12rem;
     height: fit-content;
     max-height: 3.5rem;
+}
+
+.tablas{
+    border-radius: 0.3rem;
+}
+
+.modal{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 31rem;
+    width: 34rem;
+    background:#ffffff;;
+    border: '2px solid #000';
+    border-radius: 1rem;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
 }

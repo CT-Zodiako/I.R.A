@@ -29,8 +29,7 @@ export const ResultadoAprendizaje = () => {
     event.preventDefault();
     try {
       await resultadoAprendizajeServicio.cambiarEstado(resultado_Id);
-      const nuevaListaResultados =
-        await resultadoAprendizajeServicio.traerResultado();
+      const nuevaListaResultados = await resultadoAprendizajeServicio.traerResultado();
       setResultadoAprendizaje(nuevaListaResultados);
     } catch (error) {
       console.error(error);
@@ -69,7 +68,7 @@ export const ResultadoAprendizaje = () => {
                     </TableCell>
                     <TableCell align="left">{resultado.id}</TableCell>
                     <TableCell align="left">
-                      <button onClick={(e) => onCambiarEstado(e, resultado.id)}>
+                      <button onClick={(event) => onCambiarEstado(event, resultado.id)}>
                         {resultado.estado ? "Desactivar" : "Activar"}
                       </button>
                     </TableCell>

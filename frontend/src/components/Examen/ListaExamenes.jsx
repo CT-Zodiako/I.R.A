@@ -27,11 +27,16 @@ export const ExamenesLista = () => {
     fetchData();
   }, []);
 
-  const enviarCorre = (examenId) => {
+  const enviarCorre = (event, examenId) => {
+    event.preventDefault();
     const fetchData = async () => {
       try {
         const data = await examenService.correoEvaluadores(examenId);
         console.log("Correo enviado correctamente");
+
+        const estado = await examenService.cambiarEstado(examenId);
+        console.log("Se cambio el estado: ", estado)
+
       } catch (error) {
         console.error("Error al enviar los correos: ", error);
       }
@@ -74,12 +79,20 @@ export const ExamenesLista = () => {
                       </TableCell>
                       <TableCell align="left">
                         <Button 
-                            variant="outlined" 
+                            disabled={examen.estado}
+                            variant="contained"
                             type="button"
                             size="small"
-                            onClick={() => enviarCorre(examen.id)}
+                            onClick={(event) => enviarCorre(event, examen.id)}
                         >
                           Notificar
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="error"
+                          size="small"
+                        >
+                          Eliminar
                         </Button>
                       </TableCell>
                     </TableRow>

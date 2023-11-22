@@ -43,10 +43,9 @@ class evaluadorService{
     }
   }
 
-  async editarEvaluador(id) {
+  async editarEvaluador(id, formulario) {
     try {
-      const response = await axios.put(`http://127.0.0.1:3001/evaluador/actualizar/${id}`);
-      return response.data;
+      const response = await axios.put(`http://127.0.0.1:3001/evaluador/actualizar/${id}`, formulario);
     } catch (err) {
       console.error(err);
     }

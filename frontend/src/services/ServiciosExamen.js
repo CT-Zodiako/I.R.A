@@ -30,7 +30,15 @@ class examenService{
       } catch (error) {
         console.error("Error al enviar los correos: ", error);
       }
-    }    
+    } 
+    
+    async cambiarEstado (examenId) {
+      try{
+          await axios.put(`http://127.0.0.1:3001/email/cambiar_estado_resultado/${examenId}`);
+      } catch (error) {
+        console.error("El estado no se puedo cambiar: ",error);
+      }
+    }
   };
 
 export default new examenService();
