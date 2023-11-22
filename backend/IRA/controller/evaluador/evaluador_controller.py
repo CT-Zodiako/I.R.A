@@ -124,31 +124,38 @@ def traer_evaluador_por_id(evaluador_id):
 
 
 def actualizar_evaluador_db(data,evaluador_id):
+    
+    evaluador = Evaluador.query.filter_by(id=evaluador_id).first()
+    
     try:
         numero_identificacion_nuevo= data.get('nuevo_numero_identificacion')
-        nuevo_nombre_evaluador = data.get('nuevo_nombre_evaluador')
-        nuevo_correo = data.get('nuevo_correo')
-        nueva_contrasena = data.get('nueva_contrasena')
-        nuevo_telefono = data.get('nuevo_telefono')
+        if not numero_identificacion_nuevo:
+            numero_identificacion_nuevo = evaluador.numero_identificacion
 
-        evaluador = Evaluador.query.filter_by(id=evaluador_id).first()
+        nuevo_nombre_evaluador = data.get('nuevo_nombre_evaluador')
+        if not nuevo_nombre_evaluador:
+            nuevo_nombre_evaluador = evaluador.nombre_evaluador
+
+        nuevo_correo = data.get('nuevo_correo')
+        if not nuevo_correo:
+             nuevo_correo = evaluador.correo
+
+        nueva_contrasena = data.get('nueva_contrasena')
+        if not nueva_contrasena:
+            nueva_contrasena = evaluador.contrasenna
+
+        nuevo_telefono = data.get('nuevo_telefono')
+        if not nuevo_telefono:
+            nuevo_telefono = evaluador.telefono
+
+        
 
         if evaluador:
-            if numero_identificacion_nuevo:
-                evaluador.numero_identificacion = numero_identificacion_nuevo
-            if nuevo_nombre_evaluador:
-                evaluador.nombre_evaluador = nuevo_nombre_evaluador
-            if nuevo_correo:
-                evaluador.correo = nuevo_correo
-
-            if nueva_contrasena == '':
-                nueva_contrasena = evaluador.contrasenna
-            else:
-                evaluador.contrasenna = generate_password_hash(nueva_contrasena)
-            
-
-            if nuevo_telefono:
-                evaluador.telefono = nuevo_telefono
+            evaluador.numero_identificacion = numero_identificacion_nuevo
+            evaluador.nombre_evaluador = nuevo_nombre_evaluador
+            evaluador.correo = nuevo_correo
+            evaluador.contrasenna = generate_password_hash(nueva_contrasena)
+            evaluador.telefono = nuevo_telefono
 
             db.session.commit()
 

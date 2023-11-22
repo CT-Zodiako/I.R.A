@@ -74,3 +74,65 @@ def obtener_examenes():
 
     except Exception as e:
         return jsonify({'mensaje': 'Error al obtener los exámenes', 'error': str(e)}), 500
+    
+
+def editar_examen(id, data):
+    try:
+        examen = get_examen_by_id(id)
+        if not examen:
+            return jsonify({'mensaje': 'Examen no encontrado'}), 404
+
+        programa_id = data.get('programa_id')
+        proyecto_integrador = data.get('proyecto_integrador')
+        actividades_formativas = data.get('actividades_formativas')
+        estudiantes = data.get('estudiantes')
+        resultado_aprendizaje_id = data.get('resultado_aprendizaje_id')
+        evaluadores_ids = data.get('evaluadores_ids')
+
+        if programa_id is not None:
+            examen.programa_id = programa_id
+        if proyecto_integrador is not None:
+            examen.proyecto_integrador = proyecto_integrador
+        if actividades_formativas is not None:
+            examen.actividades_formativas = actividades_formativas
+        if estudiantes is not None:
+            examen.estudiantes = estudiantes
+        if resultado_aprendizaje_id is not None:
+            examen.resultado_aprendizaje_id = resultado_aprendizaje_id
+        if evaluadores_ids is not None:
+            evaluadores = Evaluador.query.filter(
+                Evaluador.id.in_(evaluadores_ids)).all()
+            if len(evaluadores) != len(evaluadores_ids):
+                return jsonify({'mensaje': 'Uno o más evaluadores no existen'}), 400
+            examen.evaluadores_relacion = evaluadores
+
+        db.session.commit()
+
+        return jsonify({'mensaje': 'Examen actualizado con éxito'}), 200
+
+    except Exception as e:
+        return jsonify({'mensaje': 'Fallo para actualizar examen', 'error': f'{e}'}), 500
+    
+def get_examen_by_id(id):
+    try:
+        examen = Examen.query.get(id)
+        if not examen:
+            return None
+        return examen
+    except Exception as e:
+        print(f'Error al obtener el examen: {e}')
+        return None
+
+def eliminar_examen(id):
+    try:
+        examen = Examen.query.get(id)
+        if not examen:
+            return jsonify({'mensaje': 'Examen no encontrado'}), 404
+
+        db.session.delete(examen)
+        db.session.commit()
+
+        return jsonify({'mensaje': 'Examen eliminado con éxito'}), 200
+
+    except Exception as e:
+        return jsonify({'mensaje': 'Fallo para eliminar examen', 'error': f'{e}'}), 500
