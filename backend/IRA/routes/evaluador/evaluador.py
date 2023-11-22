@@ -37,7 +37,7 @@ def eliminar_evaluador(evaluador_id):
 def evaluador_por_id(evaluador_id):
     return traer_evaluador_por_id(evaluador_id)
 
-@admin_required
+# @admin_required
 @evaluador_blueprint.route('/actualizar/<int:evaluador_id>', methods=['PUT'])
 def actualizar_evaluador(evaluador_id):
     data = request.json
