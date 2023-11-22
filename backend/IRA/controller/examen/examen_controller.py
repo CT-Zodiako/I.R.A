@@ -122,3 +122,17 @@ def get_examen_by_id(id):
     except Exception as e:
         print(f'Error al obtener el examen: {e}')
         return None
+
+def eliminar_examen(id):
+    try:
+        examen = Examen.query.get(id)
+        if not examen:
+            return jsonify({'mensaje': 'Examen no encontrado'}), 404
+
+        db.session.delete(examen)
+        db.session.commit()
+
+        return jsonify({'mensaje': 'Examen eliminado con éxito'}), 200
+
+    except Exception as e:
+        return jsonify({'mensaje': 'Fallo para eliminar examen', 'error': f'{e}'}), 500
