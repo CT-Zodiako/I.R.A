@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ...controller.examen.examen_controller import agregar_examen, cargar_archivo, obtener_examenes
+from ...controller.examen.examen_controller import agregar_examen, cargar_archivo, obtener_examenes, editar_examen
 from ...auth import admin_required
 from ...models.examen.examen_model import Examen
 import json
@@ -50,3 +50,9 @@ def traer_actividades(examen_id):
     actividades_info = [{"descripcion": actividad} for actividad in actividades]
 
     return jsonify({"actividades": actividades_info})
+
+@examen_blueprint.route('/editar_examen/<int:id>', methods=['PUT'])
+# @admin_required
+def editar_ruta_examen(id):
+    data = request.json
+    return editar_examen(id, data)
