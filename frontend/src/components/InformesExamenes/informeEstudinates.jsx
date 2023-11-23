@@ -17,7 +17,6 @@ export const PromedioEstudiante = () => {
   const proyectoIntegrador = location.state.proyectoIntegrador;
 
   const [calificaciones, setCalificaciones] = useState([]);
-  console.log("actividades Graf: ", calificaciones);
   const [promedioGrafica, setPromedioGrafica] = useState([]);
   const [actividades, setActividades] = useState([]);
   const [colorInforme, setColorInforme] = useState([]);

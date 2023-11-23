@@ -35,7 +35,7 @@ export const InicioSesionUsuarios = () => {
 
         console.log(userId);
         console.log(username);
-        console.log(rol);
+        console.log("el rol: ",rol);
 
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 

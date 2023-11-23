@@ -19,6 +19,8 @@ export const EvaluadorLista = () => {
   const [evaluadores, setEvaluadores] = useState([]);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [evaluadorIdSeleccionado, setEvaluadorIdSeleccionado] = useState(null);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
 
   const abrirModal = (evaluadorId) => {
     setEvaluadorIdSeleccionado(evaluadorId);
@@ -29,6 +31,15 @@ export const EvaluadorLista = () => {
     setEvaluadorIdSeleccionado(null);
     setModalAbierto(false);
     actualizarTabla()
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
   useEffect(() => {
@@ -76,7 +87,7 @@ export const EvaluadorLista = () => {
             color="success"
             size="small"
           >
-            <Link to="/gestion-usuario" style={{ textDecoration: 'none' }}>Agregar Evaluador</Link>
+            <Link to="/gestion-usuario" style={{ textDecoration: 'none', color: 'white' }}>Agregar Evaluador</Link>
           </Button>
         </div>
         <div>
@@ -93,7 +104,10 @@ export const EvaluadorLista = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {evaluadores.map((evaluador) => (
+              {(rowsPerPage > 0
+                  ? evaluadores.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  : evaluadores
+                ).map((evaluador) => (
                   <TableRow key={evaluador.id}>
                     <TableCell scope="row" align="left">
                       {evaluador.nombre_evaluador}
@@ -114,7 +128,7 @@ export const EvaluadorLista = () => {
                       <div className="botonesMargen">
                         <div>
                           <ClearIcon 
-                            color="error"
+                            className="colorEliminar"
                             fontSize="large"
                             onClick={(event) =>
                                 onEliminarEvaluador(event, evaluador.id)
@@ -123,7 +137,7 @@ export const EvaluadorLista = () => {
                         </div>
                         <div>
                           <CreateIcon
-                            color="yellow"
+                            className="colorEditar"
                             fontSize="large"
                             onClick={() => abrirModal(evaluador.id)}
                           />
@@ -135,6 +149,15 @@ export const EvaluadorLista = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[3, 5, 10]}
+            component="div"
+            count={evaluadores.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </div>
       </div>
       <ModalIRA

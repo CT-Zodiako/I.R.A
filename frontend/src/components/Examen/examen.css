@@ -74,11 +74,18 @@
 }
 
 .botonEditar{
-    background: green;
     height: 3rem;
     display: flex;
     justify-content: end;
     align-items: center;
+}
+
+.colorEliminar{
+    color: rgb(243, 19, 19);
+}
+
+.colorEditar{
+    color: rgb(223, 223, 23);
 }
 
 .textButton{

@@ -10,7 +10,7 @@ class Examen(db.Model):
     actividades_formativas = db.Column(db.JSON)
     estudiantes = db.Column(db.JSON)
     resultado_aprendizaje_id = db.Column(db.Integer, db.ForeignKey('resultado_aprendizaje.id'))
-    estado = db.Column(db.Boolean, default=True)
+    estado = db.Column(db.Boolean, default=False)
     evaluadores_relacion = db.relationship('Evaluador', secondary=examen_evaluador_tabla, back_populates='examenes_evaluador_relacion')
 
     def __init__(self, programa_id, proyecto_integrador, actividades_formativas, estudiantes, resultado_aprendizaje_id):

@@ -7,19 +7,35 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
 } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import EmailIcon from '@mui/icons-material/Email';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CreateIcon from '@mui/icons-material/Create';
 
 export const ExamenesLista = () => {
   const [listaExamenes, setListaExamenes] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
 
-  console.log("mis examenes: ", listaExamenes);
+  const navigate = useNavigate();
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await examenService.ExamenesCreados();
-        setListaExamenes(data.data);
+        const examenes = await examenService.ExamenesCreados();
+        setListaExamenes(examenes)
       } catch (error) {
         console.error("Error al obtener la lista: ", error);
       }
@@ -31,19 +47,44 @@ export const ExamenesLista = () => {
     event.preventDefault();
     const fetchData = async () => {
       try {
-        const data = await examenService.correoEvaluadores(examenId);
-        console.log("Correo enviado correctamente");
-
-        const estado = await examenService.cambiarEstado(examenId);
-        console.log("Se cambio el estado: ", estado)
-
+        await examenService.correoEvaluadores(examenId);
+        await examenService.cambiarEstado(examenId);
+        onActualizarLista();
       } catch (error) {
         console.error("Error al enviar los correos: ", error);
       }
     };
-
     fetchData();
   };
+
+  const onEliminarExamen = async (event, examenId) => {
+    event.preventDefault();
+    try {
+      await examenService.eliminarExamen(examenId);
+      const nuevaListaExamen = await examenService.ExamenesCreados();
+      setListaExamenes(nuevaListaExamen);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onActualizarLista = async () => {
+    try {
+      const actualizar = await examenService.ExamenesCreados();
+      setListaExamenes(actualizar);
+    } catch (error) {
+      console.error("Erro al actulizar la tabla:", error);
+    }
+  }
+
+  const onEditarExamen = ({accion}) => {
+    console.log("quiero editar: ", accion);
+    navigate(`/pasos`,{
+      state: {
+        accion: accion,
+      }
+    });
+  }  
 
   return (
     <>
@@ -56,7 +97,13 @@ export const ExamenesLista = () => {
             <h3>examenes</h3>
           </div>
           <div>
-            <button>Crear Examen</button>
+            <Button
+              variant="contained"
+              color="success"
+              size="small"
+            >
+              <Link to="/pasos" style={{ textDecoration: 'none', color: 'white' }}>Crear Examen</Link>
+            </Button>
           </div>
           <div>
             <TableContainer>
@@ -69,7 +116,10 @@ export const ExamenesLista = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {listaExamenes.map((examen) => (
+                {(rowsPerPage > 0
+                  ? listaExamenes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  : listaExamenes
+                ).map((examen) => (
                     <TableRow key={examen.id}>
                       <TableCell scope="row" align="left">
                         {examen.id}
@@ -78,28 +128,37 @@ export const ExamenesLista = () => {
                         {examen.proyecto_integrador}
                       </TableCell>
                       <TableCell align="left">
-                        <Button 
-                            disabled={examen.estado}
-                            variant="contained"
-                            type="button"
-                            size="small"
+                        <CreateIcon
+                          className="colorEditar"
+                          fontSize="large"
+                          onClick={() => onEditarExamen({accion:'editar'})}
+                        />
+                        <DeleteIcon
+                          className="colorEliminar"
+                          fontSize="large"
+                          onClick={(event) => onEliminarExamen(event, examen.id)}
+                        />
+                        <EmailIcon
+                            style={{ cursor: examen.estado ? 'not-allowed' : 'pointer' }}
+                            color="primary"
+                            fontSize="large"
                             onClick={(event) => enviarCorre(event, examen.id)}
-                        >
-                          Notificar
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="error"
-                          size="small"
-                        >
-                          Eliminar
-                        </Button>
+                        />
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[3, 5, 10]}
+              component="div"
+              count={listaExamenes.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+          />
           </div>
         </div>
       </div>

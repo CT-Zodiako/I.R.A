@@ -16,15 +16,23 @@ class examenService{
     async ExamenesCreados () {
       try{
           const responce = await axios.get('http://127.0.0.1:3001/examen/examenes');
-          return responce;
+          return responce.data;
       } catch (error) {
         console.error("Error al traer la lista de examenes: ", error)
       }
     }
 
+    async eliminarExamen(examenId) {
+      try{
+        await axios.delete(`http://127.0.0.1:3001/examen/eliminar_examen/${examenId}`);
+      } catch (error) {
+        console.error("No se pudo eliminar el examen", error)
+      }
+    }
+
     async correoEvaluadores (examenId) {
       try{
-          const responce = await axios.post('http://127.0.0.1:3001/email/enviar_correo', {
+          await axios.post('http://127.0.0.1:3001/email/enviar_correo', {
             examen_id: examenId
           });
       } catch (error) {

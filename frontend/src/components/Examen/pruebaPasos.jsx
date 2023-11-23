@@ -8,9 +8,13 @@ import {
 } from "./indexExamen";
 import { useSelector } from "react-redux";
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 export const FormularioPorPasos = () => {
+  const location = useLocation();
+  // const accion = location.state.accion;
   const enviarExamen = useSelector((state) => state.examenFormulario);
+  
   const [componenteExamen, setComponenteExamen] = useState(1);
   const [camposCargados, setCamposCargados] = useState(false);
 
