@@ -4,9 +4,11 @@ import { useDispatch } from "react-redux";
 import { iniciarSesion } from "../redux/inicioSesionSlipe";
 import axios from "axios";
 import { TextField } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-export const InicioSesionUsuarios = () => {
+export const InicioSesionUsuarios = ({ onAutenticacion }) => {
   const dispatch = useDispatch();
+  // const navigate = useNavigate();
   const [autentificacion, setAutentificacion] = useState({
     username: "",
     password: "",
@@ -46,6 +48,9 @@ export const InicioSesionUsuarios = () => {
             rol: rol,
           })
         );
+        onAutenticacion();
+        // navigate('/app');
+
       } else {
         console.error("Error al decodificar el token");
       }

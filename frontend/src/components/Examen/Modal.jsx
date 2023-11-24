@@ -5,16 +5,12 @@ import Modal from "@mui/material/Modal";
 
 export const ModalIRA = ({ isOpen, onClose, evaluadorId }) => {
   const [formulario, setFormulario] = useState({
-
-
     nuevo_nombre_evaluador: '',
     nuevo_correo: '',
     nuevo_numero_identificacion: '',
     nueva_contrasena:'',
     nuevo_telefono: ''
   });
-
-  console.log(formulario);
 
   useEffect(() => {
     const obtenerEvaluador = async () => {

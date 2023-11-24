@@ -65,6 +65,17 @@ export const EvaluacionInformacion = ({ handleNext }) => {
     fetchData();
   }, []);
 
+  useEffect(()=>{
+    async function fetchData() {
+      try{
+
+      } catch (error) {
+        console.error("No se puedo obtener la informacion del examen: ", error);
+      }
+    }
+
+  }, [])
+
   useEffect(() => {
     const camposCargados =
       informacionExamen.programa_id &&

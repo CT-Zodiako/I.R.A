@@ -10,10 +10,10 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
-import EmailIcon from '@mui/icons-material/Email';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CreateIcon from '@mui/icons-material/Create';
+import { Link, useNavigate } from "react-router-dom"
+import EmailIcon from '@mui/icons-material/Email'
+import DeleteIcon from '@mui/icons-material/Delete'
+import CreateIcon from '@mui/icons-material/Create'
 
 export const ExamenesLista = () => {
   const [listaExamenes, setListaExamenes] = useState([]);
@@ -77,11 +77,13 @@ export const ExamenesLista = () => {
     }
   }
 
-  const onEditarExamen = ({accion}) => {
+  const onEditarExamen = ({accion, examenId}) => {
     console.log("quiero editar: ", accion);
+    console.log("Id examen editar: ", examenId)
     navigate(`/pasos`,{
       state: {
         accion: accion,
+        examenId: examenId
       }
     });
   }  
@@ -131,7 +133,7 @@ export const ExamenesLista = () => {
                         <CreateIcon
                           className="colorEditar"
                           fontSize="large"
-                          onClick={() => onEditarExamen({accion:'editar'})}
+                          onClick={() => onEditarExamen({accion:'editar', examenId: examen.id})}
                         />
                         <DeleteIcon
                           className="colorEliminar"

@@ -13,6 +13,7 @@ import { useLocation } from "react-router-dom";
 export const FormularioPorPasos = () => {
   const location = useLocation();
   // const accion = location.state.accion;
+  const examenId = location.state.examenId;
   const enviarExamen = useSelector((state) => state.examenFormulario);
   
   const [componenteExamen, setComponenteExamen] = useState(1);
@@ -32,7 +33,7 @@ export const FormularioPorPasos = () => {
   const onEnviarFormularioExamen = async (event) => {
     event.preventDefault();
     try {
-      const responce = await examenService.agregarExamen(enviarExamen);
+      await examenService.agregarExamen(enviarExamen);
     } catch (error) {
       console.error("Error al enviar los datos del examen:", error);
     }
@@ -54,7 +55,10 @@ export const FormularioPorPasos = () => {
             </Box>
           </div>
           <div className="centrar">
-            <EvaluacionInformacion handleNext={onNext} />
+            <EvaluacionInformacion 
+              handleNext={onNext}
+              examenId={examenId}
+            />
           </div>
         </div>
       );
