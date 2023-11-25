@@ -43,7 +43,7 @@ export const  Menu = () => {
           <ul>
             {rol === 'Admin'&&(
               <>
-                <li><Link to="/">Examenes</Link></li>
+                <li><Link to="/lista_examen">Examenes</Link></li>
                 <li><Link to="/examen">Examen</Link></li>
                 <li><Link to="/informe_examen">Informes</Link></li>
                 <li><Link to="/resultado-aprendizaje">Resultados de Aprendizaje</Link></li>

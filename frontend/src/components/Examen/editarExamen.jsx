@@ -8,8 +8,16 @@ import {
 } from "./indexExamen";
 import { useSelector } from "react-redux";
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
-export const FormularioPorPasos = () => {
+export const EditarExamen = () => {
+  const location = useLocation();
+  const accion = location.state.accion;
+  const examenId = location.state.examenId;
+
+  console.log("accion examen: ",accion);
+  console.log("id examen: ",examenId);
+
   const enviarExamen = useSelector((state) => state.examenFormulario);
   
   const [componenteExamen, setComponenteExamen] = useState(1);
@@ -53,7 +61,7 @@ export const FormularioPorPasos = () => {
           <div className="centrar">
             <EvaluacionInformacion 
               handleNext={onNext}
-              // examenId={examenId}
+              examenId={examenId}
             />
           </div>
         </div>

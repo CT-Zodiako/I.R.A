@@ -18,7 +18,7 @@ import CreateIcon from '@mui/icons-material/Create'
 export const ExamenesLista = () => {
   const [listaExamenes, setListaExamenes] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(3);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const navigate = useNavigate();
 
@@ -80,7 +80,7 @@ export const ExamenesLista = () => {
   const onEditarExamen = ({accion, examenId}) => {
     console.log("quiero editar: ", accion);
     console.log("Id examen editar: ", examenId)
-    navigate(`/pasos`,{
+    navigate(`/editar_examen`,{
       state: {
         accion: accion,
         examenId: examenId
@@ -153,7 +153,7 @@ export const ExamenesLista = () => {
               </Table>
             </TableContainer>
             <TablePagination
-              rowsPerPageOptions={[3, 5, 10]}
+              rowsPerPageOptions={[5, 10, 20]}
               component="div"
               count={listaExamenes.length}
               rowsPerPage={rowsPerPage}
