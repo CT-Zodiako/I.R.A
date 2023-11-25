@@ -78,7 +78,7 @@ def obtener_examenes():
 
 def editar_examen(id, data):
     try:
-        examen = get_examen_by_id(id)
+        examen = get_examen_by_id_db(id)
         if not examen:
             return jsonify({'mensaje': 'Examen no encontrado'}), 404
 
@@ -136,3 +136,14 @@ def eliminar_examen(id):
 
     except Exception as e:
         return jsonify({'mensaje': 'Fallo para eliminar examen', 'error': f'{e}'}), 500
+    
+    
+def get_examen_by_id_db(id):
+    try:
+        examen = Examen.query.get(id)
+        if not examen:
+            return jsonify({'mensaje': 'Examen no encontrado'}), 404
+        return jsonify(examen.to_dict()), 200  # Asegúrate de que tu modelo Examen tiene un método to_dict
+    except Exception as e:
+        print(f'Error al obtener el examen: {e}')
+        return jsonify({'mensaje': 'Error al obtener el examen', 'error': f'{e}'}), 500
