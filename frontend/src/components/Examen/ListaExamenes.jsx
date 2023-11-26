@@ -78,8 +78,6 @@ export const ExamenesLista = () => {
   }
 
   const onEditarExamen = ({accion, examenId}) => {
-    console.log("quiero editar: ", accion);
-    console.log("Id examen editar: ", examenId)
     navigate(`/editar_examen`,{
       state: {
         accion: accion,

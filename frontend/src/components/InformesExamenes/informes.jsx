@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import informeServicio from "../../services/ServicioInforme";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react"
+import informeServicio from "../../services/ServicioInforme"
+import { useNavigate } from "react-router-dom"
 import {
   Table,
   TableBody,
@@ -9,7 +9,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-} from "@mui/material";
+} from "@mui/material"
 
 export const Informes = () => {
   const navigate = useNavigate();

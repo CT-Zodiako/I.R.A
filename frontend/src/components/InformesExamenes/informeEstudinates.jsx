@@ -1,15 +1,15 @@
-import { useEffect, useState, useRef } from "react";
-import { useLocation } from "react-router-dom";
-import Chart from "react-google-charts";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import informeServicio from "../../services/ServicioInforme";
-import evaluadorService from "../../services/servicioEvaluador";
+import { useEffect, useState, useRef } from "react"
+import { useLocation } from "react-router-dom"
+import Chart from "react-google-charts"
+import jsPDF from "jspdf"
+import html2canvas from "html2canvas"
+import informeServicio from "../../services/ServicioInforme"
+import evaluadorService from "../../services/servicioEvaluador"
 import { 
   Table, TableBody, 
   TableCell, TableContainer, 
   TableHead, TableRow 
-} from "@mui/material";
+} from "@mui/material"
 
 export const PromedioEstudiante = () => {
   const location = useLocation();

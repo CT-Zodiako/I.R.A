@@ -59,5 +59,5 @@ export const calificacionSlice = createSlice({
     }
 });
 
-export const { agregarCalificacion, LimpiarCalificacion, idExamenCalificacion } = calificacionSlice.actions;
+export const { agregarCalificacion, LimpiarCalificacion, idExamenCalificacion, cargarDatosCalificacion } = calificacionSlice.actions;
 export default calificacionSlice.reducer;

@@ -47,6 +47,23 @@ class examenService{
         console.error("El estado no se puedo cambiar: ",error);
       }
     }
+
+    async examenPorId (examenId){
+      try{
+        const responce = await axios.get(`http://127.0.0.1:3001/examen/examen/${examenId}`);
+        return responce.data;
+      } catch(error) {
+        console.error("no se puedo obtener el examen: ", error);
+      }
+    }
+
+    async editarExamen(examenId, formularioExamen) {
+      try{
+        await axios.put(`http://127.0.0.1:3001/examen/editar_examen/${examenId}`, formularioExamen );
+      } catch(error) {
+        console.error("No se puedo editar el examen: ",error);
+      }
+    }
   };
 
 export default new examenService();

@@ -34,10 +34,10 @@ export const EditarExamen = () => {
     setComponenteExamen((componenteExamen) => componenteExamen + 1);
   };
 
-  const onEnviarFormularioExamen = async (event) => {
+  const onEnviarEditarExamen = async (event) => {
     event.preventDefault();
     try {
-      await examenService.agregarExamen(enviarExamen);
+      await examenService.editarExamen(examenId, enviarExamen);
     } catch (error) {
       console.error("Error al enviar los datos del examen:", error);
     }
@@ -62,6 +62,7 @@ export const EditarExamen = () => {
             <EvaluacionInformacion 
               handleNext={onNext}
               examenId={examenId}
+              accion={accion}
             />
           </div>
         </div>
@@ -81,7 +82,11 @@ export const EditarExamen = () => {
             </Box>
           </div>
           <div className="centrar">
-            <PanelSeleccionarEvaluador handleNext={onNext} />
+            <PanelSeleccionarEvaluador
+                handleNext={onNext}
+                examenId={examenId}
+                accion={accion}
+            />
           </div>
         </div>
       );
@@ -100,7 +105,11 @@ export const EditarExamen = () => {
             </Box>
           </div>
           <div className="centrar">
-            <RegistrarActividadFormativa handleNext={onNext} />
+            <RegistrarActividadFormativa 
+                handleNext={onNext} 
+                examenId={examenId}
+                accion={accion}
+            />
           </div>
         </div>
       );
@@ -120,12 +129,16 @@ export const EditarExamen = () => {
           </div>
           <div>
             <div className="centrar">
-              <AgregarListaEstudiantes setCamposCargados={setCamposCargados} />
+              <AgregarListaEstudiantes 
+                setCamposCargados={setCamposCargados}
+                examenId={examenId}
+                accion={accion}
+              />
             </div>
             <div className="centrar">
               <button
                 disabled={!camposCargados}
-                onClick={onEnviarFormularioExamen}
+                onClick={onEnviarEditarExamen}
               >
                 Cargar examen
               </button>

@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { agregarActividad } from "../../redux/examenSlice";
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { agregarActividad } from "../../redux/examenSlice"
+import examenService from "../../services/ServiciosExamen"
 import {
   Button,
   Table,
@@ -13,7 +14,7 @@ import {
 } from "@mui/material";
 import { BotonGeneral } from "../botonGeneral";
 
-export const RegistrarActividadFormativa = ({ handleNext }) => {
+export const RegistrarActividadFormativa = ({ handleNext, examenId, accion }) => {
   const examenForm = useSelector((state) => state.examenFormulario);
   useEffect(() => {
     console.log(examenForm);
@@ -26,11 +27,26 @@ export const RegistrarActividadFormativa = ({ handleNext }) => {
     actividades_formativas: [],
   });
 
-  const [camposCargados, setCamposCargados] = useState(false);
-
   const onActividadFormativa = (event) => {
     setActividaEstado(event.target.value);
   };
+
+  if(accion === 'editar'){
+    useEffect(()=>{
+      async function fetchData() {
+        try{
+          const responce = await examenService.examenPorId(examenId);
+          setActividadFormativa({
+            ...actividadFormativa,
+            actividades_formativas: responce.actividades_formativas
+          })
+        } catch (error) {
+          console.error("No se puedo obtener la informacion del examen: ", error);
+        }
+      }
+      fetchData()
+    }, [])
+  }
 
   const onAgregarActividad = () => {
     if (actividaEstado) {
@@ -41,7 +57,6 @@ export const RegistrarActividadFormativa = ({ handleNext }) => {
           actividaEstado,
         ],
       });
-      setCamposCargados(true);
     }
   };
 
@@ -134,7 +149,7 @@ export const RegistrarActividadFormativa = ({ handleNext }) => {
           <div>
             <BotonGeneral
               tipo="submit"
-              camposCargados={camposCargados}
+              camposCargados={actividadFormativa.actividades_formativas.length}
               accion="Cargar"
             />
           </div>

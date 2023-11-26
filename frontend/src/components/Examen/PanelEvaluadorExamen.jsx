@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { InputSeleccion } from "../EtiquetaSeleccionGeneral"
 import evaluadorService from "../../services/servicioEvaluador"
+import examenService from "../../services/ServiciosExamen"
 import { useDispatch, useSelector } from "react-redux"
 import { agregarEvaluador } from "../../redux/examenSlice"
 import { BotonGeneral } from "../botonGeneral"
@@ -10,8 +11,9 @@ import {
   Table, TableBody, TableCell, 
   TableContainer, TableHead, TableRow 
 } from "@mui/material"
+import { TabsProvider } from "@mui/base"
 
-export const PanelSeleccionarEvaluador = ({ handleNext }) => {
+export const PanelSeleccionarEvaluador = ({ handleNext, examenId, accion }) => {
   const examen = useSelector((state) => state.examenFormulario);
   const dispatch = useDispatch();
 
@@ -47,6 +49,23 @@ export const PanelSeleccionarEvaluador = ({ handleNext }) => {
     fetchData();
   }, []);
 
+  if(accion === 'editar'){
+    useEffect(()=>{
+      async function fetchData() {
+        try{
+          const responce = await examenService.examenPorId(examenId);
+          setEvaluadores({
+            ...evaluadores,
+            evaluadores_ids: responce.evaluadores_relacion
+          })
+        } catch (error) {
+          console.error("No se puedo obtener la informacion del examen: ", error);
+        }
+      }
+      fetchData()
+    }, [])
+  }
+
   const onEnviarEvaluadores = (event) => {
     event.preventDefault();
     dispatch(
@@ -72,7 +91,7 @@ export const PanelSeleccionarEvaluador = ({ handleNext }) => {
               />
             </div>
             <div>
-              <TableContainer  sx={{ overflowX: 'auto' }}>
+              <TableContainer sx={{ overflowX: 'auto' }}>
                 <Table sx={{ minWidth: 350, maxWidth: 700}} aria-label="caption table">
                   <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
                     <TableRow>

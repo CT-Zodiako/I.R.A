@@ -53,32 +53,6 @@ export const VistaExamenes = () =>{
         <>
             <div>
                 <div>
-                    {/* <table>
-                        <thead>
-                        <tr>
-                            <th>Programa</th>
-                            <th>Titulo</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {listaExamenesEvaluador.map((examenes) => (
-                        <tr key={examenes.id}>
-                            <td>{examenes.programa_id}</td>
-                            <td>{examenes.proyecto_integrador}</td>
-                            <td>Pendiente</td>
-                            <td>
-                                <button onClick={() => onIdExamen({ examen: examenes.id })}>
-                                    <Link to={`/lista-estudiantes/${examenes.id}`}>
-                                        Calificar
-                                    </Link>
-                                </button>
-                            </td>
-                        </tr>
-                        ))}
-                        </tbody>
-                    </table> */}
                     <TableContainer>
                         <Table sx={{ minWidth: 650 }} aria-label="caption table">
                             <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>

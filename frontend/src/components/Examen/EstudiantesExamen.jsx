@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { agregarEstudiantes } from "../../redux/examenSlice";
+import examenService from "../../services/ServiciosExamen"
 import {
   Button,
   Table,
@@ -13,13 +14,12 @@ import {
   TextField,
 } from "@mui/material";
 
-export const AgregarListaEstudiantes = ({ setCamposCargados }) => {
+export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion }) => {
   const dispatch = useDispatch();
 
   const examenForm = useSelector((state) => state.examenFormulario);
-  useEffect(() => {
-    console.log("formulario examen: ", examenForm);
-  }, [examenForm]);
+
+  console.log("formulario examen: ", examenForm)
 
   const [estudianteEstado, setEstudianteEstado] = useState({ NOMBRE: "" });
   const [estudiantesExamen, setEstudiantes] = useState({
@@ -43,6 +43,23 @@ export const AgregarListaEstudiantes = ({ setCamposCargados }) => {
       estudiantes: [...estudiantesExamen.estudiantes, estudianteEstado],
     });
   };
+
+  if(accion === 'editar'){
+    useEffect(()=>{
+      async function fetchData() {
+        try{
+          const responce = await examenService.examenPorId(examenId);
+          setEstudiantes({
+            ...estudiantesExamen,
+            estudiantes: responce.estudiantes
+          })
+        } catch (error) {
+          console.error("No se puedo obtener la informacion del examen: ", error);
+        }
+      }
+      fetchData()
+    }, [])
+  }
 
   const eliminarEstudianteLista = (index) => {
     const nuevoFormulario = { ...estudiantesExamen };
@@ -72,7 +89,6 @@ export const AgregarListaEstudiantes = ({ setCamposCargados }) => {
           ...estudiantesExamen,
           estudiantes: response.data,
         });
-        setCamposCargados(true);
         console.log(response.data);
       })
       .catch((error) => {
@@ -87,6 +103,7 @@ export const AgregarListaEstudiantes = ({ setCamposCargados }) => {
         estudiantes: estudiantesExamen.estudiantes,
       })
     );
+    setCamposCargados(true)
   };
 
   return (

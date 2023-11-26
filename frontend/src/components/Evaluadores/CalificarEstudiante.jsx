@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
 import evaluadorService from '../../services/servicioEvaluador';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { InputSeleccionCalificacion } from '../seleccionCalificacion';
 import { agregarCalificacion } from '../../redux/calificacionSlice';
 import { useDispatch } from 'react-redux';
 
 export const CalificacionExamen = () => {
+  const location = useLocation();
+  const examenId = location.state.examenId;
+  const nombreEstudiante = location.state.nombreEstudiante;
   const dispatch = useDispatch();
+
   const[evaluado, setEvaluado] = useState({
         nombre: '',
         calificacion:{
@@ -14,12 +18,8 @@ export const CalificacionExamen = () => {
           observaciones:[]
         }
   });
-
   const[estudianteCalificacion, setEstudianteExamen] = useState([]);
   const[notasCalificacion, setNotasCalificacion] = useState([]);
-  console.log("descripcion: ", estudianteCalificacion);
-
-  const { nombreEstudiante, examenId } = useParams();
 
   const onNotaCalificacion = (idSeleccion) => {
     setEvaluado({

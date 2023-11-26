@@ -3,12 +3,13 @@ import { InputSeleccion } from "../EtiquetaSeleccionGeneral"
 import { useDispatch } from "react-redux"
 import { agregaInformacion } from "../../redux/examenSlice"
 import programaServicio from "../../services/ServicioPrograma"
+import examenService from "../../services/ServiciosExamen"
 import resultadoAprendizajeServicio from "../../services/ServicioResultadoAprendizaje"
 import "./examen.css"
 import { InputLabel, TextField } from "@mui/material"
 import { BotonGeneral } from "../botonGeneral"
 
-export const EvaluacionInformacion = ({ handleNext }) => {
+export const EvaluacionInformacion = ({ handleNext, examenId, accion }) => {  
   const dispatch = useDispatch();
   const [informacionExamen, setInformacionExamen] = useState({
     programa_id: "",
@@ -65,23 +66,30 @@ export const EvaluacionInformacion = ({ handleNext }) => {
     fetchData();
   }, []);
 
-  useEffect(()=>{
-    async function fetchData() {
-      try{
-
-      } catch (error) {
-        console.error("No se puedo obtener la informacion del examen: ", error);
+  if(accion === 'editar'){
+    useEffect(()=>{
+      async function fetchData() {
+        try{
+          const responce = await examenService.examenPorId(examenId);
+          setInformacionExamen({
+            ...informacionExamen,
+            programa_id: responce.programa_id,
+            resultado_aprendizaje_id: responce.resultado_aprendizaje_id,
+            proyecto_integrador: responce.proyecto_integrador
+          })
+        } catch (error) {
+          console.error("No se puedo obtener la informacion del examen: ", error);
+        }
       }
-    }
-
-  }, [])
+      fetchData()
+    }, [])
+  }
 
   useEffect(() => {
     const camposCargados =
       informacionExamen.programa_id &&
       informacionExamen.resultado_aprendizaje_id &&
       informacionExamen.proyecto_integrador;
-
     setCamposCargados(camposCargados);
   }, [informacionExamen]);
 
@@ -110,6 +118,7 @@ export const EvaluacionInformacion = ({ handleNext }) => {
                 idSeleccion={onPrograma}
                 label="seleccione programa"
                 variable="nombre"
+                onvalue={informacionExamen.programa_id}
               />
             </div>
             <div>
@@ -119,6 +128,7 @@ export const EvaluacionInformacion = ({ handleNext }) => {
                 idSeleccion={onResultado}
                 label="seleccione resultado"
                 variable="titulo"
+                onvalue={informacionExamen.resultado_aprendizaje_id}
               />
             </div>
             <div>

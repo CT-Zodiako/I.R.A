@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import evaluadorService from '../../services/servicioEvaluador';
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { LimpiarCalificacion } from '../../redux/calificacionSlice'
 
 export const VistaEstudiantes = () => {  
-      
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { examenId } = useParams();
     const[listaEstudiantes, setListaEstudiantes] = useState([]);
+    console.log("lista estudiantes por calificar: ",listaEstudiantes);
 
     const calificacionesEstudiantes = useSelector(state => state.calificacion);
+    console.log("estudiantes calificados por examen: ",calificacionesEstudiantes);
 
     const onRegresarExamen = () =>{
         dispatch(
@@ -28,7 +30,7 @@ export const VistaEstudiantes = () => {
           }
         }
         fetchData();
-      }, [examenId]);
+    }, [examenId]);
 
     const onEnviarCalificaciones = async(event) => {
         event.preventDefault();
@@ -39,6 +41,15 @@ export const VistaEstudiantes = () => {
           console.error('Error al enviar los datos de la calificacion:', error);
         }
     };
+
+    const calificarEstudiante = (examenId, nombreEstudiante) => {
+        navigate(`/calificacion-examen`, {
+          state: {
+            examenId: examenId,
+            nombreEstudiante: nombreEstudiante,
+          },
+        });
+      };
 
     return(
         <form onSubmit={ onEnviarCalificaciones }>
@@ -65,10 +76,16 @@ export const VistaEstudiantes = () => {
                         <td>{estudiante.CODIGO}</td>
                         <td>
                             <div>
-                            <button type='button'>
+                            {/* <button type='button'>
                                     <Link to={`/calificacion-examen/${examenId}/${estudiante.NOMBRE}`}>
                                         Calificar
                                     </Link>
+                                </button> */}
+                                <button 
+                                    type='button'
+                                    onClick={() => calificarEstudiante(examenId, estudiante.NOMBRE)}
+                                >
+                                    Calificar
                                 </button>
                             </div>  
                         </td>
