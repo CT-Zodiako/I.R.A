@@ -3,13 +3,20 @@ import evaluadorService from '../../services/servicioEvaluador';
 import { useLocation, useParams } from 'react-router-dom';
 import { InputSeleccionCalificacion } from '../seleccionCalificacion';
 import { agregarCalificacion } from '../../redux/calificacionSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const CalificacionExamen = () => {
   const location = useLocation();
   const examenId = location.state.examenId;
   const nombreEstudiante = location.state.nombreEstudiante;
   const dispatch = useDispatch();
+
+  const calificacionEstudiante = useSelector((state) => state.calificacion.calificacion);
+  console.log("Calificaciones: ", calificacionEstudiante);
+  const calificacionEvaluado = calificacionEstudiante.find((calificacion) => calificacion.nombre === nombreEstudiante);  
+  console.log("Estudiante: ", calificacionEvaluado);
+  const arregloCalificacion = [calificacionEvaluado];
+  console.log("se arreglo: ",arregloCalificacion)
 
   const[evaluado, setEvaluado] = useState({
         nombre: '',
@@ -19,6 +26,7 @@ export const CalificacionExamen = () => {
         }
   });
   const[estudianteCalificacion, setEstudianteExamen] = useState([]);
+  console.log("estudiantes calificacion: ", estudianteCalificacion);
   const[notasCalificacion, setNotasCalificacion] = useState([]);
 
   const onNotaCalificacion = (idSeleccion) => {
@@ -117,10 +125,30 @@ export const CalificacionExamen = () => {
                     <tr key={index}>
                       <td>{calificar}</td>
                       <td>
-                        <InputSeleccionCalificacion seleccionar={notasCalificacion} idSeleccion={onNotaCalificacion} />
+                        <InputSeleccionCalificacion 
+                          seleccionar={notasCalificacion} 
+                          idSeleccion={onNotaCalificacion} 
+                          valor={
+                            calificacionEvaluado && calificacionEvaluado.calificacion && calificacionEvaluado.calificacion.notas
+                              ? calificacionEvaluado.calificacion.notas[index]
+                              : ''
+                          }                          />
                       </td>
                       <td>
-                        <textarea name="" id="" cols="30" rows="10" onChange={onObservacion} data-index={index}></textarea>
+                        <textarea 
+                          name="" 
+                          id="" 
+                          cols="30" 
+                          rows="10" 
+                          value={
+                            calificacionEvaluado && calificacionEvaluado.calificacion && calificacionEvaluado.calificacion.observaciones
+                              ? calificacionEvaluado.calificacion.observaciones[index]
+                              : null
+                          }                          
+                          onChange={onObservacion} 
+                          data-index={index}>
+
+                        </textarea>
                       </td>
                     </tr>
                   ))}
