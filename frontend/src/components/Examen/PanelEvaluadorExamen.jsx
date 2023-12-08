@@ -11,7 +11,6 @@ import {
   Table, TableBody, TableCell, 
   TableContainer, TableHead, TableRow 
 } from "@mui/material"
-import { TabsProvider } from "@mui/base"
 
 export const PanelSeleccionarEvaluador = ({ handleNext, examenId, accion }) => {
   const examen = useSelector((state) => state.examenFormulario);

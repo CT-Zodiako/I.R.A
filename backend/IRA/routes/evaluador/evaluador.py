@@ -7,13 +7,13 @@ from ...auth import admin_required, evaluador_required
 evaluador_blueprint = Blueprint('evaluador', __name__)
 
 @evaluador_blueprint.route('/agregar_evaluador', methods=['POST'])
-# @admin_required
+@admin_required
 def crear_evaluador():
     data = request.json
     return agregar_evaluador(data)
 
 @evaluador_blueprint.route('/traer_evaluadores', methods=['GET'])
-@admin_required
+# @admin_required
 def traer_evaluadores():
     return traer_evaluadores_db()
 

@@ -9,10 +9,10 @@ export const VistaEstudiantes = () => {
     const dispatch = useDispatch();
     const { examenId } = useParams();
     const[listaEstudiantes, setListaEstudiantes] = useState([]);
-    console.log("lista estudiantes por calificar: ",listaEstudiantes);
+    console.log("**lista estudiantes por calificar: ",listaEstudiantes);
 
     const calificacionesEstudiantes = useSelector(state => state.calificacion);
-    console.log("estudiantes calificados por examen: ",calificacionesEstudiantes);
+    console.log("**estudiantes calificados por examen: ",calificacionesEstudiantes);
 
     const onRegresarExamen = () =>{
         dispatch(

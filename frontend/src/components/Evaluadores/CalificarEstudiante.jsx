@@ -11,22 +11,46 @@ export const CalificacionExamen = () => {
   const nombreEstudiante = location.state.nombreEstudiante;
   const dispatch = useDispatch();
 
-  const calificacionEstudiante = useSelector((state) => state.calificacion.calificacion);
-  console.log("Calificaciones: ", calificacionEstudiante);
-  const calificacionEvaluado = calificacionEstudiante.find((calificacion) => calificacion.nombre === nombreEstudiante);  
-  console.log("Estudiante: ", calificacionEvaluado);
-  const arregloCalificacion = [calificacionEvaluado];
-  console.log("se arreglo: ",arregloCalificacion)
+  const examenes = useSelector((state) => state.calificacion.calificacionExamen);
+  console.log("***examenes: ", examenes);
 
-  const[evaluado, setEvaluado] = useState({
+  // const calificacionEstudiante = useSelector((state) => state.calificacion.calificacion);
+  // console.log("***calificacion estudiantes del examen: ", calificacionEstudiante);
+
+  console.log("&& examen ID: ", examenId);
+  const examenesID = examenes.map((examen) => examen.examen_id);
+  console.log("examenes id: ", examenesID);
+  const calificacionEstudiante = examenes.find((examen) => examen.examen_id == examenId);  
+  console.log("calificacion estudiante: ", calificacionEstudiante);
+  const arregloExamen = [calificacionEstudiante];
+
+
+  console.log("mi nonmbre: ", nombreEstudiante);
+  const calificacionEvaluado = calificacionEstudiante.calificacion.find((calificacion) => calificacion.nombre == nombreEstudiante);  
+  const arregloCalificacion = [calificacionEvaluado];
+  console.log("%%%calificacion evaluado: ", calificacionEvaluado);
+  const [evaluado, setEvaluado] = useState(() => {
+    if (calificacionEvaluado) {
+      return {
         nombre: '',
-        calificacion:{
-          notas:[],
-          observaciones:[]
-        }
+        calificacion: {
+          notas: calificacionEvaluado.calificacion.notas,
+          observaciones: calificacionEvaluado.calificacion.observaciones,
+        },
+      };
+    } else {
+      return {
+        nombre: '',
+        calificacion: {
+          notas: [],
+          observaciones: [],
+        },
+      };
+    }
   });
+  
+  console.log("estudiante evaluado: ", evaluado);
   const[estudianteCalificacion, setEstudianteExamen] = useState([]);
-  console.log("estudiantes calificacion: ", estudianteCalificacion);
   const[notasCalificacion, setNotasCalificacion] = useState([]);
 
   const onNotaCalificacion = (idSeleccion) => {
@@ -131,8 +155,8 @@ export const CalificacionExamen = () => {
                           valor={
                             calificacionEvaluado && calificacionEvaluado.calificacion && calificacionEvaluado.calificacion.notas
                               ? calificacionEvaluado.calificacion.notas[index]
-                              : ''
-                          }                          />
+                              : ''}                         
+                        />
                       </td>
                       <td>
                         <textarea 
@@ -143,10 +167,10 @@ export const CalificacionExamen = () => {
                           value={
                             calificacionEvaluado && calificacionEvaluado.calificacion && calificacionEvaluado.calificacion.observaciones
                               ? calificacionEvaluado.calificacion.observaciones[index]
-                              : null
-                          }                          
+                              : null}                          
                           onChange={onObservacion} 
-                          data-index={index}>
+                          data-index={index}
+                          >
 
                         </textarea>
                       </td>
