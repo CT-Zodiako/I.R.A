@@ -8,9 +8,9 @@ export const InputSeleccionCalificacion = ({seleccionar, idSeleccion, valor}) =>
 
     const onSeleccionCalificacion = (event) => {
         const selectedId = event.target.value;
+        console.log("selectedId para mostrar: ", selectedId);
         setCalificacion(selectedId);
         idSeleccion(selectedId); 
-        console.log(selectedId);
     }
     
     return(

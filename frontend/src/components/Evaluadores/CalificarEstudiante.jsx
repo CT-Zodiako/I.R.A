@@ -11,24 +11,11 @@ export const CalificacionExamen = () => {
   const nombreEstudiante = location.state.nombreEstudiante;
   const dispatch = useDispatch();
 
-  const examenes = useSelector((state) => state.calificacion.calificacionExamen);
-  console.log("***examenes: ", examenes);
-
-  // const calificacionEstudiante = useSelector((state) => state.calificacion.calificacion);
-  // console.log("***calificacion estudiantes del examen: ", calificacionEstudiante);
-
-  console.log("&& examen ID: ", examenId);
-  const examenesID = examenes.map((examen) => examen.examen_id);
-  console.log("examenes id: ", examenesID);
-  const calificacionEstudiante = examenes.find((examen) => examen.examen_id == examenId);  
-  console.log("calificacion estudiante: ", calificacionEstudiante);
-  const arregloExamen = [calificacionEstudiante];
-
-
-  console.log("mi nonmbre: ", nombreEstudiante);
-  const calificacionEvaluado = calificacionEstudiante.calificacion.find((calificacion) => calificacion.nombre == nombreEstudiante);  
+  const calificacionEstudiante = useSelector((state) => state.calificacion.calificacion);
+  console.log("calificacion estudiantes del examen: ", calificacionEstudiante);
+  const calificacionEvaluado = calificacionEstudiante.find((calificacion) => calificacion.nombre === nombreEstudiante);  
   const arregloCalificacion = [calificacionEvaluado];
-  console.log("%%%calificacion evaluado: ", calificacionEvaluado);
+  console.log("calificacion evaluado: ", calificacionEvaluado);
   const [evaluado, setEvaluado] = useState(() => {
     if (calificacionEvaluado) {
       return {
@@ -53,15 +40,20 @@ export const CalificacionExamen = () => {
   const[estudianteCalificacion, setEstudianteExamen] = useState([]);
   const[notasCalificacion, setNotasCalificacion] = useState([]);
 
-  const onNotaCalificacion = (idSeleccion) => {
-    setEvaluado({
-      ...evaluado,
+  const onNotaCalificacion = (idSeleccion, index) => {
+    setEvaluado((prevEvaluado) => {
+      const newNotas = [...prevEvaluado.calificacion.notas];
+      newNotas[index] = idSeleccion;
+      return {
+        ...prevEvaluado,
         calificacion: {
-          ...evaluado.calificacion,
-          notas: [...evaluado.calificacion.notas, idSeleccion],
-      },
+          ...prevEvaluado.calificacion,
+          notas: newNotas,
+        },
+      };
     });
   };
+
 
   const onObservacion = (event) => {
     const guardarObservacion = event.target.value;
@@ -78,6 +70,32 @@ export const CalificacionExamen = () => {
       };
     });
   };
+
+  // const onNotaCalificacion = (idSeleccion) => {
+  //   setEvaluado({
+  //     ...evaluado,
+  //       calificacion: {
+  //         ...evaluado.calificacion,
+  //         notas: [...evaluado.calificacion.notas, idSeleccion],
+  //     },
+  //   });
+  // };
+
+  // const onObservacion = (event) => {
+  //   const guardarObservacion = event.target.value;
+  //   const index = Number(event.target.dataset.index);
+  //   setEvaluado((prevEvaluado) => {
+  //     const newObservaciones = [...prevEvaluado.calificacion.observaciones];
+  //     newObservaciones[index] = guardarObservacion;
+  //     return {
+  //       ...prevEvaluado,
+  //       calificacion: {
+  //         ...prevEvaluado.calificacion,
+  //         observaciones: newObservaciones,
+  //       },
+  //     };
+  //   });
+  // };
 
   const onEnviarCalificacion = (event) => {
     event.preventDefault();
@@ -151,11 +169,8 @@ export const CalificacionExamen = () => {
                       <td>
                         <InputSeleccionCalificacion 
                           seleccionar={notasCalificacion} 
-                          idSeleccion={onNotaCalificacion} 
-                          valor={
-                            calificacionEvaluado && calificacionEvaluado.calificacion && calificacionEvaluado.calificacion.notas
-                              ? calificacionEvaluado.calificacion.notas[index]
-                              : ''}                         
+                          idSeleccion={(idSeleccion) => onNotaCalificacion(idSeleccion, index)}
+                          valor={evaluado.calificacion.notas[index] || ''}                        
                         />
                       </td>
                       <td>
@@ -164,10 +179,7 @@ export const CalificacionExamen = () => {
                           id="" 
                           cols="30" 
                           rows="10" 
-                          value={
-                            calificacionEvaluado && calificacionEvaluado.calificacion && calificacionEvaluado.calificacion.observaciones
-                              ? calificacionEvaluado.calificacion.observaciones[index]
-                              : null}                          
+                          value={evaluado.calificacion.observaciones[index] || ''}                          
                           onChange={onObservacion} 
                           data-index={index}
                           >
