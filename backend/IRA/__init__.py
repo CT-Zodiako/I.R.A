@@ -3,7 +3,9 @@ from flask import Flask
 from flask_cors import CORS
 from .db import db
 from .configuracion_marshmallow import ma
+from .auth import bcrypt, jwt
 from dotenv import load_dotenv
+from flask_jwt_extended import JWTManager
 
 
 def create_app(test_config=None):
@@ -24,6 +26,8 @@ def create_app(test_config=None):
 
     db.init_app(app)
     ma.init_app(app)
+    jwt = JWTManager(app)
+    bcrypt.init_app(app)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -44,6 +48,8 @@ def create_app(test_config=None):
     from .routes.login.login_route import login_blueprint
     from .routes.programas.programa_route import programa_blueprint
     from .routes.calificaciones.calificaciones_route import calificaciones_blueprint
+    from .routes.informes.informes_route import informes_blueprint
+    from .routes.email_notificacion.email_notificacion_route import email_blueprint
     
     app.register_blueprint(evaluador_blueprint, url_prefix='/evaluador')
     app.register_blueprint(examen_blueprint, url_prefix='/examen')
@@ -52,6 +58,8 @@ def create_app(test_config=None):
     app.register_blueprint(login_blueprint, url_prefix='/login')
     app.register_blueprint(programa_blueprint, url_prefix='/programa')
     app.register_blueprint(calificaciones_blueprint, url_prefix='/calificacion')
+    app.register_blueprint(informes_blueprint, url_prefix='/informes')
+    app.register_blueprint(email_blueprint, url_prefix='/email')
 
     with app.app_context():
         db.create_all()

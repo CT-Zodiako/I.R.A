@@ -1,154 +1,131 @@
-import { useState } from 'react';
-import examenService from '../../services/ServiciosExamen';
-// import { EvaluacionInformacion } from './InformacionEvaluacion';
-// import { AgregarListaEstudiantes } from './EstudiantesEvaluacion';
-// import { RegistrarActividadFormativa } from './ActividadFormativa';
-// import { PanelSeleccionarEvaluador } from './PanelEvaluador';
-import { EvaluacionInformacion, AgregarListaEstudiantes, RegistrarActividadFormativa, PanelSeleccionarEvaluador } from './indexExamen'
+import { useState } from "react";
+import examenService from "../../services/ServiciosExamen";
+import {
+  EvaluacionInformacion,
+  AgregarListaEstudiantes,
+  RegistrarActividadFormativa,
+  PanelSeleccionarEvaluador,
+} from "./indexExamen";
+import { useSelector } from "react-redux";
+import { Box, Step, StepLabel, Stepper } from "@mui/material";
 
 export const FormularioPorPasos = () => {
-  const [formularioExamen, setFormulario] = useState({
-    programa: '',
-    proyecto_integrador: '',
-    evaluadores: [],
-    actividades_formativas: [],
-    estudiantes: []
-  });
-
-  const handleProgramaChange = (event) => {
-    const { name, value } = event.target;
-    setFormulario({
-      ...formularioExamen,
-      [name]: value
-    });
-  };
-
-  const handleResultadoAprendizajeChange = (selectedId) => {
-    setFormulario({
-      ...formularioExamen,
-      resultado_aprendizaje_id: selectedId, 
-    });
-  };
-
-  const handleIntegradorChange = (event) => {
-    const { name, value } = event.target;
-    setFormulario({
-      ...formularioExamen,
-      [name]: value
-    });
-  };
-
-  const handleNuevoEvaluadorChange = (selectedId) => {
-    setFormulario({
-      ...formularioExamen,
-      evaluadores_ids:[...formularioExamen.evaluadores_ids, selectedId], 
-    });
-    console.log(selectedId)
-  };
-
-  const handleNuevaActividadChange = (event) => {
-    const { name, value } = event.target;
-    setNuevaActividad({
-      ...nuevaActividad,
-      [name]: value
-    });
-  };
-
-  const agregarActividad = () => {
-    if (nuevaActividad.descripcion) {
-      setFormulario({
-        ...formularioExamen,
-        actividades_formativas: [...formularioExamen.actividades_formativas, nuevaActividad]
-      });
-      setNuevaActividad({
-        descripcion: ''
-      });
-    }
-  };
-
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append('archivo', file);
+  const enviarExamen = useSelector((state) => state.examenFormulario);
   
-    axios.post('http://127.0.0.1:3001/examen/ruta_de_carga_de_archivos', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-      .then((response) => {
-        setFormulario({
-          ...formularioExamen,
-          estudiantes: [ response.data.datos]
-        });      
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const [componenteExamen, setComponenteExamen] = useState(1);
+  const [camposCargados, setCamposCargados] = useState(false);
+
+  const pasos = [
+    "Informacion Examen",
+    "Panel Evaluador",
+    "Actividades Formativas",
+    "Estudiantes Examen",
+  ];
+
+  const onNext = () => {
+    setComponenteExamen((componenteExamen) => componenteExamen + 1);
   };
 
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-    console.log(formularioExamen);
+  const onEnviarFormularioExamen = async (event) => {
+    event.preventDefault();
     try {
-      const response = await  examenService.agregarExamen(formularioExamen);
-      console.log('Respuesta del servidor:', response.data);
+      await examenService.agregarExamen(enviarExamen);
     } catch (error) {
-      console.error('Error al enviar los datos:', error);
+      console.error("Error al enviar los datos del examen:", error);
     }
   };
 
-  const [paso, setPaso] = useState(1);
-
-  const handleNext = () => {
-    setPaso(paso + 1);
-  };
-
-  switch (paso) {
+  switch (componenteExamen) {
     case 1:
-      return <Paso1 onNext={handleNext} />;
+      return (
+        <div>
+          <div>
+            <Box sx={{ width: "100%" }}>
+              <Stepper activeStep={componenteExamen - 1} alternativeLabel>
+                {pasos.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </Box>
+          </div>
+          <div className="centrar">
+            <EvaluacionInformacion 
+              handleNext={onNext}
+              // examenId={examenId}
+            />
+          </div>
+        </div>
+      );
     case 2:
-      return <Paso2 onNext={handleNext} />;
+      return (
+        <div>
+          <div>
+            <Box sx={{ width: "100%" }}>
+              <Stepper activeStep={componenteExamen - 1} alternativeLabel>
+                {pasos.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </Box>
+          </div>
+          <div className="centrar">
+            <PanelSeleccionarEvaluador handleNext={onNext} />
+          </div>
+        </div>
+      );
     case 3:
-      return <Paso3 onNext={handleNext} />;
+      return (
+        <div>
+          <div>
+            <Box sx={{ width: "100%" }}>
+              <Stepper activeStep={componenteExamen - 1} alternativeLabel>
+                {pasos.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </Box>
+          </div>
+          <div className="centrar">
+            <RegistrarActividadFormativa handleNext={onNext} />
+          </div>
+        </div>
+      );
     case 4:
-      return <Paso4 onNext={handleNext} />;
+      return (
+        <div>
+          <div>
+            <Box sx={{ width: "100%" }}>
+              <Stepper activeStep={componenteExamen - 1} alternativeLabel>
+                {pasos.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </Box>
+          </div>
+          <div>
+            <div className="centrar">
+              <AgregarListaEstudiantes setCamposCargados={setCamposCargados} />
+            </div>
+            <div className="centrar">
+              <button
+                disabled={!camposCargados}
+                onClick={onEnviarFormularioExamen}
+              >
+                Cargar examen
+              </button>
+            </div>
+          </div>
+        </div>
+      );
     default:
       return <div>Formulario completado</div>;
   }
-
-  function Paso1({onNext}) {
-    return (
-      <EvaluacionInformacion 
-        handleNext={onNext} 
-        formularioExamen={formularioExamen} 
-        programaFuncion={handleProgramaChange}
-        aprendizajeResultado={handleResultadoAprendizajeChange}
-        programaIntegrador={handleIntegradorChange}/>
-    );
-  }
-  
-  function Paso2({ onNext }) {
-    return (
-      <PanelSeleccionarEvaluador
-        formularioExamen={formularioExamen} 
-        seleccionEvaluador={handleNuevoEvaluadorChange}/>
-    );
-  }
-
-  function Paso3({ onNext }) {
-    return (
-      <RegistrarActividadFormativa
-        formularioExamen={formularioExamen} 
-        actividadFormativa={handleNuevaActividadChange}
-        agregarActividad={agregarActividad}/>
-    );
-  }
-
-  function Paso4({ onNext }) {
-    return (
-      <AgregarListaEstudiantes
-        listaEstudiantes={handleFileUpload}/>
-    );
-  }
-}
+};

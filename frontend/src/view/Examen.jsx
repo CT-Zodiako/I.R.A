@@ -4,9 +4,11 @@ import examenService from '../services/ServiciosExamen';
 import resultadoAprendizajeServicio from '../services/ServicioResultadoAprendizaje';
 import evaluadorService from '../services/servicioEvaluador';
 import programaServicio from '../services/ServicioPrograma'; 
-import { InputSeleccion } from '../components/EtiquetaSeleccionGeneral';
+import {InputSeleccion}  from '../components/EtiquetaSeleccionGeneral';
+import { TextField } from '@mui/material';
 
 export const CrearExamen = () => {
+
   const [formularioExamen, setFormulario] = useState({
     programa_id: '',
     resultado_aprendizaje_id: '',
@@ -16,21 +18,14 @@ export const CrearExamen = () => {
     estudiantes: []
   });
 
+  console.log(formularioExamen);
+
   const [programa, setPrograma] = useState([]);
   const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
   const [evaluadores, setEvaluadores] = useState([]);
 
-  const [nuevoEvaluador, setNuevoEvaluador] = useState({
-    id:'',
-  });
-
-  const [nuevaActividad, setNuevaActividad] = useState({
-    descripcion: ''
-  });
-
-  const [nuevoEstudiante, setNuevoEstudiante] = useState({
-    NOMBRE: ''
-  });
+  const [nuevaActividad, setNuevaActividad] = useState();
+  const [nuevoEstudiante, setNuevoEstudiante] = useState();
 
   const onPrograma = (selectedId) => {
     setFormulario({
@@ -62,12 +57,15 @@ export const CrearExamen = () => {
   };
 
   const onActividadFormativa = (event) => {
-    const { name, value } = event.target;
-    setNuevaActividad({
-      ...nuevaActividad,
-      [name]: value
-    });
+    setNuevaActividad(event.target.value);
   };
+  // const onActividadFormativa = (event) => {
+  //   const { name, value } = event.target;
+  //   setNuevaActividad({
+  //     ...nuevaActividad,
+  //     [name]: value
+  //   });
+  // };
 
   const onEstudiante = (event) => {
     const { name, value } = event.target;
@@ -77,39 +75,20 @@ export const CrearExamen = () => {
     });
   };
 
-  const agregarEvaluador = () => {
-    if (nuevoEvaluador.nombre && nuevoEvaluador.correo) {
-      setFormulario({
-        ...formularioExamen,
-        evaluadores_ids: [...formularioExamen.evaluadores_ids, nuevoEvaluador]
-      });
-      setNuevoEvaluador({
-        nombre: '',
-        correo: ''
-      });
-    }
-  };
-
   const agregarActividad = () => {
-    if (nuevaActividad.descripcion) {
+    if (nuevaActividad) {
       setFormulario({
         ...formularioExamen,
         actividades_formativas: [...formularioExamen.actividades_formativas, nuevaActividad]
-      });
-      setNuevaActividad({
-        descripcion: ''
       });
     }
   };
 
   const agregarEstudiante = () => {
-    if (nuevoEstudiante.NOMBRE) {
+    if (nuevoEstudiante) {
       setFormulario({
         ...formularioExamen,
         estudiantes: [...formularioExamen.estudiantes, nuevoEstudiante]
-      });
-      setNuevoEstudiante({
-        NOMBRE: ''
       });
     }
   };
@@ -131,6 +110,7 @@ export const CrearExamen = () => {
   }
 
   const eliminarEstudiante = (index) =>{
+    console.log("Eliminar estudiante llamado");
     const nuevoFormulario = { ...formularioExamen };
     const nuevasActividades = [...nuevoFormulario.estudiantes]
     nuevasActividades.splice(index, 1);
@@ -175,11 +155,10 @@ export const CrearExamen = () => {
     fetchData();
   }, []);
   
-  const onCargarExamen = async(e) => {
-    e.preventDefault();
-    console.log(formularioExamen);
+  const onCargarExamen = async(event) => {
+    event.preventDefault();
     try {
-      const response = await  examenService.agregarExamen(formularioExamen);
+      const responce = await examenService.agregarExamen(formularioExamen);
     } catch (error) {
       console.error('Error al enviar los datos del examen:', error);
     }
@@ -253,9 +232,6 @@ export const CrearExamen = () => {
                   label='seleccione evaluador'
                   variable='nombre_evaluador'/>  
             </div>
-            <button type="button" onClick={agregarEvaluador}>
-              Agregar Evaluador
-            </button>
           </div>
           <div>
             <table>
@@ -276,7 +252,7 @@ export const CrearExamen = () => {
                       <td>{evaluador.nombre_evaluador}</td>
                       <td>{evaluador.correo}</td>
                       <td>
-                        <button onClick={() => eliminarEvaluador(index)}>Eliminar</button>
+                        <button  type='button' onClick={() => eliminarEvaluador(index)}>Eliminar</button>
                       </td>
                     </tr>
                   );
@@ -289,13 +265,22 @@ export const CrearExamen = () => {
         <div>
           <h3>Actividad Formativa</h3>
           <div>
-            <input
+            <TextField
+              type="text"
+              name="descripcion"
+              // value={nuevaActividad.descripcion}
+              onChange={onActividadFormativa}
+              id="outlined-basic"
+              label="Descripción actividad"
+              required
+            />
+            {/* <input
               type="text"
               name="descripcion"
               value={nuevaActividad.descripcion}
               onChange={onActividadFormativa}
               placeholder="Descripción actividad"
-            />
+            /> */}
             <button type="button" onClick={agregarActividad}>
               Agregar Actividad
             </button>
@@ -310,9 +295,9 @@ export const CrearExamen = () => {
               <tbody>
               {formularioExamen.actividades_formativas.map((actividad, index) => (
                   <tr key={index}>
-                    <td>{actividad.descripcion}</td>
+                    <td>{actividad}</td>
                     <td>
-                      <button onClick={() => eliminarActividad(index)}>Eliminar</button>
+                      <button type='button' onClick={() => eliminarActividad(index)}>Eliminar</button>
                     </td>
                   </tr>
                 ))}
@@ -325,13 +310,22 @@ export const CrearExamen = () => {
           <h3>Estudiante</h3>
           <div>
             <div>
-              <input
+              <TextField
+                type="text"
+                name="NOMBRE"
+                // value={nuevoEstudiante.NOMBRE}
+                onChange={onEstudiante}
+                id="outlined-basic"
+                label="Nombre del estudiante"
+                required
+              />
+              {/* <input
                 type="text"
                 name="NOMBRE"
                 value={nuevoEstudiante.NOMBRE}
                 onChange={onEstudiante}
                 placeholder="Nombre del estudiante"
-              />
+              /> */}
               <button type="button" onClick={agregarEstudiante}>
                 Agregar Estudiante
               </button>
@@ -354,9 +348,9 @@ export const CrearExamen = () => {
                 <tbody>
                   {formularioExamen.estudiantes.map((estudiante, index) => (
                     <tr key={index}>
-                      <td>{estudiante.NOMBRE}</td>
+                      <td>{estudiante}</td>
                       <td>
-                        <button onClick={() => eliminarEstudiante(index)}>Eliminar</button>
+                        <button type='button' onClick={() => eliminarEstudiante(index)}>Eliminar</button>
                       </td>
                     </tr>
                   ))}
@@ -364,7 +358,9 @@ export const CrearExamen = () => {
               </table>
             </div>
         </div>
-        <button type="submit">Crear Examen</button>
+        <div>
+          <button type="submit">Crear Examen</button>
+        </div>
       </form>
     </div>
   );

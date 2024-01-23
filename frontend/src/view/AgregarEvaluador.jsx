@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
-import evaluadorService from '../services/servicioEvaluador';
+import React, { useEffect, useState } from 'react'
+import evaluadorService from '../services/servicioEvaluador'
+import { useSelector } from 'react-redux'
 
 export const CrearEvaluador = () => {
+
+  const inicioSesion = useSelector(state => state.sesion);
+
   const [formulario, setFormulario] = useState({
     nombre_evaluador: '',
     correo: '',
     numero_identificacion: '',
     contrasenna: '',
-    telefono: '',
+    telefono: ''
   });
 
   const onAgregarEvaluador = (event) => {
@@ -22,11 +26,14 @@ export const CrearEvaluador = () => {
     event.preventDefault();
     try {
       const response = await evaluadorService.agregarEvaluador(formulario);
-      console.log(response);
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    console.log(inicioSesion);
+  }, [inicioSesion]);
 
   return (
     <div>
@@ -84,7 +91,6 @@ export const CrearEvaluador = () => {
         </div>
         <div>
           <button type="submit">Crear Evaluador</button>
-          <button></button>
         </div>
       </form>
     </div>
