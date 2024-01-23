@@ -5,6 +5,7 @@ import idExamenCalificacion from './calificacionSlice'
 import iniciarSesion from './inicioSesionSlipe';
 import cerrarSesion from './inicioSesionSlipe';
 import examenFormularioReducer from './examenSlice';
+import programa from './programaSlice';
 
 export const store = configureStore({
    reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
     limpiar: LimpiarCalificacion,
     sesion: iniciarSesion,
     cerrarSesion: cerrarSesion,
-    examenFormulario: examenFormularioReducer
+    examenFormulario: examenFormularioReducer,
+    programa: programa,
    },
 });
 

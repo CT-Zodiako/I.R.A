@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import evaluadorService from '../../services/servicioEvaluador';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { idExamenCalificacion } from '../../redux/calificacionSlice';
 import { 
@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 export const VistaExamenes = () =>{
-
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const evaluadorId = useSelector((state) => state.sesion.id);
 
@@ -35,6 +35,9 @@ export const VistaExamenes = () =>{
                 evaluadorId: evaluadorId
             })
         );
+        navigate(
+            `/lista-estudiantes`
+        )
     }
 
     useEffect(() => {
@@ -53,14 +56,14 @@ export const VistaExamenes = () =>{
         <>
             <div>
                 <div>
-                    <TableContainer>
+                    <TableContainer className="bordesTablas">
                         <Table sx={{ minWidth: 650 }} aria-label="caption table">
-                            <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
+                            <TableHead sx={{ background: "rgba(0, 0, 0, 0.07)" }}>
                             <TableRow>
-                                <TableCell>Programa</TableCell>
-                                <TableCell align="left">Titulo</TableCell>
-                                <TableCell align="left">Estado</TableCell>
-                                <TableCell align="left">Acciones</TableCell>
+                                <TableCell align="left" sx={{ fontWeight: 'bold'}}>Programa</TableCell>
+                                <TableCell align="left" sx={{ fontWeight: 'bold'}}>Titulo</TableCell>
+                                <TableCell align="left" sx={{ fontWeight: 'bold'}}>Estado</TableCell>
+                                <TableCell align="left" sx={{ fontWeight: 'bold'}}>Acciones</TableCell>
                             </TableRow>
                             </TableHead>
                             <TableBody>
@@ -80,25 +83,28 @@ export const VistaExamenes = () =>{
                                 </TableCell>
                                 <TableCell align="left">
                                 <button onClick={() => onIdExamen({ examen: examenes.id })}>
-                                    <Link to={`/lista-estudiantes/${examenes.id}`}>
+                                    {/* <Link to={`/lista-estudiantes/${examenes.id}`}>
                                         Calificar
-                                    </Link>
+                                    </Link> */}
+                                    Calificar
                                 </button>
                                 </TableCell>
                                 </TableRow>
                             ))}
                             </TableBody>
                         </Table>
-                        </TableContainer>
                         <TablePagination
-                        rowsPerPageOptions={[5, 10, 20]}
-                        component="div"
-                        count={listaExamenesEvaluador.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
+                            className="paginacion"
+                            rowsPerPageOptions={[5, 10, 20]}
+                            component="div"
+                            count={listaExamenesEvaluador.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                        </TableContainer>
+                        
                 </div>
             </div>
         </>

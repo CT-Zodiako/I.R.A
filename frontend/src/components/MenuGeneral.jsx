@@ -1,40 +1,63 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useNavigate  } from 'react-router-dom';
 import { InputSeleccion } from './EtiquetaSeleccionGeneral';
 import programaServicio from '../services/ServicioPrograma' 
+import { FormControl, InputLabel } from '@mui/material';
+import { agregarPrograma } from '../redux/programaSlice';
 
 export const  Menu = () => {
-  // const [programa, setPrograma] = useState([]);
-  
-  // const navigate = useNavigate();
-  // const [rol, setRol] = useState('');
+  const dispatch = useDispatch();
+  const [token, setToken] = useState(null);
+  const [rol, setRol] = useState(null);
+  const [selecPrograma, setSelecPrograma] = useState([]);
 
-  // useEffect(() => {
-  //   try {
-  //     const token = localStorage.getItem('token');
+  const onPrograma = (seleccionId) => {
+    console.log("seleccion del programa: ",seleccionId);
+    dispatch(
+      agregarPrograma({
+        programa: seleccionId
+      })
+    );
+  };
 
-  //     const tokenData = token.split(".")[1];
-  //     const decodedToken = JSON.parse(atob(tokenData));
-  
-  //     if (decodedToken) {
-  //       const rol = decodedToken.sub.rol;
-  //       setRol(rol);
-  //       console.log("el rol de inicio de sesión: ", rol);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error al decodificar o procesar el token:', error);
-  //   }
-  // }, []);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await programaServicio.traerPrograma();
+        setSelecPrograma(data);
+      } catch (error) {
+        console.error("Error al obtener el programa:", error);
+      }
+    }
+    fetchData();
+  }, []);
 
-  // const cerrarSesion = () => {
-  //   localStorage.removeItem('token');
-  //   navigate('/');
-  // };
+  useEffect(() => {
+    // Obtén el token del localStore
+    const token = localStorage.getItem("token");
 
+    const tokenData = token.split(".")[1];
+    const decodedToken = JSON.parse(atob(tokenData));
+    // Decodifica el token
+    if (decodedToken) {
+      // Obtén el rol del token
+      setRol(decodedToken.sub.rol);
+    }
+  }, []);
 
-  const rol = useSelector(state => state.sesion.rol);
-  console.log("rol del Usuario en el menu: ",rol);
+  useEffect(() => {
+    // Verifica si el token ha cambiado
+    const tokenActual = localStorage.getItem("token");
+    if (tokenActual !== token) {
+      console.log("Token actualizado", tokenActual);
+      // Cierra la sesión
+      setToken(null);
+    }
+  }, []);
+
+  // const rol = useSelector(state => state.sesion.rol);
+  // console.log("rol del Usuario en el menu: ",rol);
 
   return (
     <div className="menu">
@@ -49,6 +72,18 @@ export const  Menu = () => {
                 <li><Link to="/resultado-aprendizaje">Resultados de Aprendizaje</Link></li>
                 <li><Link to="/evaluadores">Gestión de Usuario</Link></li>
                 <li><Link to="/pasos">Examen por pasos</Link></li>
+                <li style={{marginTop: '3rem'}}>
+                  <div className='programa'>
+                    <InputSeleccion
+                      className="programa"
+                      seleccionar={selecPrograma}
+                      idSeleccion={onPrograma}
+                      label="Programa"
+                      variable="nombre"
+                      anchoSelec='11.5rem'
+                    />
+                  </div>
+                </li>
               </>
             )}
             {rol === 'Evaluador' &&(

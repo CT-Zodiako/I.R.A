@@ -29,7 +29,7 @@ function Routers() {
         <Route path="/informe_examen" element={<Informes/>}></Route>
       </Route>
       <Route path="/lista_examenes" element={<VistaExamenes/>}></Route>
-      <Route path="/lista-estudiantes/:examenId" element={<VistaEstudiantes/>}></Route>
+      <Route path="/lista-estudiantes" element={<VistaEstudiantes/>}></Route>
       <Route path="/calificacion-examen" element={<CalificacionExamen/>}></Route>
       {/* <Route path="/calificacion-examen/:examenId/:nombreEstudiante" element={<CalificacionExamen/>}></Route> */}
       <Route path="/grafica-informe" element={<GraficoInforme/>}></Route>

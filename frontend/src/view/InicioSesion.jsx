@@ -3,7 +3,7 @@ import loginService from "../services/ServicioLogin";
 import { useDispatch } from "react-redux";
 import { iniciarSesion } from "../redux/inicioSesionSlipe";
 import axios from "axios";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 export const InicioSesionUsuarios = ({ onAutenticacion }) => {
@@ -40,6 +40,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
         console.log("el rol: ",rol);
 
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        console.log("token del usuario: ", token);
 
         dispatch(
           iniciarSesion({
@@ -61,6 +62,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
 
   return (
     <>
+    <div className="login">
       <div className="informacion">
         <h2>Iniciar sesión</h2>
         <form onSubmit={onInicioSesion}>
@@ -90,9 +92,15 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
               />
             </div>
           </div>
-          <button type="submit">Iniciar sesión</button>
+          <Button 
+            type="submit"
+            variant="contained"
+          >
+            Iniciar sesión
+          </Button>
         </form>
-      </div>
+      </div>      
+    </div>
     </>
   );
 };

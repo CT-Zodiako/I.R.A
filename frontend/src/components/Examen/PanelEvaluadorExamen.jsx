@@ -87,6 +87,7 @@ export const PanelSeleccionarEvaluador = ({ handleNext, examenId, accion }) => {
                 idSeleccion={onEvaluadores}
                 label="seleccione evaluador"
                 variable="nombre_evaluador"
+                anchoSelec='20rem'
               />
             </div>
             <div>

@@ -3,11 +3,16 @@ import evaluadorService from '../../services/servicioEvaluador';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { LimpiarCalificacion } from '../../redux/calificacionSlice'
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 export const VistaEstudiantes = () => {  
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { examenId } = useParams();
+    // const { examenId } = useParams();
+    // console.log("**creo que este es el id del examen: ",examenId);
+    const examenId = useSelector((state) => state.calificacion.examen_id);
+    console.log("**id del examen de la store: ",examenId);
+
     const[listaEstudiantes, setListaEstudiantes] = useState([]);
     console.log("**lista estudiantes por calificar: ",listaEstudiantes);
 
@@ -59,40 +64,42 @@ export const VistaEstudiantes = () => {
                         Regresar
                     </Link>
                 </button>
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Nombre Estudiante</th>
-                        <th>Correo</th>
-                        <th>Telefono</th>
-                        <th>Codigo</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {listaEstudiantes.map((estudiante, Index) => (
-                    <tr key={Index}>
-                        <td>{estudiante.NOMBRE}</td>
-                        <td>{estudiante.CORREO}</td>
-                        <td>{estudiante.CODIGO}</td>
-                        <td>
-                            <div>
-                            {/* <button type='button'>
-                                    <Link to={`/calificacion-examen/${examenId}/${estudiante.NOMBRE}`}>
-                                        Calificar
-                                    </Link>
-                                </button> */}
-                                <button 
-                                    type='button'
-                                    onClick={() => calificarEstudiante(examenId, estudiante.NOMBRE)}
-                                >
-                                    Calificar
-                                </button>
-                            </div>  
-                        </td>
-                    </tr>
-                    ))}
-                    </tbody>
-                </table>
+                <TableContainer className="bordesTablas">
+                    <Table>
+                        <TableHead sx={{ background: "rgba(0, 0, 0, 0.07)" }}>
+                            <TableRow>
+                                <TableCell>Nombre Estudiante</TableCell>
+                                <TableCell>Correo</TableCell>
+                                <TableCell>Telefono</TableCell>
+                                <TableCell>Codigo</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                        {listaEstudiantes.map((estudiante, Index) => (
+                            <TableRow key={Index}>
+                                <TableCell>{estudiante.NOMBRE}</TableCell>
+                                <TableCell>{estudiante.CORREO}</TableCell>
+                                <TableCell>{estudiante.CODIGO}</TableCell>
+                                <TableCell>
+                                    <div>
+                                    {/* <button type='button'>
+                                            <Link to={`/calificacion-examen/${examenId}/${estudiante.NOMBRE}`}>
+                                                Calificar
+                                            </Link>
+                                        </button> */}
+                                        <button 
+                                            type='button'
+                                            onClick={() => calificarEstudiante(examenId, estudiante.NOMBRE)}
+                                        >
+                                            Calificar
+                                        </button>
+                                    </div>  
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>    
             </div>
             <button type="submit">Enviar</button>
         </form>
