@@ -1,54 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import evaluadorService from '../services/servicioEvaluador';
+import React, { useEffect, useState } from 'react'
+import evaluadorService from '../services/servicioEvaluador'
+import { useSelector } from 'react-redux'
 
 export const CrearEvaluador = () => {
+
+  const inicioSesion = useSelector(state => state.sesion);
+
   const [formulario, setFormulario] = useState({
     nombre_evaluador: '',
     correo: '',
     numero_identificacion: '',
     contrasenna: '',
-    telefono: '',
+    telefono: ''
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const onAgregarEvaluador = (event) => {
+    const { name, value } = event.target;
     setFormulario({
       ...formulario,
       [name]: value
     });
   };
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       const data = await evaluadorService.buscarEvaluador();
-  //       setFormulario(data);
-  //     } catch (error) {
-  //       console.error('Error al obtener el resultado:', error);
-  //     }
-  //   }
-  //   fetchData();
-  // }, []);
-
-  // const handleSubmit = async(e) => {
-  //   e.preventDefault();
-  //   console.log(formularioExamen);
-  //   try {
-  //     await  evaluadorService.editarEvaluador(formularioExamen);
-  //   } catch (error) {
-  //     console.error('Error al enviar los datos:', error);
-  //   }
-  // };
-
-  const onEnviarEvaluador = async (e) => {
-    e.preventDefault();
+  const onEnviarEvaluador = async (event) => {
+    event.preventDefault();
     try {
       const response = await evaluadorService.agregarEvaluador(formulario);
-      console.log(response);
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    console.log(inicioSesion);
+  }, [inicioSesion]);
 
   return (
     <div>
@@ -60,7 +45,7 @@ export const CrearEvaluador = () => {
             type="text"
             name="nombre_evaluador"
             value={formulario.nombre_evaluador}
-            onChange={handleChange}
+            onChange={onAgregarEvaluador}
             required
           />
         </div>
@@ -70,7 +55,7 @@ export const CrearEvaluador = () => {
             type="text"
             name="correo"
             value={formulario.correo}
-            onChange={handleChange}
+            onChange={onAgregarEvaluador}
             required
           />
         </div>
@@ -80,7 +65,7 @@ export const CrearEvaluador = () => {
             type="text"
             name="numero_identificacion"
             value={formulario.numero_identificacion}
-            onChange={handleChange}
+            onChange={onAgregarEvaluador}
             required
           />
         </div>
@@ -90,7 +75,7 @@ export const CrearEvaluador = () => {
             type="text"
             name="contrasenna"
             value={formulario.contrasenna}
-            onChange={handleChange}
+            onChange={onAgregarEvaluador}
             required
           />
         </div>
@@ -100,13 +85,12 @@ export const CrearEvaluador = () => {
             type="text"
             name="telefono"
             value={formulario.telefono}
-            onChange={handleChange}
+            onChange={onAgregarEvaluador}
             required
           />
         </div>
         <div>
           <button type="submit">Crear Evaluador</button>
-          <button></button>
         </div>
       </form>
     </div>

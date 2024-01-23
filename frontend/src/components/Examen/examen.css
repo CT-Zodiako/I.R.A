@@ -1,0 +1,49 @@
+.informacion{
+    width: fit-content;
+    max-width: 85%;
+    height: fit-content;
+    max-height: 55rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    padding: 2rem 3rem;
+    margin: 1rem;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.labelExamen{
+    width: 100px;
+    height: 50px;
+}
+
+.inputExamen{
+    background: green;
+    width: 50px;
+    height: 30px;
+}
+
+.tablaExamen{
+    width: 200px;
+    height: 300px;
+}
+
+.componentes > div {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+
+.centrar{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.textButton{
+    text-align: center;
+    width: fit-content;
+    max-width: 12rem;
+    height: fit-content;
+    max-height: 3.5rem;
+}

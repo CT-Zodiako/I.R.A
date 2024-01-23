@@ -1,9 +1,0 @@
-<!-- <p>mensajes works!</p> -->
-<div *ngIf = "mensajeService.mensajes.length">
-    <h2>MENSAJES</h2>
-    <button class="clear"
-        (click)="mensajeService.limpiar()"> limpiar </button>
-
-    <div *ngFor='let mensaje of mensajeService.mensajes.reverse(), let i = index' >{{i}} {{mensaje}}</div>
-</div>
-

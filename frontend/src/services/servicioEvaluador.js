@@ -5,12 +5,13 @@ const api = axios.create({
 });
 
 class evaluadorService{
-  async agregarEvaluador (formulario) {
+  async agregarEvaluador(formulario) {
     try {
-      const response = await api.post('/evaluador/agregar_evaluador', formulario);
+      const response = await axios.post('http://127.0.0.1:3001/evaluador/agregar_evaluador', formulario);
       return response.data;
     } catch (error) {
-      console.error('Error al enviar los datos:', error);
+      console.error(error);
+      throw error;
     }
   }
 
@@ -33,9 +34,9 @@ class evaluadorService{
     }
   }
 
-  async buscarEvaluador(id) {
+  async obtenerEvaluador(evaluadorId) {
     try {
-      const response = await axios.get(`http://127.0.0.1:3001/evaluador/evaluador_id/1`);
+      const response = await axios.get(`http://127.0.0.1:3001/evaluador/evaluador_id/${evaluadorId}`);
       return response.data.data;
     } catch (err) {
       console.error(err);
@@ -53,7 +54,7 @@ class evaluadorService{
 
   async examenesEvaluador(id) {
     try{
-      const responce = await axios.get('http://127.0.0.1:3001/evaluador/examenes_evaluador/7');
+      const responce = await axios.get(`http://127.0.0.1:3001/evaluador/examenes_evaluador/${id}`);
       return(responce.data.data)
     }catch(err){
       console.error(err)
@@ -69,23 +70,33 @@ class evaluadorService{
     }
   }
 
-  // async cambiarEstadoEvaluador(evaluador_id) {
-  //   try {
-  //     const response = await axios.put(`http://127.0.0.1:3001/resultado_aprendizaje/cambiar_estado_resultado/${evaluador_id}`);
-  //     return response.data;
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }
-
-  async calificacionEvaluador(id) {
+  async calificacionEvaluador(id_examen) {
     try{
-      const responce = await axios.get('http://127.0.0.1:3001/evaluador/examenes_evaluador/7');
-      return(responce.data.data[7]?.actividades_formativas || [])
+      const responce = await axios.get(`http://127.0.0.1:3001/calificacion/actividades_examen/${id_examen}`);
+      return(responce.data)
     }catch(err){
       console.error(err)
     }
   }
+
+  async calificacionEstudiante() {
+    try{
+      const responce = await axios.get(`http://127.0.0.1:3001/calificacion/enum_calificacion`);
+      return(responce.data)
+    }catch(err){
+      console.error(err)
+    }
+  }
+
+  async calificacionActividadEstudiante(calificacionesEstudiantes) {
+    try{
+      const responce = await axios.post(`http://127.0.0.1:3001/calificacion/guardar_calificacion`, calificacionesEstudiantes);
+      return(responce.data)
+    }catch(err){
+      console.error(err)
+    }
+  }
+
 };
 
 export default new evaluadorService();

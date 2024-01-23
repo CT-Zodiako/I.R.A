@@ -14,7 +14,7 @@ def crear_resultado_aprendizaje(data):
         db.session.commit()
 
         return {
-            'status': 201,  # 201 significa "Creado"
+            'status': 201,
             'mensaje': 'Resultado de aprendizaje creado exitosamente',
         }
 
