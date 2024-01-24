@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { idExamenCalificacion } from '../../redux/calificacionSlice';
 import { 
+    Button,
     Table, TableBody, TableCell, 
     TableContainer, TableHead, 
     TablePagination, TableRow
@@ -82,19 +83,21 @@ export const VistaExamenes = () =>{
                                     Pendiente
                                 </TableCell>
                                 <TableCell align="left">
-                                <button onClick={() => onIdExamen({ examen: examenes.id })}>
-                                    {/* <Link to={`/lista-estudiantes/${examenes.id}`}>
-                                        Calificar
-                                    </Link> */}
+                                <Button 
+                                    variant="contained"
+                                    color="success"
+                                    size="small"
+                                    onClick={() => onIdExamen({ examen: examenes.id })}
+                                >
                                     Calificar
-                                </button>
+                                </Button>
                                 </TableCell>
                                 </TableRow>
                             ))}
                             </TableBody>
                         </Table>
+                        </TableContainer>
                         <TablePagination
-                            className="paginacion"
                             rowsPerPageOptions={[5, 10, 20]}
                             component="div"
                             count={listaExamenesEvaluador.length}
@@ -103,8 +106,6 @@ export const VistaExamenes = () =>{
                             onPageChange={handleChangePage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
-                        </TableContainer>
-                        
                 </div>
             </div>
         </>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import resultadoAprendizajeServicio from "../services/ServicioResultadoAprendizaje";
 import { Link } from "react-router-dom";
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -40,14 +41,21 @@ export const ResultadoAprendizaje = () => {
     <>
       <div>
         <div>
-          <button>
+          <Button
+              variant="contained"
+              color="success"
+              size="small"
+            >
+              <Link to="/agregar-resultado" style={{ textDecoration: 'none', color: 'white' }}>Agregar Resulatado Aprendizaje</Link>
+          </Button>
+          {/* <button>
             <Link to="/agregar-resultado">Agregar Resulatado Aprendizaje</Link>
-          </button>
+          </button> */}
         </div>
         <div>
-          <TableContainer>
+          <TableContainer className="bordesTablas">
             <Table sx={{ minWidth: 650 }} aria-label="caption table">
-              <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
+              <TableHead sx={{ background: "rgba(0, 0, 255, 0.4)" }}>
                 <TableRow>
                   <TableCell>Titulo</TableCell>
                   <TableCell align="left">Descripcion</TableCell>
@@ -68,9 +76,16 @@ export const ResultadoAprendizaje = () => {
                     </TableCell>
                     <TableCell align="left">{resultado.id}</TableCell>
                     <TableCell align="left">
-                      <button onClick={(event) => onCambiarEstado(event, resultado.id)}>
+                      <Button 
+                        variant="contained"
+                        color={resultado.estado ? "primary" : "success"}
+                        // color="success"
+                        // color="primary"
+                        size="small"
+                        onClick={(event) => onCambiarEstado(event, resultado.id)}
+                      >
                         {resultado.estado ? "Desactivar" : "Activar"}
-                      </button>
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

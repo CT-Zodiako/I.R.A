@@ -3,7 +3,7 @@ import evaluadorService from '../../services/servicioEvaluador';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { LimpiarCalificacion } from '../../redux/calificacionSlice'
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 export const VistaEstudiantes = () => {  
     const navigate = useNavigate();
@@ -22,7 +22,9 @@ export const VistaEstudiantes = () => {
     const onRegresarExamen = () =>{
         dispatch(
             LimpiarCalificacion()
-        )
+        ),
+        navigate(`/lista_examenes`);
+
     }
 
     useEffect(() => {
@@ -59,11 +61,14 @@ export const VistaEstudiantes = () => {
     return(
         <form onSubmit={ onEnviarCalificaciones }>
             <div>
-                <button onClick={onRegresarExamen}>
-                    <Link to={`/lista_examenes`}>
-                        Regresar
-                    </Link>
-                </button>
+                <Button 
+                    variant="contained"
+                    color="warning"
+                    size="small"
+                    onClick={onRegresarExamen}
+                >
+                    Regresar
+                </Button>
                 <TableContainer className="bordesTablas">
                     <Table>
                         <TableHead sx={{ background: "rgba(0, 0, 0, 0.07)" }}>
@@ -87,12 +92,15 @@ export const VistaEstudiantes = () => {
                                                 Calificar
                                             </Link>
                                         </button> */}
-                                        <button 
+                                        <Button 
                                             type='button'
+                                            variant="contained"
+                                            color="success"
+                                            size="small"
                                             onClick={() => calificarEstudiante(examenId, estudiante.NOMBRE)}
                                         >
                                             Calificar
-                                        </button>
+                                        </Button>
                                     </div>  
                                 </TableCell>
                             </TableRow>

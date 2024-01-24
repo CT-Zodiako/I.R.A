@@ -47,29 +47,89 @@ export const PromedioEstudiante = () => {
     return coloresFondo;
   };
 
+  // const downloadPDF = () => {
+  //   const input = document.getElementById("pdf-content");
+  //   const pdf = new jsPDF();
+  //   const pdfWidth = pdf.internal.pageSize.getWidth();
+  //   const pdfHeight = pdf.internal.pageSize.getHeight();
+    
+  //   html2canvas(input).then((canvas) => {
+  //     const totalHeight = canvas.height;
+  //     let currentPosition = 0;
+  
+  //     while (currentPosition < totalHeight) {
+  //       const imgData = canvas.toDataURL("image/png");
+  //       pdf.addImage(imgData, "PNG", 0, currentPosition, pdfWidth, pdfHeight);
+  //       currentPosition += pdfHeight;
+  
+  //       if (currentPosition < totalHeight) {
+  //         pdf.addPage();
+  //       }
+  //     }
+  
+  //     pdf.save("download.pdf");
+  //   });
+  // };  
+
+  //EL SIGUIENTE ES EL MEJOR HASTA AHORA
   const downloadPDF = () => {
+    // Obtiene el elemento HTML con el ID "pdf-content"
     const input = document.getElementById("pdf-content");
+  
+    // Crea una nueva instancia de jsPDF
     const pdf = new jsPDF();
+  
+    // Recupera el ancho y alto de la página PDF
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
-    
+  
+    // Convierte el contenido HTML en un lienzo (canvas)
     html2canvas(input).then((canvas) => {
+      // Obtiene la altura total del lienzo
       const totalHeight = canvas.height;
+  
+      // Establece la posición inicial en 0
       let currentPosition = 0;
   
+      // Recorre el lienzo en secciones del tamaño máximo que se puede mostrar en una página PDF
       while (currentPosition < totalHeight) {
-        const imgData = canvas.toDataURL("image/png");
-        pdf.addImage(imgData, "PNG", 0, currentPosition, pdfWidth, pdfHeight);
-        currentPosition += pdfHeight;
+        // Calcula la altura de la sección actual
+        const sectionHeight = Math.min(pdfHeight, totalHeight - currentPosition);
   
-        if (currentPosition < totalHeight) {
+        // Convierte la sección del lienzo en una imagen PNG
+        const imgData = canvas.toDataURL("image/png");
+  
+        // Agrega la imagen PNG a la página PDF actual
+        pdf.addImage(imgData, "PNG", 0, currentPosition, pdfWidth, sectionHeight);
+  
+        // Avanza la posición actual a la siguiente página
+        currentPosition += sectionHeight;
+  
+        // Si la altura de la sección actual es mayor que la altura de la página PDF,
+        // divide la sección en dos secciones
+        if (sectionHeight > pdfHeight) {
+          // Obtiene la mitad de la altura de la sección actual
+          const sectionHeightHalf = sectionHeight / 2;
+  
+          // Agrega la primera mitad de la sección a la página PDF actual
+          pdf.addImage(imgData, "PNG", 0, currentPosition, pdfWidth, sectionHeightHalf);
+  
+          // Avanza la posición actual a la siguiente página
+          currentPosition += sectionHeightHalf;
+  
+          // Agrega la segunda mitad de la sección a la siguiente página PDF
           pdf.addPage();
+          pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, sectionHeightHalf);
         }
       }
   
+      // Guarda el PDF con el nombre "download.pdf"
       pdf.save("download.pdf");
     });
-  };  
+  };
+  
+
+  
 
   useEffect(() => {
     async function fetchData() {

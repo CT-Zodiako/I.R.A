@@ -91,7 +91,7 @@ export const EvaluadorLista = () => {
           </Button>
         </div>
         <div>
-          <TableContainer className="tablas">
+          <TableContainer className="bordesTablas">
             <Table sx={{ minWidth: 650 }} aria-label="caption table">
               <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
                 <TableRow>

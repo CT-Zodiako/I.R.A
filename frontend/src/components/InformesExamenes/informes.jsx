@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import informeServicio from "../../services/ServicioInforme"
 import { useNavigate } from "react-router-dom"
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -50,7 +51,8 @@ export const Informes = () => {
 
   return (
     <div>
-      <TableContainer>
+      <p>examenes imforme</p>
+      <TableContainer className="bordesTablas">
         <Table sx={{ minWidth: 650 }} aria-label="caption table">
           <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
             <TableRow>
@@ -72,9 +74,14 @@ export const Informes = () => {
                   {informes.proyecto_integrador}
                 </TableCell>
                 <TableCell align="left">
-                  <button onClick={() => verInforme(informes.id, informes.proyecto_integrador)}>
+                  <Button
+                    variant="contained"
+                    color="success"
+                    size="small" 
+                    onClick={() => verInforme(informes.id, informes.proyecto_integrador)}
+                  >
                     Ver Informe
-                  </button>
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

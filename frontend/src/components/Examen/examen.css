@@ -26,10 +26,6 @@
     font-size: 20px;
 }
 
-.paginacion{
-    background: rgba(0, 0, 0, 0.04);
-}
-
 .bordesTablas{
     min-width: 650;
     border: 1px solid black;
