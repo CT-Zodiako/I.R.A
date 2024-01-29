@@ -18,6 +18,18 @@
     align-items: center;
 }
 
+.informes{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.informesDatos{
+    display: grid;
+    justify-content: center;
+    align-content: center;
+}
+
 .programa{
     width: 4rem;
 }

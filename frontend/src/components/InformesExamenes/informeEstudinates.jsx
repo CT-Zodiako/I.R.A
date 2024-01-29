@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom"
 import Chart from "react-google-charts"
 import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
+import html2pdf from 'html2pdf.js'
 import informeServicio from "../../services/ServicioInforme"
 import evaluadorService from "../../services/servicioEvaluador"
 import { 
@@ -47,90 +48,43 @@ export const PromedioEstudiante = () => {
     return coloresFondo;
   };
 
-  // const downloadPDF = () => {
-  //   const input = document.getElementById("pdf-content");
-  //   const pdf = new jsPDF();
-  //   const pdfWidth = pdf.internal.pageSize.getWidth();
-  //   const pdfHeight = pdf.internal.pageSize.getHeight();
-    
-  //   html2canvas(input).then((canvas) => {
-  //     const totalHeight = canvas.height;
-  //     let currentPosition = 0;
-  
-  //     while (currentPosition < totalHeight) {
-  //       const imgData = canvas.toDataURL("image/png");
-  //       pdf.addImage(imgData, "PNG", 0, currentPosition, pdfWidth, pdfHeight);
-  //       currentPosition += pdfHeight;
-  
-  //       if (currentPosition < totalHeight) {
-  //         pdf.addPage();
-  //       }
-  //     }
-  
-  //     pdf.save("download.pdf");
-  //   });
-  // };  
-
-  //EL SIGUIENTE ES EL MEJOR HASTA AHORA
   const downloadPDF = () => {
-    // Obtiene el elemento HTML con el ID "pdf-content"
     const input = document.getElementById("pdf-content");
   
-    // Crea una nueva instancia de jsPDF
+    html2pdf(input, {
+      margin: 10,
+      filename: 'download.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    });
+
     const pdf = new jsPDF();
-  
-    // Recupera el ancho y alto de la página PDF
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
   
-    // Convierte el contenido HTML en un lienzo (canvas)
     html2canvas(input).then((canvas) => {
-      // Obtiene la altura total del lienzo
-      const totalHeight = canvas.height;
-  
-      // Establece la posición inicial en 0
+      const contentHeight = canvas.height;
+      const pageHeight = pdfHeight;
       let currentPosition = 0;
   
-      // Recorre el lienzo en secciones del tamaño máximo que se puede mostrar en una página PDF
-      while (currentPosition < totalHeight) {
-        // Calcula la altura de la sección actual
-        const sectionHeight = Math.min(pdfHeight, totalHeight - currentPosition);
-  
-        // Convierte la sección del lienzo en una imagen PNG
+      while (currentPosition < contentHeight) {
+        const sectionHeight = Math.min(pageHeight, contentHeight - currentPosition);
         const imgData = canvas.toDataURL("image/png");
   
-        // Agrega la imagen PNG a la página PDF actual
         pdf.addImage(imgData, "PNG", 0, currentPosition, pdfWidth, sectionHeight);
-  
-        // Avanza la posición actual a la siguiente página
         currentPosition += sectionHeight;
   
-        // Si la altura de la sección actual es mayor que la altura de la página PDF,
-        // divide la sección en dos secciones
-        if (sectionHeight > pdfHeight) {
-          // Obtiene la mitad de la altura de la sección actual
-          const sectionHeightHalf = sectionHeight / 2;
-  
-          // Agrega la primera mitad de la sección a la página PDF actual
-          pdf.addImage(imgData, "PNG", 0, currentPosition, pdfWidth, sectionHeightHalf);
-  
-          // Avanza la posición actual a la siguiente página
-          currentPosition += sectionHeightHalf;
-  
-          // Agrega la segunda mitad de la sección a la siguiente página PDF
+        if (currentPosition < contentHeight) {
           pdf.addPage();
-          pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, sectionHeightHalf);
         }
       }
   
-      // Guarda el PDF con el nombre "download.pdf"
       pdf.save("download.pdf");
     });
   };
   
-
   
-
   useEffect(() => {
     async function fetchData() {
       try {
@@ -201,7 +155,7 @@ export const PromedioEstudiante = () => {
         <div>
           <hr/>
           <h2>Descripcion Actividades</h2>
-          <TableContainer>
+          <TableContainer className="bordesTablas">
             <Table sx={{ minWidth: 650 }} aria-label="caption table">
               <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
                   <TableRow>
@@ -224,32 +178,35 @@ export const PromedioEstudiante = () => {
             </Table>
           </TableContainer>
         </div>
-
-        <div>
-          <hr/>
-          <h2>Conteo General</h2>
-          <Chart
-            width={"600px"}
-            height={"300px"}
-            chartType="PieChart"
-            loader={<div>Cargando gráfico</div>}
-            data={datosGrafico}
-            options={{
-              slices: asignarColoresFondoPastel(),
-            }}
-            rootProps={{ "data-testid": "1" }}
-          />
+        <hr/>
+        <div style={{ display: "flex", justifyContent: "center", alignContent: "center", background: "red", height: "25rem"}}>
+          <div style={{ display: "grid", justifyContent: "center", alignItems: "center" }}>
+            <h2 style={{textAlign: "center"}}>Conteo General</h2>
+            <Chart
+              width={"600px"}
+              height={"300px"}
+              chartType="PieChart"
+              loader={<div>Cargando gráfico</div>}
+              data={datosGrafico}
+              options={{
+                slices: asignarColoresFondoPastel(),
+              }}
+              rootProps={{ "data-testid": "1" }}
+            />
+          </div>
         </div>
+        <hr/>
         <div>
-          <hr/>
           <h2>Conteo Por Actividades</h2>
-          {calificaciones.conteo_actividades &&
+          <div style={{ width: "100%" , display: "flex", flexWrap: "wrap", background: "red", padding: "10px 0" }}>
+            {calificaciones.conteo_actividades &&
             Object.entries(calificaciones.conteo_actividades).map(
               ([actividad, categorias], index) => (
-                <div key={actividad}>
+                <div key={actividad} style={{ margin: "1rem 0.2rem", background: 'blue', width: "460px", padding: 30 }}>
                   <Chart
-                    width={"600px"}
-                    height={"300px"}
+                    // size={{ width: 600, height: 300}}
+                    // width={600}
+                    // height={300}
                     chartType="PieChart"
                     loader={<div>Cargando gráfico</div>}
                     data={[
@@ -261,7 +218,7 @@ export const PromedioEstudiante = () => {
                     options={{
                       title: `Grafica ${categorias.descripcion_actividad}`,
                       titleTextStyle: {
-                      fontSize: 24,
+                      fontSize: 22,
                       },
                       slices: asignarColoresFondoPastel(),
                     }}
@@ -270,17 +227,20 @@ export const PromedioEstudiante = () => {
                 </div>
               )
             )}
+          </div>
         </div>
-        <div>
-          <hr/>
-          <h2>Observaciones</h2>
-          {Array.isArray(calificaciones.observaciones_totales) ? (
-            calificaciones.observaciones_totales.map((nombre, index) => (
-              <h3 key={index}>{nombre}</h3>
-            ))
-          ) : (
-            <p>No hay evaluadores disponibles.</p>
-          )}
+        <hr/>
+        <div className="informes">
+          <div className="informesDatos">
+            <h2>Observaciones</h2>
+            {Array.isArray(calificaciones.observaciones_totales) ? (
+              calificaciones.observaciones_totales.map((nombre, index) => (
+                <h3 key={index}>{nombre}</h3>
+              ))
+            ) : (
+              <p>No hay evaluadores disponibles.</p>
+            )}
+          </div>
         </div>
       </div>
       <button onClick={downloadPDF}>Descargar PDF</button>
