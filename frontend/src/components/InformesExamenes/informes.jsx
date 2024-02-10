@@ -51,14 +51,14 @@ export const Informes = () => {
 
   return (
     <div>
-      <p>examenes imforme</p>
-      <TableContainer className="bordesTablas">
+      <h1>Examenes imforme</h1>
+      <TableContainer className="tablas">
         <Table sx={{ minWidth: 650 }} aria-label="caption table">
-          <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
+          <TableHead className="tablaEncabezado">
             <TableRow>
-              <TableCell>Examen Id</TableCell>
-              <TableCell align="left">ID</TableCell>
-              <TableCell align="left">Acción</TableCell>
+              <TableCell align="center">Examen Id</TableCell>
+              <TableCell align="center">ID</TableCell>
+              <TableCell align="center">Acción</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -67,13 +67,15 @@ export const Informes = () => {
                   : calificacionesExamen
                 ).map((informes) => (
               <TableRow key={informes.id}>
-                <TableCell scope="row" align="left">
+                <TableCell scope="row" align="center" className="informeId">
                   {informes.id}
                 </TableCell>
-                <TableCell align="left">
-                  {informes.proyecto_integrador}
+                <TableCell align="left" className="informeProyecto">
+                  <div>
+                    {informes.proyecto_integrador}
+                  </div>
                 </TableCell>
-                <TableCell align="left">
+                <TableCell align="center" className="infomeAccion">
                   <Button
                     variant="contained"
                     color="success"

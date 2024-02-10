@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom"
 import Chart from "react-google-charts"
 import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
-import html2pdf from 'html2pdf.js'
+import html2pdf from "html2pdf.js"
 import informeServicio from "../../services/ServicioInforme"
 import evaluadorService from "../../services/servicioEvaluador"
 import { 
@@ -11,6 +11,7 @@ import {
   TableCell, TableContainer, 
   TableHead, TableRow 
 } from "@mui/material"
+import "./styleInforme.css"
 
 export const PromedioEstudiante = () => {
   const location = useLocation();
@@ -139,21 +140,24 @@ export const PromedioEstudiante = () => {
 
   return (
     <>
-      <div id="pdf-content">        
-        <h2>Proyecto Integrador</h2>
-        <h3>{proyectoIntegrador}</h3>
+      <div id="pdf-content">
+        <div className="informacionInforme">
+          <h2>Proyecto Integrador</h2>
+          <h3>{proyectoIntegrador}</h3>
+        </div>        
         <hr/>
-        <h2>Evaluadores</h2>
-        {Array.isArray(calificaciones.evaluadores_totales) ? (
-          calificaciones.evaluadores_totales.map((nombre, index) => (
-            <h3 key={index}>{nombre}</h3>
-          ))
-        ) : (
-          <p>No hay evaluadores disponibles.</p>
-        )}
-
-        <div>
-          <hr/>
+        <div className="evaluadoresInforme">
+          <h2>Evaluadores</h2>
+          {Array.isArray(calificaciones.evaluadores_totales) ? (
+            calificaciones.evaluadores_totales.map((nombre, index) => (
+              <h3 key={index}>{nombre}</h3>
+            ))
+          ) : (
+            <p>No hay evaluadores disponibles.</p>
+          )}
+        </div>
+        <hr/>
+        <div className="actividadesInforme">
           <h2>Descripcion Actividades</h2>
           <TableContainer className="bordesTablas">
             <Table sx={{ minWidth: 650 }} aria-label="caption table">
@@ -179,9 +183,9 @@ export const PromedioEstudiante = () => {
           </TableContainer>
         </div>
         <hr/>
-        <div style={{ display: "flex", justifyContent: "center", alignContent: "center", background: "red", height: "25rem"}}>
-          <div style={{ display: "grid", justifyContent: "center", alignItems: "center" }}>
-            <h2 style={{textAlign: "center"}}>Conteo General</h2>
+        <div className="graficoGeneral">
+          <div>
+            <h2>Conteo General</h2>
             <Chart
               width={"600px"}
               height={"300px"}
@@ -197,36 +201,36 @@ export const PromedioEstudiante = () => {
         </div>
         <hr/>
         <div>
-          <h2>Conteo Por Actividades</h2>
-          <div style={{ width: "100%" , display: "flex", flexWrap: "wrap", background: "red", padding: "10px 0" }}>
-            {calificaciones.conteo_actividades &&
-            Object.entries(calificaciones.conteo_actividades).map(
-              ([actividad, categorias], index) => (
-                <div key={actividad} style={{ margin: "1rem 0.2rem", background: 'blue', width: "460px", padding: 30 }}>
-                  <Chart
-                    // size={{ width: 600, height: 300}}
-                    // width={600}
-                    // height={300}
-                    chartType="PieChart"
-                    loader={<div>Cargando gráfico</div>}
-                    data={[
-                      ["Categoría", "Cantidad"],
-                      ...Object.entries(categorias).slice(0, -1).map(
-                        ([categoria, cantidad]) => [categoria, cantidad]
-                      ),
-                    ]}
-                    options={{
-                      title: `Grafica ${categorias.descripcion_actividad}`,
-                      titleTextStyle: {
-                      fontSize: 22,
-                      },
-                      slices: asignarColoresFondoPastel(),
-                    }}
-                    rootProps={{ "data-testid": "1" }}
-                  />
-                </div>
-              )
-            )}
+          <div>
+            <h2>Conteo Por Actividades</h2>
+            <div>
+              {calificaciones.conteo_actividades &&
+              Object.entries(calificaciones.conteo_actividades).map(
+                ([actividad, categorias], index) => (
+                  <div key={actividad}>
+                    <Chart
+                      sx={{ width: "100%", height: "100%" }}
+                      chartType="PieChart"
+                      loader={<div>Cargando gráfico</div>}
+                      data={[
+                        ["Categoría", "Cantidad"],
+                        ...Object.entries(categorias).slice(0, -1).map(
+                          ([categoria, cantidad]) => [categoria, cantidad]
+                        ),
+                      ]}
+                      options={{
+                        title: `Grafica ${categorias.descripcion_actividad}`,
+                        titleTextStyle: {
+                        fontSize: 22,
+                        },
+                        slices: asignarColoresFondoPastel(),
+                      }}
+                      rootProps={{ "data-testid": "1" }}
+                    />
+                  </div>
+                )
+              )}
+            </div>
           </div>
         </div>
         <hr/>

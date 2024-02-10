@@ -10,6 +10,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { red } from "@mui/material/colors";
 
 export const ResultadoAprendizaje = () => {
   const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
@@ -39,48 +40,53 @@ export const ResultadoAprendizaje = () => {
 
   return (
     <>
-      <div>
+      <div className="componentes">
         <div>
           <Button
               variant="contained"
               color="success"
               size="small"
             >
-              <Link to="/agregar-resultado" style={{ textDecoration: 'none', color: 'white' }}>Agregar Resulatado Aprendizaje</Link>
+              <Link to="/agregar-resultado" className="botonAgregar">Agregar Resulatado Aprendizaje</Link>
           </Button>
           {/* <button>
             <Link to="/agregar-resultado">Agregar Resulatado Aprendizaje</Link>
           </button> */}
         </div>
         <div>
-          <TableContainer className="bordesTablas">
-            <Table sx={{ minWidth: 650 }} aria-label="caption table">
-              <TableHead sx={{ background: "rgba(0, 0, 255, 0.4)" }}>
+          <TableContainer className="tablas">
+            <Table aria-label="caption table">
+              <TableHead className="tablaEncabezado">
                 <TableRow>
-                  <TableCell>Titulo</TableCell>
-                  <TableCell align="left">Descripcion</TableCell>
-                  <TableCell align="left">Estado</TableCell>
-                  <TableCell align="left">Id</TableCell>
-                  <TableCell align="left">Acción</TableCell>
+                  <TableCell align="center">Resultado Aprendizaje</TableCell>
+                  <TableCell align="center">Descripcion</TableCell>
+                  <TableCell align="center">Estado</TableCell>
+                  <TableCell align="center">Id</TableCell>
+                  <TableCell align="center">Acción</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {resultadoAprendizaje.map((resultado) => (
-                  <TableRow key={resultado.id}>
-                    <TableCell scope="row" align="left">
+                  <TableRow key={resultado.id} className="tablaBody">
+                    <TableCell scope="row" align="center" className="resultadoTitulo">
                       {resultado.titulo}
                     </TableCell>
-                    <TableCell align="left">{resultado.descripcion}</TableCell>
-                    <TableCell align="left">
+                    <TableCell align="left" className="resultadoDescripcion">
+                      <div>
+                        {resultado.descripcion}
+                      </div>
+                    </TableCell>
+                    <TableCell align="center" className="resultadoEstado">
                       {resultado.estado ? "Activo" : "Inactivo"}
                     </TableCell>
-                    <TableCell align="left">{resultado.id}</TableCell>
-                    <TableCell align="left">
+                    <TableCell align="center" className="resultadoId">
+                      {resultado.id}
+                    </TableCell>
+                    <TableCell align="center" className="resultadoAccion">
                       <Button 
                         variant="contained"
                         color={resultado.estado ? "primary" : "success"}
-                        // color="success"
-                        // color="primary"
+
                         size="small"
                         onClick={(event) => onCambiarEstado(event, resultado.id)}
                       >

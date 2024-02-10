@@ -57,14 +57,14 @@ export const VistaExamenes = () =>{
         <>
             <div>
                 <div>
-                    <TableContainer className="bordesTablas">
-                        <Table sx={{ minWidth: 650 }} aria-label="caption table">
-                            <TableHead sx={{ background: "rgba(0, 0, 0, 0.07)" }}>
+                    <TableContainer className="tablas">
+                        <Table aria-label="caption table">
+                            <TableHead className="tablaEncabezado">
                             <TableRow>
-                                <TableCell align="left" sx={{ fontWeight: 'bold'}}>Programa</TableCell>
-                                <TableCell align="left" sx={{ fontWeight: 'bold'}}>Titulo</TableCell>
-                                <TableCell align="left" sx={{ fontWeight: 'bold'}}>Estado</TableCell>
-                                <TableCell align="left" sx={{ fontWeight: 'bold'}}>Acciones</TableCell>
+                                <TableCell align="center">Programa</TableCell>
+                                <TableCell align="center">Titulo</TableCell>
+                                <TableCell align="center">Estado</TableCell>
+                                <TableCell align="center">Acciones</TableCell>
                             </TableRow>
                             </TableHead>
                             <TableBody>
@@ -79,7 +79,7 @@ export const VistaExamenes = () =>{
                                 <TableCell align="left">
                                     {examenes.proyecto_integrador}
                                 </TableCell>
-                                <TableCell align="left">
+                                <TableCell align="center">
                                     Pendiente
                                 </TableCell>
                                 <TableCell align="left">

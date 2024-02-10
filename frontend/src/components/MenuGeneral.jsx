@@ -73,14 +73,15 @@ export const  Menu = () => {
                 <li><Link to="/evaluadores">Gestión de Usuario</Link></li>
                 <li><Link to="/pasos">Examen por pasos</Link></li>
                 <li style={{marginTop: '3rem'}}>
-                  <div className='programa'>
+                  <div className="programaSelec">
                     <InputSeleccion
-                      className="programa"
+                      // className="programa"
+                      fondo="white"
                       seleccionar={selecPrograma}
                       idSeleccion={onPrograma}
                       label="Programa"
                       variable="nombre"
-                      anchoSelec='11.5rem'
+                      anchoSelec='14rem'
                     />
                   </div>
                 </li>

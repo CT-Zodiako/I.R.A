@@ -2,9 +2,8 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
 
 export const InputSeleccionCalificacion = ({seleccionar, idSeleccion, valor}) => {
-
-    console.log("identificar de la calificacion: ", valor);
-    const [calificacion, setCalificacion] = useState(valor);
+    const [calificacion, setCalificacion] = useState( valor );
+    console.log("calificacion del select: ", calificacion);
 
     const onSeleccionCalificacion = (event) => {
         const selectedId = event.target.value;

@@ -8,12 +8,11 @@ import resultadoAprendizajeServicio from "../../services/ServicioResultadoAprend
 import "./examen.css"
 import { Input, InputLabel, TextField } from "@mui/material"
 import { BotonGeneral } from "../botonGeneral"
-import { red } from "@mui/material/colors"
 
 export const EvaluacionInformacion = ({ handleNext, examenId, accion }) => {  
   const dispatch = useDispatch();
   const programaStado = useSelector((state) => state.programa.programa);
-  
+
   const [informacionExamen, setInformacionExamen] = useState({
     programa_id: "",
     resultado_aprendizaje_id: "",
@@ -21,20 +20,23 @@ export const EvaluacionInformacion = ({ handleNext, examenId, accion }) => {
   });
   const [programa, setPrograma] = useState([]);
   const programaU = programa.find((item) => item.id === programaStado ? item.nombre : null );
+  
   const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
   const [camposCargados, setCamposCargados] = useState(false);
 
-  const onPrograma = (seleccionId) => {
-    setInformacionExamen({
-      ...informacionExamen,
-      programa_id: seleccionId,
-    });
-  };
+
+  useEffect(() => {
+    setInformacionExamen({ 
+      ...informacionExamen, 
+      programa_id: programaStado 
+    }); 
+  }, [programaStado]);
 
   const onResultado = (seleccionId) => {
     setInformacionExamen({
       ...informacionExamen,
       resultado_aprendizaje_id: seleccionId,
+      programa_id: programaStado,
     });
   };
 
@@ -108,32 +110,27 @@ export const EvaluacionInformacion = ({ handleNext, examenId, accion }) => {
     );
     handleNext();
   };
-
+  
   return (
     <>
       <div className="informacion">
+        <h3>Panel Informacion del Examen</h3>
         <form onSubmit={onEnviarInformacion}>
           <div className="componentes">
-            <div>
-              <InputLabel id="demo-simple--label">Programa: </InputLabel>
+            <div className="informacionExamen" style={{ height: "4rem" }}>
+              <InputLabel id="demo-simple--label">
+                Programa: 
+              </InputLabel>
               <InputLabel 
-                id="demo-simple--label"
-                sx={{ borderRadius: '5px', width: '20rem', margin: '10px', fontSize: '1.5rem', color: 'black', fontWeight: 'bold' }}
+                id="programa"
               >
                 {programaU ? programaU.nombre : null} 
               </InputLabel>
-              {/* <InputSeleccion
-                className="inputExamen"
-                seleccionar={programa}
-                idSeleccion={onPrograma}
-                label="seleccione programa"
-                variable="nombre"
-                onvalue={informacionExamen.programa_id}
-                anchoSelec='20rem'
-              /> */}
             </div>
-            <div>
-              <InputLabel id="demo-simple--label">Resultado: </InputLabel>
+            <div className="informacionExamen">
+              <InputLabel id="demo-simple--label">
+                Resultado: 
+              </InputLabel>
               <InputSeleccion
                 seleccionar={resultadoAprendizaje}
                 idSeleccion={onResultado}
@@ -143,7 +140,7 @@ export const EvaluacionInformacion = ({ handleNext, examenId, accion }) => {
                 anchoSelec='20rem'
               />
             </div>
-            <div>
+            <div className="informacionExamen">
               <InputLabel id="demo-simple--label">
                 Proyecto Integrador:{" "}
               </InputLabel>
@@ -162,7 +159,7 @@ export const EvaluacionInformacion = ({ handleNext, examenId, accion }) => {
           </div>
           <div>
             <BotonGeneral
-                camposCargados={camposCargados}
+                camposCargados={ camposCargados }
                 tipo='submit'
                 accion='Cargar'
             />

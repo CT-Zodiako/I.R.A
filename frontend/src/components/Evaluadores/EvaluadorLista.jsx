@@ -81,26 +81,26 @@ export const EvaluadorLista = () => {
   return (
     <>
       <div className="componentes">
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
           <Button
             variant="contained"
             color="success"
             size="small"
           >
-            <Link to="/gestion-usuario" style={{ textDecoration: 'none', color: 'white' }}>Agregar Evaluador</Link>
+            <Link to="/gestion-usuario" className="botonAgregar">Agregar Evaluador</Link>
           </Button>
         </div>
         <div>
-          <TableContainer className="bordesTablas">
-            <Table sx={{ minWidth: 650 }} aria-label="caption table">
-              <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
+          <TableContainer className="tablas">
+            <Table aria-label="caption table">
+              <TableHead className="tablaEncabezado">
                 <TableRow>
-                  <TableCell>Nombre del Evaluador</TableCell>
-                  <TableCell align="left">Correo</TableCell>
-                  <TableCell align="left">Telefono</TableCell>
-                  <TableCell align="left">Numero de Identificacion</TableCell>
-                  <TableCell align="left">Estado</TableCell>
-                  <TableCell align="left">Acción</TableCell>
+                  <TableCell align="center">Nombre del Evaluador</TableCell>
+                  <TableCell align="center">Correo</TableCell>
+                  <TableCell align="center">Telefono</TableCell>
+                  <TableCell align="center">Numero de Identificacion</TableCell>
+                  <TableCell align="center">Estado</TableCell>
+                  <TableCell align="center">Acción</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -108,23 +108,23 @@ export const EvaluadorLista = () => {
                   ? evaluadores.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   : evaluadores
                 ).map((evaluador) => (
-                  <TableRow key={evaluador.id}>
-                    <TableCell scope="row" align="left">
+                  <TableRow key={evaluador.id} className="tablaBody">
+                    <TableCell scope="row" align="left" className="evaluadoreNombre">
                       {evaluador.nombre_evaluador}
                     </TableCell>
-                    <TableCell align="left">
+                    <TableCell align="left" className="evaluadorCorreo">
                       {evaluador.correo}
                     </TableCell>
-                    <TableCell align="left">
+                    <TableCell align="center" className="evaluadorTelefono">
                       {evaluador.telefono}
                     </TableCell>
-                    <TableCell align="left">
+                    <TableCell align="center" className="evaluadorId">
                       {evaluador.numero_identificacion}
                     </TableCell>
-                    <TableCell>                                          
+                    <TableCell align="center" className="evaluadorEstado">                                          
                       {evaluador.estado ? "Activo" : "Inactivo"}
                     </TableCell>
-                    <TableCell align="left">
+                    <TableCell align="center" className="evaluadorAccion" >
                       <div className="botonesMargen">
                         <div>
                           <ClearIcon 

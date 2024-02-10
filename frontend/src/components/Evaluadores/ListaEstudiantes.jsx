@@ -11,13 +11,8 @@ export const VistaEstudiantes = () => {
     // const { examenId } = useParams();
     // console.log("**creo que este es el id del examen: ",examenId);
     const examenId = useSelector((state) => state.calificacion.examen_id);
-    console.log("**id del examen de la store: ",examenId);
-
     const[listaEstudiantes, setListaEstudiantes] = useState([]);
-    console.log("**lista estudiantes por calificar: ",listaEstudiantes);
-
     const calificacionesEstudiantes = useSelector(state => state.calificacion);
-    console.log("**estudiantes calificados por examen: ",calificacionesEstudiantes);
 
     const onRegresarExamen = () =>{
         dispatch(
@@ -69,23 +64,23 @@ export const VistaEstudiantes = () => {
                 >
                     Regresar
                 </Button>
-                <TableContainer className="bordesTablas">
+                <TableContainer className="tablas">
                     <Table>
-                        <TableHead sx={{ background: "rgba(0, 0, 0, 0.07)" }}>
+                        <TableHead className="tablaEncabezado">
                             <TableRow>
-                                <TableCell>Nombre Estudiante</TableCell>
-                                <TableCell>Correo</TableCell>
-                                <TableCell>Telefono</TableCell>
-                                <TableCell>Codigo</TableCell>
+                                <TableCell align="center">Nombre Estudiante</TableCell>
+                                <TableCell align="center">Correo</TableCell>
+                                <TableCell align="center">Telefono</TableCell>
+                                <TableCell align="center">Codigo</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                         {listaEstudiantes.map((estudiante, Index) => (
                             <TableRow key={Index}>
-                                <TableCell>{estudiante.NOMBRE}</TableCell>
-                                <TableCell>{estudiante.CORREO}</TableCell>
-                                <TableCell>{estudiante.CODIGO}</TableCell>
-                                <TableCell>
+                                <TableCell align="left">{estudiante.NOMBRE}</TableCell>
+                                <TableCell align="left">{estudiante.CORREO}</TableCell>
+                                <TableCell align="center">{estudiante.CODIGO}</TableCell>
+                                <TableCell align="center">
                                     <div>
                                     {/* <button type='button'>
                                             <Link to={`/calificacion-examen/${examenId}/${estudiante.NOMBRE}`}>
@@ -109,7 +104,15 @@ export const VistaEstudiantes = () => {
                     </Table>
                 </TableContainer>    
             </div>
-            <button type="submit">Enviar</button>
+            <div style={{ display: "flex", justifyContent: "end", padding: "2 rem 5rem" }}>
+                <Button 
+                    variant="contained"
+                    type="submit"
+                >
+                    Enviar
+                </Button>
+                {/* <button type="submit">Enviar</button> */}
+            </div>
         </form>
     );
 }

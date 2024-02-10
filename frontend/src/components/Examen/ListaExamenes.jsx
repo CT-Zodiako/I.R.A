@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import examenService from "../../services/ServiciosExamen";
+import { useEffect, useState } from "react"
+import examenService from "../../services/ServiciosExamen"
 import {
   Button,
   Table,
@@ -9,18 +9,19 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-} from "@mui/material";
+} from "@mui/material"
 import { Link, useNavigate } from "react-router-dom"
 import EmailIcon from '@mui/icons-material/Email'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CreateIcon from '@mui/icons-material/Create'
+import { blue, red } from "@mui/material/colors"
 
-export const ExamenesLista = () => {
+export const ExamenesLista = () => {  
+  const navigate = useNavigate();
+
   const [listaExamenes, setListaExamenes] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const navigate = useNavigate();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -92,27 +93,24 @@ export const ExamenesLista = () => {
         <div>
           <h1>Lista Examenes Creados</h1>
         </div>
-        <div>
-          <div>
-            <h3>examenes</h3>
-          </div>
+        <div className="componentes">
           <div>
             <Button
               variant="contained"
               color="success"
               size="small"
             >
-              <Link to="/pasos" style={{ textDecoration: 'none', color: 'white' }}>Crear Examen</Link>
+              <Link to="/pasos" className="botonAgregar">Crear Examen</Link>
             </Button>
           </div>
           <div>
-            <TableContainer className="bordesTablas">
-              <Table sx={{ minWidth: 650 }} aria-label="caption table">
-                <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
+            <TableContainer className="tablas">
+              <Table aria-label="caption table">
+                <TableHead className="tablaEncabezado">
                   <TableRow>
-                    <TableCell>Examen Id</TableCell>
-                    <TableCell align="left">ID</TableCell>
-                    <TableCell align="left">Acción</TableCell>
+                    <TableCell align="center">Examen Id</TableCell>
+                    <TableCell align="center">Proyecto Integrador</TableCell>
+                    <TableCell align="center">Acción</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -120,30 +118,36 @@ export const ExamenesLista = () => {
                   ? listaExamenes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   : listaExamenes
                 ).map((examen) => (
-                    <TableRow key={examen.id}>
-                      <TableCell scope="row" align="left">
+                    <TableRow key={examen.id} className="tablaBody">
+                      <TableCell scope="row" align="center" className="tablaId">
                         {examen.id}
                       </TableCell>
-                      <TableCell align="left">
-                        {examen.proyecto_integrador}
+                      <TableCell align="center" className="tablaProyecto">
+                        <div>
+                          {examen.proyecto_integrador}
+                        </div>
                       </TableCell>
-                      <TableCell align="left">
-                        <CreateIcon
-                          className="colorEditar"
-                          fontSize="large"
-                          onClick={() => onEditarExamen({accion:'editar', examenId: examen.id})}
-                        />
-                        <DeleteIcon
-                          className="colorEliminar"
-                          fontSize="large"
-                          onClick={(event) => onEliminarExamen(event, examen.id)}
-                        />
-                        <EmailIcon
+                      <TableCell className="tablaAcciones">
+                        <div>
+                          <CreateIcon
                             style={{ cursor: examen.estado ? 'not-allowed' : 'pointer' }}
-                            color="primary"
+                            className="colorEditar"
                             fontSize="large"
-                            onClick={(event) => enviarCorre(event, examen.id)}
-                        />
+                            onClick={() => onEditarExamen({accion:'editar', examenId: examen.id})}
+                          />
+                          <DeleteIcon
+                            style={{ cursor: examen.estado ? 'not-allowed' : 'pointer' }}
+                            className="colorEliminar"
+                            fontSize="large"
+                            onClick={(event) => onEliminarExamen(event, examen.id)}
+                          />
+                          <EmailIcon
+                              style={{ cursor: examen.estado ? 'not-allowed' : 'pointer' }}
+                              color="primary"
+                              fontSize="large"
+                              onClick={(event) => enviarCorre(event, examen.id)}
+                          />
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}

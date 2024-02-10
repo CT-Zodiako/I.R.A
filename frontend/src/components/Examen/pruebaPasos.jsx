@@ -7,7 +7,7 @@ import {
   PanelSeleccionarEvaluador,
 } from "./indexExamen";
 import { useSelector } from "react-redux";
-import { Box, Step, StepLabel, Stepper } from "@mui/material";
+import { Box, Button, Step, StepLabel, Stepper } from "@mui/material";
 
 export const FormularioPorPasos = () => {
   const enviarExamen = useSelector((state) => state.examenFormulario);
@@ -24,6 +24,12 @@ export const FormularioPorPasos = () => {
 
   const onNext = () => {
     setComponenteExamen((componenteExamen) => componenteExamen + 1);
+    console.log("componentes del examen: ", componenteExamen);
+  };
+
+  const onAtras = () => {
+    setComponenteExamen((componenteExamen) => componenteExamen - 1);
+    console.log("componentes del examen: ", componenteExamen);
   };
 
   const onEnviarFormularioExamen = async (event) => {
@@ -53,6 +59,7 @@ export const FormularioPorPasos = () => {
           <div className="centrar">
             <EvaluacionInformacion 
               handleNext={onNext}
+              handleLast={onAtras}
               // examenId={examenId}
             />
           </div>
@@ -73,7 +80,10 @@ export const FormularioPorPasos = () => {
             </Box>
           </div>
           <div className="centrar">
-            <PanelSeleccionarEvaluador handleNext={onNext} />
+            <PanelSeleccionarEvaluador 
+              handleNext={onNext} 
+              handleLast={onAtras}
+            />
           </div>
         </div>
       );
@@ -92,7 +102,10 @@ export const FormularioPorPasos = () => {
             </Box>
           </div>
           <div className="centrar">
-            <RegistrarActividadFormativa handleNext={onNext} />
+            <RegistrarActividadFormativa 
+              handleNext={onNext}
+              handleLast={onAtras} 
+            />
           </div>
         </div>
       );
@@ -112,15 +125,25 @@ export const FormularioPorPasos = () => {
           </div>
           <div>
             <div className="centrar">
-              <AgregarListaEstudiantes setCamposCargados={setCamposCargados} />
+              <AgregarListaEstudiantes 
+                setCamposCargados={setCamposCargados}
+                handleLast={onAtras}
+              />
             </div>
             <div className="centrar">
-              <button
+              {/* <button
                 disabled={!camposCargados}
                 onClick={onEnviarFormularioExamen}
               >
                 Cargar examen
-              </button>
+              </button> */}
+              <Button
+                variant="contained"
+                disabled={!camposCargados}
+                onClick={onEnviarFormularioExamen}
+              >
+                Cargar examen
+              </Button>
             </div>
           </div>
         </div>
