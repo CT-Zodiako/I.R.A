@@ -9,11 +9,20 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
 } from "@mui/material";
-import { red } from "@mui/material/colors";
 
 export const ResultadoAprendizaje = () => {
   const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
+  const [filtrar, setFiltrar] = useState('');
+
+  const buscarResultadoAprendizaje = (event) => {
+    setFiltrar(event.target.value);
+  }
+
+  const filteredResultados = resultadoAprendizaje.filter(resultado =>
+    resultado.titulo.toLowerCase().includes(filtrar.toLowerCase())
+  );
 
   useEffect(() => {
     async function fetchData() {
@@ -49,6 +58,26 @@ export const ResultadoAprendizaje = () => {
             >
               <Link to="/agregar-resultado" className="botonAgregar">Agregar Resulatado Aprendizaje</Link>
           </Button>
+          
+            <TextField
+              sx={{ width: "24rem", marginLeft: "12rem"}}
+              id="outlined-basic"
+              placeholder="Filtrar por Resultado Aprendizaje"
+              variant="outlined"
+              value={filtrar}
+              // onChange={(event) => setFiltrar(event.target.value)}
+              onChange={ buscarResultadoAprendizaje }
+              >
+            </TextField>
+          {/* <Button
+            variant="contained"
+            color="success"
+            size="small"
+            onChange={ buscarResultadoAprendizaje }
+          >
+            Buscar
+          </Button> */}
+
           {/* <button>
             <Link to="/agregar-resultado">Agregar Resulatado Aprendizaje</Link>
           </button> */}
@@ -66,7 +95,7 @@ export const ResultadoAprendizaje = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {resultadoAprendizaje.map((resultado) => (
+                {filteredResultados.map((resultado) => (
                   <TableRow key={resultado.id} className="tablaBody">
                     <TableCell scope="row" align="center" className="resultadoTitulo">
                       {resultado.titulo}

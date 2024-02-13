@@ -14,7 +14,6 @@ import { Link, useNavigate } from "react-router-dom"
 import EmailIcon from '@mui/icons-material/Email'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CreateIcon from '@mui/icons-material/Create'
-import { blue, red } from "@mui/material/colors"
 
 export const ExamenesLista = () => {  
   const navigate = useNavigate();

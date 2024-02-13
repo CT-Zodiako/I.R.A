@@ -11,25 +11,36 @@ import {
   TablePagination,
   TableRow 
 } from "@mui/material";
-import { ModalIRA } from "../Examen/Modal"
+import { ModalIRA } from "../Examen/ModalEditarEvaluador"
 import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
+import { ModalCrearEvaluador } from "./ModalCrearEvaluador";
 
 export const EvaluadorLista = () => {
   const [evaluadores, setEvaluadores] = useState([]);
-  const [modalAbierto, setModalAbierto] = useState(false);
+  const [modalAbiertoCrear, setModalAbiertoCrear] = useState(false);
+  const [modalAbiertoEditar, setModalAbiertoEditar] = useState(false);
   const [evaluadorIdSeleccionado, setEvaluadorIdSeleccionado] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(3);
 
-  const abrirModal = (evaluadorId) => {
-    setEvaluadorIdSeleccionado(evaluadorId);
-    setModalAbierto(true);
+  const abrirModalCrear = () => {
+    setModalAbiertoCrear(true);
   };
 
-  const cerrarModal = () => {
+  const cerrarModalCrear = () => {
+    setModalAbiertoCrear(false);
+    actualizarTabla()
+  };
+  
+  const abrirModalEditar = (evaluadorId) => {
+    setEvaluadorIdSeleccionado(evaluadorId);
+    setModalAbiertoEditar(true);
+  };
+
+  const cerrarModalEditar = () => {
     setEvaluadorIdSeleccionado(null);
-    setModalAbierto(false);
+    setModalAbiertoEditar(false);
     actualizarTabla()
   };
 
@@ -86,8 +97,10 @@ export const EvaluadorLista = () => {
             variant="contained"
             color="success"
             size="small"
+            onClick={ abrirModalCrear }
           >
-            <Link to="/gestion-usuario" className="botonAgregar">Agregar Evaluador</Link>
+            Agregar Evaluador
+            {/* <Link to="/gestion-usuario" className="botonAgregar">Agregar Evaluador</Link> */}
           </Button>
         </div>
         <div>
@@ -139,7 +152,7 @@ export const EvaluadorLista = () => {
                           <CreateIcon
                             className="colorEditar"
                             fontSize="large"
-                            onClick={() => abrirModal(evaluador.id)}
+                            onClick={() => abrirModalEditar(evaluador.id)}
                           />
                         </div>
                       </div>
@@ -161,9 +174,13 @@ export const EvaluadorLista = () => {
         </div>
       </div>
       <ModalIRA
-        isOpen={modalAbierto}
-        onClose={cerrarModal}
+        isOpen={modalAbiertoEditar}
+        onClose={cerrarModalEditar}
         evaluadorId={evaluadorIdSeleccionado}
+      />
+      <ModalCrearEvaluador
+        isOpen={modalAbiertoCrear}
+        onClose={cerrarModalCrear}
       />
     </>
   );

@@ -123,6 +123,7 @@ export const EvaluacionInformacion = ({ handleNext, examenId, accion }) => {
               </InputLabel>
               <InputLabel 
                 id="programa"
+                value={informacionExamen.programa_id}
               >
                 {programaU ? programaU.nombre : null} 
               </InputLabel>

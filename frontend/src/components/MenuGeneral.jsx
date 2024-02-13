@@ -79,7 +79,7 @@ export const  Menu = () => {
                       fondo="white"
                       seleccionar={selecPrograma}
                       idSeleccion={onPrograma}
-                      label="Programa"
+                      label="Seleccione Programa"
                       variable="nombre"
                       anchoSelec='14rem'
                     />

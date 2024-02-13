@@ -89,6 +89,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
                 onChange={onAutentificacion}
                 id="outlined-basic"
                 placeholder="USUARIO"
+                required
                 InputProps={{
                   startAdornment:(
                     <PersonIcon
@@ -108,6 +109,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
                 onChange={onAutentificacion}
                 id="outlined"
                 placeholder="CONTRASEÑA"
+                required
                 InputProps={{
                   startAdornment:(
                     <LockIcon 

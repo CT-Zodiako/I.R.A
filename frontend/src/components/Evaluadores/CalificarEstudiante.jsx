@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import evaluadorService from '../../services/servicioEvaluador';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { InputSeleccionCalificacion } from '../seleccionCalificacion';
 import { agregarCalificacion } from '../../redux/calificacionSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
-import { red } from '@mui/material/colors';
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
 
 export const CalificacionExamen = () => {
   const location = useLocation();
@@ -16,29 +15,29 @@ export const CalificacionExamen = () => {
   const calificacionEstudiante = useSelector((state) => state.calificacion.calificacion);
   const calificacionEvaluado = calificacionEstudiante.find((calificacion) => calificacion.nombre === nombreEstudiante);  
   const arregloCalificacion = [calificacionEvaluado];
-  const [evaluado, setEvaluado] = useState(() => {
-    if (calificacionEvaluado) {
-      return {
-        nombre: '',
-        calificacion: {
-          notas: calificacionEvaluado.calificacion.notas,
-          observaciones: calificacionEvaluado.calificacion.observaciones,
-        },
-      };
-    } else {
-      return {
-        nombre: '',
-        calificacion: {
-          notas: [],
-          observaciones: [],
-        },
-      };
-    }
-  });
-  console.log("estudiante evaluado informacion: ", evaluado);
 
+  const calificacionActividades = calificacionEvaluado
+  ? {
+      nombre: '',
+      calificacion: {
+        notas: calificacionEvaluado.calificacion.notas,
+        observaciones: calificacionEvaluado.calificacion.observaciones,
+      },
+    }
+  : {
+      nombre: '',
+      calificacion: {
+        notas: [],
+        observaciones: [],
+      },
+  };
+
+  const [evaluado, setEvaluado] = useState(
+    calificacionActividades
+  );
   const[estudianteCalificacion, setEstudianteExamen] = useState([]);
   const[notasCalificacion, setNotasCalificacion] = useState([]);
+  const [botonCalificar, setBotonCalificar] = useState(false); 
 
   const onNotaCalificacion = (idSeleccion, index) => {
     setEvaluado((prevEvaluado) => {
@@ -97,18 +96,24 @@ export const CalificacionExamen = () => {
   //   });
   // };
 
+  useEffect(() => {
+    const numeroNotas = evaluado.calificacion.notas.length;
+    const nuemeroActividades = estudianteCalificacion.length;
+    const actividadesCalificadas = numeroNotas === nuemeroActividades;
+    setBotonCalificar(actividadesCalificadas);
+  }, [evaluado, estudianteCalificacion]);
+
   const onEnviarCalificacion = (event) => {
     event.preventDefault();
-    dispatch(
-      agregarCalificacion({
-          examenId: examenId,
+      dispatch(
+        agregarCalificacion({
           nombre: evaluado.nombre,
           notas: evaluado.calificacion.notas,
           observaciones: evaluado.calificacion.observaciones,
-      })
-    );
-    console.log(evaluado);
+        })
+      );
   };
+  
 
   useEffect(() => {
     setEvaluado({
@@ -175,7 +180,7 @@ export const CalificacionExamen = () => {
                         <InputSeleccionCalificacion 
                           seleccionar={notasCalificacion} 
                           idSeleccion={(idSeleccion) => onNotaCalificacion(idSeleccion, index)}
-                          valor={evaluado.calificacion.notas[index] }                        
+                          valor={evaluado.calificacion.notas[index] }  
                         />
                       </TableCell>
                       <TableCell align='center' sx={{ width: "30%" }}>
@@ -197,37 +202,15 @@ export const CalificacionExamen = () => {
             </div>
           </div>
         </div>
-        {/* <button 
-          type="submit" 
-          onClick={onEnviarCalificacion}
-        >
-          Calificar Estudiante
-        </button> */}
         <Button
           variant='contained'
           type="submit" 
           onClick={onEnviarCalificacion}
+          disabled={!botonCalificar}
         >
-          Calificar
+          Guardar
         </Button>
       </form>
-      <div>
-        <div style={{ display: "flex", justifyContent: "center", paddingTo: "5rem", marginTop: "2rem", background: "red", height: "20rem" }}>
-            <Select 
-              // open autoWidth
-              sx={{ width: "15rem", height: "3rem" }}
-            >
-              {notasCalificacion.map((opcion, index) => (
-                <MenuItem 
-                  key={index}
-                  style={{ background: opcion.color }}
-                >
-                  {opcion.label}
-                </MenuItem>
-              ))}
-            </Select>
-        </div>
-      </div>
     </>
   );
 };

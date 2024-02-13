@@ -1,25 +1,27 @@
 import { useEffect, useState } from "react";
 import evaluadorService from '../../services/servicioEvaluador';
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { LimpiarCalificacion } from '../../redux/calificacionSlice'
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Alert, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import CheckIcon from '@mui/icons-material/Check';
 
 export const VistaEstudiantes = () => {  
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    // const { examenId } = useParams();
-    // console.log("**creo que este es el id del examen: ",examenId);
     const examenId = useSelector((state) => state.calificacion.examen_id);
-    const[listaEstudiantes, setListaEstudiantes] = useState([]);
+    const calificaciones = useSelector((state) => state.calificacion.calificacion.length);
     const calificacionesEstudiantes = useSelector(state => state.calificacion);
+
+    const [listaEstudiantes, setListaEstudiantes] = useState([]);
+    const nuemeroEstudiantes = listaEstudiantes.length;
+    const [botonEnvio, setBotonEnvio] = useState(false)
 
     const onRegresarExamen = () =>{
         dispatch(
             LimpiarCalificacion()
         ),
         navigate(`/lista_examenes`);
-
     }
 
     useEffect(() => {
@@ -43,6 +45,11 @@ export const VistaEstudiantes = () => {
           console.error('Error al enviar los datos de la calificacion:', error);
         }
     };
+
+    useEffect(() => {
+        const botonEnvio = calificaciones === nuemeroEstudiantes;
+        setBotonEnvio(botonEnvio);
+    }, [calificaciones, nuemeroEstudiantes]);
 
     const calificarEstudiante = (examenId, nombreEstudiante) => {
         navigate(`/calificacion-examen`, {
@@ -108,11 +115,14 @@ export const VistaEstudiantes = () => {
                 <Button 
                     variant="contained"
                     type="submit"
+                    disabled={!botonEnvio}
                 >
-                    Enviar
+                    Enviar Calificacion
                 </Button>
-                {/* <button type="submit">Enviar</button> */}
             </div>
+            <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+                Calificacion Enviada
+            </Alert>
         </form>
     );
 }
