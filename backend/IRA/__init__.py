@@ -7,7 +7,6 @@ from .auth import bcrypt, jwt
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
 
-
 def create_app(test_config=None):
 
     
