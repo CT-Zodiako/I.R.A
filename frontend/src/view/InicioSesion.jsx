@@ -4,8 +4,7 @@ import { useDispatch } from "react-redux";
 import { iniciarSesion } from "../redux/inicioSesionSlipe";
 import axios from "axios";
 import { Button, TextField } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import unimayor from "../img/unimayor.png";
+import unimayor from "../../public/img/unimayor.png";
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 
