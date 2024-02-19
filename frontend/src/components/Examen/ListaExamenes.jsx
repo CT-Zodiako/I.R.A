@@ -1,34 +1,31 @@
-import { useEffect, useState } from "react";
-import examenService from "../../services/ServiciosExamen";
+import { useEffect, useState } from "react"
+import examenService from "../../services/ServiciosExamen"
 import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-} from "@mui/material";
+  Button, Table, TableBody,
+  TableCell, TableContainer,
+  TableHead, TablePagination,
+  TableRow
+} from "@mui/material"
 import { Link, useNavigate } from "react-router-dom"
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import EmailIcon from '@mui/icons-material/Email'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CreateIcon from '@mui/icons-material/Create'
 
-export const ExamenesLista = () => {
-  const [listaExamenes, setListaExamenes] = useState([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
+export const ExamenesLista = () => {  
   const navigate = useNavigate();
 
+  const [listaExamenes, setListaExamenes] = useState([]);
+  const [paginasTabla, setPaginasTabla] = useState(0);
+  const [filasPaginasTabla, setFilasPaginasTabla] = useState(5);
+
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    setPaginasTabla(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setFilasPaginasTabla(parseInt(event.target.value, 10));
+    setPaginasTabla(0);
   };
 
   useEffect(() => {
@@ -92,73 +89,82 @@ export const ExamenesLista = () => {
         <div>
           <h1>Lista Examenes Creados</h1>
         </div>
-        <div>
-          <div>
-            <h3>examenes</h3>
-          </div>
+        <div className="componentes">
           <div>
             <Button
               variant="contained"
               color="success"
               size="small"
             >
-              <Link to="/pasos" style={{ textDecoration: 'none', color: 'white' }}>Crear Examen</Link>
+              <AddCircleOutlineIcon fontSize="small" />
+              <Link 
+                to="/pasos" 
+                className="botonAgregar"
+              >
+                Crear Examen
+              </Link>
             </Button>
           </div>
           <div>
-            <TableContainer className="bordesTablas">
-              <Table sx={{ minWidth: 650 }} aria-label="caption table">
-                <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
+            <TableContainer className="tablas">
+              <Table aria-label="caption table">
+                <TableHead className="tablaEncabezado">
                   <TableRow>
-                    <TableCell>Examen Id</TableCell>
-                    <TableCell align="left">ID</TableCell>
-                    <TableCell align="left">Acción</TableCell>
+                    <TableCell align="center">Examen Id</TableCell>
+                    <TableCell align="center">Proyecto Integrador</TableCell>
+                    <TableCell align="center">Acción</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                {(rowsPerPage > 0
-                  ? listaExamenes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                {(filasPaginasTabla > 0
+                  ? listaExamenes.slice(paginasTabla * filasPaginasTabla, paginasTabla * filasPaginasTabla + filasPaginasTabla)
                   : listaExamenes
                 ).map((examen) => (
-                    <TableRow key={examen.id}>
-                      <TableCell scope="row" align="left">
+                    <TableRow key={examen.id} className="tablaBody">
+                      <TableCell scope="row" align="center" className="tablaId">
                         {examen.id}
                       </TableCell>
-                      <TableCell align="left">
-                        {examen.proyecto_integrador}
+                      <TableCell align="center" className="tablaProyecto">
+                        <div>
+                          {examen.proyecto_integrador}
+                        </div>
                       </TableCell>
-                      <TableCell align="left">
-                        <CreateIcon
-                          className="colorEditar"
-                          fontSize="large"
-                          onClick={() => onEditarExamen({accion:'editar', examenId: examen.id})}
-                        />
-                        <DeleteIcon
-                          className="colorEliminar"
-                          fontSize="large"
-                          onClick={(event) => onEliminarExamen(event, examen.id)}
-                        />
-                        <EmailIcon
+                      <TableCell className="tablaAcciones">
+                        <div>
+                          <CreateIcon
                             style={{ cursor: examen.estado ? 'not-allowed' : 'pointer' }}
-                            color="primary"
+                            className="colorEditar"
                             fontSize="large"
-                            onClick={(event) => enviarCorre(event, examen.id)}
-                        />
+                            onClick={() => onEditarExamen({accion:'editar', examenId: examen.id})}
+                          />
+                          <DeleteIcon
+                            style={{ cursor: examen.estado ? 'not-allowed' : 'pointer' }}
+                            className="colorEliminar"
+                            fontSize="large"
+                            onClick={(event) => onEliminarExamen(event, examen.id)}
+                          />
+                          <EmailIcon
+                              style={{ cursor: examen.estado ? 'not-allowed' : 'pointer' }}
+                              color="primary"
+                              fontSize="large"
+                              onClick={(event) => enviarCorre(event, examen.id)}
+                          />
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 20]}
-                component="div"
-                count={listaExamenes.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
             </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 20]}
+              component="div"
+              count={listaExamenes.length}
+              rowsPerPage={filasPaginasTabla}
+              page={paginasTabla}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
           </div>
         </div>
       </div>

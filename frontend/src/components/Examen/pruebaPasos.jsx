@@ -7,7 +7,7 @@ import {
   PanelSeleccionarEvaluador,
 } from "./indexExamen";
 import { useSelector } from "react-redux";
-import { Box, Step, StepLabel, Stepper } from "@mui/material";
+import { Box, Button, Step, StepLabel, Stepper } from "@mui/material";
 
 export const FormularioPorPasos = () => {
   const enviarExamen = useSelector((state) => state.examenFormulario);
@@ -22,8 +22,14 @@ export const FormularioPorPasos = () => {
     "Estudiantes Examen",
   ];
 
-  const onNext = () => {
+  const onSiguientePanel = () => {
     setComponenteExamen((componenteExamen) => componenteExamen + 1);
+    console.log("componentes del examen: ", componenteExamen);
+  };
+
+  const onAnteriorPanel = () => {
+    setComponenteExamen((componenteExamen) => componenteExamen - 1);
+    console.log("componentes del examen: ", componenteExamen);
   };
 
   const onEnviarFormularioExamen = async (event) => {
@@ -52,7 +58,8 @@ export const FormularioPorPasos = () => {
           </div>
           <div className="centrar">
             <EvaluacionInformacion 
-              handleNext={onNext}
+              suiguiente={onSiguientePanel}
+              anterior={onAnteriorPanel}
               // examenId={examenId}
             />
           </div>
@@ -73,7 +80,10 @@ export const FormularioPorPasos = () => {
             </Box>
           </div>
           <div className="centrar">
-            <PanelSeleccionarEvaluador handleNext={onNext} />
+            <PanelSeleccionarEvaluador 
+              suiguiente={onSiguientePanel} 
+              anterior={onAnteriorPanel}
+            />
           </div>
         </div>
       );
@@ -92,7 +102,10 @@ export const FormularioPorPasos = () => {
             </Box>
           </div>
           <div className="centrar">
-            <RegistrarActividadFormativa handleNext={onNext} />
+            <RegistrarActividadFormativa 
+              suiguiente={onSiguientePanel}
+              anterior={onAnteriorPanel} 
+            />
           </div>
         </div>
       );
@@ -112,15 +125,19 @@ export const FormularioPorPasos = () => {
           </div>
           <div>
             <div className="centrar">
-              <AgregarListaEstudiantes setCamposCargados={setCamposCargados} />
+              <AgregarListaEstudiantes 
+                setCamposCargados={setCamposCargados}
+                anterior={onAnteriorPanel}
+              />
             </div>
             <div className="centrar">
-              <button
+              <Button
+                variant="contained"
                 disabled={!camposCargados}
                 onClick={onEnviarFormularioExamen}
               >
                 Cargar examen
-              </button>
+              </Button>
             </div>
           </div>
         </div>

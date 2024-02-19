@@ -5,6 +5,9 @@ import { iniciarSesion } from "../redux/inicioSesionSlipe";
 import axios from "axios";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import unimayor from "../img/unimayor.png";
+import PersonIcon from '@mui/icons-material/Person';
+import LockIcon from '@mui/icons-material/Lock';
 
 export const InicioSesionUsuarios = ({ onAutenticacion }) => {
   const dispatch = useDispatch();
@@ -14,9 +17,16 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
     password: "",
   });
 
+
+  const [mostrarLabel, setMostrarLabel] = useState(true);
   const onAutentificacion = (event) => {
     const { name, value } = event.target;
-    setAutentificacion({ ...autentificacion, [name]: value });
+    const labelEvento = event.target;
+    setAutentificacion({ 
+      ...autentificacion, 
+      [name]: value 
+    });
+    setMostrarLabel(labelEvento === " ");
   };
 
   const onInicioSesion = async (event) => {
@@ -64,40 +74,62 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
     <>
     <div className="login">
       <div className="informacion">
-        <h2>Iniciar sesión</h2>
+        <div style={{ marginBottom: "2rem"}}>
+          <img src={unimayor} alt="unimayor"/>
+        </div>
         <form onSubmit={onInicioSesion}>
           <div className="componentes">
-            <div>
-              <label>Usuario:</label>
+            <div className="informacionInicioSesion">
               <TextField
+                sx={{border: '1px solid #10457F' }}
+                className="inputInicionSesion"
                 type="text"
                 name="username"
                 value={autentificacion.username}
                 onChange={onAutentificacion}
                 id="outlined-basic"
-                label="Usuario"
+                placeholder="USUARIO"
                 required
+                InputProps={{
+                  startAdornment:(
+                    <PersonIcon
+                      sx={{ color: "#10457F" }}
+                    />
+                  ),
+                }}
               />
             </div>
-            <div>
-              <label>Contraseña:</label>
+            <div className="informacionInicioSesion">
               <TextField
+                sx={{ border: '1px solid #10457F' }}
+                className="inputInicionSesion"
                 type="password"
                 name="password"
                 value={autentificacion.password}
                 onChange={onAutentificacion}
                 id="outlined"
-                label="Contraseña"
+                placeholder="CONTRASEÑA"
                 required
+                InputProps={{
+                  startAdornment:(
+                    <LockIcon 
+                      sx={{ color: "#10457F" }}
+                    />
+                  ),
+                }}
               />
             </div>
           </div>
-          <Button 
-            type="submit"
-            variant="contained"
-          >
-            Iniciar sesión
-          </Button>
+          <div className="inicioSesionBoton">
+            <Button 
+              sx={{ backgroundColor: "#10457F" }}
+              className="botonSesion"
+              type="submit"
+              variant="contained"
+            >
+              Conectar
+            </Button>
+          </div>
         </form>
       </div>      
     </div>

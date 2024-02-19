@@ -8,33 +8,36 @@ import resultadoAprendizajeServicio from "../../services/ServicioResultadoAprend
 import "./examen.css"
 import { Input, InputLabel, TextField } from "@mui/material"
 import { BotonGeneral } from "../botonGeneral"
-import { red } from "@mui/material/colors"
 
-export const EvaluacionInformacion = ({ handleNext, examenId, accion }) => {  
+export const EvaluacionInformacion = ({ suiguiente, examenId, accion }) => {  
   const dispatch = useDispatch();
   const programaStado = useSelector((state) => state.programa.programa);
-  
+  const infoExamenStore = useSelector((state) => state.examenFormulario);
+
   const [informacionExamen, setInformacionExamen] = useState({
-    programa_id: "",
-    resultado_aprendizaje_id: "",
-    proyecto_integrador: "",
+    programa_id: infoExamenStore.programa_id,
+    resultado_aprendizaje_id: infoExamenStore.resultado_aprendizaje_id,
+    proyecto_integrador: infoExamenStore.proyecto_integrador,
   });
   const [programa, setPrograma] = useState([]);
   const programaU = programa.find((item) => item.id === programaStado ? item.nombre : null );
+  
   const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
   const [camposCargados, setCamposCargados] = useState(false);
 
-  const onPrograma = (seleccionId) => {
-    setInformacionExamen({
-      ...informacionExamen,
-      programa_id: seleccionId,
-    });
-  };
+
+  useEffect(() => {
+    setInformacionExamen({ 
+      ...informacionExamen, 
+      programa_id: programaStado 
+    }); 
+  }, [programaStado]);
 
   const onResultado = (seleccionId) => {
     setInformacionExamen({
       ...informacionExamen,
       resultado_aprendizaje_id: seleccionId,
+      programa_id: programaStado,
     });
   };
 
@@ -106,34 +109,33 @@ export const EvaluacionInformacion = ({ handleNext, examenId, accion }) => {
         proyecto_integrador: informacionExamen.proyecto_integrador,
       })
     );
-    handleNext();
+    suiguiente();
   };
-
+  
   return (
     <>
       <div className="informacion">
+        <h3>Panel Informacion del Examen</h3>
         <form onSubmit={onEnviarInformacion}>
           <div className="componentes">
-            <div>
-              <InputLabel id="demo-simple--label">Programa: </InputLabel>
-              <InputLabel 
-                id="demo-simple--label"
-                sx={{ borderRadius: '5px', width: '20rem', margin: '10px', fontSize: '1.5rem', color: 'black', fontWeight: 'bold' }}
-              >
-                {programaU ? programaU.nombre : null} 
+            <div className="informacionExamen" style={{ height: "4rem" }}>
+              <InputLabel id="demo-simple--label">
+                Programa: 
               </InputLabel>
-              {/* <InputSeleccion
-                className="inputExamen"
-                seleccionar={programa}
-                idSeleccion={onPrograma}
-                label="seleccione programa"
-                variable="nombre"
-                onvalue={informacionExamen.programa_id}
-                anchoSelec='20rem'
-              /> */}
+              <InputLabel 
+                id="programa"
+              >
+                {programaU ? 
+                  programaU.nombre : 
+                  programa.map((index) => index.id === informacionExamen.programa_id ? 
+                  index.nombre : null)
+                }
+              </InputLabel>
             </div>
-            <div>
-              <InputLabel id="demo-simple--label">Resultado: </InputLabel>
+            <div className="informacionExamen">
+              <InputLabel id="demo-simple--label">
+                Resultado: 
+              </InputLabel>
               <InputSeleccion
                 seleccionar={resultadoAprendizaje}
                 idSeleccion={onResultado}
@@ -143,7 +145,7 @@ export const EvaluacionInformacion = ({ handleNext, examenId, accion }) => {
                 anchoSelec='20rem'
               />
             </div>
-            <div>
+            <div className="informacionExamen">
               <InputLabel id="demo-simple--label">
                 Proyecto Integrador:{" "}
               </InputLabel>
@@ -162,7 +164,7 @@ export const EvaluacionInformacion = ({ handleNext, examenId, accion }) => {
           </div>
           <div>
             <BotonGeneral
-                camposCargados={camposCargados}
+                camposCargados={ camposCargados }
                 tipo='submit'
                 accion='Cargar'
             />

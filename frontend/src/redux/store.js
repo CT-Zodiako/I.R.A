@@ -6,6 +6,7 @@ import iniciarSesion from './inicioSesionSlipe';
 import cerrarSesion from './inicioSesionSlipe';
 import examenFormularioReducer from './examenSlice';
 import programa from './programaSlice';
+import botonAlertaSlice from './botonAlertaSlice';
 
 export const store = configureStore({
    reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     cerrarSesion: cerrarSesion,
     examenFormulario: examenFormularioReducer,
     programa: programa,
+    botonAlerta: botonAlertaSlice,
    },
 });
 

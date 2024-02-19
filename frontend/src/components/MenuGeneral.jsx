@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, Outlet, useNavigate  } from 'react-router-dom';
-import { InputSeleccion } from './EtiquetaSeleccionGeneral';
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { InputSeleccion } from './EtiquetaSeleccionGeneral'
 import programaServicio from '../services/ServicioPrograma' 
-import { FormControl, InputLabel } from '@mui/material';
-import { agregarPrograma } from '../redux/programaSlice';
+import { agregarPrograma } from '../redux/programaSlice'
+import { Button } from '@mui/material'
+import OutputIcon from '@mui/icons-material/Output';
 
 export const  Menu = () => {
   const dispatch = useDispatch();
@@ -61,42 +62,52 @@ export const  Menu = () => {
 
   return (
     <div className="menu">
-      <div>
-        <nav>
-          <ul>
-            {rol === 'Admin'&&(
-              <>
-                <li><Link to="/lista_examen">Examenes</Link></li>
-                <li><Link to="/examen">Examen</Link></li>
-                <li><Link to="/informe_examen">Informes</Link></li>
-                <li><Link to="/resultado-aprendizaje">Resultados de Aprendizaje</Link></li>
-                <li><Link to="/evaluadores">Gestión de Usuario</Link></li>
-                <li><Link to="/pasos">Examen por pasos</Link></li>
-                <li style={{marginTop: '3rem'}}>
-                  <div className='programa'>
-                    <InputSeleccion
-                      className="programa"
-                      seleccionar={selecPrograma}
-                      idSeleccion={onPrograma}
-                      label="Programa"
-                      variable="nombre"
-                      anchoSelec='11.5rem'
-                    />
-                  </div>
-                </li>
-              </>
-            )}
-            {rol === 'Evaluador' &&(
-              <>
-                <li><Link to="/lista_examenes">Bandeja de examenes</Link> </li>
-              </>
-            )}
-          </ul>         
-        </nav>
-        <div>
-          {/* <button onClick={cerrarSesion}>Cerrar Sesión</button> */}
+        <div className='usuarioRolMenu'>
+          {rol === 'Admin'? 
+          <h2>Bienvenido Administrador</h2> : 
+          <h2>Bienvenido Evaluador</h2>}
         </div>
-      </div>
+        <div style={{ height: "60%", display: 'flex', alignContent: 'start' }}>
+          <nav>
+            <ul>
+              {rol === 'Admin'&&(
+                <>
+                  <li className='opcionesMenu'><Link to="/lista_examen">Examenes</Link></li>
+                  <li className='opcionesMenu'><Link to="/resultado-aprendizaje">Resultados de Aprendizaje</Link></li>
+                  <li className='opcionesMenu'><Link to="/evaluadores">Gestión de Usuario</Link></li>
+                  <li className='opcionesMenu'><Link to="/informe_examen">Informes</Link></li>
+                  <li  style={{marginTop: '1.5rem'}}>
+                    <div className="programaSelec">
+                      <InputSeleccion
+                        fondo="white"
+                        seleccionar={selecPrograma}
+                        idSeleccion={onPrograma}
+                        label="Seleccione Programa"
+                        variable="nombre"
+                        anchoSelec='14rem'
+                      />
+                    </div>
+                  </li>
+                </>
+              )}
+              {rol === 'Evaluador' &&(
+                <>
+                  <li style={{ padding: "12px" }}><Link to="/lista_examenes">Bandeja de examenes</Link> </li>
+                </>
+              )}
+            </ul>         
+          </nav>
+        </div>
+        <div style={{ height: "20%", display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Button 
+            sx={{ width: '12rem', height: '2.5rem' }}
+            variant='contained'
+            color='error'
+          >
+            <OutputIcon sx={{ marginRight: "0.5rem" }}/>
+            Cerrar Sesión
+          </Button>
+        </div>
     </div>
   );
 }

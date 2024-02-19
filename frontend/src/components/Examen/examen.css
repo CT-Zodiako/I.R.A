@@ -1,22 +1,73 @@
 .login{
+    width: 100%;
+    height: 43.25rem;
     display: flex;
-    justify-content: center;
-    align-content: center;
-}
-
-.informacion{
-    width: fit-content;
-    max-width: 85%;
-    height: fit-content;
-    max-height: 55rem;
-    border: 1px solid black;
-    border-radius: 0.5rem;
-    padding: 2rem 3rem;
-    margin: 1rem;
-    display: grid;
     justify-content: center;
     align-items: center;
 }
+
+/* Informacion Examen */
+.informacion{
+    width: fit-content;
+    border: 1px solid black;
+    max-width: 85%;
+    height: fit-content;
+    max-height: 55rem;
+    border-radius: 0.5rem;
+    padding: 2rem 3rem;
+    margin: 2rem;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+.informacionExamen{
+    border-radius: 1rem;
+    padding: 0.5rem;
+}
+
+.informacionExamen label{
+    color: black;
+    font-weight: 500;
+}
+
+#programa{
+    border-radius: 0.3rem;
+    width: 18rem;
+    margin: 0.6rem;
+    font-size: 1.5rem;
+    color: black;
+    font-weight: bold;
+}
+
+.inputInicionSesion{
+    width: 18rem;
+    height: 3rem;
+    border-radius: 5px;
+    height: 100%;
+    /* background-color: red; */
+}
+
+.inputInicionSesion::placeholder{
+    
+}
+
+.inicioSesionBoton{
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+.textButton{
+    text-align: center;
+    width: 7rem;
+    height: 2.2rem;
+}
+
+.textButton > div{
+    font-size: 1rem;
+}
+
 
 .programa{
     width: 4rem;
@@ -24,10 +75,6 @@
 
 .inputPrograma{
     font-size: 20px;
-}
-
-.paginacion{
-    background: rgba(0, 0, 0, 0.04);
 }
 
 .bordesTablas{
@@ -72,11 +119,6 @@
     height: 300px;
 }
 
-.componentes > div {
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-}
-
 .centrar{
     margin-top: 1rem;
     display: flex;
@@ -113,18 +155,6 @@
     color: rgb(223, 223, 23);
 }
 
-.textButton{
-    text-align: center;
-    width: fit-content;
-    max-width: 12rem;
-    height: fit-content;
-    max-height: 3.5rem;
-}
-
-.tablas{
-    border-radius: 0.3rem;
-}
-
 .modal{
     position: absolute;
     top: 50%;
@@ -139,4 +169,68 @@
     padding: 0.5rem;
     display: flex;
     justify-content: center;
+}
+
+
+/* Style Tablas */
+.tablaId{
+    width: 15%;
+    margin: 0 auto;
+}
+
+.tablaProyecto{
+    width: 55%;
+    margin: 0 auto;
+}
+
+.tablaProyecto > div{
+    max-height: fit-content;
+    overflow: hidden;
+    text-align: left;
+}
+
+.tablaAcciones{
+    width: 30%;
+    margin: 0 auto;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+}
+
+.tablaAcciones > div{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+
+/* Panel Actividad Formativa */
+.actividadDescripcion{
+    width: 85rem;
+}
+
+.actividadDescripcion > div{
+    width: 100%;
+    height: fit-content;
+}
+
+.actividadAccion{
+    width: 15%;
+    margin: 0 auto;
+}
+
+/* Panel Estudiantes */
+.estudianteNombre{
+    width: 85%;
+}
+
+.estudianteNombre > div{
+    width: 100%;
+    height: fit-content;
+}
+
+.estudianteAccion{
+    width: 15%;
+    margin: 0 auto;
 }

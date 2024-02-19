@@ -8,7 +8,7 @@ export const ModalIRA = ({ isOpen, onClose, evaluadorId }) => {
     nuevo_nombre_evaluador: '',
     nuevo_correo: '',
     nuevo_numero_identificacion: '',
-    nueva_contrasena:'',
+    nueva_contrasena: '',
     nuevo_telefono: ''
   });
 

@@ -5,7 +5,7 @@ import { CrearEvaluador } from './view/AgregarEvaluador';
 import { EvaluadorLista } from './components/Evaluadores/EvaluadorLista'; 
 import { ResultadoAprendizaje } from './view/ResultadoAprendizaje';
 import { CrearResultado } from './components/ResultadoComponentes/agregarResultadoAprendizaje'; 
-import { VistaExamenes } from './components/Evaluadores/ListaExamenes';
+import { VistaExamenes } from './components/Evaluadores/ListaExamenesCalificar';
 import { VistaEstudiantes } from './components/Evaluadores/ListaEstudiantes';
 import { CalificacionExamen } from './components/Evaluadores/CalificarEstudiante';
 import { Informes } from './components/InformesExamenes/informes'

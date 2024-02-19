@@ -2,16 +2,36 @@ import { useEffect, useState } from "react";
 import resultadoAprendizajeServicio from "../services/ServicioResultadoAprendizaje";
 import { Link } from "react-router-dom";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+  Button, Modal, Table, TableBody,
+  TableCell, TableContainer,
+  TableHead, TableRow, TextField,
+} from "@mui/material"
+import { CrearResultadoAprendizaje } from "../components/ResultadoComponentes/ModalCrearResultadoAprendizaje"
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import BlockIcon from '@mui/icons-material/Block'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import FilterAltIcon from '@mui/icons-material/FilterAlt'
 
 export const ResultadoAprendizaje = () => {
   const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
+  const [filtrar, setFiltrar] = useState('');
+  const [modalResultadoAprendizaje, setModalResultadoAprendizaje] = useState(false);
+
+  const buscarResultadoAprendizaje = (event) => {
+    setFiltrar(event.target.value);
+  }
+
+  const filteredResultados = resultadoAprendizaje.filter(resultado =>
+    resultado.titulo.toLowerCase().includes(filtrar.toLowerCase())
+  );
+
+  const abrirModal = () => {
+    setModalResultadoAprendizaje(true);
+  };
+
+  const cerrarModal = () => {
+    setModalResultadoAprendizaje(false);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -38,45 +58,87 @@ export const ResultadoAprendizaje = () => {
 
   return (
     <>
-      <div>
-        <div>
-          <button>
-            <Link to="/agregar-resultado">Agregar Resulatado Aprendizaje</Link>
-          </button>
+      <div className="componentes">
+        <h1>Resultado Aprendizaje</h1>
+        <div className="busquedaResultadoAprendizaje">
+          <div>
+            <Button
+                variant="contained"
+                color="success"
+                size="small"
+                onClick={abrirModal}
+              >
+                <AddCircleOutlineIcon fontSize="small" />
+                Agregar Resulatado Aprendizaje
+            </Button>
+          </div>
+          <div className="resultadoAprendizaje">
+            <TextField
+              sx={{ width: "24rem", minWidth: "12rem", margin: " 1rem 0rem 0rem 5rem" }}
+              id="outlined-basic"
+              placeholder="Filtrar por Resultado Aprendizaje"
+              variant="outlined"
+              value={filtrar}
+              onChange={ buscarResultadoAprendizaje }
+              InputProps={{
+                startAdornment:(
+                  <FilterAltIcon
+                    sx={{ color: "rgba(0, 0, 0, 0.25)" }}
+                  />
+                ),
+              }}
+            />
+          </div>
         </div>
         <div>
-          <TableContainer>
-            <Table sx={{ minWidth: 650 }} aria-label="caption table">
-              <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
+          <TableContainer className="tablas">
+            <Table aria-label="caption table">
+              <TableHead className="tablaEncabezado">
                 <TableRow>
-                  <TableCell>Titulo</TableCell>
-                  <TableCell align="left">Descripcion</TableCell>
-                  <TableCell align="left">Estado</TableCell>
-                  <TableCell align="left">Id</TableCell>
-                  <TableCell align="left">Acción</TableCell>
+                  <TableCell align="center">Resultado Aprendizaje</TableCell>
+                  <TableCell align="center">Descripcion</TableCell>
+                  <TableCell align="center">Estado</TableCell>
+                  <TableCell align="center">Id</TableCell>
+                  <TableCell align="center">Acción</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {resultadoAprendizaje.map((resultado) => (
-                  <TableRow key={resultado.id}>
-                    <TableCell scope="row" align="left">
+                {filteredResultados.map((resultado) => (
+                  <TableRow key={resultado.id} className="tablaBody">
+                    <TableCell scope="row" align="center" className="resultadoTitulo">
                       {resultado.titulo}
                     </TableCell>
-                    <TableCell align="left">{resultado.descripcion}</TableCell>
-                    <TableCell align="left">
+                    <TableCell align="left" className="resultadoDescripcion">
+                      <div>
+                        {resultado.descripcion}
+                      </div>
+                    </TableCell>
+                    <TableCell align="center" className="resultadoEstado">
                       {resultado.estado ? "Activo" : "Inactivo"}
                     </TableCell>
-                    <TableCell align="left">{resultado.id}</TableCell>
-                    <TableCell align="left">
-                      <button onClick={(event) => onCambiarEstado(event, resultado.id)}>
+                    <TableCell align="center" className="resultadoId">
+                      {resultado.id}
+                    </TableCell>
+                    <TableCell align="center" className="resultadoAccion">
+                      <Button 
+                        variant="contained"
+                        color={resultado.estado ? "primary" : "success"}
+                        size="small"
+                        onClick={(event) => onCambiarEstado(event, resultado.id)}
+                      >
+                        {resultado.estado ? <BlockIcon fontSize="small" sx={{ marginRight: "0.1rem"}}/> : <CheckCircleOutlineIcon fontSize="small" sx={{ marginRight: "0.1rem"}}/>}
                         {resultado.estado ? "Desactivar" : "Activar"}
-                      </button>
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
+          <CrearResultadoAprendizaje 
+            abierto={modalResultadoAprendizaje}
+            cerrado={cerrarModal}
+          />
         </div>
       </div>
     </>

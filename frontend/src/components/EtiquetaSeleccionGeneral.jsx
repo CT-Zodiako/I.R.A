@@ -1,7 +1,7 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useEffect, useState } from "react";
 
-export const InputSeleccion = ({ seleccionar, idSeleccion, label, variable, onvalue, anchoSelec }) => {
+export const InputSeleccion = ({ seleccionar, idSeleccion, label, variable, onvalue, anchoSelec, fondo }) => {
     const inicial = onvalue || '';
     const [resultadoAprendizaje, setResultadoAprendizaje] = useState(inicial);
     
@@ -20,6 +20,7 @@ export const InputSeleccion = ({ seleccionar, idSeleccion, label, variable, onva
             <FormControl sx={{ m: 1, minWidth: anchoSelec, maxHeight: 50 }}>
                 <InputLabel id="demo-simple-select-label"> { label } </InputLabel>
                 <Select
+                    sx={{ background: fondo }}
                     value={ resultadoAprendizaje }
                     label={ label }
                     onChange={onOpcionSeleccion}
@@ -28,7 +29,6 @@ export const InputSeleccion = ({ seleccionar, idSeleccion, label, variable, onva
                         <MenuItem 
                             key={opcion.id} 
                             value={opcion.id}
-                            // onChange={onOpcionSeleccion}
                             >{opcion[variable]}
                         </MenuItem>
                 ))}

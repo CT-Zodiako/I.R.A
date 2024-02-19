@@ -1,28 +1,53 @@
 import { useEffect, useState } from "react";
 import evaluadorService from '../../services/servicioEvaluador';
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { LimpiarCalificacion } from '../../redux/calificacionSlice'
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { 
+    Button, Table, TableBody, TableCell, 
+    TableContainer, TableHead, TableRow 
+} from "@mui/material";
+import { ConfirmarEnvioExamen } from "./ConfirmarEnvioExamen";
+import { NotificacionCalificacion } from "./NotificacionCalificacion";
 
 export const VistaEstudiantes = () => {  
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    // const { examenId } = useParams();
-    // console.log("**creo que este es el id del examen: ",examenId);
     const examenId = useSelector((state) => state.calificacion.examen_id);
-    console.log("**id del examen de la store: ",examenId);
-
-    const[listaEstudiantes, setListaEstudiantes] = useState([]);
-    console.log("**lista estudiantes por calificar: ",listaEstudiantes);
-
+    const calificaciones = useSelector((state) => state.calificacion.calificacion.length);
+    const estadoCalificacion = useSelector((state) => state.botonAlerta.botonAlerta);
     const calificacionesEstudiantes = useSelector(state => state.calificacion);
-    console.log("**estudiantes calificados por examen: ",calificacionesEstudiantes);
+
+    const [listaEstudiantes, setListaEstudiantes] = useState([]);
+    const [botonEnvio, setBotonEnvio] = useState(false)
+    const [estadoAlertaCalificacion, setEstadoAlertaCalificacion] = useState(false);
+    const [estadoVentanaConfirmacion, setEstadoVentanaConfirmacion] = useState(false);
+
+    useEffect(() => {
+        if (estadoCalificacion) {
+            setEstadoAlertaCalificacion(true);
+      
+            const timer = setTimeout(() => {
+              setEstadoAlertaCalificacion(false);
+            }, 3000);
+      
+            return () => clearTimeout(timer);
+          }
+    }, [estadoCalificacion]);
+
+    const abrirVentanaConfirmacion = () => {
+        setEstadoVentanaConfirmacion(true);
+    }
+
+    const cerrarVentanaConfirmacion = () => {
+        setEstadoVentanaConfirmacion(false);
+    }
 
     const onRegresarExamen = () =>{
         dispatch(
             LimpiarCalificacion()
-        )
+        ),
+        navigate(`/lista_examenes`);
     }
 
     useEffect(() => {
@@ -47,6 +72,12 @@ export const VistaEstudiantes = () => {
         }
     };
 
+    useEffect(() => {
+        const nuemeroEstudiantes = listaEstudiantes.length;
+        const botonEnvio = calificaciones === nuemeroEstudiantes;
+        setBotonEnvio(botonEnvio);
+    }, [calificaciones, listaEstudiantes]);
+
     const calificarEstudiante = (examenId, nombreEstudiante) => {
         navigate(`/calificacion-examen`, {
           state: {
@@ -57,51 +88,78 @@ export const VistaEstudiantes = () => {
       };
 
     return(
-        <form onSubmit={ onEnviarCalificaciones }>
-            <div>
-                <button onClick={onRegresarExamen}>
-                    <Link to={`/lista_examenes`}>
+        <>
+            <form onSubmit={ onEnviarCalificaciones }>
+                <div>
+                    <Button 
+                        variant="contained"
+                        color="warning"
+                        size="small"
+                        onClick={onRegresarExamen}
+                    >
                         Regresar
-                    </Link>
-                </button>
-                <TableContainer className="bordesTablas">
-                    <Table>
-                        <TableHead sx={{ background: "rgba(0, 0, 0, 0.07)" }}>
-                            <TableRow>
-                                <TableCell>Nombre Estudiante</TableCell>
-                                <TableCell>Correo</TableCell>
-                                <TableCell>Telefono</TableCell>
-                                <TableCell>Codigo</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {listaEstudiantes.map((estudiante, Index) => (
-                            <TableRow key={Index}>
-                                <TableCell>{estudiante.NOMBRE}</TableCell>
-                                <TableCell>{estudiante.CORREO}</TableCell>
-                                <TableCell>{estudiante.CODIGO}</TableCell>
-                                <TableCell>
-                                    <div>
-                                    {/* <button type='button'>
-                                            <Link to={`/calificacion-examen/${examenId}/${estudiante.NOMBRE}`}>
-                                                Calificar
-                                            </Link>
-                                        </button> */}
-                                        <button 
+                    </Button>
+                    <TableContainer className="tablas">
+                        <Table>
+                            <TableHead className="tablaEncabezado">
+                                <TableRow>
+                                    <TableCell align="center">Nombre Estudiante</TableCell>
+                                    <TableCell align="center">Correo</TableCell>
+                                    <TableCell align="center">Telefono</TableCell>
+                                    <TableCell align="center">Codigo</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                            {listaEstudiantes.map((estudiante, Index) => (
+                                <TableRow key={Index}>
+                                    <TableCell align="left">{estudiante.NOMBRE}</TableCell>
+                                    <TableCell align="left">{estudiante.CORREO}</TableCell>
+                                    <TableCell align="center">{estudiante.CODIGO}</TableCell>
+                                    <TableCell align="center">
+                                        <Button 
                                             type='button'
+                                            variant="contained"
+                                            color="success"
+                                            size="small"
                                             onClick={() => calificarEstudiante(examenId, estudiante.NOMBRE)}
                                         >
                                             Calificar
-                                        </button>
-                                    </div>  
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>    
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>    
+                </div>
+                <div style={{ display: "flex", justifyContent: "center", padding: "2 rem 5rem" }}>
+                    <Button 
+                        variant="contained"
+                        disabled={!botonEnvio}
+                        onClick={ abrirVentanaConfirmacion }
+                    >
+                        Enviar Calificacion
+                    </Button>
+                    <Button
+                        onClick={ abrirVentanaConfirmacion }
+                        variant="contained"
+                    >
+                        Confirmar
+                    </Button>
+                </div>
+                <div style={{ display: "flex", justifyItems: "end", marginTop: "1rem" }}>
+                    <NotificacionCalificacion 
+                        estadoAlerta={estadoAlertaCalificacion} 
+                    />
+                </div>
+            </form>
+            <div>
+                <ConfirmarEnvioExamen
+                    estadoConfirmacion={estadoVentanaConfirmacion}
+                    cerrarConfirmacion={cerrarVentanaConfirmacion}
+                    enviarExamenCalificado={onEnviarCalificaciones}
+                />
             </div>
-            <button type="submit">Enviar</button>
-        </form>
+        </>
     );
 }

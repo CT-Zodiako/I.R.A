@@ -4,8 +4,6 @@ const programaSelect = {
     programa: ''
 }
 
-console.log("programaSelect en la store: ",programaSelect);
-
 export const programaSlice = createSlice({
     name: "programa",
     initialState: programaSelect,

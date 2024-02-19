@@ -1,0 +1,104 @@
+.informeId{
+    width: 15%;
+    margin: 0 auto;
+}
+
+.informeProyecto{
+    width: 55%;
+    margin: 0 auto;
+}
+
+.informeProyecto > div{
+    max-height: fit-content;
+    overflow: hidden;
+    text-align: left;
+}
+
+.infomeAccion{
+    width: 30%;
+    margin: 0 auto;
+}
+
+/* Informe Graficos */
+.informacionInforme{
+    height: 6rem;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+}
+
+.evaluadoresInforme{
+    max-height: 14rem;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+}
+
+.actividadesInforme{
+    max-height: 30rem;
+}
+
+.actividadesInforme > Table{
+    min-width: 40rem;
+}
+
+.graficoGeneral{
+    background-color: red;
+    height: 24rem;
+}
+
+.graficoGeneral > div{
+    display: grid;
+    justify-content: center;
+    align-content: center;
+}
+
+.graficoGeneral div h2{
+    text-align: center;
+}
+
+/* .graficosActividades{
+    background-color: blue;
+} */
+
+/* .graficosActividades > div{
+    display: grid;
+    justify-content: center;
+    align-content: center;
+}
+
+.graficosActividades div h2{
+    text-align: center;
+}
+
+.graficosActividades > div div{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+} */
+
+/* .graficosActividades > div div div{
+    background-color: black;
+    width: 29rem;
+} */
+
+.informes{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.informesDatos{
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+}
+
+
+
+
+
+

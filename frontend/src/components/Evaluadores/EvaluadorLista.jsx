@@ -11,25 +11,37 @@ import {
   TablePagination,
   TableRow 
 } from "@mui/material";
-import { ModalIRA } from "../Examen/Modal"
-import ClearIcon from '@mui/icons-material/Clear';
-import CreateIcon from '@mui/icons-material/Create';
+import { ModalIRA } from "../Examen/ModalEditarEvaluador"
+import ClearIcon from '@mui/icons-material/Clear'
+import CreateIcon from '@mui/icons-material/Create'
+import { ModalCrearEvaluador } from "./ModalCrearEvaluador"
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 
 export const EvaluadorLista = () => {
   const [evaluadores, setEvaluadores] = useState([]);
-  const [modalAbierto, setModalAbierto] = useState(false);
+  const [modalAbiertoCrear, setModalAbiertoCrear] = useState(false);
+  const [modalAbiertoEditar, setModalAbiertoEditar] = useState(false);
   const [evaluadorIdSeleccionado, setEvaluadorIdSeleccionado] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(3);
 
-  const abrirModal = (evaluadorId) => {
-    setEvaluadorIdSeleccionado(evaluadorId);
-    setModalAbierto(true);
+  const abrirModalCrear = () => {
+    setModalAbiertoCrear(true);
   };
 
-  const cerrarModal = () => {
+  const cerrarModalCrear = () => {
+    setModalAbiertoCrear(false);
+    actualizarTabla()
+  };
+  
+  const abrirModalEditar = (evaluadorId) => {
+    setEvaluadorIdSeleccionado(evaluadorId);
+    setModalAbiertoEditar(true);
+  };
+
+  const cerrarModalEditar = () => {
     setEvaluadorIdSeleccionado(null);
-    setModalAbierto(false);
+    setModalAbiertoEditar(false);
     actualizarTabla()
   };
 
@@ -81,26 +93,28 @@ export const EvaluadorLista = () => {
   return (
     <>
       <div className="componentes">
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
           <Button
             variant="contained"
             color="success"
             size="small"
+            onClick={ abrirModalCrear }
           >
-            <Link to="/gestion-usuario" style={{ textDecoration: 'none', color: 'white' }}>Agregar Evaluador</Link>
+            <AddCircleOutlineIcon fontSize="small" sx={{ marginRight: "1rem" }}/>
+            Agregar Evaluador
           </Button>
         </div>
         <div>
           <TableContainer className="tablas">
-            <Table sx={{ minWidth: 650 }} aria-label="caption table">
-              <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
+            <Table aria-label="caption table">
+              <TableHead className="tablaEncabezado">
                 <TableRow>
-                  <TableCell>Nombre del Evaluador</TableCell>
-                  <TableCell align="left">Correo</TableCell>
-                  <TableCell align="left">Telefono</TableCell>
-                  <TableCell align="left">Numero de Identificacion</TableCell>
-                  <TableCell align="left">Estado</TableCell>
-                  <TableCell align="left">Acción</TableCell>
+                  <TableCell align="center">Nombre del Evaluador</TableCell>
+                  <TableCell align="center">Correo</TableCell>
+                  <TableCell align="center">Telefono</TableCell>
+                  <TableCell align="center">Numero de Identificacion</TableCell>
+                  <TableCell align="center">Estado</TableCell>
+                  <TableCell align="center">Acción</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -108,23 +122,23 @@ export const EvaluadorLista = () => {
                   ? evaluadores.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   : evaluadores
                 ).map((evaluador) => (
-                  <TableRow key={evaluador.id}>
-                    <TableCell scope="row" align="left">
+                  <TableRow key={evaluador.id} className="tablaBody">
+                    <TableCell scope="row" align="left" className="evaluadoreNombre">
                       {evaluador.nombre_evaluador}
                     </TableCell>
-                    <TableCell align="left">
+                    <TableCell align="left" className="evaluadorCorreo">
                       {evaluador.correo}
                     </TableCell>
-                    <TableCell align="left">
+                    <TableCell align="center" className="evaluadorTelefono">
                       {evaluador.telefono}
                     </TableCell>
-                    <TableCell align="left">
+                    <TableCell align="center" className="evaluadorId">
                       {evaluador.numero_identificacion}
                     </TableCell>
-                    <TableCell>                                          
+                    <TableCell align="center" className="evaluadorEstado">                                          
                       {evaluador.estado ? "Activo" : "Inactivo"}
                     </TableCell>
-                    <TableCell align="left">
+                    <TableCell align="center" className="evaluadorAccion" >
                       <div className="botonesMargen">
                         <div>
                           <ClearIcon 
@@ -139,7 +153,7 @@ export const EvaluadorLista = () => {
                           <CreateIcon
                             className="colorEditar"
                             fontSize="large"
-                            onClick={() => abrirModal(evaluador.id)}
+                            onClick={() => abrirModalEditar(evaluador.id)}
                           />
                         </div>
                       </div>
@@ -161,9 +175,13 @@ export const EvaluadorLista = () => {
         </div>
       </div>
       <ModalIRA
-        isOpen={modalAbierto}
-        onClose={cerrarModal}
+        isOpen={modalAbiertoEditar}
+        onClose={cerrarModalEditar}
         evaluadorId={evaluadorIdSeleccionado}
+      />
+      <ModalCrearEvaluador
+        isOpen={modalAbiertoCrear}
+        onClose={cerrarModalCrear}
       />
     </>
   );
