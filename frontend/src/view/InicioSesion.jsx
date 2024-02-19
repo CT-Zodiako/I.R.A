@@ -74,7 +74,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
     <div className="login">
       <div className="informacion">
         <div style={{ marginBottom: "2rem"}}>
-          <img href="https://unimayor.edu.co/web/images/imagenes/escudo.jpg" alt="unimayor"/>
+          <img src="/dist/public/img/unimayor.png" alt="unimayor"/>
         </div>
         <form onSubmit={onInicioSesion}>
           <div className="componentes">
