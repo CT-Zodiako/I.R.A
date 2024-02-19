@@ -4,40 +4,35 @@ import { useDispatch, useSelector } from "react-redux";
 import { agregarEstudiantes } from "../../redux/examenSlice";
 import examenService from "../../services/ServiciosExamen"
 import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TextField,
+  Button, Table, TableBody, 
+  TableCell, TableContainer, 
+  TableHead, TablePagination,
+  TableRow, TextField,
 } from "@mui/material";
+import { BotonGeneral } from "../botonGeneral"
+import { BotonRegresar } from "./botonRegresar"
 
-export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion, handleLast }) => {
+export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion, anterior }) => {
   const dispatch = useDispatch();
   const examenForm = useSelector((state) => state.examenFormulario);
 
   const [estudianteEstado, setEstudianteEstado] = useState({ NOMBRE: "" });
-  const [estudiantesExamen, setEstudiantes] = useState({
-    estudiantes: [],
-  });
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [estudiantesExamen, setEstudiantes] = useState({estudiantes: []});
+  // const [page, setPage] = useState(0);
+  // const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const regresarPanelExamen = () => {
-    handleLast();
+    anterior();
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   // const onEstudiante = (event) => {
   //     setEstudianteEstado(event.target.value)
@@ -85,10 +80,9 @@ export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion, h
     setEstudiantes(nuevoFormulario);
 
     // const newPageCount = Math.ceil((estudiantesExamen.estudiantes.length - 1) / rowsPerPage);
-  
-    if (page > 0 && page >= newPageCount) {
-      handleChangePage(null, page - 1);
-    }
+    // if (page > 0 && page >= newPageCount) {
+    //   handleChangePage(null, page - 1);
+    // }
   };
 
   const handleFileUpload = (event) => {
@@ -132,13 +126,9 @@ export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion, h
     <>
       <div>
         <div className="botonRegresar">
-          <Button
-            variant="contained"
-            color="warning"
-            onClick={ regresarPanelExamen } 
-          >
-            Regresar
-          </Button>
+          <BotonRegresar
+            regresar={ regresarPanelExamen }
+          />
         </div>
         <div className="informacion">
           <form onSubmit={onEnviarEstudiantes}>
@@ -225,12 +215,11 @@ export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion, h
             </div>
             <div>
               {/* <button type="submit">Cargar</button> */}
-              <Button
-                variant="contained"
-                type="submit"
-              >
-                Cargar
-              </Button>
+              <BotonGeneral
+                tipo="submit"
+                accion="Cargar"
+                camposCargados={estudiantesExamen.estudiantes.length === 1}
+              />
             </div>
           </form>
         </div>

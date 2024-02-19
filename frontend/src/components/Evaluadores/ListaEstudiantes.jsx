@@ -3,19 +3,45 @@ import evaluadorService from '../../services/servicioEvaluador';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { LimpiarCalificacion } from '../../redux/calificacionSlice'
-import { Alert, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import CheckIcon from '@mui/icons-material/Check';
+import { 
+    Button, Table, TableBody, TableCell, 
+    TableContainer, TableHead, TableRow 
+} from "@mui/material";
+import { ConfirmarEnvioExamen } from "./ConfirmarEnvioExamen";
+import { NotificacionCalificacion } from "./NotificacionCalificacion";
 
 export const VistaEstudiantes = () => {  
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const examenId = useSelector((state) => state.calificacion.examen_id);
     const calificaciones = useSelector((state) => state.calificacion.calificacion.length);
+    const estadoCalificacion = useSelector((state) => state.botonAlerta.botonAlerta);
     const calificacionesEstudiantes = useSelector(state => state.calificacion);
 
     const [listaEstudiantes, setListaEstudiantes] = useState([]);
-    const nuemeroEstudiantes = listaEstudiantes.length;
     const [botonEnvio, setBotonEnvio] = useState(false)
+    const [estadoAlertaCalificacion, setEstadoAlertaCalificacion] = useState(false);
+    const [estadoVentanaConfirmacion, setEstadoVentanaConfirmacion] = useState(false);
+
+    useEffect(() => {
+        if (estadoCalificacion) {
+            setEstadoAlertaCalificacion(true);
+      
+            const timer = setTimeout(() => {
+              setEstadoAlertaCalificacion(false);
+            }, 3000);
+      
+            return () => clearTimeout(timer);
+          }
+    }, [estadoCalificacion]);
+
+    const abrirVentanaConfirmacion = () => {
+        setEstadoVentanaConfirmacion(true);
+    }
+
+    const cerrarVentanaConfirmacion = () => {
+        setEstadoVentanaConfirmacion(false);
+    }
 
     const onRegresarExamen = () =>{
         dispatch(
@@ -47,9 +73,10 @@ export const VistaEstudiantes = () => {
     };
 
     useEffect(() => {
+        const nuemeroEstudiantes = listaEstudiantes.length;
         const botonEnvio = calificaciones === nuemeroEstudiantes;
         setBotonEnvio(botonEnvio);
-    }, [calificaciones, nuemeroEstudiantes]);
+    }, [calificaciones, listaEstudiantes]);
 
     const calificarEstudiante = (examenId, nombreEstudiante) => {
         navigate(`/calificacion-examen`, {
@@ -61,39 +88,34 @@ export const VistaEstudiantes = () => {
       };
 
     return(
-        <form onSubmit={ onEnviarCalificaciones }>
-            <div>
-                <Button 
-                    variant="contained"
-                    color="warning"
-                    size="small"
-                    onClick={onRegresarExamen}
-                >
-                    Regresar
-                </Button>
-                <TableContainer className="tablas">
-                    <Table>
-                        <TableHead className="tablaEncabezado">
-                            <TableRow>
-                                <TableCell align="center">Nombre Estudiante</TableCell>
-                                <TableCell align="center">Correo</TableCell>
-                                <TableCell align="center">Telefono</TableCell>
-                                <TableCell align="center">Codigo</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {listaEstudiantes.map((estudiante, Index) => (
-                            <TableRow key={Index}>
-                                <TableCell align="left">{estudiante.NOMBRE}</TableCell>
-                                <TableCell align="left">{estudiante.CORREO}</TableCell>
-                                <TableCell align="center">{estudiante.CODIGO}</TableCell>
-                                <TableCell align="center">
-                                    <div>
-                                    {/* <button type='button'>
-                                            <Link to={`/calificacion-examen/${examenId}/${estudiante.NOMBRE}`}>
-                                                Calificar
-                                            </Link>
-                                        </button> */}
+        <>
+            <form onSubmit={ onEnviarCalificaciones }>
+                <div>
+                    <Button 
+                        variant="contained"
+                        color="warning"
+                        size="small"
+                        onClick={onRegresarExamen}
+                    >
+                        Regresar
+                    </Button>
+                    <TableContainer className="tablas">
+                        <Table>
+                            <TableHead className="tablaEncabezado">
+                                <TableRow>
+                                    <TableCell align="center">Nombre Estudiante</TableCell>
+                                    <TableCell align="center">Correo</TableCell>
+                                    <TableCell align="center">Telefono</TableCell>
+                                    <TableCell align="center">Codigo</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                            {listaEstudiantes.map((estudiante, Index) => (
+                                <TableRow key={Index}>
+                                    <TableCell align="left">{estudiante.NOMBRE}</TableCell>
+                                    <TableCell align="left">{estudiante.CORREO}</TableCell>
+                                    <TableCell align="center">{estudiante.CODIGO}</TableCell>
+                                    <TableCell align="center">
                                         <Button 
                                             type='button'
                                             variant="contained"
@@ -103,26 +125,41 @@ export const VistaEstudiantes = () => {
                                         >
                                             Calificar
                                         </Button>
-                                    </div>  
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>    
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>    
+                </div>
+                <div style={{ display: "flex", justifyContent: "center", padding: "2 rem 5rem" }}>
+                    <Button 
+                        variant="contained"
+                        disabled={!botonEnvio}
+                        onClick={ abrirVentanaConfirmacion }
+                    >
+                        Enviar Calificacion
+                    </Button>
+                    <Button
+                        onClick={ abrirVentanaConfirmacion }
+                        variant="contained"
+                    >
+                        Confirmar
+                    </Button>
+                </div>
+                <div style={{ display: "flex", justifyItems: "end", marginTop: "1rem" }}>
+                    <NotificacionCalificacion 
+                        estadoAlerta={estadoAlertaCalificacion} 
+                    />
+                </div>
+            </form>
+            <div>
+                <ConfirmarEnvioExamen
+                    estadoConfirmacion={estadoVentanaConfirmacion}
+                    cerrarConfirmacion={cerrarVentanaConfirmacion}
+                    enviarExamenCalificado={onEnviarCalificaciones}
+                />
             </div>
-            <div style={{ display: "flex", justifyContent: "end", padding: "2 rem 5rem" }}>
-                <Button 
-                    variant="contained"
-                    type="submit"
-                    disabled={!botonEnvio}
-                >
-                    Enviar Calificacion
-                </Button>
-            </div>
-            <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-                Calificacion Enviada
-            </Alert>
-        </form>
+        </>
     );
 }

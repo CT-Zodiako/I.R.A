@@ -29,7 +29,6 @@ export const InputSeleccion = ({ seleccionar, idSeleccion, label, variable, onva
                         <MenuItem 
                             key={opcion.id} 
                             value={opcion.id}
-                            // onChange={onOpcionSeleccion}
                             >{opcion[variable]}
                         </MenuItem>
                 ))}

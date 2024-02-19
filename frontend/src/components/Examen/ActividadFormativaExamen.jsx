@@ -3,18 +3,15 @@ import { useDispatch, useSelector } from "react-redux"
 import { agregarActividad } from "../../redux/examenSlice"
 import examenService from "../../services/ServiciosExamen"
 import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
+  Button, Table, TableBody,
+  TableCell, TableContainer,
+  TableHead, TableRow,
   TextField,
 } from "@mui/material";
 import { BotonGeneral } from "../botonGeneral";
+import { BotonRegresar } from "./botonRegresar";
 
-export const RegistrarActividadFormativa = ({ handleNext, handleLast, examenId, accion }) => {
+export const RegistrarActividadFormativa = ({ suiguiente, anterior, examenId, accion }) => {
   const examenForm = useSelector((state) => state.examenFormulario);
   useEffect(() => {
     console.log(examenForm);
@@ -28,7 +25,7 @@ export const RegistrarActividadFormativa = ({ handleNext, handleLast, examenId, 
   });
 
   const regresarPanelExamen = () => {
-    handleLast();
+    anterior();
   };
 
   const onActividadFormativa = (event) => {
@@ -80,20 +77,16 @@ export const RegistrarActividadFormativa = ({ handleNext, handleLast, examenId, 
         actividades_formativas: actividadFormativa.actividades_formativas,
       })
     );
-    handleNext();
+    suiguiente();
   };
 
   return (
     <>
       <div>
         <div className="botonRegresar">
-          <Button
-            variant="contained"
-            color="warning"
-            onClick={ regresarPanelExamen } 
-          >
-            Regresar
-          </Button>
+          <BotonRegresar
+            regresar={ regresarPanelExamen }
+          />
         </div>
         <div className="informacion">
           <form onSubmit={onEnviarActividad}>

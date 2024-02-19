@@ -16,16 +16,16 @@ export const VistaExamenes = () =>{
     const evaluadorId = useSelector((state) => state.sesion.id);
 
     const[listaExamenesEvaluador, setListaExamenesEvaluador]= useState([]);
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [paginasTabla, setPaginasTabla] = useState(0);
+    const [filasPaginaTabla, setFilasPaginaTabla] = useState(5);
 
     const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+        setPaginasTabla(newPage);
       };
     
       const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+        setFilasPaginaTabla(parseInt(event.target.value, 10));
+        setPaginasTabla(0);
       };
 
     const onIdExamen = ({ examen }) => {
@@ -68,8 +68,8 @@ export const VistaExamenes = () =>{
                             </TableRow>
                             </TableHead>
                             <TableBody>
-                            {(rowsPerPage > 0
-                            ? listaExamenesEvaluador.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            {(filasPaginaTabla > 0
+                            ? listaExamenesEvaluador.slice(paginasTabla * filasPaginaTabla, paginasTabla * filasPaginaTabla + filasPaginaTabla)
                             : listaExamenesEvaluador
                             ).map((examenes) => (
                                 <TableRow key={examenes.id}>
@@ -101,8 +101,8 @@ export const VistaExamenes = () =>{
                             rowsPerPageOptions={[5, 10, 20]}
                             component="div"
                             count={listaExamenesEvaluador.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
+                            rowsPerPage={filasPaginaTabla}
+                            page={paginasTabla}
                             onPageChange={handleChangePage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />

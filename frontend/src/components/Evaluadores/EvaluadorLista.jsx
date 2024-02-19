@@ -12,9 +12,10 @@ import {
   TableRow 
 } from "@mui/material";
 import { ModalIRA } from "../Examen/ModalEditarEvaluador"
-import ClearIcon from '@mui/icons-material/Clear';
-import CreateIcon from '@mui/icons-material/Create';
-import { ModalCrearEvaluador } from "./ModalCrearEvaluador";
+import ClearIcon from '@mui/icons-material/Clear'
+import CreateIcon from '@mui/icons-material/Create'
+import { ModalCrearEvaluador } from "./ModalCrearEvaluador"
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 
 export const EvaluadorLista = () => {
   const [evaluadores, setEvaluadores] = useState([]);
@@ -99,8 +100,8 @@ export const EvaluadorLista = () => {
             size="small"
             onClick={ abrirModalCrear }
           >
+            <AddCircleOutlineIcon fontSize="small" sx={{ marginRight: "1rem" }}/>
             Agregar Evaluador
-            {/* <Link to="/gestion-usuario" className="botonAgregar">Agregar Evaluador</Link> */}
           </Button>
         </div>
         <div>

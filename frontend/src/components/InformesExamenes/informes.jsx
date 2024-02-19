@@ -2,21 +2,29 @@ import { useEffect, useState } from "react"
 import informeServicio from "../../services/ServicioInforme"
 import { useNavigate } from "react-router-dom"
 import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
+  Button, Table, TableBody,
+  TableCell, TableContainer,
+  TableHead, TablePagination,
   TableRow,
+  TextField
 } from "@mui/material"
+import FilterAltIcon from '@mui/icons-material/FilterAlt'
 
 export const Informes = () => {
   const navigate = useNavigate();
   const [calificacionesExamen, setCalificacionesExamen] = useState([]);
+  console.log("lista de los informes: ",calificacionesExamen);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [filtrar, setFiltrar] = useState('');
+
+  const buscarInforme = (event) => {
+    setFiltrar(event.target.value);
+  };
+
+  const filtrarInformeExamen = calificacionesExamen.filter((informe) => 
+    informe.proyecto_integrador.toLowerCase().includes(filtrar.toLowerCase())
+  );
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -52,6 +60,21 @@ export const Informes = () => {
   return (
     <div>
       <h1>Examenes imforme</h1>
+      <div>
+        <TextField
+          sx={{ width: "24rem", marginLeft: "12rem"}}
+          id="outlined-basic"
+          placeholder="Filtrar por Informe Examen"
+          value={filtrar}
+          onChange={ buscarInforme }
+          InputProps={{
+            startAdornment:(
+              <FilterAltIcon
+                sx={{ color: "rgba(0, 0, 0, 0.25)" }}/>
+            ),
+          }}
+        />
+      </div>
       <TableContainer className="tablas">
         <Table sx={{ minWidth: 650 }} aria-label="caption table">
           <TableHead className="tablaEncabezado">
@@ -63,8 +86,8 @@ export const Informes = () => {
           </TableHead>
           <TableBody>
           {(rowsPerPage > 0
-                  ? calificacionesExamen.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  : calificacionesExamen
+                  ? filtrarInformeExamen.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  : filtrarInformeExamen
                 ).map((informes) => (
               <TableRow key={informes.id}>
                 <TableCell scope="row" align="center" className="informeId">

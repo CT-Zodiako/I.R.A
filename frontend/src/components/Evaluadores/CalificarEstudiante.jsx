@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import evaluadorService from '../../services/servicioEvaluador';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { InputSeleccionCalificacion } from '../seleccionCalificacion';
 import { agregarCalificacion } from '../../redux/calificacionSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
+import { cambiarEstadoBoton } from '../../redux/botonAlertaSlice';
 
 export const CalificacionExamen = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const examenId = location.state.examenId;
   const nombreEstudiante = location.state.nombreEstudiante;
@@ -32,9 +34,7 @@ export const CalificacionExamen = () => {
       },
   };
 
-  const [evaluado, setEvaluado] = useState(
-    calificacionActividades
-  );
+  const [evaluado, setEvaluado] = useState(calificacionActividades);
   const[estudianteCalificacion, setEstudianteExamen] = useState([]);
   const[notasCalificacion, setNotasCalificacion] = useState([]);
   const [botonCalificar, setBotonCalificar] = useState(false); 
@@ -70,32 +70,6 @@ export const CalificacionExamen = () => {
     });
   };
 
-  // const onNotaCalificacion = (idSeleccion) => {
-  //   setEvaluado({
-  //     ...evaluado,
-  //       calificacion: {
-  //         ...evaluado.calificacion,
-  //         notas: [...evaluado.calificacion.notas, idSeleccion],
-  //     },
-  //   });
-  // };
-
-  // const onObservacion = (event) => {
-  //   const guardarObservacion = event.target.value;
-  //   const index = Number(event.target.dataset.index);
-  //   setEvaluado((prevEvaluado) => {
-  //     const newObservaciones = [...prevEvaluado.calificacion.observaciones];
-  //     newObservaciones[index] = guardarObservacion;
-  //     return {
-  //       ...prevEvaluado,
-  //       calificacion: {
-  //         ...prevEvaluado.calificacion,
-  //         observaciones: newObservaciones,
-  //       },
-  //     };
-  //   });
-  // };
-
   useEffect(() => {
     const numeroNotas = evaluado.calificacion.notas.length;
     const nuemeroActividades = estudianteCalificacion.length;
@@ -110,11 +84,16 @@ export const CalificacionExamen = () => {
           nombre: evaluado.nombre,
           notas: evaluado.calificacion.notas,
           observaciones: evaluado.calificacion.observaciones,
-        })
+        }),
       );
+      dispatch(
+        cambiarEstadoBoton({
+          botonAlerta: true,
+        }),
+      );
+      navigate(`/lista-estudiantes`);
   };
   
-
   useEffect(() => {
     setEvaluado({
       ...evaluado,

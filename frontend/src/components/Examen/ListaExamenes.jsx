@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react"
 import examenService from "../../services/ServiciosExamen"
 import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
+  Button, Table, TableBody,
+  TableCell, TableContainer,
+  TableHead, TablePagination,
+  TableRow
 } from "@mui/material"
 import { Link, useNavigate } from "react-router-dom"
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import EmailIcon from '@mui/icons-material/Email'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CreateIcon from '@mui/icons-material/Create'
@@ -19,16 +16,16 @@ export const ExamenesLista = () => {
   const navigate = useNavigate();
 
   const [listaExamenes, setListaExamenes] = useState([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [paginasTabla, setPaginasTabla] = useState(0);
+  const [filasPaginasTabla, setFilasPaginasTabla] = useState(5);
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    setPaginasTabla(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setFilasPaginasTabla(parseInt(event.target.value, 10));
+    setPaginasTabla(0);
   };
 
   useEffect(() => {
@@ -99,7 +96,13 @@ export const ExamenesLista = () => {
               color="success"
               size="small"
             >
-              <Link to="/pasos" className="botonAgregar">Crear Examen</Link>
+              <AddCircleOutlineIcon fontSize="small" />
+              <Link 
+                to="/pasos" 
+                className="botonAgregar"
+              >
+                Crear Examen
+              </Link>
             </Button>
           </div>
           <div>
@@ -113,8 +116,8 @@ export const ExamenesLista = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                {(rowsPerPage > 0
-                  ? listaExamenes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                {(filasPaginasTabla > 0
+                  ? listaExamenes.slice(paginasTabla * filasPaginasTabla, paginasTabla * filasPaginasTabla + filasPaginasTabla)
                   : listaExamenes
                 ).map((examen) => (
                     <TableRow key={examen.id} className="tablaBody">
@@ -157,8 +160,8 @@ export const ExamenesLista = () => {
               rowsPerPageOptions={[5, 10, 20]}
               component="div"
               count={listaExamenes.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
+              rowsPerPage={filasPaginasTabla}
+              page={paginasTabla}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />

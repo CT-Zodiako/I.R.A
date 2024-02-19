@@ -22,12 +22,12 @@ export const FormularioPorPasos = () => {
     "Estudiantes Examen",
   ];
 
-  const onNext = () => {
+  const onSiguientePanel = () => {
     setComponenteExamen((componenteExamen) => componenteExamen + 1);
     console.log("componentes del examen: ", componenteExamen);
   };
 
-  const onAtras = () => {
+  const onAnteriorPanel = () => {
     setComponenteExamen((componenteExamen) => componenteExamen - 1);
     console.log("componentes del examen: ", componenteExamen);
   };
@@ -58,8 +58,8 @@ export const FormularioPorPasos = () => {
           </div>
           <div className="centrar">
             <EvaluacionInformacion 
-              handleNext={onNext}
-              handleLast={onAtras}
+              suiguiente={onSiguientePanel}
+              anterior={onAnteriorPanel}
               // examenId={examenId}
             />
           </div>
@@ -81,8 +81,8 @@ export const FormularioPorPasos = () => {
           </div>
           <div className="centrar">
             <PanelSeleccionarEvaluador 
-              handleNext={onNext} 
-              handleLast={onAtras}
+              suiguiente={onSiguientePanel} 
+              anterior={onAnteriorPanel}
             />
           </div>
         </div>
@@ -103,8 +103,8 @@ export const FormularioPorPasos = () => {
           </div>
           <div className="centrar">
             <RegistrarActividadFormativa 
-              handleNext={onNext}
-              handleLast={onAtras} 
+              suiguiente={onSiguientePanel}
+              anterior={onAnteriorPanel} 
             />
           </div>
         </div>
@@ -127,16 +127,10 @@ export const FormularioPorPasos = () => {
             <div className="centrar">
               <AgregarListaEstudiantes 
                 setCamposCargados={setCamposCargados}
-                handleLast={onAtras}
+                anterior={onAnteriorPanel}
               />
             </div>
             <div className="centrar">
-              {/* <button
-                disabled={!camposCargados}
-                onClick={onEnviarFormularioExamen}
-              >
-                Cargar examen
-              </button> */}
               <Button
                 variant="contained"
                 disabled={!camposCargados}

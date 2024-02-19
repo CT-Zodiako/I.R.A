@@ -9,7 +9,7 @@ import "./examen.css"
 import { Input, InputLabel, TextField } from "@mui/material"
 import { BotonGeneral } from "../botonGeneral"
 
-export const EvaluacionInformacion = ({ handleNext, examenId, accion }) => {  
+export const EvaluacionInformacion = ({ suiguiente, examenId, accion }) => {  
   const dispatch = useDispatch();
   const programaStado = useSelector((state) => state.programa.programa);
 
@@ -108,7 +108,7 @@ export const EvaluacionInformacion = ({ handleNext, examenId, accion }) => {
         proyecto_integrador: informacionExamen.proyecto_integrador,
       })
     );
-    handleNext();
+    suiguiente();
   };
   
   return (
@@ -123,9 +123,12 @@ export const EvaluacionInformacion = ({ handleNext, examenId, accion }) => {
               </InputLabel>
               <InputLabel 
                 id="programa"
-                value={informacionExamen.programa_id}
               >
-                {programaU ? programaU.nombre : null} 
+                {programaU ? 
+                  programaU.nombre : 
+                  programa.map((index) => index.id === informacionExamen.programa_id ? 
+                  index.nombre : null)
+                }
               </InputLabel>
             </div>
             <div className="informacionExamen">

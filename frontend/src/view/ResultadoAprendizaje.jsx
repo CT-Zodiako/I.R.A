@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import resultadoAprendizajeServicio from "../services/ServicioResultadoAprendizaje";
 import { Link } from "react-router-dom";
 import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-} from "@mui/material";
+  Button, Table, TableBody,
+  TableCell, TableContainer,
+  TableHead, TableRow, TextField,
+} from "@mui/material"
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import BlockIcon from '@mui/icons-material/Block'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import FilterAltIcon from '@mui/icons-material/FilterAlt'
 
 export const ResultadoAprendizaje = () => {
   const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
@@ -50,37 +49,33 @@ export const ResultadoAprendizaje = () => {
   return (
     <>
       <div className="componentes">
-        <div>
+        <h1>Resultado Aprendizaje</h1>
+        <h2>Falta acomodar el modal para agregar el R.A</h2>
+        <div className="busquedaResultadoAprendizaje">
           <Button
               variant="contained"
               color="success"
               size="small"
             >
+              <AddCircleOutlineIcon fontSize="small" />
               <Link to="/agregar-resultado" className="botonAgregar">Agregar Resulatado Aprendizaje</Link>
           </Button>
           
-            <TextField
-              sx={{ width: "24rem", marginLeft: "12rem"}}
-              id="outlined-basic"
-              placeholder="Filtrar por Resultado Aprendizaje"
-              variant="outlined"
-              value={filtrar}
-              // onChange={(event) => setFiltrar(event.target.value)}
-              onChange={ buscarResultadoAprendizaje }
-              >
-            </TextField>
-          {/* <Button
-            variant="contained"
-            color="success"
-            size="small"
+          <TextField
+            sx={{ width: "24rem", minWidth: "12rem", margin: " 1rem 0rem 0rem 5rem" }}
+            id="outlined-basic"
+            placeholder="Filtrar por Resultado Aprendizaje"
+            variant="outlined"
+            value={filtrar}
             onChange={ buscarResultadoAprendizaje }
-          >
-            Buscar
-          </Button> */}
-
-          {/* <button>
-            <Link to="/agregar-resultado">Agregar Resulatado Aprendizaje</Link>
-          </button> */}
+            InputProps={{
+              startAdornment:(
+                <FilterAltIcon
+                  sx={{ color: "rgba(0, 0, 0, 0.25)" }}
+                />
+              ),
+            }}
+          />
         </div>
         <div>
           <TableContainer className="tablas">
@@ -115,10 +110,10 @@ export const ResultadoAprendizaje = () => {
                       <Button 
                         variant="contained"
                         color={resultado.estado ? "primary" : "success"}
-
                         size="small"
                         onClick={(event) => onCambiarEstado(event, resultado.id)}
                       >
+                        {resultado.estado ? <BlockIcon fontSize="small" sx={{ marginRight: "0.1rem"}}/> : <CheckCircleOutlineIcon fontSize="small" sx={{ marginRight: "0.1rem"}}/>}
                         {resultado.estado ? "Desactivar" : "Activar"}
                       </Button>
                     </TableCell>

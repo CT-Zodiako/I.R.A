@@ -1,12 +1,12 @@
 body {
-  margin: 0;
-  padding: 0;
+  margin: 0 auto;
+  padding: 0 auto;
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
 }
   
 .menu {
-  width: 250px;
+  width: 255px;
   background-color: #333;
   height: 100%;
   position: fixed;
@@ -14,6 +14,14 @@ body {
   left: 0;
   overflow-y: auto;
   color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.usuarioRolMenu{
+  height: 18%;
+  text-align: left;
+  padding: 0.3rem 0.3rem 0.3rem 0.8rem;
 }
   
 .menu ul {
@@ -21,8 +29,8 @@ body {
   padding: 0;
 }
   
-.menu ul li {
-  padding: 10px 5px;
+.opcionesMenu {
+  padding: 12px;
 }
   
 .menu ul li a {
@@ -166,5 +174,9 @@ body {
   margin: 0 auto;
 }
 
-
+/* Resulatdos de Aprendizaje */
+.busquedaResultadoAprendizaje{
+  padding: 1rem;
+  height: 4rem;
+}
 

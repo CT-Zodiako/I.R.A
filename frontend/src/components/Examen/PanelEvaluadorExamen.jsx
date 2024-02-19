@@ -2,9 +2,10 @@ import { useEffect, useState } from "react"
 import { InputSeleccion } from "../EtiquetaSeleccionGeneral"
 import evaluadorService from "../../services/servicioEvaluador"
 import examenService from "../../services/ServiciosExamen"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { agregarEvaluador } from "../../redux/examenSlice"
 import { BotonGeneral } from "../botonGeneral"
+import { BotonRegresar } from "./botonRegresar"
 import './examen.css'
 import { 
   Button,
@@ -12,17 +13,14 @@ import {
   TableContainer, TableHead, TableRow 
 } from "@mui/material"
 
-export const PanelSeleccionarEvaluador = ({ handleNext, handleLast, examenId, accion }) => {
-  const examen = useSelector((state) => state.examenFormulario);
+export const PanelSeleccionarEvaluador = ({ suiguiente, anterior, examenId, accion }) => {
   const dispatch = useDispatch();
 
-  const [evaluadores, setEvaluadores] = useState({
-    evaluadores_ids: [],
-  });
+  const [evaluadores, setEvaluadores] = useState({evaluadores_ids: []});
   const [listaEvaluadores, setListaEvaluadores] = useState([]);
 
   const regresarPanelExamen = () => {
-    handleLast();
+    anterior();
   };
 
   const onEvaluadores = (selectedId) => {
@@ -78,20 +76,16 @@ export const PanelSeleccionarEvaluador = ({ handleNext, handleLast, examenId, ac
         evaluadores_ids: evaluadores.evaluadores_ids,
       })
     );
-    handleNext();
+    suiguiente();
   };
 
   return (
     <>
       <div>
         <div className="botonRegresar">
-          <Button
-            variant="contained"
-            color="warning"
-            onClick={ regresarPanelExamen } 
-          >
-            Regresar
-          </Button>
+          <BotonRegresar
+            regresar={ regresarPanelExamen }
+          />
         </div>
         <div className="informacion">
           <form onSubmit={onEnviarEvaluadores}>
