@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { InputSeleccion } from "../EtiquetaSeleccionGeneral"
 import evaluadorService from "../../services/servicioEvaluador"
 import examenService from "../../services/ServiciosExamen"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { agregarEvaluador } from "../../redux/examenSlice"
 import { BotonGeneral } from "../botonGeneral"
 import { BotonRegresar } from "./botonRegresar"
@@ -15,8 +15,9 @@ import {
 
 export const PanelSeleccionarEvaluador = ({ suiguiente, anterior, examenId, accion }) => {
   const dispatch = useDispatch();
+  const infoEvaluadorStore = useSelector((state) => state.examenFormulario);
 
-  const [evaluadores, setEvaluadores] = useState({evaluadores_ids: []});
+  const [evaluadores, setEvaluadores] = useState({evaluadores_ids: infoEvaluadorStore.evaluadores_ids});
   const [listaEvaluadores, setListaEvaluadores] = useState([]);
 
   const regresarPanelExamen = () => {

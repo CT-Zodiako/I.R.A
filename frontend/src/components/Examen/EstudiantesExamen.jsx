@@ -14,10 +14,10 @@ import { BotonRegresar } from "./botonRegresar"
 
 export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion, anterior }) => {
   const dispatch = useDispatch();
-  const examenForm = useSelector((state) => state.examenFormulario);
+  const infoEstudianteStore = useSelector((state) => state.examenFormulario);
 
   const [estudianteEstado, setEstudianteEstado] = useState({ NOMBRE: "" });
-  const [estudiantesExamen, setEstudiantes] = useState({estudiantes: []});
+  const [estudiantesExamen, setEstudiantes] = useState({estudiantes: infoEstudianteStore.estudiantes});
   // const [page, setPage] = useState(0);
   // const [rowsPerPage, setRowsPerPage] = useState(5);
 

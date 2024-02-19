@@ -12,16 +12,12 @@ import { BotonGeneral } from "../botonGeneral";
 import { BotonRegresar } from "./botonRegresar";
 
 export const RegistrarActividadFormativa = ({ suiguiente, anterior, examenId, accion }) => {
-  const examenForm = useSelector((state) => state.examenFormulario);
-  useEffect(() => {
-    console.log(examenForm);
-  }, [examenForm]);
-
   const dispatch = useDispatch();
+  const infoActividadStore = useSelector((state) => state.examenFormulario);
 
   const [actividaEstado, setActividaEstado] = useState();
   const [actividadFormativa, setActividadFormativa] = useState({
-    actividades_formativas: [],
+    actividades_formativas: infoActividadStore.actividades_formativas,
   });
 
   const regresarPanelExamen = () => {

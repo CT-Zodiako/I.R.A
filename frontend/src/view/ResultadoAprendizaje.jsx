@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import resultadoAprendizajeServicio from "../services/ServicioResultadoAprendizaje";
 import { Link } from "react-router-dom";
 import {
-  Button, Table, TableBody,
+  Button, Modal, Table, TableBody,
   TableCell, TableContainer,
   TableHead, TableRow, TextField,
 } from "@mui/material"
+import { CrearResultadoAprendizaje } from "../components/ResultadoComponentes/ModalCrearResultadoAprendizaje"
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import BlockIcon from '@mui/icons-material/Block'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
@@ -14,6 +15,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt'
 export const ResultadoAprendizaje = () => {
   const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
   const [filtrar, setFiltrar] = useState('');
+  const [modalResultadoAprendizaje, setModalResultadoAprendizaje] = useState(false);
 
   const buscarResultadoAprendizaje = (event) => {
     setFiltrar(event.target.value);
@@ -22,6 +24,14 @@ export const ResultadoAprendizaje = () => {
   const filteredResultados = resultadoAprendizaje.filter(resultado =>
     resultado.titulo.toLowerCase().includes(filtrar.toLowerCase())
   );
+
+  const abrirModal = () => {
+    setModalResultadoAprendizaje(true);
+  };
+
+  const cerrarModal = () => {
+    setModalResultadoAprendizaje(false);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -50,32 +60,35 @@ export const ResultadoAprendizaje = () => {
     <>
       <div className="componentes">
         <h1>Resultado Aprendizaje</h1>
-        <h2>Falta acomodar el modal para agregar el R.A</h2>
         <div className="busquedaResultadoAprendizaje">
-          <Button
-              variant="contained"
-              color="success"
-              size="small"
-            >
-              <AddCircleOutlineIcon fontSize="small" />
-              <Link to="/agregar-resultado" className="botonAgregar">Agregar Resulatado Aprendizaje</Link>
-          </Button>
-          
-          <TextField
-            sx={{ width: "24rem", minWidth: "12rem", margin: " 1rem 0rem 0rem 5rem" }}
-            id="outlined-basic"
-            placeholder="Filtrar por Resultado Aprendizaje"
-            variant="outlined"
-            value={filtrar}
-            onChange={ buscarResultadoAprendizaje }
-            InputProps={{
-              startAdornment:(
-                <FilterAltIcon
-                  sx={{ color: "rgba(0, 0, 0, 0.25)" }}
-                />
-              ),
-            }}
-          />
+          <div>
+            <Button
+                variant="contained"
+                color="success"
+                size="small"
+                onClick={abrirModal}
+              >
+                <AddCircleOutlineIcon fontSize="small" />
+                Agregar Resulatado Aprendizaje
+            </Button>
+          </div>
+          <div className="resultadoAprendizaje">
+            <TextField
+              sx={{ width: "24rem", minWidth: "12rem", margin: " 1rem 0rem 0rem 5rem" }}
+              id="outlined-basic"
+              placeholder="Filtrar por Resultado Aprendizaje"
+              variant="outlined"
+              value={filtrar}
+              onChange={ buscarResultadoAprendizaje }
+              InputProps={{
+                startAdornment:(
+                  <FilterAltIcon
+                    sx={{ color: "rgba(0, 0, 0, 0.25)" }}
+                  />
+                ),
+              }}
+            />
+          </div>
         </div>
         <div>
           <TableContainer className="tablas">
@@ -122,6 +135,10 @@ export const ResultadoAprendizaje = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          <CrearResultadoAprendizaje 
+            abierto={modalResultadoAprendizaje}
+            cerrado={cerrarModal}
+          />
         </div>
       </div>
     </>

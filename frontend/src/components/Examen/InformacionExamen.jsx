@@ -12,11 +12,12 @@ import { BotonGeneral } from "../botonGeneral"
 export const EvaluacionInformacion = ({ suiguiente, examenId, accion }) => {  
   const dispatch = useDispatch();
   const programaStado = useSelector((state) => state.programa.programa);
+  const infoExamenStore = useSelector((state) => state.examenFormulario);
 
   const [informacionExamen, setInformacionExamen] = useState({
-    programa_id: "",
-    resultado_aprendizaje_id: "",
-    proyecto_integrador: "",
+    programa_id: infoExamenStore.programa_id,
+    resultado_aprendizaje_id: infoExamenStore.resultado_aprendizaje_id,
+    proyecto_integrador: infoExamenStore.proyecto_integrador,
   });
   const [programa, setPrograma] = useState([]);
   const programaU = programa.find((item) => item.id === programaStado ? item.nombre : null );
