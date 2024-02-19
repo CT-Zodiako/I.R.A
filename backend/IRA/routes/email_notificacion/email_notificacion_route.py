@@ -2,10 +2,10 @@ from ...db import db
 from flask import Blueprint, request, jsonify
 from ...models.examen.examen_model import Examen
 import smtplib
-from ...models.examen.examen_model import Examen
 from email.mime.text import MIMEText
 
 email_blueprint = Blueprint('email', __name__)
+
 
 def configure_smtp_server():
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -13,8 +13,10 @@ def configure_smtp_server():
     server.login("tryhardskill98@gmail.com", "ybpy hspa fzje jdzh")
     return server
 
+
 def close_smtp_connection(server):
     server.quit()
+
 
 def create_email_message(destinatario, asunto, cuerpo):
     msg = MIMEText(cuerpo)
@@ -23,6 +25,7 @@ def create_email_message(destinatario, asunto, cuerpo):
     msg['To'] = destinatario
     return msg
 
+
 def enviar_correo(destinatario, asunto, cuerpo):
     server = configure_smtp_server()
     msg = create_email_message(destinatario, asunto, cuerpo)
@@ -30,11 +33,14 @@ def enviar_correo(destinatario, asunto, cuerpo):
     close_smtp_connection(server)
 
 # Cambié el nombre de la función para evitar conflictos
+
+
 @email_blueprint.route('/enviar_correo', methods=['POST'])
 def enviar_correo_route():
     if request.method == 'POST':
         # Obtener la lista de destinatarios desde la base de datos o alguna fuente
-        examen_id = request.json.get('examen_id')  # Asume que el ID del examen está en el cuerpo de la solicitud
+        # Asume que el ID del examen está en el cuerpo de la solicitud
+        examen_id = request.json.get('examen_id')
         destinatarios = obtener_destinatarios_por_examen(examen_id)
 
         # Detalles del mensaje
@@ -50,10 +56,11 @@ def enviar_correo_route():
             'mensaje': 'Correos enviados correctamente'
         }
 
-    return{
-            'status': 400,
-            'mensaje': 'No se realizó ninguna acción'
-        }
+    return {
+        'status': 400,
+        'mensaje': 'No se realizó ninguna acción'
+    }
+
 
 def obtener_destinatarios_por_examen(examen_id):
     examen = Examen.query.get(examen_id)
@@ -63,13 +70,9 @@ def obtener_destinatarios_por_examen(examen_id):
     return [evaluador.correo for evaluador in examen.evaluadores_relacion]
 
 
-
 @email_blueprint.route('/cambiar_estado_resultado/<int:resultado_id>', methods=['PUT'])
-
 def cambiar_estado_resultado(resultado_id):
     return cambiar_estado_resultado_db(resultado_id)
-
-
 
 
 def cambiar_estado_resultado_db(resultado_id):
