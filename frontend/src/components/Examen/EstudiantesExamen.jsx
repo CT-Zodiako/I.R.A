@@ -185,7 +185,7 @@ export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion, a
               <BotonGeneral
                 tipo="submit"
                 accion="Cargar"
-                camposCargados={estudiantesExamen.estudiantes.length === 1}
+                camposCargados={estudiantesExamen.estudiantes.length >= 1}
               />
             </div>
           </form>

@@ -28,14 +28,14 @@ function Routers() {
         <Route path="/agregar-resultado" element={<CrearResultado/>}/>
         <Route path="/informe_examen" element={<Informes/>}></Route>
       </Route>
-      <Route path="/lista_examenes" element={<VistaExamenes/>}></Route>
-      <Route path="/lista-estudiantes" element={<VistaEstudiantes/>}></Route>
-      <Route path="/calificacion-examen" element={<CalificacionExamen/>}></Route>
-      {/* <Route path="/calificacion-examen/:examenId/:nombreEstudiante" element={<CalificacionExamen/>}></Route> */}
-      <Route path="/grafica-informe" element={<GraficoInforme/>}></Route>
-      <Route path="/informe-estudiante" element={<PromedioEstudiante />} />
-      {/* <Route path="/informe-estudiante/:evaluadorId/:proyectoIntegrador" element={<PromedioEstudiante/>}></Route> */}
-      <Route path="/pasos" element={<FormularioPorPasos/>} />
+      <Route path="/" element={<ProteccionRuta rolesPermitidos={'Evaluador'}/>}>
+        <Route path="/lista_examenes" element={<VistaExamenes/>}></Route>
+        <Route path="/lista-estudiantes" element={<VistaEstudiantes/>}></Route>
+        <Route path="/calificacion-examen" element={<CalificacionExamen/>}></Route>
+        <Route path="/grafica-informe" element={<GraficoInforme/>}></Route>
+        <Route path="/informe-estudiante" element={<PromedioEstudiante />} />
+        <Route path="/pasos" element={<FormularioPorPasos/>} />
+      </Route>
     </Routes>
   );
 }

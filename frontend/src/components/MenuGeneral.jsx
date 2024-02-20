@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { InputSeleccion } from './EtiquetaSeleccionGeneral'
 import programaServicio from '../services/ServicioPrograma' 
 import { agregarPrograma } from '../redux/programaSlice'
@@ -52,6 +52,10 @@ export const  Menu = () => {
     }
   }, []);
 
+  const cerrarSesion = () => {
+    localStorage.removeItem("token");
+  };
+
   // const rol = useSelector(state => state.sesion.rol);
   // console.log("rol del Usuario en el menu: ",rol);
 
@@ -100,6 +104,7 @@ export const  Menu = () => {
             sx={{ width: '12rem', height: '2.5rem' }}
             variant='contained'
             color='error'
+            onClick={cerrarSesion}
           >
             <OutputIcon sx={{ marginRight: "0.5rem" }}/>
             Cerrar Sesión
