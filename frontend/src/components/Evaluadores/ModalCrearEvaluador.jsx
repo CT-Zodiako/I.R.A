@@ -23,6 +23,7 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
     event.preventDefault();
     try {
       const response = await evaluadorService.agregarEvaluador(formulario);
+      onClose();
     } catch (error) {
       console.error(error);
     }
@@ -136,7 +137,10 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                 </div>
               </div>
               <div className="botonEditar">
-                <Button type="submit" variant="contained">
+                <Button 
+                  type="submit" 
+                  variant="contained"
+                >
                   Guardar
                 </Button>
               </div>
