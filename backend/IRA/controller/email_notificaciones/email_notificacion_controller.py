@@ -1,5 +1,6 @@
 import os
 import smtplib
+from ...db import db
 from email.mime.text import MIMEText
 from ...models.examen.examen_model import Examen
 
@@ -27,13 +28,17 @@ def create_email_message(destinatario, asunto, cuerpo):
 def enviar_correo(destinatario, asunto, cuerpo):
     server = configure_smtp_server()
     msg = create_email_message(destinatario, asunto, cuerpo)
-    server.sendmail("tryhardskill98@gmail.com", destinatario, msg.as_string())
+    server.sendmail(os.environ.get("SERVICE_EMAIL"),
+                    destinatario, msg.as_string())
     close_smtp_connection(server)
 
 
 def obtener_destinatarios_por_examen(examen_id):
     examen = Examen.query.get(examen_id)
-    if not examen:
-        return []
+    if examen is None:
+        return None
+
+    examen.notificar = True
+    db.session.commit()
     print([evaluador.correo for evaluador in examen.evaluadores_relacion])
     return [evaluador.correo for evaluador in examen.evaluadores_relacion]

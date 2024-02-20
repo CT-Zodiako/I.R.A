@@ -14,7 +14,7 @@ def agregar_examen(data):
         estudiantes = data.get('estudiantes')
         resultado_aprendizaje_id = data.get('resultado_aprendizaje_id')
         evaluadores_ids = data.get('evaluadores_ids')
-        
+
         if not (programa_id and proyecto_integrador and actividades_formativas and estudiantes and resultado_aprendizaje_id and evaluadores_ids):
             return jsonify({'mensaje': 'Faltan campos obligatorios en los datos'}), 400
 
@@ -24,10 +24,10 @@ def agregar_examen(data):
 
         evaluadores = Evaluador.query.filter(
             Evaluador.id.in_(evaluadores_ids)).all()
-        
+
         if len(evaluadores) != len(evaluadores_ids):
             return jsonify({'mensaje': 'Uno o más evaluadores no existen'}), 400
-        
+
         examen.evaluadores_relacion = evaluadores
 
         db.session.add(examen)
@@ -44,14 +44,16 @@ def cargar_archivo(archivo):
         from ... import create_app
         app = create_app()
         if archivo:
-            
-            archivo.save(os.path.join(app.config['UPLOAD_FOLDER'], archivo.filename))
-        
-            ruta_archivo_xlsx = os.path.join(app.config['UPLOAD_FOLDER'], archivo.filename)
+
+            archivo.save(os.path.join(
+                app.config['UPLOAD_FOLDER'], archivo.filename))
+
+            ruta_archivo_xlsx = os.path.join(
+                app.config['UPLOAD_FOLDER'], archivo.filename)
             df = pd.read_excel(ruta_archivo_xlsx)
 
             datos_json = df.to_json(orient='records')
-            
+
             os.remove(ruta_archivo_xlsx)
 
             return datos_json
@@ -61,7 +63,7 @@ def cargar_archivo(archivo):
         print(f"Error al cargar el archivo: {str(e)}")
         return jsonify({'mensaje': 'Error al cargar el archivo', 'error': str(e)}), 500
 
-    
+
 def obtener_examenes():
     try:
         # Query all exams from the Examen table
@@ -74,7 +76,7 @@ def obtener_examenes():
 
     except Exception as e:
         return jsonify({'mensaje': 'Error al obtener los exámenes', 'error': str(e)}), 500
-    
+
 
 def editar_examen(id, data):
     try:
@@ -113,7 +115,8 @@ def editar_examen(id, data):
 
     except Exception as e:
         return jsonify({'mensaje': 'Fallo para actualizar examen', 'error': f'{e}'}), 500
-    
+
+
 def get_examen_by_id(id):
     try:
         examen = Examen.query.get(id)
@@ -123,6 +126,7 @@ def get_examen_by_id(id):
     except Exception as e:
         print(f'Error al obtener el examen: {e}')
         return None
+
 
 def eliminar_examen(id):
     try:
@@ -137,14 +141,25 @@ def eliminar_examen(id):
 
     except Exception as e:
         return jsonify({'mensaje': 'Fallo para eliminar examen', 'error': f'{e}'}), 500
-    
-    
+
+
 def get_examen_by_id_db(id):
     try:
         examen = Examen.query.get(id)
         if not examen:
             return jsonify({'mensaje': 'Examen no encontrado'}), 404
-        return jsonify(examen.to_dict()), 200  # Asegúrate de que tu modelo Examen tiene un método to_dict
+        # Asegúrate de que tu modelo Examen tiene un método to_dict
+        return jsonify(examen.to_dict()), 200
     except Exception as e:
         print(f'Error al obtener el examen: {e}')
         return jsonify({'mensaje': 'Error al obtener el examen', 'error': f'{e}'}), 500
+
+
+def obtener_examenes_admin_bandeja():
+    try:
+        examenes = Examen.query.filter_by(notificar=False).all()
+        examenes_dicts = [examen.to_dict() for examen in examenes]
+        examenes_json = jsonify(examenes_dicts)
+        return examenes_json, 200
+    except Exception as e:
+        return jsonify({'mensaje': 'Error al obtener los exámenes', 'error': str(e)}), 500
