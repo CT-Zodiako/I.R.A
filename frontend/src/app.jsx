@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import './index.css';
 import Routers from './rutas';
 import Menu from '../src/components/MenuGeneral';
@@ -18,12 +18,14 @@ const App = () => {
       )}
       {autenticado && (
         <>
-          <Menu />
+          <Menu/>
           <div className="content">
             <Routers />
           </div>
         </>
       )}
+
+
     </div>
   );
 };
