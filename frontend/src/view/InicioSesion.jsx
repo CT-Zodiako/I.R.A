@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { iniciarSesion } from "../redux/inicioSesionSlipe";
 import axios from "axios";
 import { Button, TextField } from "@mui/material";
-// import unimayor from "../img/unimayor.png";
+import { useNavigate } from "react-router-dom";
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 
@@ -71,9 +71,9 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
     <>
     <div className="login">
       <div className="informacion">
-        {/* <div style={{ marginBottom: "2rem"}}>
-          <img src={unimayor} alt="unimayor"/>
-        </div> */}
+        <div style={{ marginBottom: "2rem"}}>
+          <img src="https://unimayor.edu.co/web/images/imagenes/escudo.jpg" alt="unimayor"/>
+        </div>
         <form onSubmit={onInicioSesion}>
           <div className="componentes">
             <div className="informacionInicioSesion">
