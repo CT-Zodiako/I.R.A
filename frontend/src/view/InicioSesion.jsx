@@ -3,18 +3,29 @@ import loginService from "../services/ServicioLogin";
 import { useDispatch } from "react-redux";
 import { iniciarSesion } from "../redux/inicioSesionSlipe";
 import axios from "axios";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+// import unimayor from "../../public/img/unimayor.png";
+import PersonIcon from '@mui/icons-material/Person';
+import LockIcon from '@mui/icons-material/Lock';
 
-export const InicioSesionUsuarios = () => {
+export const InicioSesionUsuarios = ({ onAutenticacion }) => {
   const dispatch = useDispatch();
   const [autentificacion, setAutentificacion] = useState({
     username: "",
     password: "",
   });
 
+
+  const [mostrarLabel, setMostrarLabel] = useState(true);
+  
   const onAutentificacion = (event) => {
     const { name, value } = event.target;
-    setAutentificacion({ ...autentificacion, [name]: value });
+    const labelEvento = event.target;
+    setAutentificacion({ 
+      ...autentificacion, 
+      [name]: value 
+    });
+    setMostrarLabel(labelEvento === " ");
   };
 
   const onInicioSesion = async (event) => {
@@ -35,9 +46,10 @@ export const InicioSesionUsuarios = () => {
 
         console.log(userId);
         console.log(username);
-        console.log(rol);
+        console.log("el rol: ",rol);
 
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        console.log("token del usuario: ", token);
 
         dispatch(
           iniciarSesion({
@@ -46,6 +58,7 @@ export const InicioSesionUsuarios = () => {
             rol: rol,
           })
         );
+        onAutenticacion();
       } else {
         console.error("Error al decodificar el token");
       }
@@ -56,38 +69,67 @@ export const InicioSesionUsuarios = () => {
 
   return (
     <>
+    <div className="login">
       <div className="informacion">
-        <h2>Iniciar sesión</h2>
+        <div style={{ marginBottom: "2rem"}}>
+          <img src="https://unimayor.edu.co/web/images/imagenes/escudo.jpg" alt="unimayor"/>
+        </div>
         <form onSubmit={onInicioSesion}>
           <div className="componentes">
-            <div>
-              <label>Usuario:</label>
+            <div className="informacionInicioSesion">
               <TextField
+                sx={{border: '1px solid #10457F' }}
+                className="inputInicionSesion"
                 type="text"
                 name="username"
                 value={autentificacion.username}
                 onChange={onAutentificacion}
                 id="outlined-basic"
-                label="Usuario"
+                placeholder="USUARIO"
                 required
+                InputProps={{
+                  startAdornment:(
+                    <PersonIcon
+                      sx={{ color: "#10457F" }}
+                    />
+                  ),
+                }}
               />
             </div>
-            <div>
-              <label>Contraseña:</label>
+            <div className="informacionInicioSesion">
               <TextField
+                sx={{ border: '1px solid #10457F' }}
+                className="inputInicionSesion"
                 type="password"
                 name="password"
                 value={autentificacion.password}
                 onChange={onAutentificacion}
                 id="outlined"
-                label="Contraseña"
+                placeholder="CONTRASEÑA"
                 required
+                InputProps={{
+                  startAdornment:(
+                    <LockIcon 
+                      sx={{ color: "#10457F" }}
+                    />
+                  ),
+                }}
               />
             </div>
           </div>
-          <button type="submit">Iniciar sesión</button>
+          <div className="inicioSesionBoton">
+            <Button 
+              sx={{ backgroundColor: "#10457F" }}
+              className="botonSesion"
+              type="submit"
+              variant="contained"
+            >
+              Conectar
+            </Button>
+          </div>
         </form>
-      </div>
+      </div>      
+    </div>
     </>
   );
 };

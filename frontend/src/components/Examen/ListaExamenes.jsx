@@ -1,25 +1,38 @@
-import { useEffect, useState } from "react";
-import examenService from "../../services/ServiciosExamen";
+import { useEffect, useState } from "react"
+import examenService from "../../services/ServiciosExamen"
 import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+  Button, Table, TableBody,
+  TableCell, TableContainer,
+  TableHead, TablePagination,
+  TableRow
+} from "@mui/material"
+import { Link, useNavigate } from "react-router-dom"
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import EmailIcon from '@mui/icons-material/Email'
+import DeleteIcon from '@mui/icons-material/Delete'
+import CreateIcon from '@mui/icons-material/Create'
 
-export const ExamenesLista = () => {
+export const ExamenesLista = () => {  
+  const navigate = useNavigate();
+
   const [listaExamenes, setListaExamenes] = useState([]);
+  const [paginasTabla, setPaginasTabla] = useState(0);
+  const [filasPaginasTabla, setFilasPaginasTabla] = useState(5);
 
-  console.log("mis examenes: ", listaExamenes);
+  const handleChangePage = (event, newPage) => {
+    setPaginasTabla(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setFilasPaginasTabla(parseInt(event.target.value, 10));
+    setPaginasTabla(0);
+  };
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await examenService.ExamenesCreados();
-        setListaExamenes(data.data);
+        const examenes = await examenService.ExamenesCreados();
+        setListaExamenes(examenes)
       } catch (error) {
         console.error("Error al obtener la lista: ", error);
       }
@@ -27,18 +40,48 @@ export const ExamenesLista = () => {
     fetchData();
   }, []);
 
-  const enviarCorre = (examenId) => {
+  const enviarCorre = (event, examenId) => {
+    event.preventDefault();
     const fetchData = async () => {
       try {
-        const data = await examenService.correoEvaluadores(examenId);
-        console.log("Correo enviado correctamente");
+        await examenService.correoEvaluadores(examenId);
+        await examenService.cambiarEstado(examenId);
+        onActualizarLista();
       } catch (error) {
         console.error("Error al enviar los correos: ", error);
       }
     };
-
     fetchData();
   };
+
+  const onEliminarExamen = async (event, examenId) => {
+    event.preventDefault();
+    try {
+      await examenService.eliminarExamen(examenId);
+      const nuevaListaExamen = await examenService.ExamenesCreados();
+      setListaExamenes(nuevaListaExamen);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onActualizarLista = async () => {
+    try {
+      const actualizar = await examenService.ExamenesCreados();
+      setListaExamenes(actualizar);
+    } catch (error) {
+      console.error("Erro al actulizar la tabla:", error);
+    }
+  }
+
+  const onEditarExamen = ({accion, examenId}) => {
+    navigate(`/editar_examen`,{
+      state: {
+        accion: accion,
+        examenId: examenId
+      }
+    });
+  }  
 
   return (
     <>
@@ -46,42 +89,82 @@ export const ExamenesLista = () => {
         <div>
           <h1>Lista Examenes Creados</h1>
         </div>
-        <div>
+        <div className="componentes">
           <div>
-            <h3>examenes</h3>
+            <Button
+              variant="contained"
+              color="success"
+              size="small"
+            >
+              <AddCircleOutlineIcon fontSize="small" />
+              <Link 
+                to="/pasos" 
+                className="botonAgregar"
+              >
+                Crear Examen
+              </Link>
+            </Button>
           </div>
           <div>
-            <button>Crear Examen</button>
-          </div>
-          <div>
-            <TableContainer>
-              <Table sx={{ minWidth: 650 }} aria-label="caption table">
-                <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
+            <TableContainer className="tablas">
+              <Table aria-label="caption table">
+                <TableHead className="tablaEncabezado">
                   <TableRow>
-                    <TableCell>Examen Id</TableCell>
-                    <TableCell align="left">ID</TableCell>
-                    <TableCell align="left">Acción</TableCell>
+                    <TableCell align="center">Examen Id</TableCell>
+                    <TableCell align="center">Proyecto Integrador</TableCell>
+                    <TableCell align="center">Acción</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {listaExamenes.map((examen) => (
-                    <TableRow key={examen.id}>
-                      <TableCell scope="row" align="left">
+                {(filasPaginasTabla > 0
+                  ? listaExamenes.slice(paginasTabla * filasPaginasTabla, paginasTabla * filasPaginasTabla + filasPaginasTabla)
+                  : listaExamenes
+                ).map((examen) => (
+                    <TableRow key={examen.id} className="tablaBody">
+                      <TableCell scope="row" align="center" className="tablaId">
                         {examen.id}
                       </TableCell>
-                      <TableCell align="left">
-                        {examen.proyecto_integrador}
+                      <TableCell align="center" className="tablaProyecto">
+                        <div>
+                          {examen.proyecto_integrador}
+                        </div>
                       </TableCell>
-                      <TableCell align="left">
-                        <Button onClick={() => enviarCorre(examen.id)}>
-                          Notificar
-                        </Button>
+                      <TableCell className="tablaAcciones">
+                        <div>
+                          <CreateIcon
+                            style={{ cursor: examen.estado ? 'not-allowed' : 'pointer' }}
+                            className="colorEditar"
+                            fontSize="large"
+                            onClick={() => onEditarExamen({accion:'editar', examenId: examen.id})}
+                          />
+                          <DeleteIcon
+                            style={{ cursor: examen.estado ? 'not-allowed' : 'pointer' }}
+                            className="colorEliminar"
+                            fontSize="large"
+                            onClick={(event) => onEliminarExamen(event, examen.id)}
+                          />
+                          <EmailIcon
+                              style={{ cursor: examen.estado ? 'not-allowed' : 'pointer' }}
+                              color="primary"
+                              fontSize="large"
+                              onClick={(event) => enviarCorre(event, examen.id)}
+                          />
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 20]}
+              component="div"
+              count={listaExamenes.length}
+              rowsPerPage={filasPaginasTabla}
+              page={paginasTabla}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
           </div>
         </div>
       </div>

@@ -30,20 +30,43 @@ export const calificacionSlice = createSlice({
                 evaluador_id: evaluadorId
             };
         },
-        agregarCalificacion:(state, action)=>{
-            const {nombre, notas, observaciones} = action.payload;
+        agregarCalificacion: (state, action) => {
+            const { nombre, notas, observaciones } = action.payload;
+            const estudianteExistente = state.calificacion.find((estudiante) => estudiante.nombre === nombre);
+
             if (state.calificacion.length === 1 && state.calificacion[0].nombre === "") {
                 state.calificacion = [];
             }
-            const nuevaCalificacion = {
-                nombre: nombre,
-                calificacion: {
+            if (estudianteExistente) {
+                estudianteExistente.calificacion = {
                     notas: notas,
                     observaciones: observaciones
-                }
-            };
-            state.calificacion.push(nuevaCalificacion);
+                };
+            } else {
+                const nuevaCalificacion = {
+                    nombre: nombre,
+                    calificacion: {
+                        notas: notas,
+                        observaciones: observaciones
+                    }
+                };
+                state.calificacion.push(nuevaCalificacion);
+            }
         },
+        // agregarCalificacion:(state, action)=>{
+        //     const {nombre, notas, observaciones} = action.payload;
+        //     if (state.calificacion.length === 1 && state.calificacion[0].nombre === "") {
+        //         state.calificacion = [];
+        //     }
+        //     const nuevaCalificacion = {
+        //         nombre: nombre,
+        //         calificacion: {
+        //             notas: notas,
+        //             observaciones: observaciones
+        //         }
+        //     };
+        //     state.calificacion.push(nuevaCalificacion);
+        // },
         LimpiarCalificacion:(state)=>{ 
             state.calificacion = [
                 {
@@ -59,5 +82,5 @@ export const calificacionSlice = createSlice({
     }
 });
 
-export const { agregarCalificacion, LimpiarCalificacion, idExamenCalificacion } = calificacionSlice.actions;
+export const { agregarCalificacion, LimpiarCalificacion, idExamenCalificacion, cargarDatosCalificacion } = calificacionSlice.actions;
 export default calificacionSlice.reducer;

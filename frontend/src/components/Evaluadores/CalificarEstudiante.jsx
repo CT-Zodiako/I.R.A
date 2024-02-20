@@ -1,35 +1,58 @@
 import { useEffect, useState } from 'react';
 import evaluadorService from '../../services/servicioEvaluador';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { InputSeleccionCalificacion } from '../seleccionCalificacion';
 import { agregarCalificacion } from '../../redux/calificacionSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
+import { cambiarEstadoBoton } from '../../redux/botonAlertaSlice';
 
 export const CalificacionExamen = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const examenId = location.state.examenId;
+  const nombreEstudiante = location.state.nombreEstudiante;
   const dispatch = useDispatch();
-  const[evaluado, setEvaluado] = useState({
-        nombre: '',
-        calificacion:{
-          notas:[],
-          observaciones:[]
-        }
-  });
 
+  const calificacionEstudiante = useSelector((state) => state.calificacion.calificacion);
+  const calificacionEvaluado = calificacionEstudiante.find((calificacion) => calificacion.nombre === nombreEstudiante);  
+  const arregloCalificacion = [calificacionEvaluado];
+
+  const calificacionActividades = calificacionEvaluado
+  ? {
+      nombre: '',
+      calificacion: {
+        notas: calificacionEvaluado.calificacion.notas,
+        observaciones: calificacionEvaluado.calificacion.observaciones,
+      },
+    }
+  : {
+      nombre: '',
+      calificacion: {
+        notas: [],
+        observaciones: [],
+      },
+  };
+
+  const [evaluado, setEvaluado] = useState(calificacionActividades);
   const[estudianteCalificacion, setEstudianteExamen] = useState([]);
   const[notasCalificacion, setNotasCalificacion] = useState([]);
-  console.log("descripcion: ", estudianteCalificacion);
+  const [botonCalificar, setBotonCalificar] = useState(false); 
 
-  const { nombreEstudiante, examenId } = useParams();
-
-  const onNotaCalificacion = (idSeleccion) => {
-    setEvaluado({
-      ...evaluado,
+  const onNotaCalificacion = (idSeleccion, index) => {
+    setEvaluado((prevEvaluado) => {
+      const newNotas = [...prevEvaluado.calificacion.notas];
+      newNotas[index] = idSeleccion;
+      return {
+        ...prevEvaluado,
         calificacion: {
-          ...evaluado.calificacion,
-          notas: [...evaluado.calificacion.notas, idSeleccion],
-      },
+          ...prevEvaluado.calificacion,
+          notas: newNotas,
+        },
+      };
     });
   };
+
 
   const onObservacion = (event) => {
     const guardarObservacion = event.target.value;
@@ -47,19 +70,30 @@ export const CalificacionExamen = () => {
     });
   };
 
+  useEffect(() => {
+    const numeroNotas = evaluado.calificacion.notas.length;
+    const nuemeroActividades = estudianteCalificacion.length;
+    const actividadesCalificadas = numeroNotas === nuemeroActividades;
+    setBotonCalificar(actividadesCalificadas);
+  }, [evaluado, estudianteCalificacion]);
+
   const onEnviarCalificacion = (event) => {
     event.preventDefault();
-    dispatch(
-      agregarCalificacion({
-          examenId: examenId,
+      dispatch(
+        agregarCalificacion({
           nombre: evaluado.nombre,
           notas: evaluado.calificacion.notas,
           observaciones: evaluado.calificacion.observaciones,
-      })
-    );
-    console.log(evaluado);
+        }),
+      );
+      dispatch(
+        cambiarEstadoBoton({
+          botonAlerta: true,
+        }),
+      );
+      navigate(`/lista-estudiantes`);
   };
-
+  
   useEffect(() => {
     setEvaluado({
       ...evaluado,
@@ -97,39 +131,64 @@ export const CalificacionExamen = () => {
       <form onSubmit={onEnviarCalificacion}>
         <div>
           <div>
-            <h1>Calificacion Evaluacion</h1>
-            <h2>Proyecto Integrador</h2>
-            <label htmlFor="">IoT</label>
+            <h1 className='centrar'>Calificacion Evaluacion</h1>
+            <div style={{ padding: "0 10rem", textAlign: "center" }}>
+              <h2 className='centrar'>Proyecto Integrador</h2>
+              <label htmlFor="" className='centrar'>Aqui debe ir el proyecto integrador que se esta evvaluando en este momento al estudiantes. Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste reprehenderit illum optio cum quis, sint ratione neque quaerat provident saepe vel tempore, omnis suscipit harum necessitatibus nostrum ipsum facere commodi!</label>
+            </div>
           </div>
           <div>
-            <h2>Estudiante: {nombreEstudiante} </h2>
+            <h2 className='centrar'>Estudiante: {nombreEstudiante} </h2>
             <div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Actividad</th>
-                    <th>Calificacion</th>
-                    <th>Observacion</th>
-                  </tr>
-                </thead>
-                <tbody>
+            <TableContainer className="tablas">
+              <Table>
+                <TableHead className="tablaEncabezado">
+                  <TableRow>
+                    <TableCell align='center'>Actividad</TableCell>
+                    <TableCell align='center'>Calificacion</TableCell>
+                    <TableCell align='center'>Observacion</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
                   {estudianteCalificacion.map((calificar, index) => (
-                    <tr key={index}>
-                      <td>{calificar}</td>
-                      <td>
-                        <InputSeleccionCalificacion seleccionar={notasCalificacion} idSeleccion={onNotaCalificacion} />
-                      </td>
-                      <td>
-                        <textarea name="" id="" cols="30" rows="10" onChange={onObservacion} data-index={index}></textarea>
-                      </td>
-                    </tr>
+                    <TableRow key={index}>
+                      <TableCell sx={{ width: "35%" }}>
+                        {calificar}
+                      </TableCell>
+                      <TableCell align='center' sx={{ width: "30%" }}>
+                        <InputSeleccionCalificacion 
+                          seleccionar={notasCalificacion} 
+                          idSeleccion={(idSeleccion) => onNotaCalificacion(idSeleccion, index)}
+                          valor={evaluado.calificacion.notas[index] }  
+                        />
+                      </TableCell>
+                      <TableCell align='center' sx={{ width: "30%" }}>
+                        <textarea 
+                          cols="30" 
+                          rows="10" 
+                          value={evaluado.calificacion.observaciones[index] || ''}                          
+                          onChange={onObservacion} 
+                          data-index={index}
+                          style={{ resize: "none", borderRadius: "5px"}}
+                        >
+                        </textarea>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
+              </TableContainer>
             </div>
           </div>
         </div>
-        <button type="submit" onClick={onEnviarCalificacion}>Calificar Estudiante</button>
+        <Button
+          variant='contained'
+          type="submit" 
+          onClick={onEnviarCalificacion}
+          disabled={!botonCalificar}
+        >
+          Guardar
+        </Button>
       </form>
     </>
   );

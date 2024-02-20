@@ -28,3 +28,5 @@ web/__pycache__
 # Archivos de registro específicos de Flask (opcional, depende de la configuración)
 logs/
 .env
+
+test/

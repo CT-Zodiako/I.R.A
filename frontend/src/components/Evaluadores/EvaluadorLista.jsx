@@ -2,29 +2,57 @@ import { useEffect, useState } from "react";
 import evaluadorService from "../../services/servicioEvaluador";
 import { Link } from "react-router-dom";
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
+  TablePagination,
+  TableRow 
 } from "@mui/material";
-// import { ModalIRA } from "../Examen/Modal";
+import { ModalIRA } from "../Examen/ModalEditarEvaluador"
+import ClearIcon from '@mui/icons-material/Clear'
+import CreateIcon from '@mui/icons-material/Create'
+import { ModalCrearEvaluador } from "./ModalCrearEvaluador"
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 
 export const EvaluadorLista = () => {
   const [evaluadores, setEvaluadores] = useState([]);
-  // const [modalAbierto, setModalAbierto] = useState(false);
-  // const [evaluadorIdSeleccionado, setEvaluadorIdSeleccionado] = useState(null);
+  const [modalAbiertoCrear, setModalAbiertoCrear] = useState(false);
+  const [modalAbiertoEditar, setModalAbiertoEditar] = useState(false);
+  const [evaluadorIdSeleccionado, setEvaluadorIdSeleccionado] = useState(null);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
 
-  // const abrirModal = (evaluadorId) => {
-  //   setModalAbierto(true);
-  //   setEvaluadorIdSeleccionado(evaluadorId);
-  // };
+  const abrirModalCrear = () => {
+    setModalAbiertoCrear(true);
+  };
 
-  // const cerrarModal = () => {
-  //   setModalAbierto(false);
-  //   setEvaluadorIdSeleccionado(null);
-  // };
+  const cerrarModalCrear = () => {
+    setModalAbiertoCrear(false);
+    actualizarTabla()
+  };
+  
+  const abrirModalEditar = (evaluadorId) => {
+    setEvaluadorIdSeleccionado(evaluadorId);
+    setModalAbiertoEditar(true);
+  };
+
+  const cerrarModalEditar = () => {
+    setEvaluadorIdSeleccionado(null);
+    setModalAbiertoEditar(false);
+    actualizarTabla()
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -49,63 +77,116 @@ export const EvaluadorLista = () => {
     }
   };
 
+  const actualizarTabla = async () => {
+    try {
+      const data = await evaluadorService.traerEvaluador();
+      setEvaluadores(data);
+    } catch (error) {
+      console.error("Error al obtener el resultado:", error);
+    }
+  };
+
+  useEffect(() => {
+    actualizarTabla();
+  }, []);
+
   return (
     <>
-      <div>
-        <div>
-          <button>
-            <Link to="/gestion-usuario">Agregar Evaluador</Link>
-          </button>
+      <div className="componentes">
+        <div className="titulos">
+          <h1>Gestion de Usuarios</h1>
+        </div>
+        <div  className="botonAgregar-Filtro" style={{ display: 'flex', justifyContent: 'flex-start'}}>
+          <Button
+            sx={{ height: "2.5rem"}}
+            variant="contained"
+            color="success"
+            size="small"
+            onClick={ abrirModalCrear }
+          >
+            <AddCircleOutlineIcon fontSize="small" sx={{ marginRight: "1rem" }}/>
+            Agregar Evaluador
+          </Button>
         </div>
         <div>
-          <TableContainer>
-            <Table sx={{ minWidth: 650 }} aria-label="caption table">
-              <TableHead sx={{ background: "rgba(0, 0, 255, 0.5)" }}>
+          <TableContainer className="tablas">
+            <Table aria-label="caption table">
+              <TableHead className="tablaEncabezado">
                 <TableRow>
-                  <TableCell>Nombre del Evaluador</TableCell>
-                  <TableCell align="left">Correo</TableCell>
-                  <TableCell align="left">Telefono</TableCell>
-                  <TableCell align="left">Numero de Identificacion</TableCell>
-                  <TableCell align="left">Acción</TableCell>
+                  <TableCell align="center">Nombre del Evaluador</TableCell>
+                  <TableCell align="center">Correo</TableCell>
+                  <TableCell align="center">Telefono</TableCell>
+                  <TableCell align="center">Numero de Identificacion</TableCell>
+                  <TableCell align="center">Estado</TableCell>
+                  <TableCell align="center">Acción</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {evaluadores.map((evaluador) => (
-                  <TableRow key={evaluador.id}>
-                    <TableCell scope="row" align="left">
+              {(rowsPerPage > 0
+                  ? evaluadores.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  : evaluadores
+                ).map((evaluador) => (
+                  <TableRow key={evaluador.id} className="tablaBody">
+                    <TableCell scope="row" align="left" className="evaluadoreNombre">
                       {evaluador.nombre_evaluador}
                     </TableCell>
-                    <TableCell align="left">{evaluador.correo}</TableCell>
-                    <TableCell align="left">{evaluador.telefono}</TableCell>
-                    <TableCell align="left">
+                    <TableCell align="left" className="evaluadorCorreo">
+                      {evaluador.correo}
+                    </TableCell>
+                    <TableCell align="center" className="evaluadorTelefono">
+                      {evaluador.telefono}
+                    </TableCell>
+                    <TableCell align="center" className="evaluadorId">
                       {evaluador.numero_identificacion}
                     </TableCell>
-                    <TableCell align="left">
-                      <button
-                        onClick={(event) =>
-                          onEliminarEvaluador(event, evaluador.id)
-                        }
-                      >
-                        Eliminar
-                      </button>
-                      <button onClick={() => 
-                        abrirModal(evaluador.id)}
-                      >
-                        Actualizar
-                      </button>
-                      {/* <ModalIRA 
-                        isOpen={modalAbierto}
-                        onClose={cerrarModal}
-                        evaluadorId={evaluadorIdSeleccionado}
-                      /> */}
+                    <TableCell align="center" className="evaluadorEstado">                                          
+                      {evaluador.estado ? "Activo" : "Inactivo"}
+                    </TableCell>
+                    <TableCell align="center" className="evaluadorAccion" >
+                      <div className="botonesMargen">
+                        <div>
+                          <ClearIcon 
+                            className="colorEliminar"
+                            fontSize="large"
+                            onClick={(event) =>
+                                onEliminarEvaluador(event, evaluador.id)
+                              }
+                          />
+                        </div>
+                        <div>
+                          <CreateIcon
+                            className="colorEditar"
+                            fontSize="large"
+                            onClick={() => abrirModalEditar(evaluador.id)}
+                          />
+                        </div>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[3, 5, 10]}
+            component="div"
+            count={evaluadores.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </div>
       </div>
+      <ModalIRA
+        isOpen={modalAbiertoEditar}
+        onClose={cerrarModalEditar}
+        evaluadorId={evaluadorIdSeleccionado}
+      />
+      <ModalCrearEvaluador
+        isOpen={modalAbiertoCrear}
+        onClose={cerrarModalCrear}
+      />
     </>
   );
 };
