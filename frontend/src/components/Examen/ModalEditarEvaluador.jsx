@@ -126,7 +126,7 @@ export const ModalIRA = ({ isOpen, onClose, evaluadorId }) => {
                     <TextField
                       id="outlined-basic"
                       type="text"
-                      name="nueva_numero_identificacion"
+                      name="nueva_contrasena"
                       value={formulario.nueva_contrasena}
                       onChange={onEditarEvaluador}
                     />
