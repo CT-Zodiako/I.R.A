@@ -1,3 +1,4 @@
+import os
 from ...db import db
 from flask import Blueprint, request, jsonify
 from ...models.examen.examen_model import Examen
@@ -10,7 +11,8 @@ email_blueprint = Blueprint('email', __name__)
 def configure_smtp_server():
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
-    server.login("tryhardskill98@gmail.com", "ybpy hspa fzje jdzh")
+    server.login(os.environ.get("SERVICE_EMAIL"),
+                 os.environ.get("SERVICE_EMAIL_PASSWORD"))
     return server
 
 
@@ -21,7 +23,7 @@ def close_smtp_connection(server):
 def create_email_message(destinatario, asunto, cuerpo):
     msg = MIMEText(cuerpo)
     msg['Subject'] = asunto
-    msg['From'] = "tryhardskill98@gmail.com"
+    msg['From'] = os.environ.get("SERVICE_EMAIL")
     msg['To'] = destinatario
     return msg
 
