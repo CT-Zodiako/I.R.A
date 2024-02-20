@@ -73,7 +73,7 @@ export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion, a
 
     axios
       .post(
-        "http://127.0.0.1:3001/examen/ruta_de_carga_de_archivos",
+        `${import.meta.env.VITE_API_URL}/examen/ruta_de_carga_de_archivos`,
         formData,
         {
           headers: {
