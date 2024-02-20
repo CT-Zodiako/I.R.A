@@ -60,7 +60,7 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                       <TextField
                         id="outlined-basic"
                         type="text"
-                        name="nuevo_nombre_evaluador"
+                        name="nombre_evaluador"
                         value={formulario.nombre_evaluador}
                         onChange={onAgregarEvaluador}
                         required
@@ -75,7 +75,7 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                       <TextField
                         id="outlined-basic"
                         type="text"
-                        name="nuevo_correo"
+                        name="correo"
                         value={formulario.correo}
                         onChange={onAgregarEvaluador}
                         required
@@ -92,7 +92,7 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                       <TextField
                         id="outlined-basic"
                         type="text"
-                        name="nuevo_numero_identificacion"
+                        name="numero_identificacion"
                         value={formulario.numero_identificacion}
                         onChange={onAgregarEvaluador}
                         required
@@ -109,7 +109,7 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                       <TextField
                         id="outlined-basic"
                         type="text"
-                        name="nueva_numero_identificacion"
+                        name="contrasenna"
                         value={formulario.contrasenna}
                         onChange={onAgregarEvaluador}
                         required
@@ -126,7 +126,7 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                       <TextField
                         id="outlined-basic"
                         type="text"
-                        name="nuevo_telefono"
+                        name="telefono"
                         value={formulario.telefono}
                         onChange={onAgregarEvaluador}
                         required
