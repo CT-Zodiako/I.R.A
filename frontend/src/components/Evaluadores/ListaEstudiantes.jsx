@@ -140,12 +140,6 @@ export const VistaEstudiantes = () => {
                     >
                         Enviar Calificacion
                     </Button>
-                    <Button
-                        onClick={ abrirVentanaConfirmacion }
-                        variant="contained"
-                    >
-                        Confirmar
-                    </Button>
                 </div>
                 <div style={{ display: "flex", justifyItems: "end", marginTop: "1rem" }}>
                     <NotificacionCalificacion 
