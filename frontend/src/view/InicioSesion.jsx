@@ -71,9 +71,9 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
     <>
     <div className="login">
       <div className="informacion">
-        <div style={{ marginBottom: "2rem"}}>
+        {/* <div style={{ marginBottom: "2rem"}}>
           <img src={unimayor} alt="unimayor"/>
-        </div>
+        </div> */}
         <form onSubmit={onInicioSesion}>
           <div className="componentes">
             <div className="informacionInicioSesion">
