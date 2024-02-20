@@ -110,7 +110,7 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                         id="outlined-basic"
                         type="text"
                         name="nueva_numero_identificacion"
-                        value={formulario.contrasena}
+                        value={formulario.contrasenna}
                         onChange={onAgregarEvaluador}
                         required
                       />
