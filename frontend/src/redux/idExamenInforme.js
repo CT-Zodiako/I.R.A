@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 const IdExamenInforme = {
-    idInforme: 45,
+    idInforme: "",
 }
 
 export const idExamenInformeSlice = createSlice({

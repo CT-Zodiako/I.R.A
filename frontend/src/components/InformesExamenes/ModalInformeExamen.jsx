@@ -104,8 +104,10 @@ export const ModalInformeExamen = ({ abrirInforme, cerrarInforme }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await informeServicio.promedioEstudiante(evaluador);
-        setCalificaciones(data);
+        if(evaluador){
+          const data = await informeServicio.promedioEstudiante(evaluador);
+          setCalificaciones(data);
+        }
       } catch (error) {
         console.error(
           "Error al obtener el promedio de los estudiantes:",
@@ -119,8 +121,10 @@ export const ModalInformeExamen = ({ abrirInforme, cerrarInforme }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await informeServicio.promedioGrafica(evaluador);
-        setPromedioGrafica(data);
+        if(evaluador){
+          const data = await informeServicio.promedioGrafica(evaluador);
+          setPromedioGrafica(data);
+        }
         console.log("graficas actividad: ", data);
       } catch (error) {
         console.error("Error al obtener el conteo:", error);
@@ -132,8 +136,10 @@ export const ModalInformeExamen = ({ abrirInforme, cerrarInforme }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await informeServicio.actividadesExamen(evaluador);
-        setActividades(data.actividades);
+        if(evaluador){
+          const data = await informeServicio.actividadesExamen(evaluador);
+          setActividades(data.actividades);
+        }
       } catch (error) {
         console.error("Error al obtener el conteo:", error);
       }
@@ -144,8 +150,10 @@ export const ModalInformeExamen = ({ abrirInforme, cerrarInforme }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await evaluadorService.calificacionEstudiante();
-        setColorInforme(data);
+        if(evaluador){
+          const data = await evaluadorService.calificacionEstudiante();
+          setColorInforme(data);
+        }
       } catch (error) {
         console.error("Error al obtener los datos de calificaciones", error);
       }

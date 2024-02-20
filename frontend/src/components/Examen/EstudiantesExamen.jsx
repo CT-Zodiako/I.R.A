@@ -18,25 +18,11 @@ export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion, a
 
   const [estudianteEstado, setEstudianteEstado] = useState({ NOMBRE: "" });
   const [estudiantesExamen, setEstudiantes] = useState({estudiantes: infoEstudianteStore.estudiantes});
-  // const [page, setPage] = useState(0);
-  // const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const regresarPanelExamen = () => {
     anterior();
   };
 
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
-
-  // const onEstudiante = (event) => {
-  //     setEstudianteEstado(event.target.value)
-  // }
   const onEstudiante = (event) => {
     const { name, value } = event.target;
     setEstudianteEstado({
@@ -78,11 +64,6 @@ export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion, a
     nuevoEstudiante.splice(index, 1);
     nuevoFormulario.estudiantes = nuevoEstudiante;
     setEstudiantes(nuevoFormulario);
-
-    // const newPageCount = Math.ceil((estudiantesExamen.estudiantes.length - 1) / rowsPerPage);
-    // if (page > 0 && page >= newPageCount) {
-    //   handleChangePage(null, page - 1);
-    // }
   };
 
   const handleFileUpload = (event) => {
@@ -175,10 +156,6 @@ export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion, a
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {/* {(rowsPerPage > 0
-                        ? estudiantesExamen.estudiantes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : estudiantesExamen.estudiantes
-                      ) */}
                       {estudiantesExamen.estudiantes.map((estudiante, index) => (
                         <TableRow key={index}>
                           <TableCell scope="row" align="left" className="estudianteNombre">
@@ -202,19 +179,9 @@ export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion, a
                     </TableBody>
                   </Table>
                 </TableContainer>
-                {/* <TablePagination
-                rowsPerPageOptions={[5, 10, 20]}
-                component="div"
-                count={estudiantesExamen.estudiantes.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              /> */}
               </div>
             </div>
             <div>
-              {/* <button type="submit">Cargar</button> */}
               <BotonGeneral
                 tipo="submit"
                 accion="Cargar"
