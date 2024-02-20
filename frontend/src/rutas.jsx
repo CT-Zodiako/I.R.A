@@ -27,6 +27,7 @@ function Routers() {
         <Route path="/resultado-aprendizaje" element={<ResultadoAprendizaje/>}/>
         <Route path="/agregar-resultado" element={<CrearResultado/>}/>
         <Route path="/informe_examen" element={<Informes/>}></Route>
+        <Route path="/pasos" element={<FormularioPorPasos/>} />
       </Route>
       <Route path="/" element={<ProteccionRuta rolesPermitidos={'Evaluador'}/>}>
         <Route path="/lista_examenes" element={<VistaExamenes/>}></Route>
@@ -34,7 +35,6 @@ function Routers() {
         <Route path="/calificacion-examen" element={<CalificacionExamen/>}></Route>
         <Route path="/grafica-informe" element={<GraficoInforme/>}></Route>
         <Route path="/informe-estudiante" element={<PromedioEstudiante />} />
-        <Route path="/pasos" element={<FormularioPorPasos/>} />
       </Route>
     </Routes>
   );
