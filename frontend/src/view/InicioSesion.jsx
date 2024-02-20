@@ -4,14 +4,12 @@ import { useDispatch } from "react-redux";
 import { iniciarSesion } from "../redux/inicioSesionSlipe";
 import axios from "axios";
 import { Button, TextField } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import unimayor from "../img/unimayor.png";
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 
 export const InicioSesionUsuarios = ({ onAutenticacion }) => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
   const [autentificacion, setAutentificacion] = useState({
     username: "",
     password: "",
@@ -19,6 +17,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
 
 
   const [mostrarLabel, setMostrarLabel] = useState(true);
+  
   const onAutentificacion = (event) => {
     const { name, value } = event.target;
     const labelEvento = event.target;
@@ -60,8 +59,6 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
           })
         );
         onAutenticacion();
-        // navigate('/app');
-
       } else {
         console.error("Error al decodificar el token");
       }

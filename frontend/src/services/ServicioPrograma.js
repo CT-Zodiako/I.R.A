@@ -4,7 +4,7 @@ class programaServicio{
     
     async traerPrograma() {
         try {
-          const response = await axios.get('http://127.0.0.1:3001/programa/');
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/programa/`);
           return response.data.data;
         } catch (err) {
           console.error(err);

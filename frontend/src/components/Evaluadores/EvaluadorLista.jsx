@@ -93,8 +93,12 @@ export const EvaluadorLista = () => {
   return (
     <>
       <div className="componentes">
-        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+        <div className="titulos">
+          <h1>Gestion de Usuarios</h1>
+        </div>
+        <div  className="botonAgregar-Filtro" style={{ display: 'flex', justifyContent: 'flex-start'}}>
           <Button
+            sx={{ height: "2.5rem"}}
             variant="contained"
             color="success"
             size="small"

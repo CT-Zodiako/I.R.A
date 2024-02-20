@@ -16,6 +16,7 @@ import "./styleInforme.css"
 export const PromedioEstudiante = () => {
   const location = useLocation();
   const evaluadorId = location.state.evaluadorId;
+  console.log("id del evaluador: ",evaluadorId); 
   const proyectoIntegrador = location.state.proyectoIntegrador;
 
   const [calificaciones, setCalificaciones] = useState([]);

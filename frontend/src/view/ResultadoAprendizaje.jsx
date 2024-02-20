@@ -59,22 +59,24 @@ export const ResultadoAprendizaje = () => {
   return (
     <>
       <div className="componentes">
-        <h1>Resultado Aprendizaje</h1>
+        <div className="titulos">
+          <h1>Resultado Aprendizaje</h1>
+        </div>
         <div className="busquedaResultadoAprendizaje">
           <div>
             <Button
                 variant="contained"
                 color="success"
-                size="small"
+                sx={{ height: "2.5rem"}}
                 onClick={abrirModal}
               >
-                <AddCircleOutlineIcon fontSize="small" />
+                <AddCircleOutlineIcon fontSize="small" sx={{ marginRight: "0.3rem" }} />
                 Agregar Resulatado Aprendizaje
             </Button>
           </div>
           <div className="resultadoAprendizaje">
             <TextField
-              sx={{ width: "24rem", minWidth: "12rem", margin: " 1rem 0rem 0rem 5rem" }}
+              sx={{ width: "24rem", minWidth: "12rem" }}
               id="outlined-basic"
               placeholder="Filtrar por Resultado Aprendizaje"
               variant="outlined"

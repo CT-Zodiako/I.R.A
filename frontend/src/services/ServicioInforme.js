@@ -3,7 +3,7 @@ import axios from 'axios';
 class informeServicio{
     async informeExamen() {
         try {
-          const response = await axios.get('http://127.0.0.1:3001/examen/examenes');
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/examen/examenes`);
           return response.data;
         } catch (err) {
           console.error(err);
@@ -12,7 +12,7 @@ class informeServicio{
       
     async promedioEstudiante(evaluadorId) {
       try {
-          const response = await axios.get(`http://127.0.0.1:3001/informes/traer_calificaciones/${evaluadorId}`);
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/informes/traer_calificaciones/${evaluadorId}`);
           return response.data;
       } catch (err) {
         console.error(err);
@@ -21,7 +21,7 @@ class informeServicio{
 
    async promedioGrafica(evaluadorId) {
     try {
-      const response = await axios.get(`http://127.0.0.1:3001/informes/traer_calificaciones/${evaluadorId}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/informes/traer_calificaciones/${evaluadorId}`);
         return response.data.conteo;
     } catch (err) {
       console.error(err);
@@ -30,7 +30,7 @@ class informeServicio{
 
  async actividadesExamen(evaluadorId) {
   try {
-    const response = await axios.get(`http://127.0.0.1:3001/examen/actividades/${evaluadorId}`);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/examen/actividades/${evaluadorId}`);
       return response.data;
   } catch (err) {
     console.error(err);
