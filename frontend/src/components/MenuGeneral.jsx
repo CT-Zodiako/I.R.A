@@ -66,13 +66,7 @@ export const  Menu = () => {
 
   const cerrarSesion = () => {
     localStorage.removeItem("token");
-    setToken(null);
-    setRol(null);
-    Navigate("/")
   };
-
-  // const rol = useSelector(state => state.sesion.rol);
-  // console.log("rol del Usuario en el menu: ",rol);
 
   return (
     <div className="menu">

@@ -15,8 +15,10 @@ import ProteccionRuta from './rutasProtegidas';
 import { FormularioPorPasos } from './components/Examen/pruebaPasos';
 import { ExamenesLista } from './components/Examen/ListaExamenes';
 import { EditarExamen } from './components/Examen/editarExamen';
+
 function Routers() {
   return (
+    <>
     <Routes>
       <Route path="/" element={<ProteccionRuta rolesPermitidos={'Admin'}/>}>
         <Route path="/lista_examen" element={<ExamenesLista/>}/>
@@ -37,6 +39,7 @@ function Routers() {
         <Route path="/grafica-informe" element={<GraficoInforme/>}></Route>
       </Route>
     </Routes>
+    </>
   );
 }
 
