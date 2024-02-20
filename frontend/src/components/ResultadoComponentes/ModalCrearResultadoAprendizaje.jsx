@@ -79,7 +79,10 @@ export const CrearResultadoAprendizaje = ({ abierto, cerrado }) => {
                 </div>
               </div>
               <div className="centrar">
-                <Button type="submit" variant="contained">
+                <Button 
+                  type="submit" 
+                  variant="contained"
+                >
                   Crear
                 </Button>
               </div>

@@ -1,12 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit'
 import calificacionReducer from './calificacionSlice'
 import LimpiarCalificacion from './calificacionSlice'
 import idExamenCalificacion from './calificacionSlice'
-import iniciarSesion from './inicioSesionSlipe';
-import cerrarSesion from './inicioSesionSlipe';
-import examenFormularioReducer from './examenSlice';
-import programa from './programaSlice';
-import botonAlertaSlice from './botonAlertaSlice';
+import iniciarSesion from './inicioSesionSlipe'
+import cerrarSesion from './inicioSesionSlipe'
+import examenFormularioReducer from './examenSlice'
+import programa from './programaSlice'
+import botonAlertaSlice from './botonAlertaSlice'
+import informeExamenSlice from './idExamenInforme'
 
 export const store = configureStore({
    reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     examenFormulario: examenFormularioReducer,
     programa: programa,
     botonAlerta: botonAlertaSlice,
+    informeExamen: informeExamenSlice,
    },
 });
 

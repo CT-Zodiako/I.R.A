@@ -186,8 +186,18 @@ body {
 .resultadoAprendizaje{
   text-align: center;
   height: 5rem;
-  padding: 0rem 5rem 0.5rem 0rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Titulos de las Pantallas del Sistema */
+.titulos{
+  height: 4rem;
+}
+
+.botonAgregar-Filtro{
+  height: 4rem;
+}
 
 

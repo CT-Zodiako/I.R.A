@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import informeServicio from "../../services/ServicioInforme"
-import { useNavigate } from "react-router-dom"
+import { useNavigate,  } from "react-router-dom"
 import {
   Button, Table, TableBody,
   TableCell, TableContainer,
@@ -9,14 +9,18 @@ import {
   TextField
 } from "@mui/material"
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
+import { ModalInformeExamen } from "./ModalInformeExamen"
+import { useDispatch } from "react-redux"
+import { guardarInformeId } from "../../redux/idExamenInforme"
 
 export const Informes = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [calificacionesExamen, setCalificacionesExamen] = useState([]);
-  console.log("lista de los informes: ",calificacionesExamen);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [filtrar, setFiltrar] = useState('');
+  const [mostrarInforme, setMotrarInforme] = useState(false);
 
   const buscarInforme = (event) => {
     setFiltrar(event.target.value);
@@ -25,6 +29,19 @@ export const Informes = () => {
   const filtrarInformeExamen = calificacionesExamen.filter((informe) => 
     informe.proyecto_integrador.toLowerCase().includes(filtrar.toLowerCase())
   );
+
+  const abrirInforme = (evaluador) => {
+    setMotrarInforme(true);
+    dispatch(
+      guardarInformeId({
+        idExamen: evaluador 
+      })
+    );
+  }
+
+  const cerrarInforme = () => {
+    setMotrarInforme(false);
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -58,9 +75,11 @@ export const Informes = () => {
   };
 
   return (
-    <div>
-      <h1>Examenes imforme</h1>
-      <div>
+    <div className="componentes">
+      <div className="titulos">
+        <h1>Examenes imforme</h1>
+      </div>
+      <div className="botonAgregar-Filtro" style={{ display: "flex", justifyContent: "end", alignItems: "center" }}>
         <TextField
           sx={{ width: "24rem", marginLeft: "12rem"}}
           id="outlined-basic"
@@ -107,6 +126,14 @@ export const Informes = () => {
                   >
                     Ver Informe
                   </Button>
+                  {/* <Button
+                    variant="contained"
+                    color="success"
+                    size="small"
+                    onClick={() => abrirInforme( informes.id)}
+                  >
+                    ver
+                  </Button> */}
                 </TableCell>
               </TableRow>
             ))}
@@ -121,6 +148,10 @@ export const Informes = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      <ModalInformeExamen
+        abrirInforme={mostrarInforme}
+        cerrarInforme={cerrarInforme}
       />
     </div>
   );

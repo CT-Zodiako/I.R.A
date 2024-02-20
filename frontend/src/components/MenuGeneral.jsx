@@ -35,24 +35,19 @@ export const  Menu = () => {
   }, []);
 
   useEffect(() => {
-    // Obtén el token del localStore
     const token = localStorage.getItem("token");
 
     const tokenData = token.split(".")[1];
     const decodedToken = JSON.parse(atob(tokenData));
-    // Decodifica el token
     if (decodedToken) {
-      // Obtén el rol del token
       setRol(decodedToken.sub.rol);
     }
   }, []);
 
   useEffect(() => {
-    // Verifica si el token ha cambiado
     const tokenActual = localStorage.getItem("token");
     if (tokenActual !== token) {
       console.log("Token actualizado", tokenActual);
-      // Cierra la sesión
       setToken(null);
     }
   }, []);
@@ -76,7 +71,8 @@ export const  Menu = () => {
                   <li className='opcionesMenu'><Link to="/resultado-aprendizaje">Resultados de Aprendizaje</Link></li>
                   <li className='opcionesMenu'><Link to="/evaluadores">Gestión de Usuario</Link></li>
                   <li className='opcionesMenu'><Link to="/informe_examen">Informes</Link></li>
-                  <li  style={{marginTop: '1.5rem'}}>
+                  <li  style={{marginTop: '2.5rem'}}>
+                    <h4 style={{ marginLeft: "0.8rem" }}>Programa:</h4>
                     <div className="programaSelec">
                       <InputSeleccion
                         fondo="white"
@@ -85,6 +81,7 @@ export const  Menu = () => {
                         label="Seleccione Programa"
                         variable="nombre"
                         anchoSelec='14rem'
+                        alto='3.2rem'
                       />
                     </div>
                   </li>
