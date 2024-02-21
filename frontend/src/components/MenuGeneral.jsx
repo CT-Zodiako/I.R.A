@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
 import { InputSeleccion } from './EtiquetaSeleccionGeneral'
@@ -6,6 +6,7 @@ import programaServicio from '../services/ServicioPrograma'
 import { agregarPrograma } from '../redux/programaSlice'
 import { Button } from '@mui/material'
 import OutputIcon from '@mui/icons-material/Output';
+import Cookies from 'js-cookie'
 
 export const  Menu = () => {
   const dispatch = useDispatch();
@@ -46,26 +47,10 @@ export const  Menu = () => {
     }
   }, [token]);
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-
-  //   const tokenData = token.split(".")[1];
-  //   const decodedToken = JSON.parse(atob(tokenData));
-  //   if (decodedToken) {
-  //     setRol(decodedToken.sub.rol);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   const tokenActual = localStorage.getItem("token");
-  //   if (tokenActual !== token) {
-  //     console.log("Token actualizado", tokenActual);
-  //     setToken(null);
-  //   }
-  // }, []);
-
   const cerrarSesion = () => {
     localStorage.removeItem("token");
+    Cookies.remove("autorizacion");
+    window.location.href = "/";
   };
 
   return (
