@@ -250,7 +250,7 @@ def examenes_bandeja_evaludor(data):
         # Serializar los diccionarios a JSON
         examenes_json = jsonify(examenes_dicts)
         
-        return examenes_json, 200
+        return jsonify({'mensaje': 'Examenes del evaluador con exito', 'data': examenes_dicts}),200
 
     except Exception as e:
         return jsonify({'mensaje': 'Error al obtener los exámenes para el evaluador', 'error': str(e)}), 500

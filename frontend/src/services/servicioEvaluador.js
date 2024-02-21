@@ -49,7 +49,9 @@ class evaluadorService{
 
   async examenesEvaluador(id) {
     try{
-      const responce = await axios.get(`${import.meta.env.VITE_API_URL}/evaluador/examenes_evaluador/${id}`);
+      const responce = await axios.get(`${import.meta.env.VITE_API_URL}/examen/examenesBandejaEvaludor/${id}`
+      );
+      console.log("examenes evaluador: ", responce.data.data)
       return(responce.data.data)
     }catch(err){
       console.error(err)
