@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ...controller.evaluador.evaluador_controller import agregar_evaluador, traer_evaluadores_db, traer_evaluadores_examen_db, eliminar_evaluador_sf, traer_evaluador_por_id, actualizar_evaluador_db, traer_estudiantes_examen_db
+from ...controller.evaluador.evaluador_controller import agregar_evaluador, traer_evaluadores_db, traer_evaluadores_examen_db, eliminar_evaluador_sf, traer_evaluador_por_id, actualizar_evaluador_db, traer_estudiantes_examen_db, traer_evaluadores_by_estado_db
 from flask_jwt_extended import jwt_required
 from ...auth import admin_required, evaluador_required
 
@@ -18,6 +18,12 @@ def crear_evaluador():
 # @admin_required
 def traer_evaluadores():
     return traer_evaluadores_db()
+
+
+@evaluador_blueprint.route('/traerEvaluadoresByEstado', methods=['GET'])
+# @admin_required
+def traer_evaluadores_by_estado():
+    return traer_evaluadores_by_estado_db()
 
 
 @evaluador_blueprint.route('/examenes_evaluador/<int:evaluador_id>', methods=['GET'])
@@ -42,8 +48,6 @@ def eliminar_evaluador(evaluador_id):
 @admin_required
 def evaluador_por_id(evaluador_id):
     return traer_evaluador_por_id(evaluador_id)
-
-# @admin_required
 
 
 @evaluador_blueprint.route('/actualizar/<int:evaluador_id>', methods=['PUT'])
