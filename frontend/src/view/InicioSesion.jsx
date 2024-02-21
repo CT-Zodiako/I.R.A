@@ -32,7 +32,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
       const response = await loginService.verificarLogin(autentificacion);
       const token = response.data.access_token;
 
-      CooKies.set("token", token);
+      localStorage.setItem("token", token);
 
       const tokenData = token.split(".")[1];
       const decodedToken = JSON.parse(atob(tokenData));
