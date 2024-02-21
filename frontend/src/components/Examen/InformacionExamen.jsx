@@ -64,7 +64,7 @@ export const EvaluacionInformacion = ({ suiguiente, examenId, accion }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await resultadoAprendizajeServicio.traerResultado();
+        const data = await resultadoAprendizajeServicio.traerResultadoByEstado();
         setResultadoAprendizaje(data);
       } catch (error) {
         console.error("Error al obtener el resultado:", error);
