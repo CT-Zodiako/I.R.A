@@ -23,7 +23,7 @@ def agregar_evaluador(data):
         if Evaluador.query.filter_by(correo=correo).first():
             db.session.rollback()
             return jsonify({'mensaje': 'El correo ya está en uso.', 'status': 400}), 400
-        
+
         if Evaluador.query.filter_by(numero_identificacion=numero_identificacion).first():
             db.session.rollback()
             return jsonify({'mensaje': 'El usuario ya está en uso.', 'status': 400}), 400
@@ -56,6 +56,19 @@ def traer_evaluadores_db():
         return jsonify({'mensaje': 'Fallo al obtener evaluadores', 'error': str(e), 'status': 500}), 500
 
 
+def traer_evaluadores_by_estado_db():
+    try:
+        sEvaluador = EvaluadorSchema(many=True)
+        evaluadores = Evaluador.query.filter_by(
+            estado=True, rol="Evaluador").all()
+        data = sEvaluador.dump(evaluadores)
+
+        return jsonify({'mensaje': 'Evaluadores obtenidos con éxito', 'data': data, 'status': 200}), 200
+
+    except Exception as e:
+        return jsonify({'mensaje': 'Fallo al obtener evaluadores', 'error': str(e), 'status': 500}), 500
+
+
 def traer_evaluadores_examen_db(evaluador_id):
     try:
         sExamenEvaluador = ExamenEvaluadorSchema(many=True)
@@ -72,6 +85,7 @@ def traer_evaluadores_examen_db(evaluador_id):
     except Exception as e:
         return jsonify({'message': 'Error al obtener los examenes del evaluador', 'error': str(e)}), 500
 
+
 def traer_estudiantes_examen_db(examen_id):
     try:
         examen = Examen.query.get(examen_id)
@@ -87,15 +101,14 @@ def traer_estudiantes_examen_db(examen_id):
         return jsonify({'message': 'Error al obtener los estudiantes del examen', 'error': str(e)}), 500
 
 
-
-
 def eliminar_evaluador_sf(evaluador_id):
     try:
         evaluador = Evaluador.query.get_or_404(evaluador_id)
-    
-        evaluaciones_relacionadas = db.session.query(examen_evaluador_tabla).filter_by(evaluador_id=evaluador_id).count()
+
+        evaluaciones_relacionadas = db.session.query(
+            examen_evaluador_tabla).filter_by(evaluador_id=evaluador_id).count()
         if evaluaciones_relacionadas > 0:
-            evaluador.estado = False 
+            evaluador.estado = False
             db.session.commit()
             return jsonify({'mensaje': 'El evaluador se ha desactivado debido a las evaluaciones relacionadas', 'status': 200}), 200
 
@@ -107,7 +120,8 @@ def eliminar_evaluador_sf(evaluador_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'mensaje': 'Fallo al eliminar evaluador', 'error': str(e), 'status': 500}), 500
-  
+
+
 def traer_evaluador_por_id(evaluador_id):
     try:
         sEvaluador = EvaluadorSchema()
@@ -123,12 +137,12 @@ def traer_evaluador_por_id(evaluador_id):
         return jsonify({'mensaje': 'Fallo al obtener el evaluador', 'error': str(e), 'status': 500}), 500
 
 
-def actualizar_evaluador_db(data,evaluador_id):
-    
+def actualizar_evaluador_db(data, evaluador_id):
+
     evaluador = Evaluador.query.filter_by(id=evaluador_id).first()
-    
+
     try:
-        numero_identificacion_nuevo= data.get('nuevo_numero_identificacion')
+        numero_identificacion_nuevo = data.get('nuevo_numero_identificacion')
         if not numero_identificacion_nuevo:
             numero_identificacion_nuevo = evaluador.numero_identificacion
 
@@ -138,7 +152,7 @@ def actualizar_evaluador_db(data,evaluador_id):
 
         nuevo_correo = data.get('nuevo_correo')
         if not nuevo_correo:
-             nuevo_correo = evaluador.correo
+            nuevo_correo = evaluador.correo
 
         nueva_contrasena = data.get('nueva_contrasena')
         if not nueva_contrasena:
@@ -147,8 +161,6 @@ def actualizar_evaluador_db(data,evaluador_id):
         nuevo_telefono = data.get('nuevo_telefono')
         if not nuevo_telefono:
             nuevo_telefono = evaluador.telefono
-
-        
 
         if evaluador:
             evaluador.numero_identificacion = numero_identificacion_nuevo
