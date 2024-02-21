@@ -1,8 +1,7 @@
 from ...db import db
 from ...models.resultados_aprendizaje.resultados_aprendizaje_model import ResultadoAprendizaje
-from ...models.resultados_aprendizaje.schemas import ResultadoAprendizajeSchema,TraerResultadoSchema
+from ...models.resultados_aprendizaje.schemas import ResultadoAprendizajeSchema, TraerResultadoSchema
 from flask import jsonify
-
 
 
 def crear_resultado_aprendizaje(data):
@@ -31,21 +30,20 @@ def traer_resultados_aprendizaje():
         sResultado = TraerResultadoSchema(many=True)
         resultados = ResultadoAprendizaje.query.all()
 
-
         data = sResultado.dump(resultados)
         return {
             'status': 200,
-            'mensaje' : 'Resultados de aprendizaje obtenidos exitosamente',
+            'mensaje': 'Resultados de aprendizaje obtenidos exitosamente',
             'data': data
         }
 
     except Exception as e:
         return {
             'status': 500,
-            'mensaje' : 'Fallo al obtener resultados de aprendizaje',
+            'mensaje': 'Fallo al obtener resultados de aprendizaje',
             'error': f'Ocurrió un error interno en el controllador'
         }
-      
+
 
 def cambiar_estado_resultado_db(resultado_id):
     try:
@@ -64,3 +62,14 @@ def cambiar_estado_resultado_db(resultado_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'mensaje': 'Fallo al cambiar el estado del resultado de aprendizaje', 'error': str(e), 'status': 500}), 500
+
+
+def get__resultados_by_estado():
+    sResultado = TraerResultadoSchema(many=True)
+    resultado = ResultadoAprendizaje.query.filter_by(estado=True).all()
+    data = sResultado.dump(resultado)
+    return {
+        'status': 200,
+        'mensaje': 'Resultados de aprendizaje obtenidos exitosamente',
+        'data': data
+    }
