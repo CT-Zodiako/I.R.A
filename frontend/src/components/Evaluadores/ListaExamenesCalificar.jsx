@@ -15,7 +15,7 @@ export const VistaExamenes = () =>{
     const dispatch = useDispatch();
     const evaluadorId = useSelector((state) => state.sesion.id);
 
-    const[listaExamenesEvaluador, setListaExamenesEvaluador]= useState([]);
+    const [listaExamenesEvaluador, setListaExamenesEvaluador]= useState([]);
     const [paginasTabla, setPaginasTabla] = useState(0);
     const [filasPaginaTabla, setFilasPaginaTabla] = useState(5);
 

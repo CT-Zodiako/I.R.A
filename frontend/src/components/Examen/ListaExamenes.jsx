@@ -131,17 +131,19 @@ export const ExamenesLista = () => {
                       <TableCell className="tablaAcciones">
                         <div>
                           <CreateIcon
+                            
                             className="colorEditar"
                             fontSize="large"
                             onClick={() => onEditarExamen({accion:'editar', examenId: examen.id})}
                           />
                           <DeleteIcon
+                            
                             className="colorEliminar"
                             fontSize="large"
                             onClick={(event) => onEliminarExamen(event, examen.id)}
                           />
                           <EmailIcon
-                              // style={{ cursor: examen.estado ? 'not-allowed' : 'pointer' }}
+                              
                               color="primary"
                               fontSize="large"
                               onClick={(event) => enviarCorre(event, examen.id)}

@@ -36,28 +36,37 @@ export const  Menu = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
-    const tokenData = token.split(".")[1];
-    const decodedToken = JSON.parse(atob(tokenData));
-    if (decodedToken) {
-      setRol(decodedToken.sub.rol);
+    if (token) {
+      setToken(token);
+      const tokenData = token.split(".")[1];
+      const decodedToken = JSON.parse(atob(tokenData));
+      if (decodedToken) {
+        setRol(decodedToken.sub.rol);
+      }
     }
-  }, []);
+  }, [token]);
 
-  useEffect(() => {
-    const tokenActual = localStorage.getItem("token");
-    if (tokenActual !== token) {
-      console.log("Token actualizado", tokenActual);
-      setToken(null);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+
+  //   const tokenData = token.split(".")[1];
+  //   const decodedToken = JSON.parse(atob(tokenData));
+  //   if (decodedToken) {
+  //     setRol(decodedToken.sub.rol);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   const tokenActual = localStorage.getItem("token");
+  //   if (tokenActual !== token) {
+  //     console.log("Token actualizado", tokenActual);
+  //     setToken(null);
+  //   }
+  // }, []);
 
   const cerrarSesion = () => {
     localStorage.removeItem("token");
   };
-
-  // const rol = useSelector(state => state.sesion.rol);
-  // console.log("rol del Usuario en el menu: ",rol);
 
   return (
     <div className="menu">
