@@ -15,7 +15,7 @@ class examenService{
 
     async ExamenesCreados () {
       try{
-          const responce = await axios.get(`${import.meta.env.VITE_API_URL}/examen/examenes`);
+          const responce = await axios.get(`${import.meta.env.VITE_API_URL}/examen/examenesBandejaAdmin`);
           return responce.data;
       } catch (error) {
         console.error("Error al traer la lista de examenes: ", error)
@@ -39,14 +39,6 @@ class examenService{
         console.error("Error al enviar los correos: ", error);
       }
     } 
-    
-    async cambiarEstado (examenId) {
-      try{
-          await axios.put(`${import.meta.env.VITE_API_URL}/email/cambiar_estado_resultado/${examenId}`);
-      } catch (error) {
-        console.error("El estado no se puedo cambiar: ",error);
-      }
-    }
 
     async examenPorId (examenId){
       try{
