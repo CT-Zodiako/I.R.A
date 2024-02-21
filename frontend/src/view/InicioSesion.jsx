@@ -6,6 +6,7 @@ import axios from "axios";
 import { Button, TextField } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
+import Cookies from 'js-cookie';
 
 export const InicioSesionUsuarios = ({ onAutenticacion }) => {
   const dispatch = useDispatch();
@@ -33,6 +34,8 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
       const token = response.data.access_token;
 
       localStorage.setItem("token", token);
+
+      Cookies.set('autorizacion', token);
 
       const tokenData = token.split(".")[1];
       const decodedToken = JSON.parse(atob(tokenData));
