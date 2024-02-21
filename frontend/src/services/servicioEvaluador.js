@@ -58,7 +58,7 @@ class evaluadorService {
 
   async estudiantesExamen(id) {
     try {
-      const responce = await axios.get(`${import.meta.env.VITE_API_URL}/examen/estudiantes_examen/${id}`);
+      const responce = await axios.get(`${import.meta.env.VITE_API_URL}/evaluador/estudiantes_examen/${id}`);
       return (responce.data.data.estudiantes)
     } catch (err) {
       console.error(err)
