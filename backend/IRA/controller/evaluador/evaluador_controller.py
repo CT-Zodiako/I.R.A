@@ -47,7 +47,7 @@ def agregar_evaluador(data):
 def traer_evaluadores_db():
     try:
         sEvaluador = EvaluadorSchema(many=True)
-        evaluadores = Evaluador.query.all()
+        evaluadores = Evaluador.query.filter_by(rol="Evaluador").all()
         data = sEvaluador.dump(evaluadores)
 
         return jsonify({'mensaje': 'Evaluadores obtenidos con éxito', 'data': data, 'status': 200}), 200

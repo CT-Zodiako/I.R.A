@@ -30,24 +30,32 @@ class examenService {
     }
   }
 
-  async correoEvaluadores(examenId) {
-    try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/email/enviar_correo`, {
-        examen_id: examenId
-      });
-    } catch (error) {
-      console.error("Error al enviar los correos: ", error);
+    async correoEvaluadores (examenId) {
+      try{
+          await axios.post(`${import.meta.env.VITE_API_URL}/email/enviar_correo`, {
+            examen_id: examenId
+          });
+      } catch (error) {
+        console.error("Error al enviar los correos: ", error);
+      }
+    } 
+    
+    async cambiarEstado (examenId) {
+      try{
+          await axios.put(`${import.meta.env.VITE_API_URL}/email/cambiar_estado_resultado/${examenId}`);
+      } catch (error) {
+        console.error("El estado no se puedo cambiar: ",error);
+      }
     }
-  }
 
-  async examenPorId(examenId) {
-    try {
-      const responce = await axios.get(`${import.meta.env.VITE_API_URL}/examen/examen/${examenId}`);
-      return responce.data;
-    } catch (error) {
-      console.error("no se puedo obtener el examen: ", error);
+    async examenPorId (examenId){
+      try{
+        const responce = await axios.get(`${import.meta.env.VITE_API_URL}/examen/examen/${examenId}`);
+        return responce.data;
+      } catch(error) {
+        console.error("no se puedo obtener el examen: ", error);
+      }
     }
-  }
 
   async editarExamen(examenId, formularioExamen) {
     try {
