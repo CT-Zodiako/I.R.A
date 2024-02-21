@@ -45,7 +45,6 @@ export const ExamenesLista = () => {
     const fetchData = async () => {
       try {
         await examenService.correoEvaluadores(examenId);
-        await examenService.cambiarEstado(examenId);
         onActualizarLista();
       } catch (error) {
         console.error("Error al enviar los correos: ", error);
@@ -132,19 +131,19 @@ export const ExamenesLista = () => {
                       <TableCell className="tablaAcciones">
                         <div>
                           <CreateIcon
-                            style={{ cursor: examen.estado ? 'not-allowed' : 'pointer' }}
+                            
                             className="colorEditar"
                             fontSize="large"
                             onClick={() => onEditarExamen({accion:'editar', examenId: examen.id})}
                           />
                           <DeleteIcon
-                            style={{ cursor: examen.estado ? 'not-allowed' : 'pointer' }}
+                            
                             className="colorEliminar"
                             fontSize="large"
                             onClick={(event) => onEliminarExamen(event, examen.id)}
                           />
                           <EmailIcon
-                              style={{ cursor: examen.estado ? 'not-allowed' : 'pointer' }}
+                              
                               color="primary"
                               fontSize="large"
                               onClick={(event) => enviarCorre(event, examen.id)}
