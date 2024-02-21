@@ -168,68 +168,6 @@ def obtener_examenes_admin_bandeja():
         return jsonify({'mensaje': 'Error al obtener los exámenes', 'error': str(e)}), 500
 
 
-# def examenes_bandeja_evaludor(data):
-#     examen_query = db.session.query(Examen).\
-#         join(examen_evaluador_tabla, examen_evaluador_tabla.examen_id == Examen.id).\
-#         outerjoin(CalificacionExamen, Examen.id == CalificacionExamen.examen_id).\
-#         filter(examen_evaluador_tabla.evaluador_id == 1).\
-#         filter(CalificacionExamen.examen_id == None)
-
-#     examenes = examen_query.all()
-
-#     # Procesar los resultados
-#     for examen in examenes:
-#         print(examen.id)
-
-
-# def examenes_bandeja_evaludor(data):
-#     try:
-#         evaluador_id = data.get('evaluador_id')
-#         if evaluador_id is None:
-#             return jsonify({'mensaje': 'Falta el ID del evaluador en los datos'}), 400
-
-#         examen_query = db.session.query(Examen).\
-#             join(examen_evaluador_tabla, examen_evaluador_tabla.examen_id == Examen.id).\
-#             outerjoin(CalificacionExamen, Examen.id == CalificacionExamen.examen_id).\
-#             filter(examen_evaluador_tabla.evaluador_id == evaluador_id).\
-#             filter(CalificacionExamen.examen_id == None)
-
-#         examenes = examen_query.all()
-
-#         # Procesar los resultados
-#         for examen in examenes:
-#             print(examen.id)
-
-#         return jsonify({'mensaje': 'Exámenes obtenidos con éxito'}), 200
-
-#     except Exception as e:
-#         return jsonify({'mensaje': 'Error al obtener los exámenes para el evaluador', 'error': str(e)}), 500
-
-
-# def examenes_bandeja_evaludor(data):
-#     try:
-#         evaluador_id = data.get('evaluador_id')
-#         if evaluador_id is None:
-#             return jsonify({'mensaje': 'Falta el ID del evaluador en los datos'}), 400
-
-#         examen_query = db.session.query(Examen).\
-#             join(examen_evaluador_tabla, Examen.id == examen_evaluador_tabla.c.examen_id).\
-#             outerjoin(CalificacionExamen, Examen.id == CalificacionExamen.examen_id).\
-#             filter(examen_evaluador_tabla.c.evaluador_id == evaluador_id).\
-#             filter(CalificacionExamen.examen_id == None)
-
-#         examenes = examen_query.all()
-
-#         # Procesar los resultados
-#         for examen in examenes:
-#             print(examen.id)
-
-#         return jsonify(examenes), 200
-
-#     except Exception as e:
-#         return jsonify({'mensaje': 'Error al obtener los exámenes para el evaluador', 'error': str(e)}), 500
-
-
 def examenes_bandeja_evaludor(data):
     try:
         evaluador_id = data
@@ -244,11 +182,7 @@ def examenes_bandeja_evaludor(data):
 
         examenes = examen_query.all()
 
-        # Convertir los objetos Examen a diccionarios
         examenes_dicts = [examen.to_dict() for examen in examenes]
-
-        # Serializar los diccionarios a JSON
-        # examenes_json = jsonify(examenes_dicts)
 
         return jsonify({'mensaje': 'Examenes del evaluador con exito', 'data': examenes_dicts}), 200
 
