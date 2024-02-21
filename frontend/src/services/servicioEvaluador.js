@@ -21,6 +21,16 @@ class evaluadorService {
     console.log(response);
   }
 
+  async traerEvaluadorByEstado() {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/evaluador/traerEvaluadoresByEstado`);
+      return response.data.data;
+    } catch (err) {
+      console.error(err);
+    }
+    console.log(response);
+  }
+
   async eliminarEvaluador(evaluador_id) {
     try {
       const response = await axios.delete(`${import.meta.env.VITE_API_URL}/evaluador/eliminar_evaluador/${evaluador_id}`);

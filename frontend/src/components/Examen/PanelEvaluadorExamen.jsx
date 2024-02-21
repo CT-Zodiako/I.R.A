@@ -44,7 +44,7 @@ export const PanelSeleccionarEvaluador = ({ suiguiente, anterior, examenId, acci
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await evaluadorService.traerEvaluador();
+        const data = await evaluadorService.traerEvaluadorByEstado();
         setListaEvaluadores(data);
       } catch (error) {
         console.error("Error al obtener el evaluador:", error);
