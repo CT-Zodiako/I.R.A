@@ -15,7 +15,7 @@ class examenService{
 
     async ExamenesCreados () {
       try{
-          const responce = await axios.get(`${import.meta.env.VITE_API_URL}/examen/examenes`);
+          const responce = await axios.get(`${import.meta.env.VITE_API_URL}/examen/examenesBandejaAdmin`);
           return responce.data;
       } catch (error) {
         console.error("Error al traer la lista de examenes: ", error)

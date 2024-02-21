@@ -23,7 +23,6 @@ const ProteccionRuta = ({ rolesPermitidos, ...rest }) => {
     };
 
     const rolUsuario = rolToken();
-    console.log(rolUsuario);
 
     if (!verificarRol(rolesPermitidos, rolUsuario)) {
       return <Navigate to="/" />;
