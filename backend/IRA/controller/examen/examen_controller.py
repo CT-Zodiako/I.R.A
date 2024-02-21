@@ -232,7 +232,7 @@ def obtener_examenes_admin_bandeja():
 
 def examenes_bandeja_evaludor(data):
     try:
-        evaluador_id = data.get('evaluador_id')
+        evaluador_id = data
         if evaluador_id is None:
             return jsonify({'mensaje': 'Falta el ID del evaluador en los datos'}), 400
 
@@ -248,9 +248,9 @@ def examenes_bandeja_evaludor(data):
         examenes_dicts = [examen.to_dict() for examen in examenes]
 
         # Serializar los diccionarios a JSON
-        examenes_json = jsonify(examenes_dicts)
-        
-        return jsonify({'mensaje': 'Examenes del evaluador con exito', 'data': examenes_dicts}),200
+        # examenes_json = jsonify(examenes_dicts)
+
+        return jsonify({'mensaje': 'Examenes del evaluador con exito', 'data': examenes_dicts}), 200
 
     except Exception as e:
         return jsonify({'mensaje': 'Error al obtener los exámenes para el evaluador', 'error': str(e)}), 500

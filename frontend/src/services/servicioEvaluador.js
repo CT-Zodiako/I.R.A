@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-class evaluadorService{
+class evaluadorService {
   async agregarEvaluador(formulario) {
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/evaluador/agregar_evaluador`, formulario);
@@ -48,48 +48,46 @@ class evaluadorService{
   }
 
   async examenesEvaluador(id) {
-    try{
-      const responce = await axios.get(`${import.meta.env.VITE_API_URL}/examen/examenesBandejaEvaludor/${id}`
-      );
-      console.log("examenes evaluador: ", responce.data.data)
-      return(responce.data.data)
-    }catch(err){
+    try {
+      const responce = await axios.get(`${import.meta.env.VITE_API_URL}/evaluador/examenesBandejaEvaludor`, id);
+      return (responce.data.data)
+    } catch (err) {
       console.error(err)
     }
   }
 
   async estudiantesExamen(id) {
-    try{
-      const responce = await axios.get(`${import.meta.env.VITE_API_URL}/evaluador/estudiantes_examen/${id}`);
-      return(responce.data.data.estudiantes)
-    }catch(err){
+    try {
+      const responce = await axios.get(`${import.meta.env.VITE_API_URL}/examen/estudiantes_examen/${id}`);
+      return (responce.data.data.estudiantes)
+    } catch (err) {
       console.error(err)
     }
   }
 
   async calificacionEvaluador(id_examen) {
-    try{
+    try {
       const responce = await axios.get(`${import.meta.env.VITE_API_URL}/calificacion/actividades_examen/${id_examen}`);
-      return(responce.data)
-    }catch(err){
+      return (responce.data)
+    } catch (err) {
       console.error(err)
     }
   }
 
   async calificacionEstudiante() {
-    try{
+    try {
       const responce = await axios.get(`${import.meta.env.VITE_API_URL}/calificacion/enum_calificacion`);
-      return(responce.data)
-    }catch(err){
+      return (responce.data)
+    } catch (err) {
       console.error(err)
     }
   }
 
   async calificacionActividadEstudiante(calificacionesEstudiantes) {
-    try{
+    try {
       const responce = await axios.post(`${import.meta.env.VITE_API_URL}/calificacion/guardar_calificacion`, calificacionesEstudiantes);
-      return(responce.data)
-    }catch(err){
+      return (responce.data)
+    } catch (err) {
       console.error(err)
     }
   }

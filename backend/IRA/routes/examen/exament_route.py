@@ -80,8 +80,9 @@ def obtener_examenes_admin():
     return obtener_examenes_admin_bandeja()
 
 
-@examen_blueprint.route('/examenesBandejaEvaludor', methods=['GET'])
+@examen_blueprint.route('/examenesBandejaEvaludor/<int:evaluador_id>', methods=['GET'])
 # @evaluador_required
-def obtener_examenes_evaluador():
-    data = request.json
-    return examenes_bandeja_evaludor(data)
+def obtener_examenes_evaluador(evaluador_id):
+    # data = request.json
+    # print(data)
+    return examenes_bandeja_evaludor(evaluador_id)
