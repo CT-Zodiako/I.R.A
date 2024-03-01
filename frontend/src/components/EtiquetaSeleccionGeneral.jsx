@@ -18,11 +18,12 @@ export const InputSeleccion = ({ seleccionar, idSeleccion, label, variable, onva
     return(
         <>
             <FormControl sx={{ m: 1, minWidth: anchoSelec, maxHeight: 50 }}>
-                <InputLabel id="demo-simple-select-label"> { label } </InputLabel>
+                <InputLabel> {label} </InputLabel>
                 <Select
                     sx={{ background: fondo, height: alto}}
                     value={ resultadoAprendizaje }
                     label={ label }
+                    placeholder="Seleccionar"
                     onChange={onOpcionSeleccion}
                 >
                 {seleccionar.map(opcion => (

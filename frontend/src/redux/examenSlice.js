@@ -31,8 +31,16 @@ export const examenFormularioSlice = createSlice({
             const { estudiantes } = action.payload;
             state.estudiantes = estudiantes;
         },
+        LimpiarExamen:(state) => {
+            state.programa_id = '';
+            state.resultado_aprendizaje_id = '';
+            state.proyecto_integrador = '';
+            state.evaluadores_ids = [];
+            state.actividades_formativas = [];
+            state.estudiantes = [];
+        }
     }
 });
 
-export const { agregaInformacion, agregarEvaluador, agregarActividad, agregarEstudiantes } = examenFormularioSlice.actions;
+export const { agregaInformacion, agregarEvaluador, agregarActividad, agregarEstudiantes, LimpiarExamen } = examenFormularioSlice.actions;
 export default examenFormularioSlice.reducer;

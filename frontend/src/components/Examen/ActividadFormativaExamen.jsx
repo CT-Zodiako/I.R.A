@@ -11,7 +11,7 @@ import {
 import { BotonGeneral } from "../botonGeneral";
 import { BotonRegresar } from "./botonRegresar";
 
-export const RegistrarActividadFormativa = ({ suiguiente, anterior, examenId, accion }) => {
+export const RegistrarActividadFormativa = ({ siguiente, anterior, examenId, accion }) => {
   const dispatch = useDispatch();
   const infoActividadStore = useSelector((state) => state.examenFormulario);
 
@@ -73,7 +73,7 @@ export const RegistrarActividadFormativa = ({ suiguiente, anterior, examenId, ac
         actividades_formativas: actividadFormativa.actividades_formativas,
       })
     );
-    suiguiente();
+    siguiente();
   };
 
   return (

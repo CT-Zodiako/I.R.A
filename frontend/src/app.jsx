@@ -1,14 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './index.css';
 import Routers from './rutas';
 import Menu from '../src/components/MenuGeneral';
 import { InicioSesionUsuarios } from './view/InicioSesion';
+import axios from "axios";
 
 const App = () => {
-  const [autenticado, setAutenticado] = useState(false);
+  const [autenticado, setAutenticado] = useState(
+    false
+  );
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setAutenticado(true);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }, []);
 
-  const handleAutenticacion = () => {
+  const handleAutenticacion = (token) => {
+    localStorage.setItem('token', token);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     setAutenticado(true);
+  };
+
+  const handleCerrarSesion = () => {
+    localStorage.removeItem('token');
+    delete axios.defaults.headers.common['Authorization'];
+    setAutenticado(false);
   };
 
   return (
@@ -18,14 +36,12 @@ const App = () => {
       )}
       {autenticado && (
         <>
-          <Menu/>
+          <Menu onCerrarSesion={handleCerrarSesion}/>
           <div className="content">
             <Routers />
           </div>
         </>
       )}
-
-
     </div>
   );
 };

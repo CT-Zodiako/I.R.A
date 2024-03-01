@@ -83,7 +83,7 @@ export const Informes = () => {
         <TextField
           sx={{ width: "24rem", marginLeft: "12rem"}}
           id="outlined-basic"
-          placeholder="Filtrar por Informe Examen"
+          placeholder="Filtrar Informe"
           value={filtrar}
           onChange={ buscarInforme }
           InputProps={{

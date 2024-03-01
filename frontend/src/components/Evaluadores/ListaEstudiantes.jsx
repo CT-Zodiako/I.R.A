@@ -73,8 +73,8 @@ export const VistaEstudiantes = () => {
     };
 
     useEffect(() => {
-        const nuemeroEstudiantes = listaEstudiantes.length;
-        const botonEnvio = calificaciones === nuemeroEstudiantes;
+        const numeroEstudiantes = listaEstudiantes.length;
+        const botonEnvio = calificaciones === numeroEstudiantes;
         setBotonEnvio(botonEnvio);
     }, [calificaciones, listaEstudiantes]);
 

@@ -15,9 +15,6 @@ export const EditarExamen = () => {
   const accion = location.state.accion;
   const examenId = location.state.examenId;
 
-  console.log("accion examen: ",accion);
-  console.log("id examen: ",examenId);
-
   const enviarExamen = useSelector((state) => state.examenFormulario);
   
   const [componenteExamen, setComponenteExamen] = useState(1);
@@ -30,8 +27,12 @@ export const EditarExamen = () => {
     "Estudiantes Examen",
   ];
 
-  const onNext = () => {
+  const onSiguientePanel = () => {
     setComponenteExamen((componenteExamen) => componenteExamen + 1);
+  };
+
+  const onAnteriorPanel = () => {
+    setComponenteExamen((componenteExamen) => componenteExamen - 1);
   };
 
   const onEnviarEditarExamen = async (event) => {
@@ -60,7 +61,8 @@ export const EditarExamen = () => {
           </div>
           <div className="centrar">
             <EvaluacionInformacion 
-              handleNext={onNext}
+              siguiente={onSiguientePanel}
+              anterior={onAnteriorPanel}
               examenId={examenId}
               accion={accion}
             />
@@ -83,7 +85,8 @@ export const EditarExamen = () => {
           </div>
           <div className="centrar">
             <PanelSeleccionarEvaluador
-                handleNext={onNext}
+                siguiente={onSiguientePanel}
+                anterior={onAnteriorPanel}
                 examenId={examenId}
                 accion={accion}
             />
@@ -106,7 +109,8 @@ export const EditarExamen = () => {
           </div>
           <div className="centrar">
             <RegistrarActividadFormativa 
-                handleNext={onNext} 
+                siguiente={onSiguientePanel}
+                anterior={onAnteriorPanel}
                 examenId={examenId}
                 accion={accion}
             />
@@ -131,6 +135,7 @@ export const EditarExamen = () => {
             <div className="centrar">
               <AgregarListaEstudiantes 
                 setCamposCargados={setCamposCargados}
+                anterior={onAnteriorPanel}
                 examenId={examenId}
                 accion={accion}
               />

@@ -17,7 +17,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
 
   const [mostrarLabel, setMostrarLabel] = useState(true);
 
-  const onAutentificacion = (event) => {
+  const onCredenciales = (event) => {
     const { name, value } = event.target;
     const labelEvento = event.target;
     setAutentificacion({
@@ -26,7 +26,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
     });
     setMostrarLabel(labelEvento === " ");
   };
-
+  
   const onInicioSesion = async (event) => {
     event.preventDefault();
     try {
@@ -34,8 +34,6 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
       const token = response.data.access_token;
 
       localStorage.setItem("token", token);
-
-      Cookies.set('autorizacion', token);
 
       const tokenData = token.split(".")[1];
       const decodedToken = JSON.parse(atob(tokenData));
@@ -45,7 +43,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
         const usuario = decodedToken.sub.nombre;
         const rol = decodedToken.sub.rol;
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        // axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
 
         dispatch(
           iniciarSesion({
@@ -54,7 +52,8 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
             rol: rol,
           })
         );
-        onAutenticacion();
+
+        onAutenticacion(token);
       } else {
         console.error("Error al decodificar el token");
       }
@@ -82,7 +81,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
                   type="text"
                   name="username"
                   value={autentificacion.username}
-                  onChange={onAutentificacion}
+                  onChange={onCredenciales}
                   id="outlined-basic"
                   placeholder="USUARIO"
                   required
@@ -98,7 +97,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
                   type="password"
                   name="password"
                   value={autentificacion.password}
-                  onChange={onAutentificacion}
+                  onChange={onCredenciales}
                   id="outlined"
                   placeholder="CONTRASEÑA"
                   required

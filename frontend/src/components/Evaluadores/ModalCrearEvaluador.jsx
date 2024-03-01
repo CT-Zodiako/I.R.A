@@ -20,7 +20,6 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
   };
 
   const onEnviarEvaluador = async (event) => {
-    event.preventDefault();
     try {
       const response = await evaluadorService.agregarEvaluador(formulario);
       onClose();
@@ -75,7 +74,7 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                     <div>
                       <TextField
                         id="outlined-basic"
-                        type="text"
+                        type="email"
                         name="correo"
                         value={formulario.correo}
                         onChange={onAgregarEvaluador}
@@ -92,7 +91,7 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                     <div>
                       <TextField
                         id="outlined-basic"
-                        type="text"
+                        type="number"
                         name="numero_identificacion"
                         value={formulario.numero_identificacion}
                         onChange={onAgregarEvaluador}
@@ -109,7 +108,7 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                     <div>
                       <TextField
                         id="outlined-basic"
-                        type="text"
+                        type="password"
                         name="contrasenna"
                         value={formulario.contrasenna}
                         onChange={onAgregarEvaluador}
@@ -126,7 +125,7 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                     <div>
                       <TextField
                         id="outlined-basic"
-                        type="text"
+                        type="number"
                         name="telefono"
                         value={formulario.telefono}
                         onChange={onAgregarEvaluador}

@@ -16,6 +16,7 @@ export const ExamenesLista = () => {
   const navigate = useNavigate();
 
   const [listaExamenes, setListaExamenes] = useState([]);
+  console.log("datos del examen: ",listaExamenes);
   const [paginasTabla, setPaginasTabla] = useState(0);
   const [filasPaginasTabla, setFilasPaginasTabla] = useState(5);
 
@@ -111,6 +112,7 @@ export const ExamenesLista = () => {
                   <TableRow>
                     <TableCell align="center">Examen Id</TableCell>
                     <TableCell align="center">Proyecto Integrador</TableCell>
+                    <TableCell align="center">Evaluadores</TableCell>
                     <TableCell align="center">Acción</TableCell>
                   </TableRow>
                 </TableHead>
@@ -120,30 +122,36 @@ export const ExamenesLista = () => {
                   : listaExamenes
                 ).map((examen) => (
                     <TableRow key={examen.id} className="tablaBody">
-                      <TableCell scope="row" align="center" className="tablaId">
+                      <TableCell scope="row" align="center" className="tablaId" sx={{width:"10%"}}>
                         {examen.id}
                       </TableCell>
-                      <TableCell align="center" className="tablaProyecto">
+                      <TableCell align="center" className="tablaProyecto" sx={{width:"45%"}}>
                         <div>
                           {examen.proyecto_integrador}
                         </div>
                       </TableCell>
-                      <TableCell className="tablaAcciones">
+                      <TableCell align="center" sx={{  width: "20%" }}>
+                        {examen.nombres_evaluadores
+                          .map((evaluador, index) => (
+                            <div key={index} style={{ margin: "0.6rem 0rem" }}>
+                              {evaluador}
+                            </div>
+                          ))
+                        }
+                      </TableCell>
+                      <TableCell className="tablaAcciones" sx={{ width: "25%" }}>
                         <div>
                           <CreateIcon
-                            
                             className="colorEditar"
                             fontSize="large"
                             onClick={() => onEditarExamen({accion:'editar', examenId: examen.id})}
                           />
                           <DeleteIcon
-                            
                             className="colorEliminar"
                             fontSize="large"
                             onClick={(event) => onEliminarExamen(event, examen.id)}
                           />
                           <EmailIcon
-                              
                               color="primary"
                               fontSize="large"
                               onClick={(event) => enviarCorre(event, examen.id)}

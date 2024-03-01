@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link, Navigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { InputSeleccion } from './EtiquetaSeleccionGeneral'
 import programaServicio from '../services/ServicioPrograma' 
 import { agregarPrograma } from '../redux/programaSlice'
 import { Button } from '@mui/material'
 import OutputIcon from '@mui/icons-material/Output';
-import Cookies from 'js-cookie'
 
-export const  Menu = () => {
+export const  Menu = ({ onCerrarSesion }) => {
   const dispatch = useDispatch();
-  const [token, setToken] = useState(null);
-  const [rol, setRol] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [autenticado, setAutenticado] = useState(localStorage.getItem("autenticado"));
+  const [rol, setRol] = useState();
   const [selecPrograma, setSelecPrograma] = useState([]);
 
   const onPrograma = (seleccionId) => {
-    console.log("seleccion del programa: ",seleccionId);
     dispatch(
       agregarPrograma({
         programa: seleccionId
@@ -36,34 +35,28 @@ export const  Menu = () => {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token) {
-      setToken(token);
+
       const tokenData = token.split(".")[1];
       const decodedToken = JSON.parse(atob(tokenData));
       if (decodedToken) {
-        setRol(decodedToken.sub.rol);
+        const rolUsuario = decodedToken.sub.rol;
+        setRol(rolUsuario);
       }
     }
-  }, [token]);
-
-  const cerrarSesion = () => {
-    localStorage.removeItem("token");
-    Cookies.remove("autorizacion");
-    window.location.href = "/";
-  };
+  }, []);
 
   return (
     <div className="menu">
         <div className='usuarioRolMenu'>
-          {rol === 'Admin'? 
+          {rol === 'Admin' ? 
           <h2>Bienvenido Administrador</h2> : 
           <h2>Bienvenido Evaluador</h2>}
         </div>
         <div style={{ height: "60%", display: 'flex', alignContent: 'start' }}>
           <nav>
             <ul>
-              {rol === 'Admin'&&(
+              {rol === 'Admin' &&(
                 <>
                   <li className='opcionesMenu'><Link to="/lista_examen">Examenes</Link></li>
                   <li className='opcionesMenu'><Link to="/resultado-aprendizaje">Resultados de Aprendizaje</Link></li>
@@ -98,7 +91,7 @@ export const  Menu = () => {
             sx={{ width: '12rem', height: '2.5rem' }}
             variant='contained'
             color='error'
-            onClick={cerrarSesion}
+            onClick={onCerrarSesion}
           >
             <OutputIcon sx={{ marginRight: "0.5rem" }}/>
             Cerrar Sesión

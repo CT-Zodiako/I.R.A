@@ -1,5 +1,6 @@
-import { useState } from "react";
-import resultadoAprendizajeServicio from "../../services/ServicioResultadoAprendizaje";
+import { useEffect, useState } from "react";
+import resultadoAprendizajeServicio from "../../services/ServicioResultadoAprendizaje" 
+import programaServicio from '../../services/ServicioPrograma' 
 import {
   Box,
   Button,
@@ -8,12 +9,35 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { InputSeleccion } from "../EtiquetaSeleccionGeneral";
 
 export const CrearResultadoAprendizaje = ({ abierto, cerrado }) => {
   const [agregaResultado, setAgregaResultado] = useState({
     titulo: "",
+    programa: "",
     descripcion: "",
   });
+  const [programa, setPrograma] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await programaServicio.traerPrograma();
+        setPrograma(data);
+      } catch (error) {
+        console.error("Error al obtener el programa:", error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const onPrograma = (seleccionId) => {
+    console.log("seleccion del programa: ",seleccionId);
+    setAgregaResultado({
+      ...agregaResultado,
+      programa: seleccionId,
+    });
+  }
 
   const onAgregarResultado = (event) => {
     const { name, value } = event.target;
@@ -53,35 +77,59 @@ export const CrearResultadoAprendizaje = ({ abierto, cerrado }) => {
                     Crear Resultado de Aprendizaje
                   </Typography>
                 </div>
-                <div className="centrar">
-                  <InputLabel id="demo-simple--label">Titulo: </InputLabel>
-                  <TextField
-                    type="text"
-                    name="titulo"
-                    value={agregaResultado.titulo}
-                    onChange={onAgregarResultado}
-                    id="outlined-basic"
-                    label="titulo"
-                    required
-                  />
+                <div className="">
+                  <div className="">
+                    <InputLabel id="demo-simple--label">Titulo: </InputLabel>
+                  </div>
+                  <div>
+                    <TextField
+                      type="text"
+                      name="titulo"
+                      value={agregaResultado.titulo}
+                      onChange={onAgregarResultado}
+                      id="outlined-basic"
+                      label="titulo"
+                      required
+                    />
+                  </div>
                 </div>
-                <div className="centrar">
-                  <InputLabel id="demo-simple--label">Descripcion: </InputLabel>
-                  <TextField
-                    type="text"
-                    name="descripcion"
-                    value={agregaResultado.descripcion}
-                    onChange={onAgregarResultado}
-                    id="outlined-basic"
-                    label="descripcion"
-                    required
-                  />
+                <div className="">
+                  <div className="">
+                    <InputLabel id="demo-simple--label">Programa: </InputLabel>
+                  </div>
+                  <div>
+                    <InputSeleccion
+                        seleccionar={programa}
+                        idSeleccion={onPrograma}
+                        label="Seleccione Programa"
+                        variable="nombre"
+                        anchoSelec='14rem'
+                        alto='3.2rem'
+                      />
+                  </div>
+                </div>
+                <div className="">
+                  <div className="">
+                    <InputLabel id="demo-simple--label">Descripcion: </InputLabel>
+                  </div>
+                  <div>
+                    <TextField
+                      type="text"
+                      name="descripcion"
+                      value={agregaResultado.descripcion}
+                      onChange={onAgregarResultado}
+                      id="outlined-basic"
+                      label="descripcion"
+                      required
+                    />
+                  </div>
                 </div>
               </div>
               <div className="centrar">
                 <Button 
                   type="submit" 
                   variant="contained"
+                  onClick={cerrado}
                 >
                   Crear
                 </Button>
