@@ -11,14 +11,37 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import EmailIcon from '@mui/icons-material/Email'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CreateIcon from '@mui/icons-material/Create'
+import { useDispatch, useSelector } from "react-redux"
+import { NotificacionCalificacion } from "../Evaluadores/NotificacionCalificacion"
+import { cambiarEstadoBoton } from "../../redux/botonAlertaSlice"
 
 export const ExamenesLista = () => {  
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const estadoAlertaNotificacion = useSelector((state) => state.botonAlerta.botonAlerta);
 
   const [listaExamenes, setListaExamenes] = useState([]);
-  console.log("datos del examen: ",listaExamenes);
+  const [notificacionExamen, setNotificacionExamen] = useState(false);
+  const [notificacionCorreo, setNotificacionCorreo] = useState(false);
   const [paginasTabla, setPaginasTabla] = useState(0);
   const [filasPaginasTabla, setFilasPaginasTabla] = useState(5);
+
+  useEffect(() => {
+    if (estadoAlertaNotificacion) {
+      setNotificacionExamen(true);
+  
+      const timer = setTimeout(() => {
+        setNotificacionExamen(false);
+        dispatch(
+          cambiarEstadoBoton({
+            botonAlerta: false,
+          })
+        )
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [estadoAlertaNotificacion]);
 
   const handleChangePage = (event, newPage) => {
     setPaginasTabla(newPage);
@@ -46,6 +69,20 @@ export const ExamenesLista = () => {
     const fetchData = async () => {
       try {
         await examenService.correoEvaluadores(examenId);
+
+        // if (estadoAlertaNotificacion) {
+        //   setNotificacionCorreo(true);
+        //   const timer = setTimeout(() => {
+        //     setNotificacionCorreo(false);
+        //     dispatch(
+        //       cambiarEstadoBoton({
+        //         botonAlerta: false,
+        //       })
+        //     )
+        //   }, 3000);
+        //   return () => clearTimeout(timer);
+        // }
+
         onActualizarLista();
       } catch (error) {
         console.error("Error al enviar los correos: ", error);
@@ -91,19 +128,33 @@ export const ExamenesLista = () => {
         </div>
         <div className="componentes">
           <div>
-            <Button
-              variant="contained"
-              color="success"
-              size="small"
-            >
-              <AddCircleOutlineIcon fontSize="small" />
-              <Link 
-                to="/pasos" 
-                className="botonAgregar"
+            <div>
+              <Button
+                variant="contained"
+                color="success"
+                size="small"
               >
-                Crear Examen
-              </Link>
-            </Button>
+                <AddCircleOutlineIcon fontSize="small" />
+                <Link 
+                  to="/pasos" 
+                  className="botonAgregar"
+                >
+                  Crear Examen
+                </Link>
+              </Button>
+            </div>
+            <div style={{ display: "flex", justifyItems: "end", marginTop: "1rem" }}>
+                <NotificacionCalificacion 
+                    estadoAlerta={notificacionExamen}
+                    alerta='Examen Creado con Exito' 
+                />
+            </div>
+            <div style={{ display: "flex", justifyItems: "end", marginTop: "1rem" }}>
+                <NotificacionCalificacion 
+                    estadoAlerta={notificacionCorreo}
+                    alerta='Notifficacion Enviada con Exito' 
+                />
+            </div>
           </div>
           <div>
             <TableContainer className="tablas">

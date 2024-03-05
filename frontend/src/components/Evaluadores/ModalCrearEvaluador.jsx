@@ -1,8 +1,14 @@
 import { useState } from "react";
 import { Box, Button, InputLabel, Modal, TextField, Typography } from "@mui/material";
 import evaluadorService from '../../services/servicioEvaluador'
+import { cambiarEstadoBoton } from "../../redux/botonAlertaSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [formulario, setFormulario] = useState({
     nombre_evaluador: "",
     correo: "",
@@ -20,8 +26,15 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
   };
 
   const onEnviarEvaluador = async (event) => {
+    event.preventDefault();
     try {
-      const response = await evaluadorService.agregarEvaluador(formulario);
+      await evaluadorService.agregarEvaluador(formulario);
+      dispatch(
+        cambiarEstadoBoton({
+          botonAlerta: true,
+        }),
+      );
+      navigate('/evaluadores');
       onClose();
     } catch (error) {
       console.error(error);
@@ -52,8 +65,8 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                 <div>
                   <div className="editar">
                     <div className="editarLabel">
-                      <InputLabel id="demo-simple--label">
-                        Nombre evaluador:{" "}
+                      <InputLabel>
+                        Nombre evaluador:
                       </InputLabel>
                     </div>
                     <div>
@@ -69,11 +82,10 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                   </div>
                   <div className="editar">
                     <div className="editarLabel">
-                      <InputLabel id="demo-simple--label">Correo: </InputLabel>
+                      <InputLabel>Correo: </InputLabel>
                     </div>
                     <div>
                       <TextField
-                        id="outlined-basic"
                         type="email"
                         name="correo"
                         value={formulario.correo}
@@ -84,13 +96,12 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                   </div>
                   <div className="editar">
                     <div className="editarLabel">
-                      <InputLabel id="demo-simple--label">
-                        Numero Identificación:{" "}
+                      <InputLabel>
+                        Numero Identificación:
                       </InputLabel>
                     </div>
                     <div>
                       <TextField
-                        id="outlined-basic"
                         type="number"
                         name="numero_identificacion"
                         value={formulario.numero_identificacion}
@@ -101,13 +112,12 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                   </div>
                   <div className="editar">
                     <div className="editarLabel">
-                      <InputLabel id="demo-simple--label">
+                      <InputLabel>
                         Contraseña:{" "}
                       </InputLabel>
                     </div>
                     <div>
                       <TextField
-                        id="outlined-basic"
                         type="password"
                         name="contrasenna"
                         value={formulario.contrasenna}
@@ -118,13 +128,12 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                   </div>
                   <div className="editar">
                     <div className="editarLabel">
-                      <InputLabel id="demo-simple--label">
-                        Telefono:{" "}
+                      <InputLabel>
+                        Telefono:
                       </InputLabel>
                     </div>
                     <div>
                       <TextField
-                        id="outlined-basic"
                         type="number"
                         name="telefono"
                         value={formulario.telefono}

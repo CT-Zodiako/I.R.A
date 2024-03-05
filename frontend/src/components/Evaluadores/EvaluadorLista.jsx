@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import evaluadorService from "../../services/servicioEvaluador";
-import { Link } from "react-router-dom";
 import {
   Button,
   Table,
@@ -16,14 +15,38 @@ import ClearIcon from '@mui/icons-material/Clear'
 import CreateIcon from '@mui/icons-material/Create'
 import { ModalCrearEvaluador } from "./ModalCrearEvaluador"
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import { useDispatch, useSelector } from "react-redux";
+import { cambiarEstadoBoton } from "../../redux/botonAlertaSlice";
+import { NotificacionCalificacion } from "./NotificacionCalificacion";
 
 export const EvaluadorLista = () => {
+  const dispatch = useDispatch();
+  const estadoAlertaNotificacion = useSelector((state) => state.botonAlerta.botonAlerta);
+
   const [evaluadores, setEvaluadores] = useState([]);
   const [modalAbiertoCrear, setModalAbiertoCrear] = useState(false);
   const [modalAbiertoEditar, setModalAbiertoEditar] = useState(false);
   const [evaluadorIdSeleccionado, setEvaluadorIdSeleccionado] = useState(null);
+  const [notificacionEvaluador, setNotificacionEvaluador] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(3);
+
+  useEffect(() => {
+    if (estadoAlertaNotificacion) {
+      setNotificacionEvaluador(true);
+
+      const timer = setTimeout(() => {
+        setNotificacionEvaluador(false);
+        dispatch(
+          cambiarEstadoBoton({
+            botonAlerta: false,
+          })
+        );
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [estadoAlertaNotificacion]);
 
   const abrirModalCrear = () => {
     setModalAbiertoCrear(true);
@@ -96,17 +119,27 @@ export const EvaluadorLista = () => {
         <div className="titulos">
           <h1>Gestion de Usuarios</h1>
         </div>
-        <div  className="botonAgregar-Filtro" style={{ display: 'flex', justifyContent: 'flex-start'}}>
-          <Button
-            sx={{ height: "2.5rem"}}
-            variant="contained"
-            color="success"
-            size="small"
-            onClick={ abrirModalCrear }
-          >
-            <AddCircleOutlineIcon fontSize="small" sx={{ marginRight: "1rem" }}/>
-            Agregar Evaluador
-          </Button>
+        <div>
+          <div  className="botonAgregar-Filtro" style={{ display: 'flex', justifyContent: 'flex-start'}}>
+            <Button
+              sx={{ height: "2.5rem"}}
+              variant="contained"
+              color="success"
+              size="small"
+              onClick={ abrirModalCrear }
+            >
+              <AddCircleOutlineIcon fontSize="small" sx={{ marginRight: "1rem" }}/>
+              Agregar Evaluador
+            </Button>
+          </div>
+          <div
+            style={{ display: "flex", justifyItems: "end", marginTop: "1rem" }}
+            >
+            <NotificacionCalificacion
+              estadoAlerta={notificacionEvaluador}
+              alerta="Resultado Aprendizaje Agregado"
+            />
+          </div>
         </div>
         <div>
           <TableContainer className="tablas">

@@ -9,15 +9,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { InputSeleccion } from "../EtiquetaSeleccionGeneral";
+// import { InputSeleccion } from "../EtiquetaSeleccionGeneral";
+import { cambiarEstadoBoton } from "../../redux/botonAlertaSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-export const CrearResultadoAprendizaje = ({ abierto, cerrado }) => {
+export const CrearResultadoAprendizaje = ({ abierto, cerrado, tablaResultados }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [agregaResultado, setAgregaResultado] = useState({
     titulo: "",
-    programa: "",
+    // programa: "",
     descripcion: "",
   });
-  const [programa, setPrograma] = useState([]);
+  // const [programa, setPrograma] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -31,13 +37,12 @@ export const CrearResultadoAprendizaje = ({ abierto, cerrado }) => {
     fetchData();
   }, []);
 
-  const onPrograma = (seleccionId) => {
-    console.log("seleccion del programa: ",seleccionId);
-    setAgregaResultado({
-      ...agregaResultado,
-      programa: seleccionId,
-    });
-  }
+  // const onPrograma = (seleccionId) => {
+  //   setAgregaResultado({
+  //     ...agregaResultado,
+  //     programa: seleccionId,
+  //   });
+  // }
 
   const onAgregarResultado = (event) => {
     const { name, value } = event.target;
@@ -51,9 +56,17 @@ export const CrearResultadoAprendizaje = ({ abierto, cerrado }) => {
     event.preventDefault();
     try {
       await resultadoAprendizajeServicio.agregarResultado(agregaResultado);
+      dispatch(
+        cambiarEstadoBoton({
+          botonAlerta: true,
+        }),
+      );
+      navigate('/resultado-aprendizaje');
+      cerrado();
     } catch (error) {
       console.error(error);
     }
+    tablaResultados();
   };
 
   return (
@@ -93,7 +106,7 @@ export const CrearResultadoAprendizaje = ({ abierto, cerrado }) => {
                     />
                   </div>
                 </div>
-                <div className="">
+                {/* <div className="">
                   <div className="">
                     <InputLabel id="demo-simple--label">Programa: </InputLabel>
                   </div>
@@ -107,7 +120,7 @@ export const CrearResultadoAprendizaje = ({ abierto, cerrado }) => {
                         alto='3.2rem'
                       />
                   </div>
-                </div>
+                </div> */}
                 <div className="">
                   <div className="">
                     <InputLabel id="demo-simple--label">Descripcion: </InputLabel>
@@ -129,7 +142,6 @@ export const CrearResultadoAprendizaje = ({ abierto, cerrado }) => {
                 <Button 
                   type="submit" 
                   variant="contained"
-                  onClick={cerrado}
                 >
                   Crear
                 </Button>

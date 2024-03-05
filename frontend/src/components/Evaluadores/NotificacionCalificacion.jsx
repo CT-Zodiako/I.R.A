@@ -1,7 +1,7 @@
 import { Alert, Collapse } from "@mui/material";
 import CheckIcon from '@mui/icons-material/Check';
 
-export const NotificacionCalificacion = ({ estadoAlerta }) => {
+export const NotificacionCalificacion = ({ estadoAlerta, alerta }) => {
     return(
         <>
             <Collapse in={estadoAlerta} sx={{ width: "100%" }}>
@@ -12,7 +12,7 @@ export const NotificacionCalificacion = ({ estadoAlerta }) => {
                     color="success"
                     open={estadoAlerta}
                 >
-                    Calificacion Enviada
+                    { alerta }
                 </Alert>
             </Collapse>
         </>
