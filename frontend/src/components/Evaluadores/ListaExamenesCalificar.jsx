@@ -41,6 +41,19 @@ export const VistaExamenes = () =>{
         )
     }
 
+    const onCalificarExamen = ({ examen }) => {
+        const examenId = examen;
+        dispatch(
+            idExamenCalificacion({ 
+                examenId: examenId, 
+                evaluadorId: evaluadorId
+            })
+        );
+        navigate(
+            `/calificacionExamen`
+        )
+    }
+
     useEffect(() => {
         async function fetchData() {
           try {
@@ -90,6 +103,11 @@ export const VistaExamenes = () =>{
                                     onClick={() => onIdExamen({ examen: examenes.id })}
                                 >
                                     Calificar
+                                </Button>
+                                <Button
+                                    onClick={() => onCalificarExamen({ examen: examenes.id })}
+                                >
+                                    Nuevo
                                 </Button>
                                 </TableCell>
                                 </TableRow>

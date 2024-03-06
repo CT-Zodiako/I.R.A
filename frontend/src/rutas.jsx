@@ -15,6 +15,7 @@ import ProteccionRuta from './rutasProtegidas';
 import { FormularioPorPasos } from './components/Examen/pruebaPasos';
 import { ExamenesLista } from './components/Examen/ListaExamenes';
 import { EditarExamen } from './components/Examen/editarExamen';
+import { EstudiantesExamen } from './components/Evaluadores/EstudiantesExamen';
 
 function Routers() {
   return (
@@ -37,6 +38,7 @@ function Routers() {
         <Route path="/lista-estudiantes" element={<VistaEstudiantes/>}></Route>
         <Route path="/calificacion-examen" element={<CalificacionExamen/>}></Route>
         <Route path="/grafica-informe" element={<GraficoInforme/>}></Route>
+        <Route path="/calificacionExamen" element={<EstudiantesExamen/>}></Route>
       </Route>
     </Routes>
     </>
