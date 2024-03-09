@@ -14,7 +14,6 @@ export const VistaExamenes = () =>{
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const evaluadorId = useSelector((state) => state.sesion.id);
-    console.log("id del evaluador: ", evaluadorId);
 
     const [listaExamenesEvaluador, setListaExamenesEvaluador]= useState([]);
     const [paginasTabla, setPaginasTabla] = useState(0);

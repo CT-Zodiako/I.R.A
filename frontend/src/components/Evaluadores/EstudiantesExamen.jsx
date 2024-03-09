@@ -24,22 +24,22 @@ export const EstudiantesExamen = () => {
   const [actividadesExamen, setActividadesExamen] = useState([]);
   const [listaEstudiantes, setListaEstudiantes] = useState([]);
   const [notasCalificacion, setNotasCalificacion] = useState([]);
-  const [estadoVentanaConfirmacion, setEstadoVentanaConfirmacion] =
-    useState(false);
+  const [estadoVentanaConfirmacion, setEstadoVentanaConfirmacion] = useState(false);
   const [botonEnvio, setBotonEnvio] = useState(false)
   const [calificacionExamen, setCalificacionExamen] = useState({
     calificacion: [
       {
-        nombre: "",
+        nombre: '',
         calificacion: {
           notas: [],
-          observaciones: "",
+          observaciones: [],
         },
       },
     ],
-    examen_id: "",
-    evaluador_id: "",
+    examen_id: '',
+    evaluador_id: ''
   });
+  console.log(calificacionExamen);
 
   const onNotaCalificacion = (idSeleccion, indexEstudiante, indexActividad) => {
     setCalificacionExamen((prevCalificaciones) => {
@@ -85,10 +85,7 @@ export const EstudiantesExamen = () => {
     return conteoNotas;
   };
   const totalNotas = CalcularConteoTotal(calificacionExamen);
-  console.log("numero de notas: ",totalNotas);
-  const actividadesPorCalificar =
-    calificacionExamen.calificacion.length * actividadesExamen.length;
-  console.log("numero de actividades: ",actividadesPorCalificar);
+  const actividadesPorCalificar = calificacionExamen.calificacion.length * actividadesExamen.length;
 
   const abrirVentanaConfirmacion = () => {
     setEstadoVentanaConfirmacion(true);
@@ -99,16 +96,11 @@ export const EstudiantesExamen = () => {
   };
 
   const onRegresarExamen = () => {
-    dispatch(LimpiarCalificacion()), navigate(`/lista_examenes`);
+    dispatch(
+      LimpiarCalificacion()
+    ), 
+    navigate(`/lista_examenes`);
   };
-
-  useEffect(() => {
-    setCalificacionExamen((prevCalificacionExamen) => ({
-      ...prevCalificacionExamen,
-      examen_id: examenId,
-      evaluador_id: evaluadorId,
-    }));
-  }, [examenId, evaluadorId]);
 
   useEffect(() => {
     async function fetchData() {
@@ -130,13 +122,13 @@ export const EstudiantesExamen = () => {
             observaciones: "",
           },
         }));
-        setCalificacionExamen({ calificacion: initialCalificaciones });
+        setCalificacionExamen({ calificacion: initialCalificaciones, examen_id: examenId, evaluador_id: evaluadorId });
       } catch (error) {
         console.error("Error al obtener los datos del estudiante", error);
       }
     }
     fetchData();
-  }, [examenId]);
+  }, [examenId, evaluadorId]);
 
   useEffect(() => {
     async function fetchData() {
@@ -154,17 +146,15 @@ export const EstudiantesExamen = () => {
   useEffect(() => {
     const botonEnvio = totalNotas === actividadesPorCalificar;
     setBotonEnvio(botonEnvio);
-    console.log("se ha calificado el examen por completo: ", botonEnvio);
   }, [totalNotas, actividadesPorCalificar]);
 
   const onEnviarCalificaciones = async (event) => {
     event.preventDefault();
     try {
-      const response = await evaluadorService.calificacionActividadEstudiante(
+      await evaluadorService.calificacionActividadEstudiante(
         calificacionExamen
       );
-      console.log("calificacion enviada: ", response);
-      console.log(response);
+      cerrarVentanaConfirmacion();
     } catch (error) {
       console.error("Error al enviar los datos de la calificacion:", error);
     }
@@ -186,44 +176,35 @@ export const EstudiantesExamen = () => {
             <Table>
               <TableHead className="tablaEncabezado">
                 <TableRow>
-                  <TableCell align="center">Estudiantes</TableCell>
-                  <TableCell align="center">Actividades</TableCell>
-                  <TableCell align="center">Calificacion</TableCell>
-                  <TableCell align="center">Observacion</TableCell>
+                  <TableCell align="center" sx={{ width: '12%' }}>Estudiantes</TableCell>
+                  <TableCell align="center" sx={{ width: '25%' }}>Actividades</TableCell>
+                  <TableCell align="center" sx={{ width: '43%' }}>Calificacion</TableCell>
+                  <TableCell align="center" sx={{ width: '20%' }}>Observacion</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {listaEstudiantes.map((estudiante, indexEstudiante) => (
-                  <TableRow key={indexEstudiante}>
-                    <TableCell align="center">{estudiante.NOMBRE}</TableCell>
-                    <TableCell>
+                  <TableRow key={indexEstudiante} sx={{ backgroundColor: indexEstudiante % 2 === 0 ? '#f5f5f5' : '#ffffff' }}>
+                    <TableCell align="center" className="bordeFilas">
+                      {estudiante.NOMBRE}
+                    </TableCell>
+                    <TableCell className="bordeFilas" align="center">
                       {actividadesExamen.map((actividad, indexActividad) => (
                         <div
-                          style={{
-                            textAlign: "center",
-                            margin: "7px 0px",
-                            background: "rgba(0, 0, 0, 0.1)",
-                            width: "8rem",
-                            height: "5rem",
-                            padding: "5px",
-                            borderRadius: "3px",
-                          }}
-                          key={indexActividad}
+                          className="actividadesExamen"
+                          style={{ backgroundColor: indexEstudiante % 2 !== 0 ? '#f5f5f5' : '#ffffff'}}
+                          key={indexActividad}                          
                         >
-                          {actividad}
+                          {/* {actividad} */}
+                          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis commodi accusamus nemo eveniet ab aperiam unde doloribus, deleniti magnam necessitatibus, odio perferendis quis iure ea!
                         </div>
                       ))}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="bordeFilas">
                       {actividadesExamen.map((actividad, indexActividad) => (
                         <div
-                          style={{
-                            height: "5rem",
-                            background: "rgba(0, 0, 100, 0.1)",
-                            margin: "7px 0px",
-                            padding: "5px",
-                            borderRadius: "3px",
-                          }}
+                          className="calificacionExamen"
+                          style={{ backgroundColor: indexEstudiante % 2 !== 0 ? '#f5f5f5' : '#ffffff'}}
                           key={indexActividad}
                         >
                           <SeleccionCalificacion
@@ -239,13 +220,11 @@ export const EstudiantesExamen = () => {
                         </div>
                       ))}
                     </TableCell>
-                    <TableCell align="center" sx={{ display: "flex" }}>
+                    <TableCell align="center">
                       <textarea
-                        name=""
-                        id=""
                         cols="30"
                         rows="10"
-                        style={{ width: "10rem", resize: "none" }}
+                        className="observacionesExamen"
                         // value={calificacionExamen.observaciones[IndexEstudiante] || ""}
                         onChange={(event) =>
                           onObservacion(event, indexEstudiante)
@@ -259,11 +238,7 @@ export const EstudiantesExamen = () => {
           </TableContainer>
         </div>
         <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            padding: "2 rem 5rem",
-          }}
+          className="enviarCalificacion"
         >
           <Button
             variant="contained"

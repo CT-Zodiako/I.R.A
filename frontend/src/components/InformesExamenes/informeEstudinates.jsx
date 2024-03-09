@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import Chart from "react-google-charts"
 import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
@@ -7,6 +7,7 @@ import html2pdf from "html2pdf.js"
 import informeServicio from "../../services/ServicioInforme"
 import evaluadorService from "../../services/servicioEvaluador"
 import { 
+  Button,
   Table, TableBody, 
   TableCell, TableContainer, 
   TableHead, TableRow 
@@ -15,15 +16,14 @@ import "./styleInforme.css"
 
 export const PromedioEstudiante = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const evaluadorId = location.state.evaluadorId;
   const proyectoIntegrador = location.state.proyectoIntegrador;
 
   const [calificaciones, setCalificaciones] = useState([]);
   const [promedioGrafica, setPromedioGrafica] = useState([]);
-  console.log("calificaciones para asignar colores: ", promedioGrafica);
   const [actividades, setActividades] = useState([]);
   const [colorInforme, setColorInforme] = useState([]);
-  console.log("colores para el informe: ", colorInforme);
   const tableRef = useRef(null);
 
   const onColorPromedio = (promedio) => {
@@ -90,6 +90,9 @@ export const PromedioEstudiante = () => {
     });
   };
   
+  const onRegresarExamen = () => {
+    navigate(`/informe_examen`);
+  };
   
   useEffect(() => {
     async function fetchData() {
@@ -145,6 +148,14 @@ export const PromedioEstudiante = () => {
 
   return (
     <>
+      <Button
+        variant="contained"
+        color="warning"
+        size="small"
+        onClick={onRegresarExamen}
+      >
+        Regresar
+      </Button>
       <div id="pdf-content">
         <div className="informacionInforme">
           <h2>Proyecto Integrador</h2>

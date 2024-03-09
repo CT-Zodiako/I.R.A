@@ -6,7 +6,6 @@ export const SeleccionCalificacion = ({ seleccionar, idSeleccion }) => {
 
     const onSeleccionCalificacion = (event) => {
         const selectedId = event.target.value;
-        console.log("calificacion seleccionada: ", selectedId);
         setCalificacion(selectedId);
         idSeleccion(selectedId);
     }

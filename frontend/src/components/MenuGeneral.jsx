@@ -10,8 +10,8 @@ import OutputIcon from '@mui/icons-material/Output';
 export const  Menu = ({ onCerrarSesion }) => {
   const dispatch = useDispatch();
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const [autenticado, setAutenticado] = useState(localStorage.getItem("autenticado"));
   const [rol, setRol] = useState();
+  console.log(rol);
   const [selecPrograma, setSelecPrograma] = useState([]);
 
   const onPrograma = (seleccionId) => {
@@ -22,21 +22,20 @@ export const  Menu = ({ onCerrarSesion }) => {
     );
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await programaServicio.traerPrograma();
-        setSelecPrograma(data);
-      } catch (error) {
-        console.error("Error al obtener el programa:", error);
+    useEffect(() => {
+      async function fetchData() {
+        try {
+          const data = await programaServicio.traerPrograma();
+          setSelecPrograma(data);
+        } catch (error) {
+          console.error("Error al obtener el programa:", error);
+        }
       }
-    }
-    fetchData();
-  }, []);
+      fetchData();
+    }, []);
 
   useEffect(() => {
     if (token) {
-
       const tokenData = token.split(".")[1];
       const decodedToken = JSON.parse(atob(tokenData));
       if (decodedToken) {
@@ -58,11 +57,10 @@ export const  Menu = ({ onCerrarSesion }) => {
             <ul>
               {rol === 'Admin' &&(
                 <>
-                  <li className='opcionesMenu'><Link to="/lista_examen">Examenes</Link></li>
-                  <li className='opcionesMenu'><Link to="/resultado-aprendizaje">Resultados de Aprendizaje</Link></li>
-                  <li className='opcionesMenu'><Link to="/evaluadores">Gestión de Usuario</Link></li>
-                  <li className='opcionesMenu'><Link to="/informe_examen">Informes</Link></li>
-                  <li  style={{marginTop: '2.5rem'}}>
+                  <Link to="/lista_examen" className='enlacesMenu'><li className='opcionesMenu'>Examen</li></Link>
+                  <Link to="/resultado-aprendizaje" className='enlacesMenu'><li className='opcionesMenu'>Resultados de Aprendizaje</li></Link>
+                  <Link to="/evaluadores" className='enlacesMenu'><li className='opcionesMenu'>Gestión de Usuario</li></Link>
+                  <Link to="/informe_examen" className='enlacesMenu'><li className='opcionesMenu'>Informes</li></Link>
                     <h4 style={{ marginLeft: "0.8rem" }}>Programa:</h4>
                     <div className="programaSelec">
                       <InputSeleccion
@@ -71,11 +69,11 @@ export const  Menu = ({ onCerrarSesion }) => {
                         idSeleccion={onPrograma}
                         label="Seleccione Programa"
                         variable="nombre"
-                        anchoSelec='14rem'
-                        alto='3.2rem'
+                        anchoSelec='13rem'
+                        alto='3rem'
+                        tamano='14px'
                       />
                     </div>
-                  </li>
                 </>
               )}
               {rol === 'Evaluador' &&(

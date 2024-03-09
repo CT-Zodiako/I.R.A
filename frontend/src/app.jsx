@@ -4,21 +4,31 @@ import Routers from './rutas';
 import Menu from '../src/components/MenuGeneral';
 import { InicioSesionUsuarios } from './view/InicioSesion';
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 const App = () => {
-  const [autenticado, setAutenticado] = useState(
-    false
-  );
+  const [autenticado, setAutenticado] = useState(false);
+
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setAutenticado(true);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    }
+    const verificarAutenticacion = () => {
+      const token = localStorage.getItem('token');
+      
+      if (token) {
+        const decodedToken = jwtDecode(token);
+
+        if (decodedToken.exp * 1000 < Date.now()) {
+          handleCerrarSesion();
+        } else {
+          setAutenticado(true);
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        }
+      }
+    };
+
+    verificarAutenticacion();
   }, []);
 
   const handleAutenticacion = (token) => {
-    localStorage.setItem('token', token);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     setAutenticado(true);
   };

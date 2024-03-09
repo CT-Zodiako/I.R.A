@@ -161,10 +161,10 @@ export const ExamenesLista = () => {
               <Table aria-label="caption table">
                 <TableHead className="tablaEncabezado">
                   <TableRow>
-                    <TableCell align="center">Examen Id</TableCell>
-                    <TableCell align="center">Proyecto Integrador</TableCell>
-                    <TableCell align="center">Evaluadores</TableCell>
-                    <TableCell align="center">Acción</TableCell>
+                    <TableCell align="center" className="bordeVerticar" sx={{width:"13%"}}>EXAMEN ID</TableCell>
+                    <TableCell align="center" className="bordeVerticar" sx={{width:"42%"}}>PROYECTO INTEGRADOR</TableCell>
+                    <TableCell align="center" className="bordeVerticar" sx={{width: "20%"}}>EVALUADORES</TableCell>
+                    <TableCell align="center" sx={{width: "25%"}}>ACCIÓN</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -173,15 +173,15 @@ export const ExamenesLista = () => {
                   : listaExamenes
                 ).map((examen) => (
                     <TableRow key={examen.id} className="tablaBody">
-                      <TableCell scope="row" align="center" className="tablaId" sx={{width:"10%"}}>
+                      <TableCell scope="row" align="center" className="tablaId bordeVerticar">
                         {examen.id}
                       </TableCell>
-                      <TableCell align="center" className="tablaProyecto" sx={{width:"45%"}}>
+                      <TableCell align="center" className="tablaProyecto bordeVerticar">
                         <div>
                           {examen.proyecto_integrador}
                         </div>
                       </TableCell>
-                      <TableCell align="center" sx={{  width: "20%" }}>
+                      <TableCell align="center" className="bordeVerticar">
                         {examen.nombres_evaluadores
                           .map((evaluador, index) => (
                             <div key={index} style={{ margin: "0.6rem 0rem" }}>
@@ -190,7 +190,7 @@ export const ExamenesLista = () => {
                           ))
                         }
                       </TableCell>
-                      <TableCell className="tablaAcciones" sx={{ width: "25%" }}>
+                      <TableCell className="tablaAcciones">
                         <div>
                           <CreateIcon
                             className="colorEditar"
