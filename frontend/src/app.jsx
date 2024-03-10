@@ -4,9 +4,12 @@ import Routers from './rutas';
 import Menu from '../src/components/MenuGeneral';
 import { InicioSesionUsuarios } from './view/InicioSesion';
 import axios from "axios";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
+import { iniciarSesion } from "./redux/inicioSesionSlipe";
+import { useDispatch } from "react-redux";
 
 const App = () => {
+  const dispatch = useDispatch();
   const [autenticado, setAutenticado] = useState(false);
 
   useEffect(() => {
@@ -14,8 +17,26 @@ const App = () => {
       const token = localStorage.getItem('token');
       
       if (token) {
-        const decodedToken = jwtDecode(token);
+        const tokenData = token.split(".")[1];
+        const decodificado = JSON.parse(atob(tokenData));
+        if (decodificado) {
+          const usuarioId = decodificado.sub.id;
+          const usuario = decodificado.sub.nombre;
+          const rol = decodificado.sub.rol;
 
+          console.log('Usuario:', usuario);
+          console.log('Rol:', rol);
+
+          dispatch(
+            iniciarSesion({
+              id: usuarioId,
+              username: usuario,
+              rol: rol,
+            })
+          );
+        }
+
+        const decodedToken = jwtDecode(token);
         if (decodedToken.exp * 1000 < Date.now()) {
           handleCerrarSesion();
         } else {
@@ -24,7 +45,6 @@ const App = () => {
         }
       }
     };
-
     verificarAutenticacion();
   }, []);
 

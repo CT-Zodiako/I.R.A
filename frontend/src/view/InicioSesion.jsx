@@ -39,20 +39,6 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
       const decodedToken = JSON.parse(atob(tokenData));
 
       if (decodedToken) {
-        const usuarioId = decodedToken.sub.id;
-        const usuario = decodedToken.sub.nombre;
-        const rol = decodedToken.sub.rol;
-
-        // axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
-
-        dispatch(
-          iniciarSesion({
-            id: usuarioId,
-            username: usuario,
-            rol: rol,
-          })
-        );
-
         onAutenticacion(token);
       } else {
         console.error("Error al decodificar el token");

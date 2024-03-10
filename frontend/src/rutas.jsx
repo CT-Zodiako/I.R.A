@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router-dom';
-import { InicioSesionUsuarios } from './view/InicioSesion'
 import { CrearExamen } from '../src/view/Examen'; 
 import { CrearEvaluador } from './view/AgregarEvaluador';
 import { EvaluadorLista } from './components/Evaluadores/EvaluadorLista'; 

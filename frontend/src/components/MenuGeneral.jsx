@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { InputSeleccion } from './EtiquetaSeleccionGeneral'
 import programaServicio from '../services/ServicioPrograma' 
@@ -9,9 +9,10 @@ import OutputIcon from '@mui/icons-material/Output';
 
 export const  Menu = ({ onCerrarSesion }) => {
   const dispatch = useDispatch();
+  const usuario = useSelector((state) => state.sesion.username);
+
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [rol, setRol] = useState();
-  console.log(rol);
   const [selecPrograma, setSelecPrograma] = useState([]);
 
   const onPrograma = (seleccionId) => {
@@ -22,7 +23,8 @@ export const  Menu = ({ onCerrarSesion }) => {
     );
   };
 
-    useEffect(() => {
+  useEffect(() => {
+    if (rol === 'Admin') {
       async function fetchData() {
         try {
           const data = await programaServicio.traerPrograma();
@@ -32,7 +34,8 @@ export const  Menu = ({ onCerrarSesion }) => {
         }
       }
       fetchData();
-    }, []);
+    }
+  }, []);
 
   useEffect(() => {
     if (token) {
@@ -48,9 +51,7 @@ export const  Menu = ({ onCerrarSesion }) => {
   return (
     <div className="menu">
         <div className='usuarioRolMenu'>
-          {rol === 'Admin' ? 
-          <h2>Bienvenido Administrador</h2> : 
-          <h2>Bienvenido Evaluador</h2>}
+          <h2>Bienvenido { usuario }</h2>
         </div>
         <div style={{ height: "60%", display: 'flex', alignContent: 'start' }}>
           <nav>
@@ -78,7 +79,7 @@ export const  Menu = ({ onCerrarSesion }) => {
               )}
               {rol === 'Evaluador' &&(
                 <>
-                  <li style={{ padding: "12px" }}><Link to="/lista_examenes">Bandeja de examenes</Link> </li>
+                  <Link to="/lista_examenes" className='enlacesMenu'><li className='opcionesMenu'>Bandeja de examenes</li></Link>
                 </>
               )}
             </ul>         
