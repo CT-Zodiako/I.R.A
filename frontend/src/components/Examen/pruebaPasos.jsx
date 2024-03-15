@@ -41,6 +41,7 @@ export const FormularioPorPasos = () => {
       dispatch(
         cambiarEstadoBoton({
           botonAlerta: true,
+          notificacion: "Examen Creado con Exito",
         }),
       );
       navigate('/lista_examen');

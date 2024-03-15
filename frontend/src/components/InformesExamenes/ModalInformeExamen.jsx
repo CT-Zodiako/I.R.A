@@ -1,34 +1,27 @@
 import { useEffect, useState, useRef } from "react";
 import Chart from "react-google-charts";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import html2pdf from "html2pdf.js";
+// import jsPDF from "jspdf";
+// import html2canvas from "html2canvas";
+// import html2pdf from "html2pdf.js";
 import informeServicio from "../../services/ServicioInforme";
 import evaluadorService from "../../services/servicioEvaluador";
 import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
+  Button, Dialog, DialogActions,
+  DialogContent, DialogContentText,
+  DialogTitle, Table, TableBody,
+  TableCell, TableContainer,
+  TableHead, TableRow,
 } from "@mui/material";
 import "./styleInforme.css";
 import { useSelector } from "react-redux";
 
-export const ModalInformeExamen = ({ abrirInforme, cerrarInforme }) => {
+export const ModalInformeExamen = ({ abrirInforme, cerrarInforme, descargarPDF }) => {
   const evaluador = useSelector((state) => state.informeExamen.idInforme);
   const [calificaciones, setCalificaciones] = useState([]);
   const [promedioGrafica, setPromedioGrafica] = useState([]);
   const [actividades, setActividades] = useState([]);
   const [colorInforme, setColorInforme] = useState([]);
-  const tableRef = useRef(null);
+  // const tableRef = useRef(null);
 
   const onColorPromedio = (promedio) => {
     for (let nota of colorInforme) {
@@ -55,51 +48,51 @@ export const ModalInformeExamen = ({ abrirInforme, cerrarInforme }) => {
     return coloresFondo;
   };
 
-  const downloadPDF = () => {
-    const input = document.getElementById("pdf-content");
+  // const downloadPDF = () => {
+  //   const input = document.getElementById("pdf-content");
 
-    html2pdf(input, {
-      margin: 10,
-      filename: "download.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    });
+  //   html2pdf(input, {
+  //     margin: 10,
+  //     filename: "download.pdf",
+  //     image: { type: "jpeg", quality: 0.98 },
+  //     html2canvas: { scale: 2 },
+  //     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+  //   });
 
-    const pdf = new jsPDF();
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
+  //   const pdf = new jsPDF();
+  //   const pdfWidth = pdf.internal.pageSize.getWidth();
+  //   const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    html2canvas(input).then((canvas) => {
-      const contentHeight = canvas.height;
-      const pageHeight = pdfHeight;
-      let currentPosition = 0;
+  //   html2canvas(input).then((canvas) => {
+  //     const contentHeight = canvas.height;
+  //     const pageHeight = pdfHeight;
+  //     let currentPosition = 0;
 
-      while (currentPosition < contentHeight) {
-        const sectionHeight = Math.min(
-          pageHeight,
-          contentHeight - currentPosition
-        );
-        const imgData = canvas.toDataURL("image/png");
+  //     while (currentPosition < contentHeight) {
+  //       const sectionHeight = Math.min(
+  //         pageHeight,
+  //         contentHeight - currentPosition
+  //       );
+  //       const imgData = canvas.toDataURL("image/png");
 
-        pdf.addImage(
-          imgData,
-          "PNG",
-          0,
-          currentPosition,
-          pdfWidth,
-          sectionHeight
-        );
-        currentPosition += sectionHeight;
+  //       pdf.addImage(
+  //         imgData,
+  //         "PNG",
+  //         0,
+  //         currentPosition,
+  //         pdfWidth,
+  //         sectionHeight
+  //       );
+  //       currentPosition += sectionHeight;
 
-        if (currentPosition < contentHeight) {
-          pdf.addPage();
-        }
-      }
+  //       if (currentPosition < contentHeight) {
+  //         pdf.addPage();
+  //       }
+  //     }
 
-      pdf.save("download.pdf");
-    });
-  };
+  //     pdf.save("download.pdf");
+  //   });
+  // };
 
   useEffect(() => {
     async function fetchData() {
@@ -292,7 +285,11 @@ export const ModalInformeExamen = ({ abrirInforme, cerrarInforme }) => {
           <Button onClick={cerrarInforme} color="primary">
             Cerrar
           </Button>
-          <Button>Descargar</Button>
+          <Button
+             onClick={descargarPDF}
+          >
+            Descargar Informe
+          </Button>
         </DialogActions>
       </Dialog>
     </>

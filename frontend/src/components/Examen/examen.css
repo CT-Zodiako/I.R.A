@@ -48,9 +48,9 @@
     /* background-color: red; */
 }
 
-.inputInicionSesion::placeholder{
+/* .inputInicionSesion::placeholder{
     
-}
+} */
 
 .inicioSesionBoton{
     margin-top: 3rem;
@@ -118,6 +118,10 @@
     height: 300px;
 }
 
+.tableBody{
+    font-size: 50px;
+}
+
 .centrar{
     margin-top: 1rem;
     display: flex;
@@ -152,6 +156,23 @@
 
 .colorEditar{
     color: rgb(223, 223, 23);
+}
+
+.colorCorreo{
+    color: rgb(75, 145, 236);
+}
+
+
+.colorActivo{
+    color: rgb(33, 167, 33);
+}
+
+.colorInactivo{
+    color: rgb(116, 116, 116);
+}
+
+.colorInforme{
+    color: rgb(29, 175, 16);
 }
 
 .modal{

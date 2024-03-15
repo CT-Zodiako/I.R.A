@@ -1,62 +1,83 @@
 import { useEffect, useState } from "react"
 import examenService from "../../services/ServiciosExamen"
-import {
-  Button, Table, TableBody,
-  TableCell, TableContainer,
-  TableHead, TablePagination,
-  TableRow
-} from "@mui/material"
-import { Link, useNavigate } from "react-router-dom"
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import { Button } from "@mui/material"
 import EmailIcon from '@mui/icons-material/Email'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CreateIcon from '@mui/icons-material/Create'
+import { Link, useNavigate } from "react-router-dom"
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline"
 import { useDispatch, useSelector } from "react-redux"
 import { NotificacionCalificacion } from "../Evaluadores/NotificacionCalificacion"
 import { cambiarEstadoBoton } from "../../redux/botonAlertaSlice"
+import { Tabla } from "../tabla"
 
-export const ExamenesLista = () => {  
+export const ExamenesLista = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const estadoAlertaNotificacion = useSelector((state) => state.botonAlerta.botonAlerta);
+  const estadoAlerta = useSelector((state) => state.botonAlerta.botonAlerta);
+  const alertaNotificacion = useSelector((state) => state.botonAlerta.notificacion);
 
   const [listaExamenes, setListaExamenes] = useState([]);
   const [notificacionExamen, setNotificacionExamen] = useState(false);
-  const [notificacionCorreo, setNotificacionCorreo] = useState(false);
-  const [paginasTabla, setPaginasTabla] = useState(0);
-  const [filasPaginasTabla, setFilasPaginasTabla] = useState(5);
+
+  const columnas = [
+    {
+      titulo: "EXAMEN ID",
+      ancho: "13%",
+      valor: "id",
+    },
+    {
+      titulo: "PROYECTO INTEGRADOR",
+      ancho: "42%",
+      valor: "proyecto_integrador",
+    },
+    {
+      titulo: "EVALUADORES",
+      ancho: "20%",
+      valor: "nombres_evaluadores",
+    },
+  ];
+
+  const BotonesAcciones = [
+    {
+      icono: CreateIcon,
+      color: () => 'colorEditar',
+      accion: (event, examenId) =>
+        onEditarExamen({ accion: "editar", examenId: examenId }),
+    },
+    {
+      icono: DeleteIcon,
+      color: () => 'colorEliminar',
+      accion: (event, examenId) => onEliminarExamen(event, examenId),
+    },
+    {
+      icono: EmailIcon,
+      color: () => 'colorCorreo',
+      accion: (event, id) => enviarCorre(event, id),
+    },
+  ];
 
   useEffect(() => {
-    if (estadoAlertaNotificacion) {
+    if (estadoAlerta) {
       setNotificacionExamen(true);
-  
       const timer = setTimeout(() => {
         setNotificacionExamen(false);
         dispatch(
           cambiarEstadoBoton({
             botonAlerta: false,
+            notificacion: "",
           })
-        )
+        );
       }, 3000);
-
       return () => clearTimeout(timer);
     }
-  }, [estadoAlertaNotificacion]);
-
-  const handleChangePage = (event, newPage) => {
-    setPaginasTabla(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setFilasPaginasTabla(parseInt(event.target.value, 10));
-    setPaginasTabla(0);
-  };
+  }, [estadoAlerta]);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const examenes = await examenService.ExamenesCreados();
-        setListaExamenes(examenes)
+        setListaExamenes(examenes);
       } catch (error) {
         console.error("Error al obtener la lista: ", error);
       }
@@ -69,21 +90,14 @@ export const ExamenesLista = () => {
     const fetchData = async () => {
       try {
         await examenService.correoEvaluadores(examenId);
-
-        // if (estadoAlertaNotificacion) {
-        //   setNotificacionCorreo(true);
-        //   const timer = setTimeout(() => {
-        //     setNotificacionCorreo(false);
-        //     dispatch(
-        //       cambiarEstadoBoton({
-        //         botonAlerta: false,
-        //       })
-        //     )
-        //   }, 3000);
-        //   return () => clearTimeout(timer);
-        // }
-
-        onActualizarLista();
+        dispatch(
+          cambiarEstadoBoton({
+            botonAlerta: true,
+            notificacion: "Se notifico a los evaluadores del examen",
+          }),
+        );
+        const nuevaListaExamen = await examenService.ExamenesCreados();
+        setListaExamenes(nuevaListaExamen);
       } catch (error) {
         console.error("Error al enviar los correos: ", error);
       }
@@ -102,128 +116,52 @@ export const ExamenesLista = () => {
     }
   };
 
-  const onActualizarLista = async () => {
-    try {
-      const actualizar = await examenService.ExamenesCreados();
-      setListaExamenes(actualizar);
-    } catch (error) {
-      console.error("Erro al actulizar la tabla:", error);
-    }
-  }
-
-  const onEditarExamen = ({accion, examenId}) => {
-    navigate(`/editar_examen`,{
+  const onEditarExamen = ({ accion, examenId }) => {
+    navigate(`/editar_examen`, {
       state: {
         accion: accion,
-        examenId: examenId
-      }
+        examenId: examenId,
+      },
     });
-  }  
+  };
 
   return (
     <>
       <div>
-        <div>
-          <h1>Lista Examenes Creados</h1>
+        <div className="cabecera">
+          <div>
+            <h1>Lista Examenes Creados</h1>
+          </div>
+          <div className="notificacionAlerta">
+              <NotificacionCalificacion
+                estadoAlerta={notificacionExamen}
+                alerta={alertaNotificacion}
+              />
+            </div>
         </div>
-        <div className="componentes">
-          <div>
-            <div>
-              <Button
-                variant="contained"
-                color="success"
-                size="small"
-              >
-                <AddCircleOutlineIcon fontSize="small" />
-                <Link 
-                  to="/pasos" 
-                  className="botonAgregar"
-                >
-                  Crear Examen
-                </Link>
-              </Button>
-            </div>
-            <div style={{ display: "flex", justifyItems: "end", marginTop: "1rem" }}>
-                <NotificacionCalificacion 
-                    estadoAlerta={notificacionExamen}
-                    alerta='Examen Creado con Exito' 
-                />
-            </div>
-            <div style={{ display: "flex", justifyItems: "end", marginTop: "1rem" }}>
-                <NotificacionCalificacion 
-                    estadoAlerta={notificacionCorreo}
-                    alerta='Notifficacion Enviada con Exito' 
-                />
-            </div>
-          </div>
-          <div>
-            <TableContainer className="tablas">
-              <Table aria-label="caption table">
-                <TableHead className="tablaEncabezado">
-                  <TableRow>
-                    <TableCell align="center" className="bordeVerticar" sx={{width:"13%"}}>EXAMEN ID</TableCell>
-                    <TableCell align="center" className="bordeVerticar" sx={{width:"42%"}}>PROYECTO INTEGRADOR</TableCell>
-                    <TableCell align="center" className="bordeVerticar" sx={{width: "20%"}}>EVALUADORES</TableCell>
-                    <TableCell align="center" sx={{width: "25%"}}>ACCIÓN</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                {(filasPaginasTabla > 0
-                  ? listaExamenes.slice(paginasTabla * filasPaginasTabla, paginasTabla * filasPaginasTabla + filasPaginasTabla)
-                  : listaExamenes
-                ).map((examen) => (
-                    <TableRow key={examen.id} className="tablaBody">
-                      <TableCell scope="row" align="center" className="tablaId bordeVerticar">
-                        {examen.id}
-                      </TableCell>
-                      <TableCell align="center" className="tablaProyecto bordeVerticar">
-                        <div>
-                          {examen.proyecto_integrador}
-                        </div>
-                      </TableCell>
-                      <TableCell align="center" className="bordeVerticar">
-                        {examen.nombres_evaluadores
-                          .map((evaluador, index) => (
-                            <div key={index} style={{ margin: "0.6rem 0rem" }}>
-                              {evaluador}
-                            </div>
-                          ))
-                        }
-                      </TableCell>
-                      <TableCell className="tablaAcciones">
-                        <div>
-                          <CreateIcon
-                            className="colorEditar"
-                            fontSize="large"
-                            onClick={() => onEditarExamen({accion:'editar', examenId: examen.id})}
-                          />
-                          <DeleteIcon
-                            className="colorEliminar"
-                            fontSize="large"
-                            onClick={(event) => onEliminarExamen(event, examen.id)}
-                          />
-                          <EmailIcon
-                              color="primary"
-                              fontSize="large"
-                              onClick={(event) => enviarCorre(event, examen.id)}
-                          />
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 20]}
-              component="div"
-              count={listaExamenes.length}
-              rowsPerPage={filasPaginasTabla}
-              page={paginasTabla}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </div>
+        <div className="cuerpo">
+          <Button 
+            sx={{ height: "2.5rem" }}
+            variant="contained" 
+            color="success" 
+            size="small"
+          >
+            <AddCircleOutlineIcon fontSize="small" />
+            <Link to="/pasos" className="botonAgregar">
+              Crear Examen
+            </Link>
+          </Button>
+        </div>
+        <div className="tablascontenido">
+          <Tabla
+            datos={listaExamenes}
+            columnas={columnas}
+            editar={onEditarExamen}
+            eliminar={onEliminarExamen}
+            enviarCorreo={enviarCorre}
+            acciones={BotonesAcciones}
+            accinar='true'
+          />
         </div>
       </div>
     </>

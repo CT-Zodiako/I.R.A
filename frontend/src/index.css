@@ -71,12 +71,21 @@ body {
   color: black;
 }
 
-.selector:hover .seleccionarPrograma{
-  z-index: 3;
-  width: 15rem;
-  height: 3.2rem;
-  position: static;
+/* Componentes */
+.cabecera{
+  height: 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+.cuerpo{
+  height: 6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 
 /* Login */
 .informacionInicioSesion{
@@ -101,11 +110,6 @@ body {
   width: 18rem;
 }
 
-.componentes > div {
-  margin-bottom: 0.8rem;
-  padding-bottom: 0.8rem;
-}
-
 .botonRegresar{
   margin-top: 1rem;
 }
@@ -124,12 +128,22 @@ body {
 .tablaEncabezado th {
   color: rgb(255, 255, 255);
   font-weight: bold;
-  font-size: 14px;
+  font-size: 13px;
   border-bottom: 1.5px solid rgb(223,227,231);
 }
 
 .bordeVerticar{
   border-right: 1.5px solid rgb(223,227,231);
+}
+
+.tablasCuerpo td {
+  font-size: 13px;
+}
+
+.notificacionAlerta{
+  display: flex;
+  justify-items: end;
+  margin-top: 1rem;
 }
 
 /* Resultados de Aprendizaje Tabla*/
@@ -200,13 +214,11 @@ body {
 }
 
 /* Resulatdos de Aprendizaje */
-.busquedaResultadoAprendizaje{
-  padding: 1rem;
-  height: 4rem;
+/* .busquedaResultadoAprendizaje{
   display: flex;
   justify-content: space-between;
   align-items: center;  
-}
+} */
 
 .resultadoAprendizaje{
   text-align: center;
@@ -217,10 +229,6 @@ body {
 }
 
 /* Titulos de las Pantallas del Sistema */
-.titulos{
-  height: 4rem;
-}
-
 .botonAgregar-Filtro{
   height: 4rem;
 }

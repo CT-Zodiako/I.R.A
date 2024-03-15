@@ -1,15 +1,10 @@
 import { useState } from "react";
 import loginService from "../services/ServicioLogin";
-import { useDispatch } from "react-redux";
-import { iniciarSesion } from "../redux/inicioSesionSlipe";
-import axios from "axios";
 import { Button, TextField } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
-import Cookies from 'js-cookie';
 
 export const InicioSesionUsuarios = ({ onAutenticacion }) => {
-  const dispatch = useDispatch();
   const [autentificacion, setAutentificacion] = useState({
     username: "",
     password: "",
@@ -32,12 +27,10 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
     try {
       const response = await loginService.verificarLogin(autentificacion);
       const token = response.data.access_token;
-
       localStorage.setItem("token", token);
 
       const tokenData = token.split(".")[1];
       const decodedToken = JSON.parse(atob(tokenData));
-
       if (decodedToken) {
         onAutenticacion(token);
       } else {

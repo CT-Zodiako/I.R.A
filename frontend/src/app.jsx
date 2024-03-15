@@ -15,7 +15,6 @@ const App = () => {
   useEffect(() => {
     const verificarAutenticacion = () => {
       const token = localStorage.getItem('token');
-      
       if (token) {
         const tokenData = token.split(".")[1];
         const decodificado = JSON.parse(atob(tokenData));
@@ -23,10 +22,6 @@ const App = () => {
           const usuarioId = decodificado.sub.id;
           const usuario = decodificado.sub.nombre;
           const rol = decodificado.sub.rol;
-
-          console.log('Usuario:', usuario);
-          console.log('Rol:', rol);
-
           dispatch(
             iniciarSesion({
               id: usuarioId,
@@ -35,7 +30,6 @@ const App = () => {
             })
           );
         }
-
         const decodedToken = jwtDecode(token);
         if (decodedToken.exp * 1000 < Date.now()) {
           handleCerrarSesion();

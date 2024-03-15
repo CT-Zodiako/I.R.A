@@ -24,7 +24,7 @@ export const  Menu = ({ onCerrarSesion }) => {
   };
 
   useEffect(() => {
-    if (rol === 'Admin') {
+    // if (rol === 'Admin') {
       async function fetchData() {
         try {
           const data = await programaServicio.traerPrograma();
@@ -34,7 +34,7 @@ export const  Menu = ({ onCerrarSesion }) => {
         }
       }
       fetchData();
-    }
+    // }
   }, []);
 
   useEffect(() => {
@@ -51,7 +51,11 @@ export const  Menu = ({ onCerrarSesion }) => {
   return (
     <div className="menu">
         <div className='usuarioRolMenu'>
-          <h2>Bienvenido { usuario }</h2>
+          { rol === 'Admin' ?
+              <h2>Bienvenido Administrador</h2>:
+              <h2>Bienvenido Evaluador</h2>
+          }
+          {/* <h2>Bienvenido <br/>{ usuario }</h2> */}
         </div>
         <div style={{ height: "60%", display: 'flex', alignContent: 'start' }}>
           <nav>

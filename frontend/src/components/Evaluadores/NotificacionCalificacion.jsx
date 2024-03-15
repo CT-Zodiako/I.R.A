@@ -6,7 +6,7 @@ export const NotificacionCalificacion = ({ estadoAlerta, alerta }) => {
         <>
             <Collapse in={estadoAlerta} sx={{ width: "100%" }}>
                 <Alert 
-                    sx={{ width: '35%', background: "rgba(112, 212, 112, 0.5)" }}
+                    sx={{ maxWidth: '22rem', background: "rgba(112, 212, 112, 0.5)" }}
                     icon={<CheckIcon fontSize="inherit" />} 
                     severity="success"  
                     color="success"

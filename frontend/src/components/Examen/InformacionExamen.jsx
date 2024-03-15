@@ -158,7 +158,7 @@ export const EvaluacionInformacion = ({
                   }}
                 />
               </div>
-              <div className="informacionExamen">
+              <div className="informacionExamen" style={{ marginTop: '1.5rem' }}>
                 <InputLabel id="demo-simple--label">Resultado:</InputLabel>
                 <InputSeleccion
                   seleccionar={resultadoAprendizaje}

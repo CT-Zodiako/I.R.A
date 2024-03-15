@@ -1,26 +1,60 @@
 import { useEffect, useState } from "react"
 import informeServicio from "../../services/ServicioInforme"
 import { useNavigate,  } from "react-router-dom"
-import {
-  Button, Table, TableBody,
-  TableCell, TableContainer,
-  TableHead, TablePagination,
-  TableRow,
-  TextField
-} from "@mui/material"
+import { TextField, 
+  Table, TableBody, TableCell, 
+  TableContainer, TableHead, 
+  TablePagination, TableRow, Button} from "@mui/material"
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { ModalInformeExamen } from "./ModalInformeExamen"
 import { useDispatch } from "react-redux"
 import { guardarInformeId } from "../../redux/idExamenInforme"
+import jsPDF from "jspdf"
+import html2canvas from "html2canvas"
+import html2pdf from "html2pdf.js"
+import { Tabla } from "../tabla"
 
 export const Informes = () => {
+  const [paginasTabla, setPaginasTabla] = useState(0);
+  const [filasPaginasTabla, setFilasPaginasTabla] = useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPaginasTabla(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setFilasPaginasTabla(parseInt(event.target.value, 10));
+    setPaginasTabla(0);
+  };
+  // ...
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [calificacionesExamen, setCalificacionesExamen] = useState([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [filtrar, setFiltrar] = useState('');
   const [mostrarInforme, setMotrarInforme] = useState(false);
+
+  const columnas = [
+    {
+      titulo: "INFORME ID",
+      ancho: "25%",
+      valor: "id",
+    },
+    {
+      titulo: "PROYECTO INTEGRADOR",
+      ancho: "45%",
+      valor: "proyecto_integrador",
+    },
+  ];
+
+  const BotonesAcciones = [
+    {
+      icono: RemoveRedEyeIcon,
+      color: () => 'colorInforme',
+      accion: (event, evaluador) => abrirInforme(evaluador.id),
+    },
+  ];
 
   const buscarInforme = (event) => {
     setFiltrar(event.target.value);
@@ -42,15 +76,6 @@ export const Informes = () => {
   const cerrarInforme = () => {
     setMotrarInforme(false);
   }
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
 
   useEffect(() => {
     async function fetchData() {
@@ -74,12 +99,57 @@ export const Informes = () => {
     });
   };
 
+  const downloadPDF = () => {
+    const input = document.getElementById("pdf-content");
+
+    html2pdf(input, {
+      margin: 10,
+      filename: "download.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    });
+
+    const pdf = new jsPDF();
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+
+    html2canvas(input).then((canvas) => {
+      const contentHeight = canvas.height;
+      const pageHeight = pdfHeight;
+      let currentPosition = 0;
+
+      while (currentPosition < contentHeight) {
+        const sectionHeight = Math.min(
+          pageHeight,
+          contentHeight - currentPosition
+        );
+        const imgData = canvas.toDataURL("image/png");
+
+        pdf.addImage(
+          imgData,
+          "PNG",
+          0,
+          currentPosition,
+          pdfWidth,
+          sectionHeight
+        );
+        currentPosition += sectionHeight;
+
+        if (currentPosition < contentHeight) {
+          pdf.addPage();
+        }
+      }
+      pdf.save("download.pdf");
+    });
+  };
+
   return (
-    <div className="componentes">
-      <div className="titulos">
+    <div>
+      <div className="cabecera">
         <h1>Examenes imforme</h1>
       </div>
-      <div className="botonAgregar-Filtro" style={{ display: "flex", justifyContent: "end", alignItems: "center" }}>
+      <div className="cuerpo">
         <TextField
           sx={{ width: "24rem", marginLeft: "12rem"}}
           id="outlined-basic"
@@ -104,8 +174,8 @@ export const Informes = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-          {(rowsPerPage > 0
-                  ? filtrarInformeExamen.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          {(filasPaginasTabla > 0
+                  ? filtrarInformeExamen.slice(paginasTabla * filasPaginasTabla, paginasTabla * filasPaginasTabla + filasPaginasTabla)
                   : filtrarInformeExamen
                 ).map((informes) => (
               <TableRow key={informes.id}>
@@ -121,19 +191,18 @@ export const Informes = () => {
                   <Button
                     variant="contained"
                     color="success"
-                    size="small" 
-                    onClick={() => verInforme(informes.id, informes.proyecto_integrador)}
+                    size="small"
                   >
-                    Ver Informe
+                    Descargar
                   </Button>
-                  {/* <Button
+                  <Button
                     variant="contained"
                     color="success"
                     size="small"
                     onClick={() => abrirInforme( informes.id)}
                   >
                     ver
-                  </Button> */}
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -143,15 +212,24 @@ export const Informes = () => {
       <TablePagination
         rowsPerPageOptions={[5, 10, 20]}
         component="div"
-        rowsPerPage={rowsPerPage}
-        count={calificacionesExamen.length}
-        page={page}
+        rowsPerPage={filasPaginasTabla}
+        count={filtrarInformeExamen.length}
+        page={paginasTabla}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <div className="tablascontenido">
+        <Tabla
+          datos={filtrarInformeExamen}
+          columnas={columnas}
+          acciones={BotonesAcciones}
+          accinar="true"
+        />
+      </div>
       <ModalInformeExamen
         abrirInforme={mostrarInforme}
         cerrarInforme={cerrarInforme}
+        descargarPDF={downloadPDF}
       />
     </div>
   );

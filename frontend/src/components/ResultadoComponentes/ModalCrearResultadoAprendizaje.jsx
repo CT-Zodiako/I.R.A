@@ -59,6 +59,7 @@ export const CrearResultadoAprendizaje = ({ abierto, cerrado, tablaResultados })
       dispatch(
         cambiarEstadoBoton({
           botonAlerta: true,
+          notificacion: "Resultado de Aprendizaje Creado",
         }),
       );
       navigate('/resultado-aprendizaje');

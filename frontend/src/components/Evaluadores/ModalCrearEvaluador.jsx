@@ -113,7 +113,7 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                   <div className="editar">
                     <div className="editarLabel">
                       <InputLabel>
-                        Contraseña:{" "}
+                        Contraseña:
                       </InputLabel>
                     </div>
                     <div>
