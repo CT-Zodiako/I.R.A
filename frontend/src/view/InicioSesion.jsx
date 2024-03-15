@@ -1,15 +1,10 @@
 import { useState } from "react";
 import loginService from "../services/ServicioLogin";
-import { useDispatch } from "react-redux";
-import { iniciarSesion } from "../redux/inicioSesionSlipe";
-import axios from "axios";
 import { Button, TextField } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
-import Cookies from 'js-cookie';
 
 export const InicioSesionUsuarios = ({ onAutenticacion }) => {
-  const dispatch = useDispatch();
   const [autentificacion, setAutentificacion] = useState({
     username: "",
     password: "",
@@ -17,7 +12,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
 
   const [mostrarLabel, setMostrarLabel] = useState(true);
 
-  const onAutentificacion = (event) => {
+  const onCredenciales = (event) => {
     const { name, value } = event.target;
     const labelEvento = event.target;
     setAutentificacion({
@@ -26,35 +21,18 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
     });
     setMostrarLabel(labelEvento === " ");
   };
-
+  
   const onInicioSesion = async (event) => {
     event.preventDefault();
     try {
       const response = await loginService.verificarLogin(autentificacion);
       const token = response.data.access_token;
-
       localStorage.setItem("token", token);
-
-      Cookies.set('autorizacion', token);
 
       const tokenData = token.split(".")[1];
       const decodedToken = JSON.parse(atob(tokenData));
-
       if (decodedToken) {
-        const usuarioId = decodedToken.sub.id;
-        const usuario = decodedToken.sub.nombre;
-        const rol = decodedToken.sub.rol;
-
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-        dispatch(
-          iniciarSesion({
-            id: usuarioId,
-            username: usuario,
-            rol: rol,
-          })
-        );
-        onAutenticacion();
+        onAutenticacion(token);
       } else {
         console.error("Error al decodificar el token");
       }
@@ -82,7 +60,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
                   type="text"
                   name="username"
                   value={autentificacion.username}
-                  onChange={onAutentificacion}
+                  onChange={onCredenciales}
                   id="outlined-basic"
                   placeholder="USUARIO"
                   required
@@ -98,7 +76,7 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
                   type="password"
                   name="password"
                   value={autentificacion.password}
-                  onChange={onAutentificacion}
+                  onChange={onCredenciales}
                   id="outlined"
                   placeholder="CONTRASEÑA"
                   required

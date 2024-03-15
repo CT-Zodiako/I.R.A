@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import Chart from "react-google-charts"
 import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
@@ -7,6 +7,7 @@ import html2pdf from "html2pdf.js"
 import informeServicio from "../../services/ServicioInforme"
 import evaluadorService from "../../services/servicioEvaluador"
 import { 
+  Button,
   Table, TableBody, 
   TableCell, TableContainer, 
   TableHead, TableRow 
@@ -15,8 +16,8 @@ import "./styleInforme.css"
 
 export const PromedioEstudiante = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const evaluadorId = location.state.evaluadorId;
-  console.log("id del evaluador: ",evaluadorId); 
   const proyectoIntegrador = location.state.proyectoIntegrador;
 
   const [calificaciones, setCalificaciones] = useState([]);
@@ -28,6 +29,7 @@ export const PromedioEstudiante = () => {
   const onColorPromedio = (promedio) => {
     for (let nota of colorInforme) {
       if (promedio >= nota.nota) {
+        console.log("color para el informe: ", nota.color);
         return nota.color;
       }
     }
@@ -41,7 +43,9 @@ export const PromedioEstudiante = () => {
   const asignarColoresFondoPastel = () => {
     const coloresFondo = Object.keys(promedioGrafica).map((key) => {
       const color = colorInforme.find((item) => item.value === key);
+      console.log("color de la grafica: ", color.color);
       if (color) {
+        console.log("color por calificacion: ", color.color);  
         return { color: color.color };
       } else {
         return { color: "#A4A4A4" };
@@ -86,6 +90,9 @@ export const PromedioEstudiante = () => {
     });
   };
   
+  const onRegresarExamen = () => {
+    navigate(`/informe_examen`);
+  };
   
   useEffect(() => {
     async function fetchData() {
@@ -107,7 +114,7 @@ export const PromedioEstudiante = () => {
       try {
         const data = await informeServicio.promedioGrafica(evaluadorId);
         setPromedioGrafica(data);
-        console.log("graficas actividad: ", data);
+        console.log("graficas actividades de la grafica: ", data);
       } catch (error) {
         console.error("Error al obtener el conteo:", error);
       }
@@ -141,6 +148,14 @@ export const PromedioEstudiante = () => {
 
   return (
     <>
+      <Button
+        variant="contained"
+        color="warning"
+        size="small"
+        onClick={onRegresarExamen}
+      >
+        Regresar
+      </Button>
       <div id="pdf-content">
         <div className="informacionInforme">
           <h2>Proyecto Integrador</h2>

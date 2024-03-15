@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { ConfirmarEnvioExamen } from "./ConfirmarEnvioExamen";
 import { NotificacionCalificacion } from "./NotificacionCalificacion";
+import { cambiarEstadoBoton } from "../../redux/botonAlertaSlice";
 
 export const VistaEstudiantes = () => {  
     const navigate = useNavigate();
@@ -29,8 +30,13 @@ export const VistaEstudiantes = () => {
       
             const timer = setTimeout(() => {
               setEstadoAlertaCalificacion(false);
+              dispatch(
+                cambiarEstadoBoton({
+                  botonAlerta: false,
+                })
+            );
             }, 3000);
-      
+
             return () => clearTimeout(timer);
           }
     }, [estadoCalificacion]);
@@ -73,8 +79,8 @@ export const VistaEstudiantes = () => {
     };
 
     useEffect(() => {
-        const nuemeroEstudiantes = listaEstudiantes.length;
-        const botonEnvio = calificaciones === nuemeroEstudiantes;
+        const numeroEstudiantes = listaEstudiantes.length;
+        const botonEnvio = calificaciones === numeroEstudiantes;
         setBotonEnvio(botonEnvio);
     }, [calificaciones, listaEstudiantes]);
 
@@ -143,7 +149,8 @@ export const VistaEstudiantes = () => {
                 </div>
                 <div style={{ display: "flex", justifyItems: "end", marginTop: "1rem" }}>
                     <NotificacionCalificacion 
-                        estadoAlerta={estadoAlertaCalificacion} 
+                        estadoAlerta={estadoAlertaCalificacion}
+                        alerta='Calificacion Enviada' 
                     />
                 </div>
             </form>

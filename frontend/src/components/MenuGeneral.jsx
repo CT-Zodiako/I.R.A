@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link, Navigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { InputSeleccion } from './EtiquetaSeleccionGeneral'
 import programaServicio from '../services/ServicioPrograma' 
 import { agregarPrograma } from '../redux/programaSlice'
 import { Button } from '@mui/material'
 import OutputIcon from '@mui/icons-material/Output';
-import Cookies from 'js-cookie'
 
-export const  Menu = () => {
+export const  Menu = ({ onCerrarSesion }) => {
   const dispatch = useDispatch();
-  const [token, setToken] = useState(null);
-  const [rol, setRol] = useState(null);
+  const usuario = useSelector((state) => state.sesion.username);
+
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [rol, setRol] = useState();
   const [selecPrograma, setSelecPrograma] = useState([]);
 
   const onPrograma = (seleccionId) => {
-    console.log("seleccion del programa: ",seleccionId);
     dispatch(
       agregarPrograma({
         programa: seleccionId
@@ -24,52 +24,48 @@ export const  Menu = () => {
   };
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await programaServicio.traerPrograma();
-        setSelecPrograma(data);
-      } catch (error) {
-        console.error("Error al obtener el programa:", error);
+    // if (rol === 'Admin') {
+      async function fetchData() {
+        try {
+          const data = await programaServicio.traerPrograma();
+          setSelecPrograma(data);
+        } catch (error) {
+          console.error("Error al obtener el programa:", error);
+        }
       }
-    }
-    fetchData();
+      fetchData();
+    // }
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token) {
-      setToken(token);
       const tokenData = token.split(".")[1];
       const decodedToken = JSON.parse(atob(tokenData));
       if (decodedToken) {
-        setRol(decodedToken.sub.rol);
+        const rolUsuario = decodedToken.sub.rol;
+        setRol(rolUsuario);
       }
     }
-  }, [token]);
-
-  const cerrarSesion = () => {
-    localStorage.removeItem("token");
-    Cookies.remove("autorizacion");
-    window.location.href = "/";
-  };
+  }, []);
 
   return (
     <div className="menu">
         <div className='usuarioRolMenu'>
-          {rol === 'Admin'? 
-          <h2>Bienvenido Administrador</h2> : 
-          <h2>Bienvenido Evaluador</h2>}
+          { rol === 'Admin' ?
+              <h2>Bienvenido Administrador</h2>:
+              <h2>Bienvenido Evaluador</h2>
+          }
+          {/* <h2>Bienvenido <br/>{ usuario }</h2> */}
         </div>
         <div style={{ height: "60%", display: 'flex', alignContent: 'start' }}>
           <nav>
             <ul>
-              {rol === 'Admin'&&(
+              {rol === 'Admin' &&(
                 <>
-                  <li className='opcionesMenu'><Link to="/lista_examen">Examenes</Link></li>
-                  <li className='opcionesMenu'><Link to="/resultado-aprendizaje">Resultados de Aprendizaje</Link></li>
-                  <li className='opcionesMenu'><Link to="/evaluadores">Gestión de Usuario</Link></li>
-                  <li className='opcionesMenu'><Link to="/informe_examen">Informes</Link></li>
-                  <li  style={{marginTop: '2.5rem'}}>
+                  <Link to="/lista_examen" className='enlacesMenu'><li className='opcionesMenu'>Examen</li></Link>
+                  <Link to="/resultado-aprendizaje" className='enlacesMenu'><li className='opcionesMenu'>Resultados de Aprendizaje</li></Link>
+                  <Link to="/evaluadores" className='enlacesMenu'><li className='opcionesMenu'>Gestión de Usuario</li></Link>
+                  <Link to="/informe_examen" className='enlacesMenu'><li className='opcionesMenu'>Informes</li></Link>
                     <h4 style={{ marginLeft: "0.8rem" }}>Programa:</h4>
                     <div className="programaSelec">
                       <InputSeleccion
@@ -78,16 +74,16 @@ export const  Menu = () => {
                         idSeleccion={onPrograma}
                         label="Seleccione Programa"
                         variable="nombre"
-                        anchoSelec='14rem'
-                        alto='3.2rem'
+                        anchoSelec='13rem'
+                        alto='3rem'
+                        tamano='14px'
                       />
                     </div>
-                  </li>
                 </>
               )}
               {rol === 'Evaluador' &&(
                 <>
-                  <li style={{ padding: "12px" }}><Link to="/lista_examenes">Bandeja de examenes</Link> </li>
+                  <Link to="/lista_examenes" className='enlacesMenu'><li className='opcionesMenu'>Bandeja de examenes</li></Link>
                 </>
               )}
             </ul>         
@@ -98,7 +94,7 @@ export const  Menu = () => {
             sx={{ width: '12rem', height: '2.5rem' }}
             variant='contained'
             color='error'
-            onClick={cerrarSesion}
+            onClick={onCerrarSesion}
           >
             <OutputIcon sx={{ marginRight: "0.5rem" }}/>
             Cerrar Sesión

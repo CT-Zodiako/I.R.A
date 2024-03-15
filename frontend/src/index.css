@@ -2,18 +2,18 @@ body {
   margin: 0 auto;
   padding: 0 auto;
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
+  background-color: #fff;
 }
   
 .menu {
-  width: 255px;
-  background-color: #333;
+  width: 230px;
+  background-color: rgb(52,58,64);
   height: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  overflow-y: auto;
-  color: #fff;
+  overflow-y: visible;
+  color: rgb(204,206,207);
   font-size: 1rem;
   font-weight: 600;
 }
@@ -30,12 +30,32 @@ body {
 }
   
 .opcionesMenu {
-  padding: 12px;
+  display: flex;
+  align-items: center;
+  height: 2.5rem;
+  padding-left: 12px;
+  margin-bottom: 2px;
+  margin-left: 3px;
+  color: rgb(204,206,207);
+  font-size: 14px;
+  font-weight: 800;
+  border-radius: 8px;
+  transition: all 0.3s;
+  overflow: hidden;
+  position: relative;
 }
-  
-.menu ul li a {
+
+.opcionesMenu:hover {
+  z-index: 3;
+  background: rgb(44,49,54);
+  transform: scale(1.11);
+  transition: height 0.2s;
+  margin-left: 15px;
+  width: 210px;
+}
+
+.enlacesMenu{
   text-decoration: none;
-  color: #fff;
 }
 
 .content {
@@ -50,6 +70,22 @@ body {
 .programaSelec label{
   color: black;
 }
+
+/* Componentes */
+.cabecera{
+  height: 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cuerpo{
+  height: 6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 
 /* Login */
 .informacionInicioSesion{
@@ -74,11 +110,6 @@ body {
   width: 18rem;
 }
 
-.componentes > div {
-  margin-bottom: 0.8rem;
-  padding-bottom: 0.8rem;
-}
-
 .botonRegresar{
   margin-top: 1rem;
 }
@@ -86,26 +117,34 @@ body {
 /* Estilos para las Tablas */
 .tablas {
   min-width: 650;
-  border: 1px solid black;
   border-radius: 7px;
   margin: 10px 0 10px 0;
 }
 
 .tablaEncabezado {
-  background-color: rgba(0, 0, 255, 0.6);
+  background-color: rgb(109,136,166);
 }
 
 .tablaEncabezado th {
   color: rgb(255, 255, 255);
   font-weight: bold;
-  font-size: 1rem;
-  border-bottom: 1px solid black;
+  font-size: 13px;
+  border-bottom: 1.5px solid rgb(223,227,231);
 }
 
-.tablaBody{
-  background-color: rgba(0, 0, 255, 0.02);
+.bordeVerticar{
+  border-right: 1.5px solid rgb(223,227,231);
 }
 
+.tablasCuerpo td {
+  font-size: 13px;
+}
+
+.notificacionAlerta{
+  display: flex;
+  justify-items: end;
+  margin-top: 1rem;
+}
 
 /* Resultados de Aprendizaje Tabla*/
 .resultadoTitulo{
@@ -175,13 +214,11 @@ body {
 }
 
 /* Resulatdos de Aprendizaje */
-.busquedaResultadoAprendizaje{
-  padding: 1rem;
-  height: 4rem;
+/* .busquedaResultadoAprendizaje{
   display: flex;
   justify-content: space-between;
   align-items: center;  
-}
+} */
 
 .resultadoAprendizaje{
   text-align: center;
@@ -192,12 +229,44 @@ body {
 }
 
 /* Titulos de las Pantallas del Sistema */
-.titulos{
+.botonAgregar-Filtro{
   height: 4rem;
 }
 
-.botonAgregar-Filtro{
-  height: 4rem;
+/* Tabla calificar examen */
+.bordeFilasBody{
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.actividadesExamen{
+  text-align: justify;
+  margin: 0px 0px 10px 0px;
+  width: 100%;
+  height: 6rem;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.calificacionExamen{
+  height: 6rem;
+  margin: 0px 0px 10px 0px;
+  padding: 5px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.observacionesExamen{
+  width: 100%;
+  height: 100%;
+  resize: none;
+}
+
+.enviarCalificacion{
+  display: flex;
+  justify-content: center;
+  padding: 2rem 5rem;
 }
 
 

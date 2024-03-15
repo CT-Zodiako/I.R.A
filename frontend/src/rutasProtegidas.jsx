@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-const ProteccionRuta = ({ rolesPermitidos, ...rest }) => {
+const ProteccionRuta = ({ rolesPermitidos }) => {
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -16,11 +16,11 @@ const ProteccionRuta = ({ rolesPermitidos, ...rest }) => {
         const tokenData = token.split(".")[1];
         const decodedToken = JSON.parse(atob(tokenData));
         const rol =decodedToken.sub.rol;
-        
+
         return rol;
       }
       return null;
-    };
+    }; 
 
     const rolUsuario = rolToken();
 

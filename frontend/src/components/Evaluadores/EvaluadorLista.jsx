@@ -1,29 +1,81 @@
 import { useEffect, useState } from "react";
 import evaluadorService from "../../services/servicioEvaluador";
-import { Link } from "react-router-dom";
-import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow 
-} from "@mui/material";
-import { ModalIRA } from "../Examen/ModalEditarEvaluador"
+import { Button } from "@mui/material"
 import ClearIcon from '@mui/icons-material/Clear'
 import CreateIcon from '@mui/icons-material/Create'
+import { ModalIRA } from "../Examen/ModalEditarEvaluador"
 import { ModalCrearEvaluador } from "./ModalCrearEvaluador"
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import { useDispatch, useSelector } from "react-redux";
+import { cambiarEstadoBoton } from "../../redux/botonAlertaSlice";
+import { NotificacionCalificacion } from "./NotificacionCalificacion";
+import { Tabla } from "../tabla";
 
 export const EvaluadorLista = () => {
+  const dispatch = useDispatch();
+  const estadoAlertaNotificacion = useSelector((state) => state.botonAlerta.botonAlerta);
+
   const [evaluadores, setEvaluadores] = useState([]);
   const [modalAbiertoCrear, setModalAbiertoCrear] = useState(false);
   const [modalAbiertoEditar, setModalAbiertoEditar] = useState(false);
   const [evaluadorIdSeleccionado, setEvaluadorIdSeleccionado] = useState(null);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(3);
+  const [notificacionEvaluador, setNotificacionEvaluador] = useState(false);
+
+  const columnas = [
+    {
+      titulo: "NOMBRE EVALUADOR",
+      ancho: "23%",
+      valor: "nombre_evaluador",
+    },
+    {
+      titulo: "CORREO",
+      ancho: "24%",
+      valor: "correo",
+    },
+    {
+      titulo: "TELEFONO",
+      ancho: "14%",
+      valor: "telefono",
+    },
+    {
+      titulo: "IDENTIFICACION",
+      ancho: "15%",
+      valor: "numero_identificacion",
+    },
+    {
+      titulo: "ESTADO",
+      ancho: "10%",
+      valor: "estado",
+    },
+  ];
+
+  const BotonesAcciones = [
+    {
+      icono: CreateIcon,
+      color: () => 'colorEditar',
+      accion: (event, evaluadorId) => abrirModalEditar(evaluadorId),
+    },
+    {
+      icono: ClearIcon,
+      color: () => 'colorEliminar',
+      accion: (event, evaluadorId) => onEliminarEvaluador(event, evaluadorId),
+    },
+  ];
+
+  useEffect(() => {
+    if (estadoAlertaNotificacion) {
+      setNotificacionEvaluador(true);
+      const timer = setTimeout(() => {
+        setNotificacionEvaluador(false);
+        dispatch(
+          cambiarEstadoBoton({
+            botonAlerta: false,
+          })
+        );
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [estadoAlertaNotificacion]);
 
   const abrirModalCrear = () => {
     setModalAbiertoCrear(true);
@@ -43,15 +95,6 @@ export const EvaluadorLista = () => {
     setEvaluadorIdSeleccionado(null);
     setModalAbiertoEditar(false);
     actualizarTabla()
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
   };
 
   useEffect(() => {
@@ -86,95 +129,44 @@ export const EvaluadorLista = () => {
     }
   };
 
-  useEffect(() => {
-    actualizarTabla();
-  }, []);
-
   return (
     <>
-      <div className="componentes">
-        <div className="titulos">
-          <h1>Gestion de Usuarios</h1>
+      <div>
+        <div className="cabecera">
+          <div>
+            <h1>Gestion de Usuarios</h1>
+          </div>
+          <div className="notificacionAlerta">
+            <NotificacionCalificacion
+              estadoAlerta={notificacionEvaluador}
+              alerta="Resultado Aprendizaje Agregado"
+            />
+          </div>
         </div>
-        <div  className="botonAgregar-Filtro" style={{ display: 'flex', justifyContent: 'flex-start'}}>
+        <div className="cuerpo">
           <Button
-            sx={{ height: "2.5rem"}}
+            sx={{ height: "2.5rem" }}
             variant="contained"
             color="success"
             size="small"
             onClick={ abrirModalCrear }
           >
-            <AddCircleOutlineIcon fontSize="small" sx={{ marginRight: "1rem" }}/>
-            Agregar Evaluador
+            <AddCircleOutlineIcon 
+              fontSize="small" 
+            />
+            <p className="botonAgregar">
+              Agregar Evaluador
+            </p>
           </Button>
         </div>
-        <div>
-          <TableContainer className="tablas">
-            <Table aria-label="caption table">
-              <TableHead className="tablaEncabezado">
-                <TableRow>
-                  <TableCell align="center">Nombre del Evaluador</TableCell>
-                  <TableCell align="center">Correo</TableCell>
-                  <TableCell align="center">Telefono</TableCell>
-                  <TableCell align="center">Numero de Identificacion</TableCell>
-                  <TableCell align="center">Estado</TableCell>
-                  <TableCell align="center">Acción</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-              {(rowsPerPage > 0
-                  ? evaluadores.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  : evaluadores
-                ).map((evaluador) => (
-                  <TableRow key={evaluador.id} className="tablaBody">
-                    <TableCell scope="row" align="left" className="evaluadoreNombre">
-                      {evaluador.nombre_evaluador}
-                    </TableCell>
-                    <TableCell align="left" className="evaluadorCorreo">
-                      {evaluador.correo}
-                    </TableCell>
-                    <TableCell align="center" className="evaluadorTelefono">
-                      {evaluador.telefono}
-                    </TableCell>
-                    <TableCell align="center" className="evaluadorId">
-                      {evaluador.numero_identificacion}
-                    </TableCell>
-                    <TableCell align="center" className="evaluadorEstado">                                          
-                      {evaluador.estado ? "Activo" : "Inactivo"}
-                    </TableCell>
-                    <TableCell align="center" className="evaluadorAccion" >
-                      <div className="botonesMargen">
-                        <div>
-                          <ClearIcon 
-                            className="colorEliminar"
-                            fontSize="large"
-                            onClick={(event) =>
-                                onEliminarEvaluador(event, evaluador.id)
-                              }
-                          />
-                        </div>
-                        <div>
-                          <CreateIcon
-                            className="colorEditar"
-                            fontSize="large"
-                            onClick={() => abrirModalEditar(evaluador.id)}
-                          />
-                        </div>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[3, 5, 10]}
-            component="div"
-            count={evaluadores.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+        <div className="tablascontenido">
+          <Tabla
+            datos={evaluadores}
+            columnas={columnas}
+            eliminar={onEliminarEvaluador}
+            editar={abrirModalEditar}
+            acciones={BotonesAcciones}
+            accinar='true'
           />
         </div>
       </div>

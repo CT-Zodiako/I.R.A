@@ -42,7 +42,6 @@ export const ModalIRA = ({ isOpen, onClose, evaluadorId }) => {
   };
 
   const onEnviarEdicionEvaluador = async (event) => {
-    event.preventDefault();
     try {
       const response = await evaluadorService.editarEvaluador(
         evaluadorId,

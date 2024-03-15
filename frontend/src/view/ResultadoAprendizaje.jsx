@@ -1,27 +1,73 @@
 import { useEffect, useState } from "react";
 import resultadoAprendizajeServicio from "../services/ServicioResultadoAprendizaje";
-import { Link } from "react-router-dom";
-import {
-  Button, Modal, Table, TableBody,
-  TableCell, TableContainer,
-  TableHead, TableRow, TextField,
-} from "@mui/material"
-import { CrearResultadoAprendizaje } from "../components/ResultadoComponentes/ModalCrearResultadoAprendizaje"
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
-import BlockIcon from '@mui/icons-material/Block'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
-import FilterAltIcon from '@mui/icons-material/FilterAlt'
+import { Button, TextField } from "@mui/material";
+import { CrearResultadoAprendizaje } from "../components/ResultadoComponentes/ModalCrearResultadoAprendizaje";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline"
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import { cambiarEstadoBoton } from "../redux/botonAlertaSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { NotificacionCalificacion } from "../components/Evaluadores/NotificacionCalificacion";
+import { Tabla } from "../components/tabla";
 
 export const ResultadoAprendizaje = () => {
+  const dispatch = useDispatch();
+  const estadoAlerta = useSelector((state) => state.botonAlerta.botonAlerta);
+  const alertaNotificacion = useSelector((state) => state.botonAlerta.notificacion);
+
   const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
-  const [filtrar, setFiltrar] = useState('');
+  const [filtrar, setFiltrar] = useState("");
+  const [notificacionResultadoAprendizaje, setNotificacionResultadoAprendizaje] = useState(false);
   const [modalResultadoAprendizaje, setModalResultadoAprendizaje] = useState(false);
+
+  const columnas = [
+    {
+      titulo: "RESULTADO APRENDIZAJE",
+      ancho: "20%",
+      valor: "titulo",
+    },
+    {
+      titulo: "DESCRIPCION",
+      ancho: "47%",
+      valor: "descripcion",
+    },
+    {
+      titulo: "ESTADO",
+      ancho: "13%",
+      valor: "estado",
+    },
+  ];
+
+  const BotonesAcciones = [
+    {
+      icono: RadioButtonCheckedIcon,
+      color: (dato) => dato.estado ? 'colorActivo' : 'colorInactivo',
+      accion: (event, id) =>
+        onCambiarEstado(event, id),
+    }
+  ];
+
+  useEffect(() => {
+    if (estadoAlerta) {
+      setNotificacionResultadoAprendizaje(true);
+      const timer = setTimeout(() => {
+        setNotificacionResultadoAprendizaje(false);
+        dispatch(
+          cambiarEstadoBoton({
+            botonAlerta: false,
+            notificacion: "",
+          })
+        );
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [estadoAlerta]);
 
   const buscarResultadoAprendizaje = (event) => {
     setFiltrar(event.target.value);
-  }
+  };
 
-  const filteredResultados = resultadoAprendizaje.filter(resultado =>
+  const filteredResultados = resultadoAprendizaje.filter((resultado) =>
     resultado.titulo.toLowerCase().includes(filtrar.toLowerCase())
   );
 
@@ -33,11 +79,20 @@ export const ResultadoAprendizaje = () => {
     setModalResultadoAprendizaje(false);
   };
 
+  const obtenerResultadosAprendizaje = async () => {
+    try {
+      const data = await resultadoAprendizajeServicio.traerResultado();
+      setResultadoAprendizaje(data);
+    } catch (error) {
+      console.error("Error al obtener los resultados de aprendizaje:", error);
+    }
+  };
+
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await resultadoAprendizajeServicio.traerResultado();
-        setResultadoAprendizaje(data);
+        await resultadoAprendizajeServicio.traerResultado();
+        obtenerResultadosAprendizaje();
       } catch (error) {
         console.error("Error al obtener el resultado:", error);
       }
@@ -49,8 +104,8 @@ export const ResultadoAprendizaje = () => {
     event.preventDefault();
     try {
       await resultadoAprendizajeServicio.cambiarEstado(resultado_Id);
-      const nuevaListaResultados = await resultadoAprendizajeServicio.traerResultado();
-      setResultadoAprendizaje(nuevaListaResultados);
+      const nuevaLista = await resultadoAprendizajeServicio.traerResultado();
+      setResultadoAprendizaje(nuevaLista);
     } catch (error) {
       console.error(error);
     }
@@ -58,90 +113,59 @@ export const ResultadoAprendizaje = () => {
 
   return (
     <>
-      <div className="componentes">
-        <div className="titulos">
-          <h1>Resultado Aprendizaje</h1>
-        </div>
-        <div className="busquedaResultadoAprendizaje">
+      <div>
+        <div className="cabecera">
           <div>
-            <Button
-                variant="contained"
-                color="success"
-                sx={{ height: "2.5rem"}}
-                onClick={abrirModal}
-              >
-                <AddCircleOutlineIcon fontSize="small" sx={{ marginRight: "0.3rem" }} />
-                Agregar Resulatado Aprendizaje
-            </Button>
+            <h1>Resultado Aprendizaje</h1>
           </div>
-          <div className="resultadoAprendizaje">
-            <TextField
-              sx={{ width: "24rem", minWidth: "12rem" }}
-              id="outlined-basic"
-              placeholder="Filtrar por Resultado Aprendizaje"
-              variant="outlined"
-              value={filtrar}
-              onChange={ buscarResultadoAprendizaje }
-              InputProps={{
-                startAdornment:(
-                  <FilterAltIcon
-                    sx={{ color: "rgba(0, 0, 0, 0.25)" }}
-                  />
-                ),
-              }}
+          <div className="notificacionAlerta">
+            <NotificacionCalificacion
+              estadoAlerta={notificacionResultadoAprendizaje}
+              alerta={alertaNotificacion}
             />
           </div>
         </div>
-        <div>
-          <TableContainer className="tablas">
-            <Table aria-label="caption table">
-              <TableHead className="tablaEncabezado">
-                <TableRow>
-                  <TableCell align="center">Resultado Aprendizaje</TableCell>
-                  <TableCell align="center">Descripcion</TableCell>
-                  <TableCell align="center">Estado</TableCell>
-                  <TableCell align="center">Id</TableCell>
-                  <TableCell align="center">Acción</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredResultados.map((resultado) => (
-                  <TableRow key={resultado.id} className="tablaBody">
-                    <TableCell scope="row" align="center" className="resultadoTitulo">
-                      {resultado.titulo}
-                    </TableCell>
-                    <TableCell align="left" className="resultadoDescripcion">
-                      <div>
-                        {resultado.descripcion}
-                      </div>
-                    </TableCell>
-                    <TableCell align="center" className="resultadoEstado">
-                      {resultado.estado ? "Activo" : "Inactivo"}
-                    </TableCell>
-                    <TableCell align="center" className="resultadoId">
-                      {resultado.id}
-                    </TableCell>
-                    <TableCell align="center" className="resultadoAccion">
-                      <Button 
-                        variant="contained"
-                        color={resultado.estado ? "primary" : "success"}
-                        size="small"
-                        onClick={(event) => onCambiarEstado(event, resultado.id)}
-                      >
-                        {resultado.estado ? <BlockIcon fontSize="small" sx={{ marginRight: "0.1rem"}}/> : <CheckCircleOutlineIcon fontSize="small" sx={{ marginRight: "0.1rem"}}/>}
-                        {resultado.estado ? "Desactivar" : "Activar"}
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <CrearResultadoAprendizaje 
-            abierto={modalResultadoAprendizaje}
-            cerrado={cerrarModal}
+        <div className="cuerpo">
+              <Button
+                sx={{ height: "2.5rem" }}
+                variant="contained"
+                color="success"
+                onClick={abrirModal}
+              >
+                <AddCircleOutlineIcon
+                  fontSize="small"
+                />
+                <p className="botonAgregar">
+                  Agregar Resulatado Aprendizaje
+                </p>
+              </Button>
+              <TextField
+                sx={{ width: "24rem", minWidth: "12rem" }}
+                id="outlined-basic"
+                placeholder="Filtrar Resultado Aprendizaje"
+                variant="outlined"
+                value={filtrar}
+                onChange={buscarResultadoAprendizaje}
+                InputProps={{
+                  startAdornment: (
+                    <FilterAltIcon sx={{ color: "rgba(0, 0, 0, 0.25)" }} />
+                  ),
+                }}
+              />
+        </div>
+        <div className="tablascontenido">
+          <Tabla
+            datos={filteredResultados}
+            columnas={columnas}
+            acciones={BotonesAcciones}
+            accinar="true"
           />
         </div>
+        <CrearResultadoAprendizaje
+            abierto={modalResultadoAprendizaje}
+            cerrado={cerrarModal}
+            tablaResultados={obtenerResultadosAprendizaje}
+        />
       </div>
     </>
   );

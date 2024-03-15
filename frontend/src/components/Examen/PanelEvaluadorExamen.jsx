@@ -13,7 +13,7 @@ import {
   TableContainer, TableHead, TableRow 
 } from "@mui/material"
 
-export const PanelSeleccionarEvaluador = ({ suiguiente, anterior, examenId, accion }) => {
+export const PanelSeleccionarEvaluador = ({ siguiente, anterior, examenId, accion }) => {
   const dispatch = useDispatch();
   const infoEvaluadorStore = useSelector((state) => state.examenFormulario);
 
@@ -77,7 +77,7 @@ export const PanelSeleccionarEvaluador = ({ suiguiente, anterior, examenId, acci
         evaluadores_ids: evaluadores.evaluadores_ids,
       })
     );
-    suiguiente();
+    siguiente();
   };
 
   return (

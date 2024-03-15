@@ -17,7 +17,9 @@ export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion, a
   const infoEstudianteStore = useSelector((state) => state.examenFormulario);
 
   const [estudianteEstado, setEstudianteEstado] = useState({ NOMBRE: "" });
-  const [estudiantesExamen, setEstudiantes] = useState({estudiantes: infoEstudianteStore.estudiantes});
+  const [estudiantesExamen, setEstudiantes] = useState({
+    estudiantes: infoEstudianteStore.estudiantes
+  });
 
   const regresarPanelExamen = () => {
     anterior();
