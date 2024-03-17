@@ -10,7 +10,7 @@ class informeServicio{
         }
       }
       
-    async promedioEstudiante(evaluadorId) {
+    async promedioActividades(evaluadorId) {
       try {
           const response = await axios.get(`${import.meta.env.VITE_API_URL}/informes/traer_calificaciones/${evaluadorId}`);
           return response.data;
@@ -19,7 +19,7 @@ class informeServicio{
       }
    }
 
-   async promedioGrafica(evaluadorId) {
+   async promedioGraficaGeneral(evaluadorId) {
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/informes/traer_calificaciones/${evaluadorId}`);
         return response.data.conteo;
@@ -28,7 +28,7 @@ class informeServicio{
     }
  }
 
- async actividadesExamen(evaluadorId) {
+ async actividadesDescripcion(evaluadorId) {
   try {
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/examen/actividades/${evaluadorId}`);
       return response.data;
