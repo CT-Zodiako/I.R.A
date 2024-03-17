@@ -3,8 +3,11 @@ import loginService from "../services/ServicioLogin";
 import { Button, TextField } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
+import { iniciarSesion } from "../redux/inicioSesionSlipe";
+import { useDispatch } from "react-redux";
 
 export const InicioSesionUsuarios = ({ onAutenticacion }) => {
+  const dispatch = useDispatch();
   const [autentificacion, setAutentificacion] = useState({
     username: "",
     password: "",
@@ -32,6 +35,16 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
       const tokenData = token.split(".")[1];
       const decodedToken = JSON.parse(atob(tokenData));
       if (decodedToken) {
+        const usuarioId = decodedToken.sub.id;
+          const usuario = decodedToken.sub.nombre;
+          const rol = decodedToken.sub.rol;
+          dispatch(
+            iniciarSesion({
+              id: usuarioId,
+              username: usuario,
+              rol: rol,
+            })
+          );
         onAutenticacion(token);
       } else {
         console.error("Error al decodificar el token");

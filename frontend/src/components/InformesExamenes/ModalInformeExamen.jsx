@@ -163,7 +163,6 @@ export const ModalInformeExamen = ({ abrirInforme, cerrarInforme, descargarPDF }
                 }}
                 rootProps={{ "data-testid": "1" }}
               />
-
             <h1>Grafico Por Actividades:</h1>
             <div>
               {Object.entries(graficaActividades).map(
