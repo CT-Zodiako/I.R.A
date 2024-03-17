@@ -159,9 +159,10 @@ def get_examen_by_id_db(id):
         return jsonify({'mensaje': 'Error al obtener el examen', 'error': f'{e}'}), 500
 
 
-def obtener_examenes_admin_bandeja():
+def obtener_examenes_admin_bandeja(programa_id):
     try:
-        examenes = Examen.query.filter_by(notificar=False).all()
+        examenes = Examen.query.filter_by(
+            notificar=False, programa_id=programa_id).all()
         examenes_dicts = [examen.to_dict() for examen in examenes]
         examenes_json = jsonify(examenes_dicts)
         return examenes_json, 200

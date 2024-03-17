@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from ...controller.examen.examen_controller import get_examen_by_id_db, eliminar_examen, agregar_examen, cargar_archivo, obtener_examenes, editar_examen, obtener_examenes_admin_bandeja, examenes_bandeja_evaludor
 from ...auth import admin_required, evaluador_required
 from ...models.examen.examen_model import Examen
-import json
+from flask import request
 
 examen_blueprint = Blueprint('examen', __name__)
 
@@ -74,10 +74,10 @@ def obtener_examen_por_id(id):
     return get_examen_by_id_db(id)
 
 
-@examen_blueprint.route('/examenesBandejaAdmin', methods=['GET'])
+@examen_blueprint.route('/examenesBandejaAdmin/<int:programa_id>', methods=['GET'])
 @admin_required
-def obtener_examenes_admin():
-    return obtener_examenes_admin_bandeja()
+def obtener_examenes_admin(programa_id):
+    return obtener_examenes_admin_bandeja(programa_id)
 
 
 @examen_blueprint.route('/examenesBandejaEvaludor/<int:evaluador_id>', methods=['GET'])
