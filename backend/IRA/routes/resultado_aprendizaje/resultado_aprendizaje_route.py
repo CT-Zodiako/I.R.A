@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from ...controller.resultados_aprendizaje.resultados_aprendizaje_controller import crear_resultado_aprendizaje,  traer_resultados_aprendizaje, cambiar_estado_resultado_db,get__resultados_by_estado
 from ...auth import admin_required
+from flask import request
 
 resultado_aprendizaje_blueprint = Blueprint('resultado_aprendizaje', __name__)
 
@@ -13,10 +14,10 @@ def crear_resultado():
     return resultado
 
 
-@resultado_aprendizaje_blueprint.route('/traer_resultados', methods=['GET'])
+@resultado_aprendizaje_blueprint.route('/traer_resultados/<int:programa_id>', methods=['GET'])
 @admin_required
-def traer_resultados():
-    resultados = traer_resultados_aprendizaje()
+def traer_resultados(programa_id):
+    resultados = traer_resultados_aprendizaje(programa_id)
     return jsonify(resultados)
 
 

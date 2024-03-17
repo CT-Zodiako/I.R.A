@@ -4,7 +4,7 @@ from ...models.resultados_aprendizaje.resultados_aprendizaje_model import Result
 class ResultadoAprendizajeSchema(ma.SQLAlchemySchema):
     class Meta:
         model = ResultadoAprendizaje
-        fields = ("titulo", "descripcion")
+        fields = ("titulo", "descripcion", "programa_id")
         load_instance = True
 
 class TraerResultadoSchema(ma.SQLAlchemySchema):

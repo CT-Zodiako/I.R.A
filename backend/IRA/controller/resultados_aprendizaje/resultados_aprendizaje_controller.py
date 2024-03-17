@@ -25,10 +25,10 @@ def crear_resultado_aprendizaje(data):
         }
 
 
-def traer_resultados_aprendizaje():
+def traer_resultados_aprendizaje(programa_id):
     try:
         sResultado = TraerResultadoSchema(many=True)
-        resultados = ResultadoAprendizaje.query.all()
+        resultados = ResultadoAprendizaje.query.filter_by(programa_id=programa_id).all()
 
         data = sResultado.dump(resultados)
         return {
@@ -41,8 +41,9 @@ def traer_resultados_aprendizaje():
         return {
             'status': 500,
             'mensaje': 'Fallo al obtener resultados de aprendizaje',
-            'error': f'Ocurrió un error interno en el controllador'
+            'error': f'Ocurrió un error interno en el controlador'
         }
+
 
 
 def cambiar_estado_resultado_db(resultado_id):
