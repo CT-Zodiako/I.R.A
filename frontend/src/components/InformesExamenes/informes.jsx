@@ -4,11 +4,12 @@ import { useNavigate,  } from "react-router-dom"
 import { TextField, 
   Table, TableBody, TableCell, 
   TableContainer, TableHead, 
-  TablePagination, TableRow, Button} from "@mui/material"
+  TablePagination, TableRow, Button
+} from "@mui/material"
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { ModalInformeExamen } from "./ModalInformeExamen"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { guardarInformeId } from "../../redux/idExamenInforme"
 import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
@@ -16,6 +17,8 @@ import html2pdf from "html2pdf.js"
 import { Tabla } from "../tabla"
 
 export const Informes = () => {
+  // const programa = useSelector((state) => state.programa.programa);
+
   const [paginasTabla, setPaginasTabla] = useState(0);
   const [filasPaginasTabla, setFilasPaginasTabla] = useState(5);
 
@@ -89,15 +92,6 @@ export const Informes = () => {
     }
     fetchData();
   }, []);
-
-  const verInforme = (id, proyectoIntegrador) => {
-    navigate(`/informe-estudiante`, {
-      state: {
-        evaluadorId: id,
-        proyectoIntegrador: proyectoIntegrador,
-      },
-    });
-  };
 
   const downloadPDF = () => {
     const input = document.getElementById("pdf-content");

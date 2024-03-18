@@ -28,10 +28,6 @@ export const ModalInformeExamen = ({ abrirInforme, cerrarInforme, descargarPDF }
   const [graficaGeneral, setGraficaGeneral] = useState([]);
   const [graficaActividades, setGraficaActividades] = useState([]);  
 
-  const graficoGeneral = [["Actividad", "Calificaciones"]].concat(
-    Object.entries(graficaGeneral).map(([key, value]) => [key, value])
-  );  
-
   const coloresFondoPastel = (categorias) => {
     const colorFondo =  categorias.map(categoria => {      
       const color = colorInforme.find((colorNota) => colorNota.label.toLowerCase() === categoria);
@@ -39,7 +35,6 @@ export const ModalInformeExamen = ({ abrirInforme, cerrarInforme, descargarPDF }
         return { color: color.color };
       } 
     });
-
     return colorFondo;
   }
 

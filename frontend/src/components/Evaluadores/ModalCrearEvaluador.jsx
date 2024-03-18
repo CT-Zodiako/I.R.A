@@ -1,9 +1,13 @@
-import { useState } from "react";
-import { Box, Button, InputLabel, Modal, TextField, Typography } from "@mui/material";
+import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { 
+  Box, Button, InputLabel, 
+  Modal, TextField, Typography 
+} from "@mui/material";
 import evaluadorService from '../../services/servicioEvaluador'
+import CancelIcon from '@mui/icons-material/Cancel';
 import { cambiarEstadoBoton } from "../../redux/botonAlertaSlice";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
@@ -32,6 +36,7 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
       dispatch(
         cambiarEstadoBoton({
           botonAlerta: true,
+          notificacion: "Evaluador creado con éxito",
         }),
       );
       navigate('/evaluadores');
@@ -53,7 +58,7 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
           <div className="modales">
             <form onSubmit={onEnviarEvaluador}>
               <div>
-                <div className="centrar">
+                <div className="encabezadoModales">
                   <Typography
                     id="modal-modal-title"
                     variant="h6"
@@ -61,6 +66,11 @@ export const ModalCrearEvaluador = ({ isOpen, onClose }) => {
                   >
                     Actualizar Información Evaluador
                   </Typography>
+                  <CancelIcon
+                    onClick={onClose}
+                    fontSize="large"
+                    color="error"
+                  />
                 </div>
                 <div>
                   <div className="editar">

@@ -14,6 +14,7 @@ import { cambiarEstadoBoton } from "../../redux/botonAlertaSlice";
 export const VistaEstudiantes = () => {  
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    
     const examenId = useSelector((state) => state.calificacion.examen_id);
     const calificaciones = useSelector((state) => state.calificacion.calificacion.length);
     const estadoCalificacion = useSelector((state) => state.botonAlerta.botonAlerta);
@@ -73,6 +74,7 @@ export const VistaEstudiantes = () => {
         try {
           const response = await  evaluadorService.calificacionActividadEstudiante(calificacionesEstudiantes);
           console.log(response);
+          navigate(`/lista_examenes`);
         } catch (error) {
           console.error('Error al enviar los datos de la calificacion:', error);
         }

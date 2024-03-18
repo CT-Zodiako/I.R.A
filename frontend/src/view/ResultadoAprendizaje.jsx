@@ -59,7 +59,7 @@ export const ResultadoAprendizaje = () => {
             notificacion: "",
           })
         );
-      }, 3000);
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, [estadoAlerta]);
@@ -92,14 +92,16 @@ export const ResultadoAprendizaje = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        await resultadoAprendizajeServicio.traerResultado(programa);
-        obtenerResultadosAprendizaje();
+        if (programa) {
+          await resultadoAprendizajeServicio.traerResultado(programa);
+          obtenerResultadosAprendizaje();
+        }
       } catch (error) {
         console.error("Error al obtener el resultado:", error);
       }
     }
     fetchData();
-  }, []);
+  }, [programa]);
 
   const onCambiarEstado = async (event, resultado_Id) => {
     event.preventDefault();
