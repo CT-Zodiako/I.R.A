@@ -19,17 +19,17 @@ import { Tabla } from "../tabla"
 export const Informes = () => {
   // const programa = useSelector((state) => state.programa.programa);
 
-  const [paginasTabla, setPaginasTabla] = useState(0);
-  const [filasPaginasTabla, setFilasPaginasTabla] = useState(5);
+  // const [paginasTabla, setPaginasTabla] = useState(0);
+  // const [filasPaginasTabla, setFilasPaginasTabla] = useState(5);
 
-  const handleChangePage = (event, newPage) => {
-    setPaginasTabla(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPaginasTabla(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setFilasPaginasTabla(parseInt(event.target.value, 10));
-    setPaginasTabla(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setFilasPaginasTabla(parseInt(event.target.value, 10));
+  //   setPaginasTabla(0);
+  // };
   // ...
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ export const Informes = () => {
     {
       icono: RemoveRedEyeIcon,
       color: () => 'colorInforme',
-      accion: (event, evaluador) => abrirInforme(evaluador.id),
+      accion: (event, informes) => abrirInforme(informes),
     },
   ];
 
@@ -67,13 +67,14 @@ export const Informes = () => {
     informe.proyecto_integrador.toLowerCase().includes(filtrar.toLowerCase())
   );
 
-  const abrirInforme = (evaluador) => {
-    setMotrarInforme(true);
+  const abrirInforme = (informes) => {
+    console.log('abrir informe', informes);
     dispatch(
       guardarInformeId({
-        idExamen: evaluador 
+        idExamen: informes 
       })
     );
+    setMotrarInforme(true);
   }
 
   const cerrarInforme = () => {
@@ -158,7 +159,7 @@ export const Informes = () => {
           }}
         />
       </div>
-      <TableContainer className="tablas">
+      {/* <TableContainer className="tablas">
         <Table sx={{ minWidth: 650 }} aria-label="caption table">
           <TableHead className="tablaEncabezado">
             <TableRow>
@@ -211,7 +212,7 @@ export const Informes = () => {
         page={paginasTabla}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      /> */}
       <div className="tablascontenido">
         <Tabla
           datos={filtrarInformeExamen}

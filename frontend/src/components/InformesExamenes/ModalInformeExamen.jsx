@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Chart from "react-google-charts";
 import informeServicio from "../../services/ServicioInforme";
 import evaluadorService from "../../services/servicioEvaluador";
@@ -14,6 +14,8 @@ import { useSelector } from "react-redux";
 
 export const ModalInformeExamen = ({ abrirInforme, cerrarInforme, descargarPDF }) => {
   const evaluador = useSelector((state) => state.informeExamen.idInforme);
+  console.log('id del informe: ', evaluador);
+  
   
   const [informacionCalificaciones, setInformacionCalificaciones] = useState([]);
   // console.log('Estado de calificaciones: ', informacionCalificaciones);
@@ -136,55 +138,57 @@ export const ModalInformeExamen = ({ abrirInforme, cerrarInforme, descargarPDF }
         aria-describedby="alert-dialog-description"
         maxWidth="md"
       >
-        <DialogTitle sx={{ background: "rgba( 0, 0, 0 , 0.2)" }}>
-          Informe Examen
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            <h1>Grafico General:</h1>
-              <Chart
-                width={"600px"}
-                height={"400px"}
-                chartType="PieChart"
-                loader={<div>Cargando Grafico</div>}
-                data={[["Actividad", "Calificaciones"]].concat(
-                  Object.entries(graficaGeneral).map(([calificacion, value]) => [calificacion, value])
-                )}
-                options={{
-                  chart: {
-                    title: "Promedio de calificaciones",
-                  },
-                  slices: coloresFondoPastel(Object.keys(graficaGeneral)),
-                }}
-                rootProps={{ "data-testid": "1" }}
-              />
-            <h1>Grafico Por Actividades:</h1>
-            <div>
-              {Object.entries(graficaActividades).map(
-                ([actividad, categorias], index) => (
-                <div key={actividad}>
-                  <Chart
-                    sx={{ width: "100%", height: "100%" }}
-                    chartType="PieChart"
-                    loader={<div>Cargando gráfico</div>}
-                    data={[
-                      ["Actividades", "Cantidades"],
-                      ...Object.entries(categorias).map(([categoria, cantidad]) => [categoria, cantidad])
-                    ]}
-                    options={{
-                      title: `Gráfica Actividad ${actividad}`,
-                      titleTextStyle: {
-                        fontSize: 22,
-                      },
-                      slices: coloresFondoPastel(Object.keys(categorias)),
-                    }}
-                    rootProps={{ "data-testid": "1" }}
-                  />
-                </div>
-              ))}
-            </div>
-          </DialogContentText>
-        </DialogContent>
+        <div id="pdf-content">
+          <DialogTitle sx={{ background: "rgba( 0, 0, 0 , 0.2)" }}>
+            Informe Examen
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <h1>Grafico General:</h1>
+                <Chart
+                  width={"600px"}
+                  height={"400px"}
+                  chartType="PieChart"
+                  loader={<div>Cargando Grafico</div>}
+                  data={[["Actividad", "Calificaciones"]].concat(
+                    Object.entries(graficaGeneral).map(([calificacion, value]) => [calificacion, value])
+                  )}
+                  options={{
+                    chart: {
+                      title: "Promedio de calificaciones",
+                    },
+                    slices: coloresFondoPastel(Object.keys(graficaGeneral)),
+                  }}
+                  rootProps={{ "data-testid": "1" }}
+                />
+              <h1>Grafico Por Actividades:</h1>
+              <div>
+                {Object.entries(graficaActividades).map(
+                  ([actividad, categorias], index) => (
+                  <div key={actividad}>
+                    <Chart
+                      sx={{ width: "100%", height: "100%" }}
+                      chartType="PieChart"
+                      loader={<div>Cargando gráfico</div>}
+                      data={[
+                        ["Actividades", "Cantidades"],
+                        ...Object.entries(categorias).map(([categoria, cantidad]) => [categoria, cantidad])
+                      ]}
+                      options={{
+                        title: `Gráfica Actividad ${actividad}`,
+                        titleTextStyle: {
+                          fontSize: 22,
+                        },
+                        slices: coloresFondoPastel(Object.keys(categorias)),
+                      }}
+                      rootProps={{ "data-testid": "1" }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </DialogContentText>
+          </DialogContent>
+        </div>
         <DialogActions sx={{ background: "rgba( 0, 0, 0 , 0.2)" }}>
           <Button onClick={cerrarInforme} color="primary">
             Cerrar
