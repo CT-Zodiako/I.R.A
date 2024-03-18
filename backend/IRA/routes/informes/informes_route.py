@@ -2,8 +2,11 @@ from flask import Blueprint, jsonify
 from ...controller.informes.informes_controller import traer_calificaciones_por_examen
 from ...models.calificacion.calificacion_model import CalificacionExamen
 from ...auth import admin_required
+from ...models.examen.examen_model import Examen
+from ...models.relaciones.relacion_examen_evaluador import examen_evaluador_tabla
 from enum import Enum
-
+from ...models.resultados_aprendizaje.resultados_aprendizaje_model import ResultadoAprendizaje
+from ...db import db
 informes_blueprint = Blueprint('informes', __name__)
 
 
@@ -162,7 +165,7 @@ def getInformeActividad(examen_id):
             'calificaciones': resputestaEvaludor.calificacion,
             'evaluador_id': resputestaEvaludor.evaluador_id,
         })
-    
+
     # Crear un diccionario para almacenar las sumas de las notas por actividad
     sumas_por_actividad = {}
     for evaluador in todosLosExamenes:
@@ -177,10 +180,12 @@ def getInformeActividad(examen_id):
     # Calcular el promedio final por actividad
     promedios_por_actividad = {}
     for actividad, sumas in sumas_por_actividad.items():
-        promedios_por_actividad[actividad] = [suma / len(todosLosExamenes) for suma in sumas]
+        promedios_por_actividad[actividad] = [
+            suma / len(todosLosExamenes) for suma in sumas]
 
     # Clasificar los promedios de notas por actividad
-    clasificacion_promedios_por_actividad = clasificar_promedios_por_actividad(promedios_por_actividad)
+    clasificacion_promedios_por_actividad = clasificar_promedios_por_actividad(
+        promedios_por_actividad)
 
     # Retornar la clasificación de promedios por actividad en formato JSON
     return jsonify(clasificacion_promedios_por_actividad)
@@ -215,3 +220,67 @@ def clasificar_promedios_por_actividad(promedios_por_estudiante):
             else:
                 clasificacion_por_actividad[i]["no calificación"] += 1
     return clasificacion_por_actividad
+
+
+from flask import request
+
+@informes_blueprint.route('/listaInformes/<int:programa_id>', methods=['GET'])
+def obtener_examenes_con_calificaciones_completas(programa_id):
+    # Consulta para obtener los exámenes con calificaciones completas
+    examenes_con_calificaciones_completas = []
+    # Obtener todos los exámenes filtrados por programa_id
+    todos_los_examenes = Examen.query.filter_by(programa_id=programa_id).all()
+    
+    for examen in todos_los_examenes:
+        # Contar la cantidad de evaluadores asignados al examen
+        num_evaluadores = db.session.query(
+            examen_evaluador_tabla).filter_by(examen_id=examen.id).count()
+
+        # Contar la cantidad de calificaciones para el examen dado
+        num_calificaciones = CalificacionExamen.query.filter_by(
+            examen_id=examen.id).count()
+
+        # Verificar si hay una cantidad correspondiente de calificaciones para cada evaluador asignado
+        if num_evaluadores == num_calificaciones:
+            # Obtener el nombre del resultado de aprendizaje
+            resultado_aprendizaje = ResultadoAprendizaje.query.filter_by(id=examen.resultado_aprendizaje_id).first()
+            if resultado_aprendizaje:
+                titulo = resultado_aprendizaje.titulo
+                descripcion = resultado_aprendizaje.descripcion
+            else:
+                titulo = None
+                descripcion = None
+            
+            # Obtener las observaciones de las calificaciones
+            observaciones = obtener_observaciones_calificaciones(examen.id)
+
+            examenes_con_calificaciones_completas.append({
+                "id": examen.id,
+                "proyecto_integrador": examen.proyecto_integrador,
+                "actividades_formativas": examen.actividades_formativas,
+                "resultado_aprendizaje_nombre": titulo,
+                "resultado_aprendizaje_descripcion": descripcion,
+                "observaciones_calificaciones": observaciones
+            })
+
+    return examenes_con_calificaciones_completas
+
+
+
+def obtener_observaciones_calificaciones(examen_id):
+    # Consulta para obtener todas las calificaciones para el examen dado
+    calificaciones = CalificacionExamen.query.filter_by(examen_id=examen_id).all()
+    
+    # Inicializar una lista para almacenar todas las observaciones
+    observaciones = []
+    
+    # Recorrer todas las calificaciones del examen
+    for calificacion in calificaciones:
+        # Obtener el campo "calificacion" de la calificación actual
+        datos_calificacion = calificacion.calificacion
+        
+        # Recorrer todos los evaluadores y obtener sus observaciones
+        for evaluador in datos_calificacion:
+            observaciones.append(evaluador['calificacion']['observaciones'])
+    
+    return observaciones
