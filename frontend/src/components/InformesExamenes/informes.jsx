@@ -4,11 +4,12 @@ import { useNavigate,  } from "react-router-dom"
 import { TextField, 
   Table, TableBody, TableCell, 
   TableContainer, TableHead, 
-  TablePagination, TableRow, Button} from "@mui/material"
+  TablePagination, TableRow, Button
+} from "@mui/material"
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { ModalInformeExamen } from "./ModalInformeExamen"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { guardarInformeId } from "../../redux/idExamenInforme"
 import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
@@ -16,17 +17,19 @@ import html2pdf from "html2pdf.js"
 import { Tabla } from "../tabla"
 
 export const Informes = () => {
-  const [paginasTabla, setPaginasTabla] = useState(0);
-  const [filasPaginasTabla, setFilasPaginasTabla] = useState(5);
+  // const programa = useSelector((state) => state.programa.programa);
 
-  const handleChangePage = (event, newPage) => {
-    setPaginasTabla(newPage);
-  };
+  // const [paginasTabla, setPaginasTabla] = useState(0);
+  // const [filasPaginasTabla, setFilasPaginasTabla] = useState(5);
 
-  const handleChangeRowsPerPage = (event) => {
-    setFilasPaginasTabla(parseInt(event.target.value, 10));
-    setPaginasTabla(0);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPaginasTabla(newPage);
+  // };
+
+  // const handleChangeRowsPerPage = (event) => {
+  //   setFilasPaginasTabla(parseInt(event.target.value, 10));
+  //   setPaginasTabla(0);
+  // };
   // ...
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -52,7 +55,7 @@ export const Informes = () => {
     {
       icono: RemoveRedEyeIcon,
       color: () => 'colorInforme',
-      accion: (event, evaluador) => abrirInforme(evaluador.id),
+      accion: (event, informes) => abrirInforme(informes),
     },
   ];
 
@@ -64,13 +67,14 @@ export const Informes = () => {
     informe.proyecto_integrador.toLowerCase().includes(filtrar.toLowerCase())
   );
 
-  const abrirInforme = (evaluador) => {
-    setMotrarInforme(true);
+  const abrirInforme = (informes) => {
+    console.log('abrir informe', informes);
     dispatch(
       guardarInformeId({
-        idExamen: evaluador 
+        idExamen: informes 
       })
     );
+    setMotrarInforme(true);
   }
 
   const cerrarInforme = () => {
@@ -89,15 +93,6 @@ export const Informes = () => {
     }
     fetchData();
   }, []);
-
-  const verInforme = (id, proyectoIntegrador) => {
-    navigate(`/informe-estudiante`, {
-      state: {
-        evaluadorId: id,
-        proyectoIntegrador: proyectoIntegrador,
-      },
-    });
-  };
 
   const downloadPDF = () => {
     const input = document.getElementById("pdf-content");
@@ -164,7 +159,7 @@ export const Informes = () => {
           }}
         />
       </div>
-      <TableContainer className="tablas">
+      {/* <TableContainer className="tablas">
         <Table sx={{ minWidth: 650 }} aria-label="caption table">
           <TableHead className="tablaEncabezado">
             <TableRow>
@@ -217,7 +212,7 @@ export const Informes = () => {
         page={paginasTabla}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      /> */}
       <div className="tablascontenido">
         <Tabla
           datos={filtrarInformeExamen}

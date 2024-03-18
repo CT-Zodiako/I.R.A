@@ -9,9 +9,9 @@ import OutputIcon from '@mui/icons-material/Output';
 
 export const  Menu = ({ onCerrarSesion }) => {
   const dispatch = useDispatch();
-  const usuario = useSelector((state) => state.sesion.username);
+  // const usuario = useSelector((state) => state.sesion.username);
 
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const token = localStorage.getItem("token");
   const [rol, setRol] = useState();
   const [selecPrograma, setSelecPrograma] = useState([]);
 
@@ -24,7 +24,6 @@ export const  Menu = ({ onCerrarSesion }) => {
   };
 
   useEffect(() => {
-    // if (rol === 'Admin') {
       async function fetchData() {
         try {
           const data = await programaServicio.traerPrograma();
@@ -34,7 +33,6 @@ export const  Menu = ({ onCerrarSesion }) => {
         }
       }
       fetchData();
-    // }
   }, []);
 
   useEffect(() => {
@@ -55,7 +53,6 @@ export const  Menu = ({ onCerrarSesion }) => {
               <h2>Bienvenido Administrador</h2>:
               <h2>Bienvenido Evaluador</h2>
           }
-          {/* <h2>Bienvenido <br/>{ usuario }</h2> */}
         </div>
         <div style={{ height: "60%", display: 'flex', alignContent: 'start' }}>
           <nav>

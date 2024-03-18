@@ -9,21 +9,24 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-// import { InputSeleccion } from "../EtiquetaSeleccionGeneral";
 import { cambiarEstadoBoton } from "../../redux/botonAlertaSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export const CrearResultadoAprendizaje = ({ abierto, cerrado, tablaResultados }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const programaStado = useSelector((state) => state.programa.programa);  
 
-  const [agregaResultado, setAgregaResultado] = useState({
+  const [agregaResultadoAprendizaje, setAgregaResultadoAprendizaje] = useState({
     titulo: "",
-    // programa: "",
+    programa_id: "",
     descripcion: "",
-  });
-  // const [programa, setPrograma] = useState([]);
+  });  
+  const [programa, setPrograma] = useState([]);
+  
+  const programaR = programa.find((program) => program.id == programaStado);
+  
 
   useEffect(() => {
     async function fetchData() {
@@ -37,17 +40,17 @@ export const CrearResultadoAprendizaje = ({ abierto, cerrado, tablaResultados })
     fetchData();
   }, []);
 
-  // const onPrograma = (seleccionId) => {
-  //   setAgregaResultado({
-  //     ...agregaResultado,
-  //     programa: seleccionId,
-  //   });
-  // }
+  useEffect(() => {
+    setAgregaResultadoAprendizaje({
+      ...agregaResultadoAprendizaje,
+      programa_id: programaStado,
+    });
+  }, [programaStado]);
 
   const onAgregarResultado = (event) => {
     const { name, value } = event.target;
-    setAgregaResultado({
-      ...agregaResultado,
+    setAgregaResultadoAprendizaje({
+      ...agregaResultadoAprendizaje,
       [name]: value,
     });
   };
@@ -55,7 +58,7 @@ export const CrearResultadoAprendizaje = ({ abierto, cerrado, tablaResultados })
   const onEnviarResultado = async (event) => {
     event.preventDefault();
     try {
-      await resultadoAprendizajeServicio.agregarResultado(agregaResultado);
+      await resultadoAprendizajeServicio.agregarResultado(agregaResultadoAprendizaje);
       dispatch(
         cambiarEstadoBoton({
           botonAlerta: true,
@@ -99,7 +102,7 @@ export const CrearResultadoAprendizaje = ({ abierto, cerrado, tablaResultados })
                     <TextField
                       type="text"
                       name="titulo"
-                      value={agregaResultado.titulo}
+                      value={agregaResultadoAprendizaje.titulo}
                       onChange={onAgregarResultado}
                       id="outlined-basic"
                       label="titulo"
@@ -107,21 +110,20 @@ export const CrearResultadoAprendizaje = ({ abierto, cerrado, tablaResultados })
                     />
                   </div>
                 </div>
-                {/* <div className="">
+                <div className="">
                   <div className="">
                     <InputLabel id="demo-simple--label">Programa: </InputLabel>
                   </div>
                   <div>
-                    <InputSeleccion
-                        seleccionar={programa}
-                        idSeleccion={onPrograma}
-                        label="Seleccione Programa"
-                        variable="nombre"
-                        anchoSelec='14rem'
-                        alto='3.2rem'
-                      />
+                    <TextField
+                      sx={{ width: "20rem", margin: "10px" }}
+                      value={programaR ? programaR.nombre : ''}
+                      InputProps={{
+                        readOnly: true
+                      }}
+                    />
                   </div>
-                </div> */}
+                </div>
                 <div className="">
                   <div className="">
                     <InputLabel id="demo-simple--label">Descripcion: </InputLabel>
@@ -130,7 +132,7 @@ export const CrearResultadoAprendizaje = ({ abierto, cerrado, tablaResultados })
                     <TextField
                       type="text"
                       name="descripcion"
-                      value={agregaResultado.descripcion}
+                      value={agregaResultadoAprendizaje.descripcion}
                       onChange={onAgregarResultado}
                       id="outlined-basic"
                       label="descripcion"

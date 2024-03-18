@@ -1,9 +1,19 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import evaluadorService from "../../services/servicioEvaluador";
-import { Box, Button, InputLabel, TextField, Typography } from "@mui/material";
+import { 
+  Box, Button, InputLabel, 
+  TextField, Typography 
+} from "@mui/material";
 import Modal from "@mui/material/Modal";
+import CancelIcon from '@mui/icons-material/Cancel';
+import { cambiarEstadoBoton } from "../../redux/botonAlertaSlice";
+import { useNavigate } from "react-router-dom";
 
 export const ModalIRA = ({ isOpen, onClose, evaluadorId }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [formulario, setFormulario] = useState({
     nuevo_nombre_evaluador: '',
     nuevo_correo: '',
@@ -43,11 +53,14 @@ export const ModalIRA = ({ isOpen, onClose, evaluadorId }) => {
 
   const onEnviarEdicionEvaluador = async (event) => {
     try {
-      const response = await evaluadorService.editarEvaluador(
-        evaluadorId,
-        formulario
+      const response = await evaluadorService.editarEvaluador(evaluadorId, formulario);
+      dispatch(
+        cambiarEstadoBoton({
+          botonAlerta: true,
+          notificacion: "Evaluador editado con éxito",
+        }),
       );
-      console.log(response);
+      navigate('/evaluadores');
       onClose();
     } catch (error) {
       console.error(error);
@@ -65,10 +78,19 @@ export const ModalIRA = ({ isOpen, onClose, evaluadorId }) => {
         <div className="modales">
           <form onSubmit={onEnviarEdicionEvaluador}>
             <div>
-              <div className="centrar">
-                <Typography id="modal-modal-title" variant="h6" component="h2">
+              <div className="encabezadoModales">
+                <Typography 
+                  id="modal-modal-title" 
+                  variant="h6" 
+                  component="h2"
+                >
                   Actualizar Información Evaluador
                 </Typography>
+                <CancelIcon
+                    onClick={onClose}
+                    fontSize="large"
+                    color="error"
+                  />
               </div>
               <div>
                 <div className="editar">

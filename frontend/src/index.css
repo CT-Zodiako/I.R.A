@@ -269,4 +269,11 @@ body {
   padding: 2rem 5rem;
 }
 
+.encabezadoModales{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  width: 100%;
+}
 

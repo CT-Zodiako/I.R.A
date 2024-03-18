@@ -45,8 +45,6 @@ export const Tabla = ({ datos, columnas, acciones, accinar }) => {
                     <TableCell align="center">
                     {acciones.map((accion, index) => (
                       <accion.icono
-                        // style={{ color: accion.color(dato) }}
-                        // className={accion.color}
                         className={accion.color ? accion.color(dato) : ''}
                         fontSize="large"
                         onClick={(event) => accion.accion(event, dato.id)}

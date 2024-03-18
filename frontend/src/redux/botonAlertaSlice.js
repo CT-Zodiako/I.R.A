@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 const botonAlertaSelect = {
-    botonAlerta: false,
+    botonAlerta: true,
     notificacion: "",
 }
 

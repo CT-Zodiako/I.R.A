@@ -10,9 +10,9 @@ class resultadoAprendizajeServicio {
     }
   }
 
-  async traerResultado() {
+  async traerResultado(programa) {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/resultado_aprendizaje/traer_resultados`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/resultado_aprendizaje/traer_resultados/${programa}`);
       return response.data.data;
     } catch (err) {
       console.error(err);

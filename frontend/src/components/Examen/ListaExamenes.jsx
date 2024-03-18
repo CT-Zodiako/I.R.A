@@ -14,10 +14,11 @@ import { Tabla } from "../tabla"
 export const ExamenesLista = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const programa = useSelector((state) => state.programa.programa);  
   const estadoAlerta = useSelector((state) => state.botonAlerta.botonAlerta);
   const alertaNotificacion = useSelector((state) => state.botonAlerta.notificacion);
 
-  const [listaExamenes, setListaExamenes] = useState([]);
+  const [listaExamenes, setListaExamenes] = useState([]);  
   const [notificacionExamen, setNotificacionExamen] = useState(false);
 
   const columnas = [
@@ -68,7 +69,7 @@ export const ExamenesLista = () => {
             notificacion: "",
           })
         );
-      }, 3000);
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, [estadoAlerta]);
@@ -76,14 +77,16 @@ export const ExamenesLista = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const examenes = await examenService.ExamenesCreados();
-        setListaExamenes(examenes);
+        if (programa) {
+          const examenes = await examenService.ExamenesCreados(programa);
+          setListaExamenes(examenes);
+        }
       } catch (error) {
         console.error("Error al obtener la lista: ", error);
       }
     }
     fetchData();
-  }, []);
+  }, [programa]);
 
   const enviarCorre = (event, examenId) => {
     event.preventDefault();
