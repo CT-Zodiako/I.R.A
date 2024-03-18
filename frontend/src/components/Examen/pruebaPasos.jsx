@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, Step, StepLabel, Stepper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { cambiarEstadoBoton } from "../../redux/botonAlertaSlice";
+import { LimpiarExamen } from "../../redux/examenSlice";
 
 export const FormularioPorPasos = () => {
   const enviarExamen = useSelector((state) => state.examenFormulario);
@@ -43,6 +44,14 @@ export const FormularioPorPasos = () => {
           botonAlerta: true,
           notificacion: "Examen Creado con Exito",
         }),
+        LimpiarExamen({
+            programa_id : '',
+            resultado_aprendizaje_id : '',
+            proyecto_integrador : '',
+            evaluadores_ids : [],
+            actividades_formativas : [],
+            estudiantes : [],
+        })
       );
       navigate('/lista_examen');
     } catch (error) {

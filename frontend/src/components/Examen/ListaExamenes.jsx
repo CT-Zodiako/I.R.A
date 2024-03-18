@@ -159,9 +159,9 @@ export const ExamenesLista = () => {
           <Tabla
             datos={listaExamenes}
             columnas={columnas}
-            editar={onEditarExamen}
-            eliminar={onEliminarExamen}
-            enviarCorreo={enviarCorre}
+            // editar={onEditarExamen}
+            // eliminar={onEliminarExamen}
+            // enviarCorreo={enviarCorre}
             acciones={BotonesAcciones}
             accinar='true'
           />

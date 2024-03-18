@@ -11,24 +11,25 @@ import {
 } from "@mui/material";
 import "./styleInforme.css";
 import { useSelector } from "react-redux";
+import { Tabla } from "../tabla";
 
 export const ModalInformeExamen = ({ abrirInforme, cerrarInforme, descargarPDF }) => {
-  const evaluador = useSelector((state) => state.informeExamen.idInforme);
-  console.log('id del informe: ', evaluador);
-  
-  
-  const [informacionCalificaciones, setInformacionCalificaciones] = useState([]);
-  // console.log('Estado de calificaciones: ', informacionCalificaciones);
-  const [promedioGeneral, setPromedioGeneral] = useState([]);
-  // console.log('Estado de promedioGrafica: ', promedioGeneral);
-  const [actividadesDecripcion, setActividadesDescripcion] = useState([]);
-  // console.log('Estado de actividades: ', actividadesDecripcion);
-  const [colorInforme, setColorInforme] = useState([]);  
-  console.log('Estado de colorInforme: ', colorInforme);
-
+  const evaluador = useSelector((state) => state.informeExamen.idInforme);  
 
   const [graficaGeneral, setGraficaGeneral] = useState([]);
-  const [graficaActividades, setGraficaActividades] = useState([]);  
+  const [graficaActividades, setGraficaActividades] = useState([]); 
+  const [actividadesDecripcion, setActividadesDescripcion] = useState([]);
+  console.log('Descripcion de actividades: ', actividadesDecripcion);
+  const [colorInforme, setColorInforme] = useState([]);  
+  console.log('Estado de colorInforme: ', colorInforme);
+  
+  const columnas = [
+    {
+      titulo: "Actividad",
+      ancho: "100%",
+      valor: "descripcion",
+    },
+   ];
 
   const coloresFondoPastel = (categorias) => {
     const colorFondo =  categorias.map(categoria => {      
@@ -39,37 +40,6 @@ export const ModalInformeExamen = ({ abrirInforme, cerrarInforme, descargarPDF }
     });
     return colorFondo;
   }
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        if(evaluador){
-          const data = await informeServicio.promedioActividades(evaluador);
-          setInformacionCalificaciones(data);
-        }
-      } catch (error) {
-        console.error(
-          "Error al obtener el promedio de los estudiantes:",
-          error
-        );
-      }
-    }
-    fetchData();
-  }, [evaluador]);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        if(evaluador){
-          const data = await informeServicio.promedioGraficaGeneral(evaluador);
-          setPromedioGeneral(data);
-        }
-      } catch (error) {
-        console.error("Error al obtener el conteo:", error);
-      }
-    }
-    fetchData();
-  }, [evaluador]);
 
   useEffect(() => {
     async function fetchData() {
@@ -144,6 +114,12 @@ export const ModalInformeExamen = ({ abrirInforme, cerrarInforme, descargarPDF }
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
+              <Tabla
+                datos={actividadesDecripcion}
+                columnas={columnas}
+                acciones={[]}
+                accinar='false'
+              />
               <h1>Grafico General:</h1>
                 <Chart
                   width={"600px"}
@@ -161,7 +137,7 @@ export const ModalInformeExamen = ({ abrirInforme, cerrarInforme, descargarPDF }
                   }}
                   rootProps={{ "data-testid": "1" }}
                 />
-              <h1>Grafico Por Actividades:</h1>
+              <h1>Graficos Por Actividade:</h1>
               <div>
                 {Object.entries(graficaActividades).map(
                   ([actividad, categorias], index) => (
