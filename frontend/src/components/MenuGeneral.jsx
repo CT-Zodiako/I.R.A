@@ -11,7 +11,7 @@ export const  Menu = ({ onCerrarSesion }) => {
   const dispatch = useDispatch();
   // const usuario = useSelector((state) => state.sesion.username);
 
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const token = localStorage.getItem("token");
   const [rol, setRol] = useState();
   const [selecPrograma, setSelecPrograma] = useState([]);
 

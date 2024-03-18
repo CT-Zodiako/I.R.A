@@ -16,19 +16,14 @@ import { useNavigate } from "react-router-dom";
 export const CrearResultadoAprendizaje = ({ abierto, cerrado, tablaResultados }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const programaStado = useSelector((state) => state.programa.programa);
-  console.log('Programa: ', programaStado);
-  
+  const programaStado = useSelector((state) => state.programa.programa);  
 
   const [agregaResultadoAprendizaje, setAgregaResultadoAprendizaje] = useState({
     titulo: "",
-    programa: "",
+    programa_id: "",
     descripcion: "",
-  });
-  console.log('Resultado de aprendizaje: ', agregaResultadoAprendizaje);
-  
+  });  
   const [programa, setPrograma] = useState([]);
-  console.log('Programa: ', programa);
   
   const programaR = programa.find((program) => program.id == programaStado);
   
@@ -48,7 +43,7 @@ export const CrearResultadoAprendizaje = ({ abierto, cerrado, tablaResultados })
   useEffect(() => {
     setAgregaResultadoAprendizaje({
       ...agregaResultadoAprendizaje,
-      programa: programaStado,
+      programa_id: programaStado,
     });
   }, [programaStado]);
 

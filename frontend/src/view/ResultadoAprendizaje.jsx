@@ -12,6 +12,7 @@ import { Tabla } from "../components/tabla";
 
 export const ResultadoAprendizaje = () => {
   const dispatch = useDispatch();
+  const programa = useSelector((state) => state.programa.programa);
   const estadoAlerta = useSelector((state) => state.botonAlerta.botonAlerta);
   const alertaNotificacion = useSelector((state) => state.botonAlerta.notificacion);
 
@@ -81,7 +82,7 @@ export const ResultadoAprendizaje = () => {
 
   const obtenerResultadosAprendizaje = async () => {
     try {
-      const data = await resultadoAprendizajeServicio.traerResultado();
+      const data = await resultadoAprendizajeServicio.traerResultado(programa);
       setResultadoAprendizaje(data);
     } catch (error) {
       console.error("Error al obtener los resultados de aprendizaje:", error);
@@ -91,7 +92,7 @@ export const ResultadoAprendizaje = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        await resultadoAprendizajeServicio.traerResultado();
+        await resultadoAprendizajeServicio.traerResultado(programa);
         obtenerResultadosAprendizaje();
       } catch (error) {
         console.error("Error al obtener el resultado:", error);
@@ -104,7 +105,7 @@ export const ResultadoAprendizaje = () => {
     event.preventDefault();
     try {
       await resultadoAprendizajeServicio.cambiarEstado(resultado_Id);
-      const nuevaLista = await resultadoAprendizajeServicio.traerResultado();
+      const nuevaLista = await resultadoAprendizajeServicio.traerResultado(programa);
       setResultadoAprendizaje(nuevaLista);
     } catch (error) {
       console.error(error);
