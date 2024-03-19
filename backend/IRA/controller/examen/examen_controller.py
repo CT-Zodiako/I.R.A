@@ -176,11 +176,20 @@ def examenes_bandeja_evaludor(data):
         if evaluador_id is None:
             return jsonify({'mensaje': 'Falta el ID del evaluador en los datos'}), 400
 
+        # examen_query = db.session.query(Examen).\
+        #     join(examen_evaluador_tabla, Examen.id == examen_evaluador_tabla.c.examen_id).\
+        #     outerjoin(CalificacionExamen, and_(Examen.id == CalificacionExamen.examen_id, CalificacionExamen.evaluador_id == evaluador_id)).\
+        #     filter(examen_evaluador_tabla.c.evaluador_id == evaluador_id).\
+        #     filter(CalificacionExamen.id == None)
+            
+            
         examen_query = db.session.query(Examen).\
             join(examen_evaluador_tabla, Examen.id == examen_evaluador_tabla.c.examen_id).\
             outerjoin(CalificacionExamen, and_(Examen.id == CalificacionExamen.examen_id, CalificacionExamen.evaluador_id == evaluador_id)).\
             filter(examen_evaluador_tabla.c.evaluador_id == evaluador_id).\
-            filter(CalificacionExamen.id == None)
+            filter(CalificacionExamen.id == None).\
+            filter(Examen.notificar == True)
+
 
         examenes = examen_query.all()
 
