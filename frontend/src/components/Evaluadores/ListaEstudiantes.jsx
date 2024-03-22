@@ -72,9 +72,7 @@ export const VistaEstudiantes = () => {
     const onEnviarCalificaciones = async(event) => {
         event.preventDefault();
         try {
-          const response = await  evaluadorService.calificacionActividadEstudiante(calificacionesEstudiantes);
-          console.log(response);
-          navigate(`/lista_examenes`);
+          await  evaluadorService.calificacionActividadEstudiante(calificacionesEstudiantes);
         } catch (error) {
           console.error('Error al enviar los datos de la calificacion:', error);
         }

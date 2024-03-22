@@ -6,11 +6,15 @@ import {
   RegistrarActividadFormativa,
   PanelSeleccionarEvaluador,
 } from "./indexExamen";
-import { useSelector } from "react-redux";
-import { Box, Step, StepLabel, Stepper } from "@mui/material";
-import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Box, Button, Step, StepLabel, Stepper } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
+import { cambiarEstadoBoton } from "../../redux/botonAlertaSlice";
+import { LimpiarExamen } from "../../redux/examenSlice";
 
 export const EditarExamen = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
   const accion = location.state.accion;
   const examenId = location.state.examenId;
@@ -39,6 +43,16 @@ export const EditarExamen = () => {
     event.preventDefault();
     try {
       await examenService.editarExamen(examenId, enviarExamen);
+      dispatch(
+        cambiarEstadoBoton({
+          botonAlerta: true,
+          notificacion: "Examen Edito con Exito",
+        }),
+      );
+      dispatch(
+        LimpiarExamen()
+      );
+      navigate('/lista_examen');
     } catch (error) {
       console.error("Error al enviar los datos del examen:", error);
     }
@@ -141,12 +155,13 @@ export const EditarExamen = () => {
               />
             </div>
             <div className="centrar">
-              <button
+              <Button
+                variant="contained"
                 disabled={!camposCargados}
                 onClick={onEnviarEditarExamen}
               >
                 Cargar examen
-              </button>
+              </Button>
             </div>
           </div>
         </div>

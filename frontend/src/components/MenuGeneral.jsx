@@ -13,7 +13,7 @@ export const  Menu = ({ onCerrarSesion }) => {
 
   const token = localStorage.getItem("token");
   const [rol, setRol] = useState();
-  const [selecPrograma, setSelecPrograma] = useState([]);
+  const [selecPrograma, setSelecPrograma] = useState([]);  
 
   const onPrograma = (seleccionId) => {
     dispatch(
