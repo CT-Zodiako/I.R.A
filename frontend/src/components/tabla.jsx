@@ -27,7 +27,7 @@ export const Tabla = ({ datos, columnas, acciones, accinar }) => {
               {columnas.map((columna, index) => (
                   <TableCell className=" bordeVerticar" align="center" style={{ width: columna.ancho }} key={index}>{columna.titulo}</TableCell> 
               ))}
-              {accinar && acciones.length > 0 && <TableCell className="bordeVerticar" sx={{ fontSize: '14px' }} align="center">ACCION</TableCell>}
+              {accinar && <TableCell className="bordeVerticar" sx={{ fontSize: '14px' }} align="center">ACCION</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody className="tablasCuerpo">
@@ -41,7 +41,7 @@ export const Tabla = ({ datos, columnas, acciones, accinar }) => {
                       {columna.valor === 'estado' ? (dato[columna.valor] ? 'Activo' : 'Inactivo') : dato[columna.valor]}
                     </TableCell>
                   ))}
-                  {accinar && acciones.length > 0 &&
+                  {accinar &&
                     <TableCell align="center">
                     {acciones.map((accion, index) => (
                       <accion.icono

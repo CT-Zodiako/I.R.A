@@ -14,6 +14,8 @@ import {
   TableRow,
 } from "@mui/material";
 import { ConfirmarEnvioExamen } from "./ConfirmarEnvioExamen";
+import HourglassFullIcon from '@mui/icons-material/HourglassFull';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 export const EstudiantesExamen = () => {
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ export const EstudiantesExamen = () => {
       {
         nombre: '',
         calificacion: {
-          notas: [],
+          notas: [''],
           observaciones: [],
         },
       },
@@ -39,8 +41,10 @@ export const EstudiantesExamen = () => {
     examen_id: '',
     evaluador_id: ''
   });
-  console.log(calificacionExamen);
+  console.log("calificaciones examen: ",calificacionExamen);
 
+  const numeroactividades = actividadesExamen.length;
+  
   const onNotaCalificacion = (idSeleccion, indexEstudiante, indexActividad) => {
     setCalificacionExamen((prevCalificaciones) => {
       const nuevasCalificaciones = { ...prevCalificaciones };
@@ -162,8 +166,11 @@ export const EstudiantesExamen = () => {
 
   return (
     <>
-      <form>
-        <div>
+      <div>
+        <div className="cabecera">
+          <h1>Calificacion de Examen</h1>
+        </div>
+        <div className="cuerpo">
           <Button
             variant="contained"
             color="warning"
@@ -172,83 +179,104 @@ export const EstudiantesExamen = () => {
           >
             Regresar
           </Button>
-          <TableContainer className="tablas">
-            <Table>
-              <TableHead className="tablaEncabezado">
-                <TableRow>
-                  <TableCell align="center" sx={{ width: '12%' }}>Estudiantes</TableCell>
-                  <TableCell align="center" sx={{ width: '25%' }}>Actividades</TableCell>
-                  <TableCell align="center" sx={{ width: '43%' }}>Calificacion</TableCell>
-                  <TableCell align="center" sx={{ width: '20%' }}>Observacion</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {listaEstudiantes.map((estudiante, indexEstudiante) => (
-                  <TableRow key={indexEstudiante} sx={{ backgroundColor: indexEstudiante % 2 === 0 ? '#f5f5f5' : '#ffffff' }}>
-                    <TableCell align="center" className="bordeFilas">
-                      {estudiante.NOMBRE}
-                    </TableCell>
-                    <TableCell className="bordeFilas" align="center">
-                      {actividadesExamen.map((actividad, indexActividad) => (
-                        <div
-                          className="actividadesExamen"
-                          style={{ backgroundColor: indexEstudiante % 2 !== 0 ? '#f5f5f5' : '#ffffff'}}
-                          key={indexActividad}                          
-                        >
-                          {/* {actividad} */}
-                          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis commodi accusamus nemo eveniet ab aperiam unde doloribus, deleniti magnam necessitatibus, odio perferendis quis iure ea!
-                        </div>
-                      ))}
-                    </TableCell>
-                    <TableCell className="bordeFilas">
-                      {actividadesExamen.map((actividad, indexActividad) => (
-                        <div
-                          className="calificacionExamen"
-                          style={{ backgroundColor: indexEstudiante % 2 !== 0 ? '#f5f5f5' : '#ffffff'}}
-                          key={indexActividad}
-                        >
-                          <SeleccionCalificacion
-                            seleccionar={notasCalificacion}
-                            idSeleccion={(idSeleccion) =>
-                              onNotaCalificacion(
-                                idSeleccion,
-                                indexEstudiante,
-                                indexActividad
-                              )
-                            }
-                          />
-                        </div>
-                      ))}
-                    </TableCell>
-                    <TableCell align="center">
-                      <textarea
-                        cols="30"
-                        rows="10"
-                        className="observacionesExamen"
-                        // value={calificacionExamen.observaciones[IndexEstudiante] || ""}
-                        onChange={(event) =>
-                          onObservacion(event, indexEstudiante)
-                        }
-                      />
-                    </TableCell>
+        </div>
+        <form>
+          <div className="tablascontenido">
+            <TableContainer className="tablas" sx={{ maxHeight: '30rem', overflowY: 'auto' }}>
+              <Table>
+                <TableHead className="tablaEncabezado" sx={{ position: 'sticky', top: 0, zIndex: 1 }}>
+                  <TableRow>
+                    <TableCell className=" bordeVerticar" align="center" sx={{ width: '12%' }}>ESTUDIANTES</TableCell>
+                    <TableCell className=" bordeVerticar" align="center" sx={{ width: '22%' }}>ACTIVIDADES</TableCell>
+                    <TableCell className=" bordeVerticar" align="center" sx={{ width: '40%' }}>CALIFICACION</TableCell>
+                    <TableCell className=" bordeVerticar" align="center" sx={{ width: '18%' }}>OBSERVACION</TableCell>
+                    <TableCell align="center">ESTADO</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
-        <div
-          className="enviarCalificacion"
-        >
-          <Button
-            variant="contained"
-            disabled={!botonEnvio}
-            onClick={abrirVentanaConfirmacion}
+                </TableHead>
+                <TableBody>
+                  {listaEstudiantes.map((estudiante, indexEstudiante) => (
+                    <TableRow key={indexEstudiante} sx={{ backgroundColor: indexEstudiante % 2 === 0 ? '#f5f5f5' : '#ffffff' }}>
+                      <TableCell align="center" className="bordeFilas bordeVerticar">
+                        {estudiante.NOMBRE}
+                      </TableCell>
+                      <TableCell className="bordeFilas bordeVerticar" align="center">
+                        {actividadesExamen.map((actividad, indexActividad) => (
+                          <div
+                            className="actividadesExamen"
+                            style={{ backgroundColor: indexEstudiante % 2 !== 0 ? '#f5f5f5' : '#ffffff', border: '1px solid rgba(0, 0, 0, 0.5)'}}
+                            key={indexActividad}                          
+                          >
+                            {actividad}
+                          </div>
+                        ))}
+                      </TableCell>
+                      <TableCell className="bordeFilas bordeVerticar">
+                        {actividadesExamen.map((actividad, indexActividad) => (
+                          <div
+                            className="calificacionExamen"
+                            style={{ backgroundColor: indexEstudiante % 2 !== 0 ? '#f5f5f5' : '#ffffff', border: '1px solid rgba(0, 0, 0, 0.5)'}}
+                            key={indexActividad}
+                          >
+                            <SeleccionCalificacion
+                              seleccionar={notasCalificacion}
+                              idSeleccion={(idSeleccion) =>
+                                onNotaCalificacion(
+                                  idSeleccion,
+                                  indexEstudiante,
+                                  indexActividad
+                                )
+                              }
+                            />
+                          </div>
+                        ))}
+                      </TableCell>
+                      <TableCell className="bordeVerticar" align="center">
+                        <textarea
+                          cols="30"
+                          rows="10"
+                          className="observacionesExamen"
+                          sx={{ border: '1px solid #000000' }}
+                          // value={calificacionExamen.observaciones[IndexEstudiante] || ""}
+                          onChange={(event) =>
+                            onObservacion(event, indexEstudiante)
+                          }
+                        />
+                      </TableCell>
+                      <TableCell align="center" sx={{ background: (() => {
+                            const calificacionEstudiante = calificacionExamen.calificacion.find(calificado => calificado.nombre === estudiante.NOMBRE);
+                        
+                            if (calificacionEstudiante && calificacionEstudiante.calificacion && calificacionEstudiante.calificacion.notas) {
+                                const notasSinNull = calificacionEstudiante.calificacion.notas.filter(nota => nota !== null);
+                                return notasSinNull.length === numeroactividades ? 
+                                  'rgba(0, 188, 0, 0.8)'
+                                  : 
+                                  'rgba(255, 0, 0, 0.8)'
+                                  ;
+                            } else {
+                                return <p>sin calificar</p>;
+                            }
+                          })() }}
+                        
+                      />
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+          <div
+            className="enviarCalificacion"
           >
-            Enviar Calificacion
-          </Button>
-        </div>
-      </form>
+            <Button
+              variant="contained"
+              disabled={!botonEnvio}
+              onClick={abrirVentanaConfirmacion}
+            >
+              Enviar Calificacion
+            </Button>
+          </div>
+        </form>
+      </div>
       <div>
         <ConfirmarEnvioExamen
           estadoConfirmacion={estadoVentanaConfirmacion}

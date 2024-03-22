@@ -36,21 +36,22 @@ export const InicioSesionUsuarios = ({ onAutenticacion }) => {
       const decodedToken = JSON.parse(atob(tokenData));
       if (decodedToken) {
         const usuarioId = decodedToken.sub.id;
-          const usuario = decodedToken.sub.nombre;
-          const rol = decodedToken.sub.rol;
-          dispatch(
-            iniciarSesion({
-              id: usuarioId,
-              username: usuario,
-              rol: rol,
-            })
-          );
+        const usuario = decodedToken.sub.nombre;
+        const rol = decodedToken.sub.rol;
+        dispatch(
+          iniciarSesion({
+            id: usuarioId,
+            username: usuario,
+            rol: rol,
+          })
+        );
         onAutenticacion(token);
       } else {
         console.error("Error al decodificar el token");
       }
     } catch (error) {
-      console.error("Error al enviar los datos del Usuario:", error);
+      // console.error("Error al enviar los datos del Usuario:", error);
+      alert("Usuario o contraseña incorrecta", error);
     }
   };
 

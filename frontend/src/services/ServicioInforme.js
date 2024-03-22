@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 class informeServicio{
-    async informeExamen() {
+    async informeExamen(programa) {
         try {
-          const response = await axios.get(`${import.meta.env.VITE_API_URL}/examen/examenes`);
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/informes/listaInformes/${programa}`);
           return response.data;
         } catch (err) {
           console.error(err);

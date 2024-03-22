@@ -17,24 +17,13 @@ import html2pdf from "html2pdf.js"
 import { Tabla } from "../tabla"
 
 export const Informes = () => {
-  // const programa = useSelector((state) => state.programa.programa);
-
-  // const [paginasTabla, setPaginasTabla] = useState(0);
-  // const [filasPaginasTabla, setFilasPaginasTabla] = useState(5);
-
-  // const handleChangePage = (event, newPage) => {
-  //   setPaginasTabla(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   setFilasPaginasTabla(parseInt(event.target.value, 10));
-  //   setPaginasTabla(0);
-  // };
-  // ...
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const programa = useSelector((state) => state.programa.programa);
 
   const [calificacionesExamen, setCalificacionesExamen] = useState([]);
+  console.log('calificaciones de los informes', calificacionesExamen);
+  
   const [filtrar, setFiltrar] = useState('');
   const [mostrarInforme, setMotrarInforme] = useState(false);
 
@@ -68,7 +57,6 @@ export const Informes = () => {
   );
 
   const abrirInforme = (informes) => {
-    console.log('abrir informe', informes);
     dispatch(
       guardarInformeId({
         idExamen: informes 
@@ -84,15 +72,17 @@ export const Informes = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await informeServicio.informeExamen();
-        setCalificacionesExamen(data);
-        console.log(data);
+        if (programa) {
+          const data = await informeServicio.informeExamen(programa);
+          console.log('estos son los informes de los examenes ya calificaciones: ');
+          setCalificacionesExamen(data);
+        }
       } catch (error) {
         console.error("Error al obtener la lista de examenes:", error);
       }
     }
     fetchData();
-  }, []);
+  }, [programa]);
 
   const downloadPDF = () => {
     const input = document.getElementById("pdf-content");
@@ -142,7 +132,7 @@ export const Informes = () => {
   return (
     <div>
       <div className="cabecera">
-        <h1>Examenes imforme</h1>
+        <h1>Examenes informe</h1>
       </div>
       <div className="cuerpo">
         <TextField
@@ -225,6 +215,7 @@ export const Informes = () => {
         abrirInforme={mostrarInforme}
         cerrarInforme={cerrarInforme}
         descargarPDF={downloadPDF}
+        datosInforme={calificacionesExamen}
       />
     </div>
   );

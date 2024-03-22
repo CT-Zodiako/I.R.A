@@ -5,8 +5,15 @@ import Menu from '../src/components/MenuGeneral';
 import { InicioSesionUsuarios } from './view/InicioSesion';
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { cambiarEstadoBoton } from "./redux/botonAlertaSlice";
+import { agregarPrograma } from "./redux/programaSlice";
+import { useNavigate } from "react-router-dom";
+import { iniciarSesion } from "./redux/inicioSesionSlipe";
 
 const App = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [autenticado, setAutenticado] = useState(false);
 
   useEffect(() => {
@@ -14,6 +21,21 @@ const App = () => {
       const token = localStorage.getItem('token');
       if (token) {
         const decodedToken = jwtDecode(token);
+
+        const tokenData = token.split(".")[1];
+        const decoToken = JSON.parse(atob(tokenData));
+        if (decoToken) {
+          const usuarioId = decodedToken.sub.id;
+          const usuario = decodedToken.sub.nombre;
+          const rol = decodedToken.sub.rol;
+          dispatch(
+            iniciarSesion({
+              id: usuarioId,
+              username: usuario,
+              rol: rol,
+            })
+          );
+        }
         if (decodedToken.exp * 1000 < Date.now()) {
           handleCerrarSesion();
         } else {
@@ -34,6 +56,18 @@ const App = () => {
     localStorage.removeItem('token');
     delete axios.defaults.headers.common['Authorization'];
     setAutenticado(false);
+    dispatch(
+      cambiarEstadoBoton({
+        botonAlerta: false,
+        notificacion: "",
+      })
+    );
+    dispatch(
+      agregarPrograma({
+        programa: ''
+      })
+    );
+    navigate('/');
   };
 
   return (

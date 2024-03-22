@@ -44,14 +44,9 @@ export const FormularioPorPasos = () => {
           botonAlerta: true,
           notificacion: "Examen Creado con Exito",
         }),
-        LimpiarExamen({
-            programa_id : '',
-            resultado_aprendizaje_id : '',
-            proyecto_integrador : '',
-            evaluadores_ids : [],
-            actividades_formativas : [],
-            estudiantes : [],
-        })
+      );
+      dispatch(
+        LimpiarExamen()
       );
       navigate('/lista_examen');
     } catch (error) {
