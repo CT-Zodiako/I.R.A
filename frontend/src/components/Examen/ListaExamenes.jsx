@@ -21,6 +21,9 @@ export const ExamenesLista = () => {
   const [listaExamenes, setListaExamenes] = useState([]);  
   const [notificacionExamen, setNotificacionExamen] = useState(false);
 
+  console.log('examenes: ', listaExamenes[3]);
+  
+
   const columnas = [
     {
       titulo: "EXAMEN ID",

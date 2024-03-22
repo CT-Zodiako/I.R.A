@@ -140,6 +140,10 @@ body {
   font-size: 13px;
 }
 
+.tablasCuerpo th {
+  color: red;
+}
+
 .notificacionAlerta{
   display: flex;
   justify-items: end;
