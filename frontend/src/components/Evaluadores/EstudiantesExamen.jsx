@@ -14,8 +14,6 @@ import {
   TableRow,
 } from "@mui/material";
 import { ConfirmarEnvioExamen } from "./ConfirmarEnvioExamen";
-import HourglassFullIcon from '@mui/icons-material/HourglassFull';
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 export const EstudiantesExamen = () => {
   const navigate = useNavigate();
@@ -155,10 +153,11 @@ export const EstudiantesExamen = () => {
   const onEnviarCalificaciones = async (event) => {
     event.preventDefault();
     try {
-      await evaluadorService.calificacionActividadEstudiante(
-        calificacionExamen
-      );
+      await evaluadorService.calificacionActividadEstudiante(calificacionExamen);
       cerrarVentanaConfirmacion();
+      setTimeout(() => {
+        navigate(`/lista_examenes`);
+      }, 1000);
     } catch (error) {
       console.error("Error al enviar los datos de la calificacion:", error);
     }

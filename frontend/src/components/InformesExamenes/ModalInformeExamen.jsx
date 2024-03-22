@@ -134,7 +134,7 @@ export const ModalInformeExamen = ({
         scroll="paper"
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        width="md"
+        maxWidth="md"
       >
         <div>
           <DialogTitle sx={{ background: "rgba( 0, 0, 0 , 0.2)" }}>
@@ -142,19 +142,19 @@ export const ModalInformeExamen = ({
           </DialogTitle>
           <div id="pdf-content">
             <DialogContent>
-              <DialogContentText>
-                <div style={{ maxWidth: "100%" }}>
-                  <h1>
+              <DialogContentText sx={{ color: 'black' }}>
+                <div style={{ maxWidth: "100%", height: '10rem', width: '42rem' }}>
+                  <p style={{ height: '62%', margin: '0 auto', fontSize: '14px', fontWeight: 'bold', textAlign: "center" }}>
                     {informeExamen ? informeExamen.proyecto_integrador : null}
-                  </h1>
-                  <h2>
+                  </p>
+                  <p style={{ height: '11%', margin: '0 auto', fontSize: '14px', fontWeight: 'bold' }}>
                     {informeDatos ? informeDatos.resultado_aprendizaje_nombre : null}
-                  </h2>
-                  <h3>
+                  </p>
+                  <p style={{ height: '27%', margin: '0 auto', fontSize: '12px' }}>
                     {informeDatos ? informeDatos.resultado_aprendizaje_descripcion : null}
-                  </h3>
+                  </p>
                 </div>
-                <div>
+                <div style={{ height: '36rem', width: '42rem', marginTop: '0.5rem', display: "flex", alignItems: "center" }}>
                   <TableContainer className="tablas">
                     <Table>
                       <TableHead className="tablaEncabezado">
@@ -170,7 +170,11 @@ export const ModalInformeExamen = ({
                               (actividad, index) => (
                                 <TableRow key={index}>
                                   <TableCell align="center">
-                                    {actividad}
+                                    <p 
+                                      style={{ fontSize: '11.5px', margin: '0 auto'}}
+                                    >
+                                      {actividad}
+                                    </p>
                                   </TableCell>
                                 </TableRow>
                               )
@@ -180,14 +184,11 @@ export const ModalInformeExamen = ({
                     </Table>
                   </TableContainer>
                 </div>
-                <div>
+                <div style={{ height: '18rem', width: '42rem', marginTop: '0.5rem' }}>
                   <TableContainer className="tablas">
                     <Table>
                       <TableHead className="tablaEncabezado">
                         <TableRow>
-                          <TableCell className=" bordeVerticar" align="center">
-                            ID
-                          </TableCell>
                           <TableCell align="center">
                             EVALUADORES DEL EXAMEN
                           </TableCell>
@@ -199,14 +200,15 @@ export const ModalInformeExamen = ({
                               (actividad, index) => (
                                 <TableRow key={index}>
                                   <TableCell align="center">
-                                    {actividad}
-                                  </TableCell>
-                                  <TableCell align="center">
+                                    <p 
+                                      style={{ fontSize: '11.5px', margin: '0 auto' }}
+                                    >
                                     {evaluadores.map((evaluador) =>
                                       evaluador.id === actividad
                                         ? evaluador.nombre_evaluador
                                         : null
                                     )}
+                                    </p>
                                   </TableCell>
                                 </TableRow>
                               )
@@ -216,33 +218,46 @@ export const ModalInformeExamen = ({
                     </Table>
                   </TableContainer>
                 </div>
-                <div>
-                  <h1>Grafico General:</h1>
-                  <Chart
-                    width={"600px"}
-                    height={"400px"}
-                    chartType="PieChart"
-                    loader={<div>Cargando Grafico</div>}
-                    data={[["Actividad", "Calificaciones"]].concat(
-                      Object.entries(graficaGeneral).map(
-                        ([calificacion, value]) => [calificacion, value]
-                      )
-                    )}
-                    options={{
-                      chart: {
-                        title: "Promedio de calificaciones",
-                      },
-                      slices: coloresFondoPastel(Object.keys(graficaGeneral)),
-                    }}
-                    rootProps={{ "data-testid": "1" }}
-                  />
-                </div>
-                <div>
-                  <h1>Graficos Por Actividade:</h1>
+                <div style={{  width: '42rem', display: "flex", flexDirection: "column" }}>
                   <div>
+                    <h2 
+                      style={{ margin: '0 auto', textAlign: "center", height: '3.2rem' }}
+                    >
+                      Grafico General</h2>
+                  </div>
+                  <div style={{ margin: '0 auto' }}>
+                    <Chart
+                      width={"600px"}
+                      height={"400px"}
+                      chartType="PieChart"
+                      loader={<div>Cargando Grafico</div>}
+                      data={[["Actividad", "Calificaciones"]].concat(
+                        Object.entries(graficaGeneral).map(
+                          ([calificacion, value]) => [calificacion, value]
+                        )
+                      )}
+                      options={{
+                        chart: {
+                          title: "Promedio de calificaciones",
+                        },
+                        slices: coloresFondoPastel(Object.keys(graficaGeneral)),
+                      }}
+                      rootProps={{ "data-testid": "1" }}
+                    />
+                  </div>
+                </div>
+                <hr />
+                <div style={{ width: '42rem', marginTop: '1rem' }}>
+                  <div>
+                    <h2 
+                      style={{ margin: '0 auto', textAlign: "center", height: '1.1rem'}}
+                    >
+                      Graficos Por Actividades</h2>
+                  </div>
+                  <div style={{ margin: '2rem 0.5rem 0rem 0.5rem', width: '97%' , display: 'grid', justifyContent: "center" }}>
                     {Object.entries(graficaActividades).map(
                       ([actividad, categorias], index) => (
-                        <div key={actividad}>
+                        <div key={actividad} style={{ width: '32rem', marginTop: '3.5rem' }}>
                           <Chart
                             sx={{ width: "100%", height: "100%" }}
                             chartType="PieChart"
@@ -268,28 +283,32 @@ export const ModalInformeExamen = ({
                       )
                     )}
                   </div>
-                  <div>
-                    <TableContainer>
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Observaciones</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {informeDatos ?
-                            informeDatos.observaciones_calificaciones.map((informe, index) => (
-                            informe.trim() !== '' &&
-                              <TableRow key={index}>
-                                  <TableCell>
-                                      {informe}
-                                  </TableCell>
-                              </TableRow>
-                          )) : null}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  </div>
+                </div>
+                <div style={{ marginTop: '2rem' }}>
+                  <TableContainer className="tablas">
+                    <Table>
+                      <TableHead className="tablaEncabezado">
+                        <TableRow>
+                          <TableCell align="center">Observaciones</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody className="tablasCuerpo">
+                        {informeDatos ?
+                          informeDatos.observaciones_calificaciones.map((informe, index) => (
+                          informe.trim() !== '' &&
+                            <TableRow key={index}>
+                                <TableCell align="center">
+                                  <p
+                                    style={{ fontSize: '11.5px', margin: '0 auto'}}
+                                  >
+                                    {informe}
+                                  </p>
+                                </TableCell>
+                            </TableRow>
+                        )) : null}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
                 </div>
               </DialogContentText>
             </DialogContent>
