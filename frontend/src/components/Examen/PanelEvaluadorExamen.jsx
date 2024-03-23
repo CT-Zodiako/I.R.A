@@ -89,14 +89,19 @@ export const PanelSeleccionarEvaluador = ({ siguiente, anterior, examenId, accio
           />
         </div>
         <div className="informacion">
+          <h2>Panel Evaluadores</h2>
+          <div style={{ width: '30rem' }}>
+            <p style={{ textAlign: 'justify' }}>
+              En este panel debe seleccionar los evaluadores que calificaran el examen. 
+            </p>
+          </div>
           <form onSubmit={onEnviarEvaluadores}>
             <div className="componentes">
-              <h2>Panel Evaluadores</h2>
               <div className="centrar">
                 <InputSeleccion
                   seleccionar={listaEvaluadores}
                   idSeleccion={onEvaluadores}
-                  label="seleccione evaluador"
+                  label="Seleccione evaluador"
                   variable="nombre_evaluador"
                   anchoSelec='20rem'
                 />

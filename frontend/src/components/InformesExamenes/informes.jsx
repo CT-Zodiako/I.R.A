@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react"
 import informeServicio from "../../services/ServicioInforme"
 import { useNavigate,  } from "react-router-dom"
-import { TextField, 
-  Table, TableBody, TableCell, 
-  TableContainer, TableHead, 
-  TablePagination, TableRow, Button
-} from "@mui/material"
+import { TextField } from "@mui/material"
+import examenService from "../../services/ServiciosExamen";
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { ModalInformeExamen } from "./ModalInformeExamen"
@@ -22,8 +19,6 @@ export const Informes = () => {
   const programa = useSelector((state) => state.programa.programa);
 
   const [calificacionesExamen, setCalificacionesExamen] = useState([]);
-  console.log('calificaciones de los informes', calificacionesExamen);
-  
   const [filtrar, setFiltrar] = useState('');
   const [mostrarInforme, setMotrarInforme] = useState(false);
 
@@ -149,60 +144,6 @@ export const Informes = () => {
           }}
         />
       </div>
-      {/* <TableContainer className="tablas">
-        <Table sx={{ minWidth: 650 }} aria-label="caption table">
-          <TableHead className="tablaEncabezado">
-            <TableRow>
-              <TableCell align="center">Examen Id</TableCell>
-              <TableCell align="center">ID</TableCell>
-              <TableCell align="center">Acción</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-          {(filasPaginasTabla > 0
-                  ? filtrarInformeExamen.slice(paginasTabla * filasPaginasTabla, paginasTabla * filasPaginasTabla + filasPaginasTabla)
-                  : filtrarInformeExamen
-                ).map((informes) => (
-              <TableRow key={informes.id}>
-                <TableCell scope="row" align="center" className="informeId">
-                  {informes.id}
-                </TableCell>
-                <TableCell align="left" className="informeProyecto">
-                  <div>
-                    {informes.proyecto_integrador}
-                  </div>
-                </TableCell>
-                <TableCell align="center" className="infomeAccion">
-                  <Button
-                    variant="contained"
-                    color="success"
-                    size="small"
-                  >
-                    Descargar
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="success"
-                    size="small"
-                    onClick={() => abrirInforme( informes.id)}
-                  >
-                    ver
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 20]}
-        component="div"
-        rowsPerPage={filasPaginasTabla}
-        count={filtrarInformeExamen.length}
-        page={paginasTabla}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
       <div className="tablascontenido">
         <Tabla
           datos={filtrarInformeExamen}

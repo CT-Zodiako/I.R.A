@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Chart from "react-google-charts";
 import informeServicio from "../../services/ServicioInforme";
 import evaluadorService from "../../services/servicioEvaluador";
-import examenService from "../../services/ServiciosExamen";
+// import examenService from "../../services/ServiciosExamen";
 import {
   Button,
   Dialog,
@@ -25,19 +25,20 @@ export const ModalInformeExamen = ({
   cerrarInforme,
   descargarPDF,
   datosInforme,
+  listaExamenes,
 }) => {
   const informe = useSelector((state) => state.informeExamen.idInforme);
   const programa = useSelector((state) => state.programa.programa);
+  console.log('programa', programa);
+  
+  console.log('mi informe: ', listaExamenes);
+  
 
   const [graficaGeneral, setGraficaGeneral] = useState([]);
   const [graficaActividades, setGraficaActividades] = useState([]);
   const [colorInforme, setColorInforme] = useState([]);
-  const [listaExamenes, setListaExamenes] = useState([]);
   const [evaluadores, setEvaluadores] = useState([]);
-  console.log('evaluadores del sistemma: ', evaluadores);
   
-  const informeExamen = listaExamenes.find((examen) => examen.id === informe);
-  console.log("informe del examen", informeExamen);
   const informeDatos = datosInforme.find((informes) => informes.id === informe);
   console.log("datos del informe actividades: ", informeDatos);
 
@@ -52,20 +53,6 @@ export const ModalInformeExamen = ({
     });
     return colorFondo;
   };
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        if (informe) {
-          const data = await informeServicio.actividadesDescripcion(informe);
-          setActividadesDescripcion(data.actividades);
-        }
-      } catch (error) {
-        console.error("Error al obtener el conteo:", error);
-      }
-    }
-    fetchData();
-  }, [informe]);
 
   useEffect(() => {
     async function fetchData() {
@@ -110,21 +97,7 @@ export const ModalInformeExamen = ({
       }
     }
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        if (programa) {
-          const examenes = await examenService.ExamenesCreados(programa);
-          setListaExamenes(examenes);
-        }
-      } catch (error) {
-        console.error("Error al obtener la lista: ", error);
-      }
-    }
-    fetchData();
-  }, [programa]);
+  }, [informe]);
 
   return (
     <>
@@ -144,14 +117,17 @@ export const ModalInformeExamen = ({
             <DialogContent>
               <DialogContentText sx={{ color: 'black' }}>
                 <div style={{ maxWidth: "100%", height: '10rem', width: '42rem' }}>
-                  <p style={{ height: '62%', margin: '0 auto', fontSize: '14px', fontWeight: 'bold', textAlign: "center" }}>
-                    {informeExamen ? informeExamen.proyecto_integrador : null}
-                  </p>
-                  <p style={{ height: '11%', margin: '0 auto', fontSize: '14px', fontWeight: 'bold' }}>
+                  <h4 style={{ margin: '0 auto' }}>Resultado de Aprendizaje</h4>
+                  <p style={{ height: '11%', margin: '0 auto', fontSize: '14px' }}>
                     {informeDatos ? informeDatos.resultado_aprendizaje_nombre : null}
                   </p>
+                  <h4 style={{ margin: '0 auto', paddingTop: '1rem' }}>Descripcion</h4>
                   <p style={{ height: '27%', margin: '0 auto', fontSize: '12px' }}>
                     {informeDatos ? informeDatos.resultado_aprendizaje_descripcion : null}
+                  </p>
+                  <h4 style={{ margin: '0 auto', padding: '5px' }}>Proyecto Integrador</h4>
+                  <p style={{ height: '62%', margin: '0 auto', fontSize: '14px' }}>
+                    {informeDatos ? informeDatos.proyecto_integrador : null}
                   </p>
                 </div>
                 <div style={{ height: '36rem', width: '42rem', marginTop: '0.5rem', display: "flex", alignItems: "center" }}>
@@ -165,15 +141,15 @@ export const ModalInformeExamen = ({
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {informeExamen
-                          ? informeExamen.actividades_formativas.map(
+                        {informeDatos
+                          ? informeDatos.actividades_formativas.map(
                               (actividad, index) => (
                                 <TableRow key={index}>
-                                  <TableCell align="center">
+                                  <TableCell align="left">
                                     <p 
                                       style={{ fontSize: '11.5px', margin: '0 auto'}}
                                     >
-                                      {actividad}
+                                      <li>{actividad}</li>
                                     </p>
                                   </TableCell>
                                 </TableRow>
@@ -195,19 +171,15 @@ export const ModalInformeExamen = ({
                         </TableRow>
                       </TableHead>
                       <TableBody className="tablasCuerpo">
-                        {informeExamen
-                          ? informeExamen.evaluadores_relacion.map(
+                        {informeDatos
+                          ? informeDatos.evaluadores.map(
                               (actividad, index) => (
                                 <TableRow key={index}>
-                                  <TableCell align="center">
+                                  <TableCell align="left">
                                     <p 
                                       style={{ fontSize: '11.5px', margin: '0 auto' }}
                                     >
-                                    {evaluadores.map((evaluador) =>
-                                      evaluador.id === actividad
-                                        ? evaluador.nombre_evaluador
-                                        : null
-                                    )}
+                                    <li>{actividad}</li> 
                                     </p>
                                   </TableCell>
                                 </TableRow>
@@ -225,7 +197,7 @@ export const ModalInformeExamen = ({
                     >
                       Grafico General</h2>
                   </div>
-                  <div style={{ margin: '0 auto' }}>
+                  <div style={{ margin: '0 auto', background: 'rgba(0, 0, 0, 0.5)', padding: '0.2rem'}}>
                     <Chart
                       width={"600px"}
                       height={"400px"}
@@ -246,7 +218,6 @@ export const ModalInformeExamen = ({
                     />
                   </div>
                 </div>
-                <hr />
                 <div style={{ width: '42rem', marginTop: '1rem' }}>
                   <div>
                     <h2 
@@ -257,7 +228,7 @@ export const ModalInformeExamen = ({
                   <div style={{ margin: '2rem 0.5rem 0rem 0.5rem', width: '97%' , display: 'grid', justifyContent: "center" }}>
                     {Object.entries(graficaActividades).map(
                       ([actividad, categorias], index) => (
-                        <div key={actividad} style={{ width: '32rem', marginTop: '3.5rem' }}>
+                        <div key={actividad} style={{ width: '32rem', marginTop: '3.5rem', background: 'rgba(0, 0, 0, 0.5)', padding: '0.2rem' }}>
                           <Chart
                             sx={{ width: "100%", height: "100%" }}
                             chartType="PieChart"
@@ -297,11 +268,11 @@ export const ModalInformeExamen = ({
                           informeDatos.observaciones_calificaciones.map((informe, index) => (
                           informe.trim() !== '' &&
                             <TableRow key={index}>
-                                <TableCell align="center">
+                                <TableCell align="left">
                                   <p
                                     style={{ fontSize: '11.5px', margin: '0 auto'}}
                                   >
-                                    {informe}
+                                    <li>{informe}</li>
                                   </p>
                                 </TableCell>
                             </TableRow>

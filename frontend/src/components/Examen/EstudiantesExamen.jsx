@@ -114,9 +114,14 @@ export const AgregarListaEstudiantes = ({ setCamposCargados, examenId, accion, a
           />
         </div>
         <div className="informacion">
+          <h2>Panel Estudiante Examen</h2>
+          <div style={{ width: '28rem' }}>
+            <p style={{ textAlign: 'justify' }}>
+              En este panel asiganara estudiantes al examen que seran evaluados. Si desea utilizar un exel para subir los estudiantes, el exel debe tener una columna llamada 'NOMBRE' con el nombre, de lo contrario podra agregar manualmente al estudiantes en el campo de texto.
+            </p>
+          </div>
           <form onSubmit={onEnviarEstudiantes}>
             <div className="componentes">
-              <h2>Panel Estudiante Examen</h2>
               <div>
                 <div className="centrar">
                   <input type="file" accept="xlsx" onChange={handleFileUpload} />

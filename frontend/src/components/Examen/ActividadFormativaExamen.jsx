@@ -85,9 +85,14 @@ export const RegistrarActividadFormativa = ({ siguiente, anterior, examenId, acc
           />
         </div>
         <div className="informacion">
+          <h2>Panel Actividad Formativa</h2>
+          <div style={{ width: '30rem' }}>
+            <p style={{ textAlign: 'justify' }}>
+              Agrege las actividades formativas que se van a evaluar en el examen. Estas actividades seran las que calificaran los evaluadores 
+            </p>
+          </div>
           <form onSubmit={onEnviarActividad}>
             <div className="componentes">
-              <h2>Panel Actividad Formativa</h2>
               <div className="centrar">
                 <div className="centrar">
                   <TextField
