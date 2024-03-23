@@ -19,11 +19,6 @@ export const Informes = () => {
   const programa = useSelector((state) => state.programa.programa);
 
   const [calificacionesExamen, setCalificacionesExamen] = useState([]);
-  console.log('calificaciones de los informes', calificacionesExamen);
-  const [listaExamenes, setListaExamenes] = useState([]);
-  console.log('lista de examenes componete: ', listaExamenes);
-  
-
   const [filtrar, setFiltrar] = useState('');
   const [mostrarInforme, setMotrarInforme] = useState(false);
 
@@ -68,21 +63,6 @@ export const Informes = () => {
   const cerrarInforme = () => {
     setMotrarInforme(false);
   }
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        if (programa) {
-          const examenes = await examenService.ExamenesCreados(programa);
-          console.log('examenes', examenes);
-          setListaExamenes(examenes);
-        }
-      } catch (error) {
-        console.error("Error al obtener la lista: ", error);
-      }
-    }
-    fetchData();
-  }, [programa]);
 
   useEffect(() => {
     async function fetchData() {
@@ -177,7 +157,6 @@ export const Informes = () => {
         cerrarInforme={cerrarInforme}
         descargarPDF={downloadPDF}
         datosInforme={calificacionesExamen}
-        listaExamenes={listaExamenes}
       />
     </div>
   );
