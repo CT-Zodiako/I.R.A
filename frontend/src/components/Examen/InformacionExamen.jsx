@@ -30,7 +30,7 @@ export const EvaluacionInformacion = ({
   const programaU = programa.find((item) =>
     item.id === programaStado ? item.nombre : null
   );
-  const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);
+  const [resultadoAprendizaje, setResultadoAprendizaje] = useState([]);  
   const [camposCargados, setCamposCargados] = useState(false);
 
   const regresarPanelExamen = () => {
@@ -139,13 +139,13 @@ export const EvaluacionInformacion = ({
           />
         </div>
         <div className="informacion">
-          <div>
-            <p>
-            dentro de este panel se debe ingresar la informacion del examen
+          <h3>Panel Informacion del Examen</h3>
+          <div style={{ width: '25rem' }}>
+            <p style={{ textAlign: 'justify' }}>
+              En este panel se debe ingresar la información del examen que se va a crear al resultado de aprendizaje a evaluar. Recuerde seleccionar el programa.            
             </p>
           </div>
           <form onSubmit={onEnviarInformacion}>
-          <h3>Panel Informacion del Examen</h3>
             <div className="componentes">
               <div className="informacionExamen" style={{ height: "4rem" }}>
                 <InputLabel id="demo-simple--label">Programa: </InputLabel>
@@ -168,11 +168,23 @@ export const EvaluacionInformacion = ({
                 <InputSeleccion
                   seleccionar={resultadoAprendizaje}
                   idSeleccion={onResultado}
-                  label="seleccione resultado"
+                  label="Seleccione resultado aprendizaje"
                   variable="titulo"
                   onvalue={informacionExamen.resultado_aprendizaje_id}
                   anchoSelec="20rem"
                 />
+                <div style={{ height: '5rem', width: '21rem' }}>
+                  <p
+                    style={{ textAlign: 'justify' }}
+                  >
+                    {(()=>{
+                      const resultado = resultadoAprendizaje.find((resultado) => resultado.id === informacionExamen.resultado_aprendizaje_id);
+                      if(resultado){
+                        return resultado.descripcion;
+                      }
+                    })()}
+                  </p>
+                </div>
               </div>
               <div className="informacionExamen">
                 <InputLabel id="demo-simple--label">

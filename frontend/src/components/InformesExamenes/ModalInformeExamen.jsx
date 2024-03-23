@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Chart from "react-google-charts";
 import informeServicio from "../../services/ServicioInforme";
 import evaluadorService from "../../services/servicioEvaluador";
-import examenService from "../../services/ServiciosExamen";
+// import examenService from "../../services/ServiciosExamen";
 import {
   Button,
   Dialog,
@@ -25,16 +25,21 @@ export const ModalInformeExamen = ({
   cerrarInforme,
   descargarPDF,
   datosInforme,
+  listaExamenes,
 }) => {
   const informe = useSelector((state) => state.informeExamen.idInforme);
   const programa = useSelector((state) => state.programa.programa);
+  console.log('programa', programa);
+  
+  console.log('mi informe: ', listaExamenes);
+  
 
   const [graficaGeneral, setGraficaGeneral] = useState([]);
   const [graficaActividades, setGraficaActividades] = useState([]);
   const [colorInforme, setColorInforme] = useState([]);
-  const [listaExamenes, setListaExamenes] = useState([]);
+  // const [listaExamenes, setListaExamenes] = useState([]);
+  // console.log('lista de examenes', listaExamenes);
   const [evaluadores, setEvaluadores] = useState([]);
-  console.log('evaluadores del sistemma: ', evaluadores);
   
   const informeExamen = listaExamenes.find((examen) => examen.id === informe);
   console.log("informe del examen", informeExamen);
@@ -52,20 +57,6 @@ export const ModalInformeExamen = ({
     });
     return colorFondo;
   };
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        if (informe) {
-          const data = await informeServicio.actividadesDescripcion(informe);
-          setActividadesDescripcion(data.actividades);
-        }
-      } catch (error) {
-        console.error("Error al obtener el conteo:", error);
-      }
-    }
-    fetchData();
-  }, [informe]);
 
   useEffect(() => {
     async function fetchData() {
@@ -110,21 +101,23 @@ export const ModalInformeExamen = ({
       }
     }
     fetchData();
-  }, []);
+  }, [informe]);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        if (programa) {
-          const examenes = await examenService.ExamenesCreados(programa);
-          setListaExamenes(examenes);
-        }
-      } catch (error) {
-        console.error("Error al obtener la lista: ", error);
-      }
-    }
-    fetchData();
-  }, [programa]);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       if (programa) {
+  //         const examenes = await examenService.ExamenesCreados(programa);
+  //         console.log('examenes', examenes);
+          
+  //         setListaExamenes(examenes);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error al obtener la lista: ", error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, [programa]);
 
   return (
     <>
@@ -145,7 +138,7 @@ export const ModalInformeExamen = ({
               <DialogContentText sx={{ color: 'black' }}>
                 <div style={{ maxWidth: "100%", height: '10rem', width: '42rem' }}>
                   <p style={{ height: '62%', margin: '0 auto', fontSize: '14px', fontWeight: 'bold', textAlign: "center" }}>
-                    {informeExamen ? informeExamen.proyecto_integrador : null}
+                    {informeDatos ? informeDatos.proyecto_integrador : null}
                   </p>
                   <p style={{ height: '11%', margin: '0 auto', fontSize: '14px', fontWeight: 'bold' }}>
                     {informeDatos ? informeDatos.resultado_aprendizaje_nombre : null}
@@ -165,8 +158,8 @@ export const ModalInformeExamen = ({
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {informeExamen
-                          ? informeExamen.actividades_formativas.map(
+                        {informeDatos
+                          ? informeDatos.actividades_formativas.map(
                               (actividad, index) => (
                                 <TableRow key={index}>
                                   <TableCell align="center">

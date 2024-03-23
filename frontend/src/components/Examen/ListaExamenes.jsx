@@ -19,10 +19,7 @@ export const ExamenesLista = () => {
   const alertaNotificacion = useSelector((state) => state.botonAlerta.notificacion);
 
   const [listaExamenes, setListaExamenes] = useState([]);  
-  const [notificacionExamen, setNotificacionExamen] = useState(false);
-
-  console.log('examenes: ', listaExamenes[3]);
-  
+  const [notificacionExamen, setNotificacionExamen] = useState(false);  
 
   const columnas = [
     {
