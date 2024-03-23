@@ -3,6 +3,7 @@ from ...controller.informes.informes_controller import traer_calificaciones_por_
 from ...models.calificacion.calificacion_model import CalificacionExamen
 from ...auth import admin_required
 from ...models.examen.examen_model import Examen
+from ...models.evaluador.evaluador_model import Evaluador
 from ...models.relaciones.relacion_examen_evaluador import examen_evaluador_tabla
 from enum import Enum
 from ...models.resultados_aprendizaje.resultados_aprendizaje_model import ResultadoAprendizaje
@@ -254,12 +255,19 @@ def obtener_examenes_con_calificaciones_completas(programa_id):
             # Obtener las observaciones de las calificaciones
             observaciones = obtener_observaciones_calificaciones(examen.id)
 
+            # Obtener los nombres de los evaluadores
+            nombres_evaluadores = []
+            evaluadores_asignados = Evaluador.query.join(examen_evaluador_tabla).filter_by(examen_id=examen.id).all()
+            for evaluador in evaluadores_asignados:
+                nombres_evaluadores.append(evaluador.nombre_evaluador)
+
             examenes_con_calificaciones_completas.append({
                 "id": examen.id,
                 "proyecto_integrador": examen.proyecto_integrador,
                 "actividades_formativas": examen.actividades_formativas,
                 "resultado_aprendizaje_nombre": titulo,
                 "resultado_aprendizaje_descripcion": descripcion,
+                "evaluadores": nombres_evaluadores,
                 "observaciones_calificaciones": observaciones
             })
 
