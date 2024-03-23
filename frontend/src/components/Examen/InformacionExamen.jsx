@@ -139,6 +139,11 @@ export const EvaluacionInformacion = ({
           />
         </div>
         <div className="informacion">
+          <div>
+            <p>
+            dentro de este panel se debe ingresar la informacion del examen
+            </p>
+          </div>
           <form onSubmit={onEnviarInformacion}>
           <h3>Panel Informacion del Examen</h3>
             <div className="componentes">

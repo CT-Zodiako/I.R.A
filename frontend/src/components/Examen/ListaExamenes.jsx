@@ -21,6 +21,9 @@ export const ExamenesLista = () => {
   const [listaExamenes, setListaExamenes] = useState([]);  
   const [notificacionExamen, setNotificacionExamen] = useState(false);
 
+  console.log('examenes: ', listaExamenes[3]);
+  
+
   const columnas = [
     {
       titulo: "EXAMEN ID",
@@ -88,31 +91,30 @@ export const ExamenesLista = () => {
     fetchData();
   }, [programa]);
 
-  const enviarCorre = (event, examenId) => {
+  const enviarCorre = async(event, id) => {
     event.preventDefault();
-    const fetchData = async () => {
       try {
-        await examenService.correoEvaluadores(examenId);
+        await examenService.correoEvaluadores(id);
+        console.log('se envio el correo a los evaludores');
         dispatch(
           cambiarEstadoBoton({
             botonAlerta: true,
             notificacion: "Se notifico a los evaluadores del examen",
           }),
         );
-        const nuevaListaExamen = await examenService.ExamenesCreados();
-        setListaExamenes(nuevaListaExamen);
+          const nuevaListaExamen = await examenService.ExamenesCreados(programa);
+          console.log('nueva lista examenes', nuevaListaExamen);
+          setListaExamenes(nuevaListaExamen);
       } catch (error) {
         console.error("Error al enviar los correos: ", error);
       }
-    };
-    fetchData();
   };
 
   const onEliminarExamen = async (event, examenId) => {
     event.preventDefault();
     try {
       await examenService.eliminarExamen(examenId);
-      const nuevaListaExamen = await examenService.ExamenesCreados();
+      const nuevaListaExamen = await examenService.ExamenesCreados(programa);
       setListaExamenes(nuevaListaExamen);
     } catch (error) {
       console.error(error);
@@ -159,9 +161,9 @@ export const ExamenesLista = () => {
           <Tabla
             datos={listaExamenes}
             columnas={columnas}
-            editar={onEditarExamen}
-            eliminar={onEliminarExamen}
-            enviarCorreo={enviarCorre}
+            // editar={onEditarExamen}
+            // eliminar={onEliminarExamen}
+            // enviarCorreo={enviarCorre}
             acciones={BotonesAcciones}
             accinar='true'
           />
